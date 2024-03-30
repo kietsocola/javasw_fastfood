@@ -2,6 +2,15 @@ package DTO;
 
 public class LoaiSanPham {
 	private int maLoai;
+	private String tenLoaiSP;
+	public LoaiSanPham(int maLoai, String tenLoaiSP) {
+		this.maLoai = maLoai;
+		this.tenLoaiSP = tenLoaiSP;
+	}
+	public LoaiSanPham() {
+		
+	}
+	
 	public int getMaLoai() {
 		return maLoai;
 	}
@@ -14,13 +23,6 @@ public class LoaiSanPham {
 	public void setTenLoaiSP(String tenLoaiSP) {
 		this.tenLoaiSP = tenLoaiSP;
 	}
-	private String tenLoaiSP;
-	public LoaiSanPham(int maLoai, String tenLoaiSP) {
-		this.maLoai = maLoai;
-		this.tenLoaiSP = tenLoaiSP;
-	}
-	public LoaiSanPham() {
-		
-	}
 	
+
 }
