@@ -1,6 +1,6 @@
 package DTO;
 
-public class DTOSanPham {
+public class SanPham {
 	    private int maSP;
 	    private String tenSP;
 	    private int maLoai;
@@ -9,11 +9,11 @@ public class DTOSanPham {
 	    private String hinhAnh;
 	    private int donGia;
 
-	    public DTOSanPham() {
+	    public SanPham() {
 
 	    }
 
-	    public DTOSanPham(int maSP, String tenSP, int maLoai, int soLuong, String donViTinh, String hinhAnh, int donGia) {
+	    public SanPham(int maSP, String tenSP, int maLoai, int soLuong, String donViTinh, String hinhAnh, int donGia) {
 	        this.maSP = maSP;
 	        this.tenSP = tenSP;
 	        this.maLoai = maLoai;

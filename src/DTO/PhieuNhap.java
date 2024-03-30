@@ -2,17 +2,17 @@ package DTO;
 
 import java.util.Date;
 
-public class DTOPhieuNhap {
+public class PhieuNhap {
 	private int maPN;
-    private DTONhaCungCap maNCC;
+    private NhaCungCap maNCC;
     private int maNV;
     private Date ngayLap;
     private int tongTien;
 
-    public DTOPhieuNhap() {
+    public PhieuNhap() {
     }
 
-    public DTOPhieuNhap(int maPN, DTONhaCungCap maNCC, int maNV, Date ngayLap, int tongTien) {
+    public PhieuNhap(int maPN, NhaCungCap maNCC, int maNV, Date ngayLap, int tongTien) {
         this.maPN = maPN;
         this.maNCC = maNCC;
         this.maNV = maNV;
@@ -28,11 +28,11 @@ public class DTOPhieuNhap {
         this.maPN = maPN;
     }
 
-    public DTONhaCungCap getMaNCC() {
+    public NhaCungCap getMaNCC() {
         return maNCC;
     }
 
-    public void setMaNCC(DTONhaCungCap maNCC) {
+    public void setMaNCC(NhaCungCap maNCC) {
         this.maNCC = maNCC;
     }
 
