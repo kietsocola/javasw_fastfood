@@ -30,7 +30,7 @@ public class QuanLyKhachHang extends JFrame {
 	private JTable table;
 	private JTextField textField_tenKH;
 	private JTextField textField_maKH;
-	private JTextField textField_tongSoChiTieu;
+	private JTextField textField_tongChiTieu;
 	private JTextField textField_timKiem;
 	private JTextField textField_sodt;
 	
@@ -157,7 +157,7 @@ public class QuanLyKhachHang extends JFrame {
 		
 		panel_tongSochiTieu.setBackground(MyColor.BORDER_COLOR);
 		
-		Label label_6 = new Label("Tổng Số Chi Tiêu");
+		Label label_6 = new Label("Tổng Chi Tiêu");
 		label_6.setBounds(10, 10, 140, 35);
 		panel_tongSochiTieu.add(label_6);
 		label_6.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -166,11 +166,11 @@ public class QuanLyKhachHang extends JFrame {
 		
 		
 		
-		textField_tongSoChiTieu = new JTextField();
-		textField_tongSoChiTieu.setColumns(10);
-		textField_tongSoChiTieu.setBackground(MyColor.BACKGROUND_TEXTFIELD_COLOR);
-		textField_tongSoChiTieu.setBounds(191, 15, 234, 30);
-		panel_tongSochiTieu.add(textField_tongSoChiTieu);
+		textField_tongChiTieu = new JTextField();
+		textField_tongChiTieu.setColumns(10);
+		textField_tongChiTieu.setBackground(MyColor.BACKGROUND_TEXTFIELD_COLOR);
+		textField_tongChiTieu.setBounds(191, 15, 234, 30);
+		panel_tongSochiTieu.add(textField_tongChiTieu);
 		
 		JPanel panel_SoDT = new JPanel();
 		panel_SoDT.setBounds(10, 195, 435, 57);
