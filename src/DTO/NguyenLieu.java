@@ -1,22 +1,22 @@
 package DTO;
 
 public class NguyenLieu {
-	private String maNguyenLieu;
+	private int maNguyenLieu;
 	private String tenNL;
 	private int soLuongNL;
 	public NguyenLieu() {
 		
 	}
-	public NguyenLieu(String maNguyenLieu, String tenNL, int soLuongNL) {
+	public NguyenLieu(int maNguyenLieu, String tenNL, int soLuongNL) {
 		super();
 		this.maNguyenLieu = maNguyenLieu;
 		this.tenNL = tenNL;
 		this.soLuongNL = soLuongNL;
 	}
-	public String getMaNguyenLieu() {
+	public int getMaNguyenLieu() {
 		return maNguyenLieu;
 	}
-	public void setMaNguyenLieu(String maNguyenLieu) {
+	public void setMaNguyenLieu(int maNguyenLieu) {
 		this.maNguyenLieu = maNguyenLieu;
 	}
 	public String getTenNL() {
