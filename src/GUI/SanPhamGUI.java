@@ -27,7 +27,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.JScrollPane;
-public class Product extends JFrame {
+public class SanPhamGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel Display;
@@ -46,7 +46,7 @@ public class Product extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Product frame = new Product();
+					SanPhamGUI frame = new SanPhamGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +58,7 @@ public class Product extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Product() {
+	public SanPhamGUI() {
 		setTitle("Phần mềm quản lý bán thức ăn nhanh");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1200, 880); // contentpane co ti le la 1194x834 chua tinh thanh tren cung
