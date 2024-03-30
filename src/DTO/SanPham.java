@@ -8,7 +8,7 @@ public class SanPham {
 	    private String donViTinh;
 	    private String hinhAnh;
 	    private int donGia;
-
+	    private int maCongThuc;
 	    public SanPham() {
 
 	    }
@@ -78,4 +78,12 @@ public class SanPham {
 	    public void setDonGia(int donGia) {
 	        this.donGia = donGia;
 	    }
+
+		public int getMaCongThuc() {
+			return maCongThuc;
+		}
+
+		public void setMaCongThuc(int maCongThuc) {
+			this.maCongThuc = maCongThuc;
+		}
 }
