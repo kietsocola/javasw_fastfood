@@ -8,7 +8,7 @@ import java.sql.Statement;
 import DTO.SanPham;
 public class SanPhamDAO {
 	
-	public ArrayList<SanPham> DuLieuSanPham(){
+	public ArrayList<SanPham> getDanhSachSanPham(){
 		
 		try {
 			String sql = "SELECT * FROM sanpham";

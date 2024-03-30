@@ -14,9 +14,9 @@ public class ConnectDB {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(url, username, password);
-            System.out.println("Kết nối CSDL thành công");
+            System.out.println("ket noi csdl thanh cong");
         } catch (Exception e) {
-            System.out.println("Kết nối CSDL thất bại");
+            System.out.println("Ket noi csdl that bai");
             e.printStackTrace();
         }
     }
@@ -25,10 +25,10 @@ public class ConnectDB {
         try {
             if (con != null) {
                 con.close();
-                System.out.println("Đã đóng CSDL");
+                System.out.println("da dong CSDL");
             }
         } catch (Exception e) {
-            System.out.println("Đóng CSDL thất bại");
+            System.out.println("Dong CSDL that bai");
             e.printStackTrace();
         }
     }
