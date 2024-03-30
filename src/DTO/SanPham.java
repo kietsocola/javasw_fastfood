@@ -5,7 +5,6 @@ public class SanPham {
 	    private String tenSP;
 	    private int maLoai;
 	    private int soLuong;
-	    private String donViTinh;
 	    private String hinhAnh;
 	    private int donGia;
 	    private int maCongThuc;
@@ -18,7 +17,6 @@ public class SanPham {
 	        this.tenSP = tenSP;
 	        this.maLoai = maLoai;
 	        this.soLuong = soLuong;
-	        this.donViTinh = donViTinh;
 	        this.hinhAnh = hinhAnh;
 	        this.donGia = donGia;
 	    }
@@ -54,15 +52,6 @@ public class SanPham {
 	    public void setSoLuong(int soLuong) {
 	        this.soLuong = soLuong;
 	    }
-
-	    public String getDonViTinh() {
-	        return donViTinh;
-	    }
-
-	    public void setDonViTinh(String donViTinh) {
-	        this.donViTinh = donViTinh;
-	    }
-
 	    public String getHinhAnh() {
 	        return hinhAnh;
 	    }
