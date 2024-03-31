@@ -17,8 +17,8 @@ import Custom.MyPanel;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-import DAO.account_DAO;
-import DTO.account_DTO;
+import DAO.taiKhoan_DAO;
+import DTO.taiKhoan_DTO;
 public class dangnhap {
 
 	private JFrame frame;
@@ -101,13 +101,15 @@ public class dangnhap {
 		JButton btnNewButton = new JButton("Đăng nhập");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				account_DTO account = new account_DTO();
+				taiKhoan_DTO account = new taiKhoan_DTO();
 				account.setTenTaiKhoan(tenDangNhap.getText());
 				account.setMatKhau(matKhau.getText());
-				account_DAO check = new account_DAO();
+				taiKhoan_DAO check = new taiKhoan_DAO();
 				try {
-					if(check.checkAccount(account) == true)
-						System.out.println("helllo");
+					if(check.checkStatus(account) == 1)
+					{
+						System.out.println(check.getTen(account));
+					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
