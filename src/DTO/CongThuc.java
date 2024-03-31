@@ -1,25 +1,25 @@
 package DTO;
 
-public class CheBien {
-	private int idCheBien;
+public class CongThuc {
+	private int id;
     private int idSanPham;
     private int idNguyenLieu;
     private int soLuongDung;
-    public CheBien() {
+    public CongThuc() {
     	
     }
-	public CheBien(int idCheBien, int idSanPham, int idNguyenLieu, int soLuongDung) {
+	public CongThuc(int id, int idSanPham, int idNguyenLieu, int soLuongDung) {
 		super();
-		this.idCheBien = idCheBien;
+		this.id = id;
 		this.idSanPham = idSanPham;
 		this.idNguyenLieu = idNguyenLieu;
 		this.soLuongDung = soLuongDung;
 	}
-	public int getIdCheBien() {
-		return idCheBien;
+	public int getid() {
+		return id;
 	}
-	public void setIdCheBien(int idCheBien) {
-		this.idCheBien = idCheBien;
+	public void setid(int id) {
+		this.id = id;
 	}
 	public int getIdSanPham() {
 		return idSanPham;

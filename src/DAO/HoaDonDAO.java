@@ -61,4 +61,8 @@ public class HoaDonDAO {
 		}
 		return result;
 	}
+	public boolean deleteHoaDon(int idHD) {
+		ChiTietHoaDonDAO cthdDao = new ChiTietHoaDonDAO();
+		return cthdDao.deleteChiTietHoaDon_ByIdHoaDon(idHD);
+	}
 }

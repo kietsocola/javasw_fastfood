@@ -11,13 +11,10 @@ public class ConnectDB {
 	static final String nameUser = "root";
 	static final String pass = "";
 
-	public ConnectDB() {
-
-	}
 
 	public boolean openConnectDB() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(url, nameUser, pass);
 			return true;
 		} catch (SQLException e) {
@@ -36,6 +33,13 @@ public class ConnectDB {
 		} catch (SQLException ex) {
 			System.out.println(ex);
 		}
+	}
+	public static void main(String[] args) {
+		ConnectDB cn = new ConnectDB();
+		if(cn.openConnectDB()) {
+			System.out.println("yes");
+			cn.closeConnectDB();
+		} else System.out.println("no");
 	}
 
 }
