@@ -5,13 +5,13 @@ public class KhachHang {
     private String ten;
     private String gioiTinh;
     private String soDT;
-    private boolean tongChiTieu;
+    private double tongChiTieu;
     
 
     public KhachHang() {
     }
 
-    public KhachHang(int maKH, String ten, String gioiTinh, String soDT, boolean tongChiTieu) {
+    public KhachHang(int maKH, String ten, String gioiTinh, String soDT, double tongChiTieu) {
         this.maKH = maKH;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
@@ -53,11 +53,11 @@ public class KhachHang {
         this.soDT = soDT;
     }
 
-    public boolean getTongChiTieu() {
+    public double getTongChiTieu() {
         return tongChiTieu;
     }
 
-    public void setTongChiTieu(boolean tongChiTieu) {
+    public void setTongChiTieu(double tongChiTieu) {
         this.tongChiTieu = tongChiTieu;
     }
 
