@@ -19,7 +19,7 @@ public class CTPhieuNhapDAO {
 			while (rs.next()){
 				ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
 				
-				ctpn.setMaPN(rs.getInt("idChiTietPhieuNhap"));
+				ctpn.setMaChitietPhieuNhap(rs.getInt("idChiTietPhieuNhap"));
 				ctpn.setMaPN(rs.getInt("idPhieuNhap"));
 				ctpn.setMaNL(rs.getInt("idNguyenLieu"));
 				ctpn.setDonGia(rs.getInt("DonGia"));
@@ -45,7 +45,7 @@ public class CTPhieuNhapDAO {
 			while (rs.next()){
 				ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
 				
-				ctpn.setMaPN(rs.getInt("idChiTietPhieuNhap"));
+				ctpn.setMaChitietPhieuNhap(rs.getInt("idChiTietPhieuNhap"));
 				ctpn.setMaPN(rs.getInt("idPhieuNhap"));
 				ctpn.setMaNL(rs.getInt("idNguyenLieu"));
 				ctpn.setDonGia(rs.getInt("DonGia"));
