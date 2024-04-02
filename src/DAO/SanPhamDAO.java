@@ -38,7 +38,7 @@ public class SanPhamDAO {
 	}
 	public SanPham getSanPham(int ma) { // Lay san pham dua theo maSp
 		try {
-			String sql = "SELECT *FORM sanpham WHERE id=?";
+			String sql = "SELECT *FROM sanpham WHERE id=?";
 			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
 			prest.setInt(1, ma);
 			ResultSet rs = prest.executeQuery();
