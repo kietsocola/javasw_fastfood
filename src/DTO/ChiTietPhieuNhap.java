@@ -1,20 +1,28 @@
 package DTO;
 
 public class ChiTietPhieuNhap {
+	private int maChitietPhieuNhap;
 	private int maPN;
 	private int maNL;
 	private int donGia;
 	private int soLuong;
 	private int thanhTien;
-	public ChiTietPhieuNhap() {
-	
-	}
-	public ChiTietPhieuNhap(int maPN, int maNL, int donGia, int soLuong, int thanhTien) {
+	public ChiTietPhieuNhap(int maChitietPhieuNhap, int maPN, int maNL, int donGia, int soLuong, int thanhTien) {
+		this.maChitietPhieuNhap = maChitietPhieuNhap;
 		this.maPN = maPN;
 		this.maNL = maNL;
 		this.donGia = donGia;
 		this.soLuong = soLuong;
 		this.thanhTien = thanhTien;
+	}
+	public ChiTietPhieuNhap() {
+		
+	}
+	public int getMaChitietPhieuNhap() {
+		return maChitietPhieuNhap;
+	}
+	public void setMaChitietPhieuNhap(int maChitietPhieuNhap) {
+		this.maChitietPhieuNhap = maChitietPhieuNhap;
 	}
 	public int getMaPN() {
 		return maPN;
