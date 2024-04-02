@@ -9,10 +9,11 @@ import java.sql.SQLException;
 import DTO.taiKhoan_DTO;
 
 public class taiKhoan_DAO  {
+	connectDatabase con = new connectDatabase();
+
 	
 	public boolean checkAccount(taiKhoan_DTO account) throws SQLException  {
 		boolean result = false;
-		connectDatabase con = new connectDatabase();
 		con.connect();
 		String sql = "select * from acount where user_name = ? and password =?";
 		PreparedStatement preparedStatement =con.getCon().prepareStatement(sql);
@@ -39,6 +40,7 @@ public class taiKhoan_DAO  {
 		ResultSet resultset = preparedStatement.executeQuery();
 		if(resultset.next())
 			return resultset.getInt("status");
+		con.close();
 		return 0;
 	}
 	
@@ -55,6 +57,7 @@ public class taiKhoan_DAO  {
 		ResultSet resultset = preparedStatement.executeQuery();
 		if(resultset.next())
 			return resultset.getString("fullname");
+		con.close();
 		return null;
 	}
 	

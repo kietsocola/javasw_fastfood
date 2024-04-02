@@ -4,10 +4,13 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JPanel;
 import java.awt.Font;
+import java.awt.HeadlessException;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -17,7 +20,7 @@ import Custom.MyPanel;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-import DAO.taiKhoan_DAO;
+import BUS.taiKhoan_BUS;
 import DTO.taiKhoan_DTO;
 public class dangnhap {
 
@@ -43,15 +46,16 @@ public class dangnhap {
 
 	/**
 	 * Create the application.
+	 * @throws SQLException 
 	 */
-	public dangnhap() {
+	public dangnhap() throws SQLException {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() throws SQLException {
 		frame = new JFrame();
 		frame.setUndecorated(true);
 		frame.getContentPane().setForeground(new Color(255, 255, 255));
@@ -101,15 +105,17 @@ public class dangnhap {
 		JButton btnNewButton = new JButton("Đăng nhập");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				taiKhoan_DTO account = new taiKhoan_DTO();
 				account.setTenTaiKhoan(tenDangNhap.getText());
 				account.setMatKhau(matKhau.getText());
-				taiKhoan_DAO check = new taiKhoan_DAO();
+				taiKhoan_BUS tk_BUS = new taiKhoan_BUS();
+					// TODO Auto-generated catch block\
 				try {
-					if(check.checkStatus(account) == 1)
-					{
-						System.out.println(check.getTen(account));
-					}
+					JOptionPane.showMessageDialog(btnNewButton, tk_BUS.checkDangNhap(account),"Thong bao",0);
+				} catch (HeadlessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
