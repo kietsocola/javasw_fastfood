@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import DTO.NguyenLieu;
 
 public class NguyenLieuDAO {
-public ArrayList<NguyenLieu> getDanhSachNguyenLieu(){
+	public ArrayList<NguyenLieu> getDanhSachNguyenLieu(){
 		
 		try {
 			String sql = "SELECT * FROM nguyenlieu";
@@ -32,4 +32,5 @@ public ArrayList<NguyenLieu> getDanhSachNguyenLieu(){
 		}
 		return null;
 	}
+	// thêm xóa sửa + lấy nguyên liệu
 }

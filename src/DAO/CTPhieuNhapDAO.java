@@ -34,5 +34,5 @@ public ArrayList<ChiTietPhieuNhap> getDanhSachCTPhieuNhap(){
 		return null;
 	}
 	
-
+// thêm xóa sửa
 }

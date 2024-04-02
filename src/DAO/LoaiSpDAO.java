@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import DTO.LoaiSanPham;
 
 public class LoaiSpDAO {
-public ArrayList<LoaiSanPham> getDanhSachLoai(){
+	public ArrayList<LoaiSanPham> getDanhSachLoai(){
 		
 		try {
 			String sql = "SELECT * FROM loaisanpham";
@@ -30,4 +30,5 @@ public ArrayList<LoaiSanPham> getDanhSachLoai(){
 		}
 		return null;
 	}
+// thêm xóa sửa
 }
