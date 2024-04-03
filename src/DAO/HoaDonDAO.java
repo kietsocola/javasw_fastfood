@@ -12,7 +12,7 @@ public class HoaDonDAO {
 		ArrayList<HoaDon> arrHoaDon = new ArrayList<HoaDon>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "Select * from HoaDon";
+				String sql = "Select * from hoadon";
 				Statement stmt = conDB.conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				while (rs.next()) {
@@ -24,6 +24,7 @@ public class HoaDonDAO {
 					hd.setTongTien(rs.getInt("TongTien"));
 					hd.setTrangThai(rs.getInt("TrangThai"));
 					hd.setGhiChu(rs.getString("ghiChu"));
+					arrHoaDon.add(hd);
 				}
 			} catch (SQLException ex) {
 				System.out.println(ex);

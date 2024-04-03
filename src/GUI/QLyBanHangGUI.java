@@ -1,4 +1,6 @@
 package GUI;
+import java.util.Vector;
+import java.util.ArrayList;
 
 import java.awt.EventQueue;
 import java.awt.CardLayout;
@@ -15,8 +17,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
+import BUS.HoaDonBUS;
+import BUS.SanPhamBUS;
 import Custom.MyPanel;
 import Custom.MyTextField;
+import DTO.HoaDon;
+import DTO.SanPham;
 import Custom.MyLabel;
 import Custom.MyButton;
 import Custom.MyColor;
@@ -38,6 +44,10 @@ public class QLyBanHangGUI {
 	private MyTextField txtDonGia;
 	private MyTextField txtSoLuong;
 	private MyTextField txtNhanVien;
+	private DefaultTableModel modelTableHD, modelTableSP;
+	
+	HoaDonBUS hdBUS = new HoaDonBUS();
+	SanPhamBUS spBUS = new SanPhamBUS();
 
 	/**
 	 * Launch the application.
@@ -142,19 +152,18 @@ public class QLyBanHangGUI {
 		
         Color primaryColor = new Color(Integer.parseInt("39", 16), Integer.parseInt("3c", 16), Integer.parseInt("49", 16));
 		// tạo table sản phẩm
-		DefaultTableModel modelTableSP = new DefaultTableModel();
+		modelTableSP = new DefaultTableModel();
 		modelTableSP.addColumn("Mã SP");
 		modelTableSP.addColumn("Tên SP");
 		modelTableSP.addColumn("Đơn giá");
 		modelTableSP.addColumn("Còn lại");
-		modelTableSP.addColumn("Đơn vị tính");
-		Object[] rowData = { 1, "ABC", 10000, 20, "Cái" };
-		modelTableSP.addRow(rowData);
 		JTable tableSP = new JTable(modelTableSP);
 		JScrollPane scrollPaneSP = new JScrollPane(tableSP);
 		panel_tableSP.add(scrollPaneSP);
 		scrollPaneSP.getViewport().setBackground(primaryColor);
+		loadDataTableSanPham();
 
+		
 		//tạo table giỏ hàng
 		MyPanelSecond panel_tableGH = new MyPanelSecond();
 		panel_table.add(panel_tableGH);
@@ -281,14 +290,13 @@ public class QLyBanHangGUI {
 
 		
 		// tạo table hóa đơn
-		DefaultTableModel modelTableHD = new DefaultTableModel();
+		modelTableHD = new DefaultTableModel();
 		modelTableHD.addColumn("Mã SP");
-		modelTableHD.addColumn("Tên SP");
-		modelTableHD.addColumn("Đơn giá");
-		modelTableHD.addColumn("Còn lại");
-		modelTableHD.addColumn("Đơn vị tính");
-		Object[] rowData3 = { 1, "ABC", 10000, 20, "Cái" };
-		modelTableHD.addRow(rowData3);
+		modelTableHD.addColumn("Tổng tiền");
+		modelTableHD.addColumn("Ngày lập");
+		modelTableHD.addColumn("Ghi chú");
+
+		loadDataTableHoaDon();
 		JTable tableHD = new JTable(modelTableHD);
 		JScrollPane scrollPaneHD = new JScrollPane(tableHD);
 		panel_tableHD.add(scrollPaneHD);
@@ -375,5 +383,37 @@ public class QLyBanHangGUI {
 		
 		
 	}
+	
+	private void loadDataTableHoaDon() {
+		ArrayList<HoaDon> listHD = hdBUS.getListHoaDon();
+		addDataToTableHoaDon(listHD);
+	}
 
+	private void addDataToTableHoaDon(ArrayList<HoaDon> listHD) {
+		modelTableHD.setRowCount(0);
+		for(HoaDon hd : listHD) {
+			Vector<String> vec = new Vector<>();
+			vec.add(hd.getidHD()+"");
+			vec.add(hd.getTongTien()+"");
+			vec.add(hd.getNgayLap()+"");
+			vec.add(hd.getGhiChu());
+			modelTableHD.addRow(vec);
+		}
+	}
+	private void loadDataTableSanPham() {
+		ArrayList<SanPham> listSP = spBUS.getListSanPham();
+		addDataToTableSanPham(listSP);
+	}
+
+	private void addDataToTableSanPham(ArrayList<SanPham> listSP) {
+		modelTableSP.setRowCount(0);
+		for(SanPham sp : listSP) {
+			Vector<String> vec = new Vector<>();
+			vec.add(sp.getId()+"");
+			vec.add(sp.getTenSP());
+			vec.add(sp.getDonGia()+"");
+			vec.add(sp.getSoLuong()+"");
+			modelTableSP.addRow(vec);
+		}
+	}
 }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConnectDB {
 	protected Connection conn = null;
 
-	static final String url = "jdbc:mysql://localhost:3306/web2";
+	static final String url = "jdbc:mysql://localhost:3306/javafastfood";
 	static final String nameUser = "root";
 	static final String pass = "";
 
@@ -34,12 +34,12 @@ public class ConnectDB {
 			System.out.println(ex);
 		}
 	}
-	public static void main(String[] args) {
-		ConnectDB cn = new ConnectDB();
-		if(cn.openConnectDB()) {
-			System.out.println("yes");
-			cn.closeConnectDB();
-		} else System.out.println("no");
-	}
+//	public static void main(String[] args) {
+//		ConnectDB cn = new ConnectDB();
+//		if(cn.openConnectDB()) {
+//			System.out.println("yes");
+//			cn.closeConnectDB();
+//		} else System.out.println("no");
+//	}
 
 }
