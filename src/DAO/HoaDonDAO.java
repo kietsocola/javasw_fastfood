@@ -40,10 +40,10 @@ public class HoaDonDAO {
 		boolean result = false;
 		if (conDB.openConnectDB()) {
 			try {
-				String sqlUpdateTongTien = "UPDATE KhachHang SET TongChiTieu=TongChiTieu+" + hd.getTongTien()
-						+ " WHERE idKhachHang=" + hd.getidKH();
-				Statement stmt = conDB.conn.createStatement();
-				stmt.executeQuery(sqlUpdateTongTien);
+//				String sqlUpdateTongTien = "UPDATE KhachHang SET TongChiTieu=TongChiTieu+" + hd.getTongTien()
+//						+ " WHERE idKhachHang=" + hd.getidKH();
+//				Statement stmt = conDB.conn.createStatement();
+//				stmt.executeQuery(sqlUpdateTongTien);
 				String sql = "INSERT INTO HoaDon(NgayLap, TongTien, TrangThai, idNhanVien, idKhachHang, ghiChu) VALUES(?, ?, ?, ?, ?, ?)";
 				PreparedStatement prep = conDB.conn.prepareStatement(sql);
 				prep.setTimestamp(1, new java.sql.Timestamp(new java.util.Date().getTime()));
@@ -66,4 +66,20 @@ public class HoaDonDAO {
 		ChiTietHoaDonDAO cthdDao = new ChiTietHoaDonDAO();
 		return cthdDao.deleteChiTietHoaDon_ByIdHoaDon(idHD);
 	}
+	public int getMaHoaDonMoiNhat() {
+		if (conDB.openConnectDB()) {
+	        try {
+	            String sql = "SELECT MAX(id) FROM hoadon";
+	            Statement st = conDB.conn.createStatement();
+	            ResultSet rs = st.executeQuery(sql);
+	            if (rs.next())
+	                return rs.getInt(1);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	        	conDB.closeConnectDB();
+	        }
+		}
+        return -1;
+    }
 }

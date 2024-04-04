@@ -15,8 +15,10 @@ import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
 
+import BUS.ChiTietHoaDonBUS;
 import BUS.HoaDonBUS;
 import BUS.SanPhamBUS;
 import Custom.MyPanel;
@@ -32,8 +34,12 @@ import Custom.MyPanelSecond;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class QLyBanHangGUI {
 
@@ -44,10 +50,13 @@ public class QLyBanHangGUI {
 	private MyTextField txtDonGia;
 	private MyTextField txtSoLuong;
 	private MyTextField txtNhanVien;
-	private DefaultTableModel modelTableHD, modelTableSP;
+	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH;
+	private JTable tableSP, tableGH;
+	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD;
 	
 	HoaDonBUS hdBUS = new HoaDonBUS();
 	SanPhamBUS spBUS = new SanPhamBUS();
+	ChiTietHoaDonBUS cthdBUS = new ChiTietHoaDonBUS();
 
 	/**
 	 * Launch the application.
@@ -70,6 +79,7 @@ public class QLyBanHangGUI {
 	 */
 	public QLyBanHangGUI() {
 		initialize();
+		addEventsBanHang();
 	}
 
 	/**
@@ -157,11 +167,12 @@ public class QLyBanHangGUI {
 		modelTableSP.addColumn("Tên SP");
 		modelTableSP.addColumn("Đơn giá");
 		modelTableSP.addColumn("Còn lại");
-		JTable tableSP = new JTable(modelTableSP);
+		tableSP = new JTable(modelTableSP);
 		JScrollPane scrollPaneSP = new JScrollPane(tableSP);
 		panel_tableSP.add(scrollPaneSP);
 		scrollPaneSP.getViewport().setBackground(primaryColor);
 		loadDataTableSanPham();
+		clickTableBanHang();
 
 		
 		//tạo table giỏ hàng
@@ -171,15 +182,13 @@ public class QLyBanHangGUI {
 
 		MyLabelSecond lblGIoHang = new MyLabelSecond("Giỏ hàng");
 		panel_tableGH.add(lblGIoHang, BorderLayout.NORTH);
-		DefaultTableModel modelTableGH = new DefaultTableModel();
+		modelTableGH = new DefaultTableModel();
 		modelTableGH.addColumn("Mã SP");
 		modelTableGH.addColumn("Tên SP");
 		modelTableGH.addColumn("Số lượng");
 		modelTableGH.addColumn("Đơn giá");
 		modelTableGH.addColumn("Thành tiền");
-		Object[] rowData2 = { 1, "ABC", 2, 10000, 20000 };
-		modelTableGH.addRow(rowData2);
-		JTable tableGH = new JTable(modelTableGH);
+		tableGH = new JTable(modelTableGH);
 		JScrollPane scrollPaneGH = new JScrollPane(tableGH);
 		scrollPaneGH.getViewport().setBackground(primaryColor);
 		panel_tableGH.add(scrollPaneGH);
@@ -255,7 +264,7 @@ public class QLyBanHangGUI {
 		panel_ChiTietSP.add(panel_ThemGH);
 
 		// các button chức năng
-		MyButton btnThemGioHang = new MyButton("Thêm giỏ hàng");
+		btnThemGioHang = new MyButton("Thêm giỏ hàng");
 		panel_ThemGH.add(btnThemGioHang);
 
 		MyPanel panel_HinhAnhSP = new MyPanel();
@@ -264,10 +273,11 @@ public class QLyBanHangGUI {
 		MyPanel panel_XoaSP_XuatHD = new MyPanel();
 		panel_ChiTietSP.add(panel_XoaSP_XuatHD);
 
-		MyButton btnXoaSP = new MyButton("Xóa");
+		btnXoaSP = new MyButton("Xóa");
+		clickTableGioHang();
 		panel_XoaSP_XuatHD.add(btnXoaSP);
 
-		MyButton btnXuatHD = new MyButton("Xuất hóa đơn");
+		btnXuatHD = new MyButton("Xuất hóa đơn");
 		panel_XoaSP_XuatHD.add(btnXuatHD);
 		
 		
@@ -291,7 +301,7 @@ public class QLyBanHangGUI {
 		
 		// tạo table hóa đơn
 		modelTableHD = new DefaultTableModel();
-		modelTableHD.addColumn("Mã SP");
+		modelTableHD.addColumn("Mã HD");
 		modelTableHD.addColumn("Tổng tiền");
 		modelTableHD.addColumn("Ngày lập");
 		modelTableHD.addColumn("Ghi chú");
@@ -384,6 +394,72 @@ public class QLyBanHangGUI {
 		
 	}
 	
+	private void addEventsBanHang() {
+		btnXuatHD.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				luuHoaDon();
+				
+			}
+		});
+		btnThemGioHang.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				themVaoGioHang();
+			}
+		});
+	}
+	
 	private void loadDataTableHoaDon() {
 		ArrayList<HoaDon> listHD = hdBUS.getListHoaDon();
 		addDataToTableHoaDon(listHD);
@@ -415,5 +491,82 @@ public class QLyBanHangGUI {
 			vec.add(sp.getSoLuong()+"");
 			modelTableSP.addRow(vec);
 		}
+	}
+	
+	private void clickTableBanHang() {
+		ListSelectionModel selectionModel = tableSP.getSelectionModel();
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedRow = tableSP.getSelectedRow();
+                if (selectedRow != -1) { // If a row is selected
+                	String ma = tableSP.getValueAt(selectedRow, 0) + "";
+                    String ten = tableSP.getValueAt(selectedRow, 1) + "";
+                    String donGia = tableSP.getValueAt(selectedRow, 2) + "";
+                    int soLuongConLai = Integer.parseInt(tableSP.getValueAt(selectedRow, 3)+"");
+                    txtMaSP.setText(ma);
+                	txtTenSP.setText(ten);
+                	txtDonGia.setText(donGia);
+                }
+            }
+        });
+	}
+	private void clickTableGioHang() {
+    	btnXoaSP.setEnabled(false);
+		ListSelectionModel selectionModel = tableGH.getSelectionModel();
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedRow = tableSP.getSelectedRow();
+                if (selectedRow != -1) { // If a row is selected
+                	//do something
+                	btnXoaSP.setEnabled(true);
+                } else {
+                }
+            }
+        });
+	}
+	
+	private void themVaoGioHang() {
+		int row = tableSP.getSelectedRow();
+        if (row < 0) {
+        	return;
+        }
+        String soLuong = txtSoLuong.getText();
+        if (soLuong.isEmpty()) {
+            return;
+        }
+        String ma = txtMaSP.getText();
+        String ten = txtTenSP.getText();
+        String donGia = txtDonGia.getText();
+        
+        txtMaSP.setText("");
+    	txtTenSP.setText("");
+    	txtDonGia.setText("");
+    	txtSoLuong.setText("");
+    	
+    	String thanhTien = String.valueOf(Integer.parseInt(donGia)*Integer.parseInt(soLuong));
+    	
+    	Vector<String> vec = new Vector<>();
+		vec.add(ma);
+		vec.add(ten);
+		vec.add(donGia);
+		vec.add(soLuong);
+		vec.add(thanhTien);
+		modelTableGH.addRow(vec);
+	}
+	
+	private void luuHoaDon() {
+		int total=0;
+		for (int i = 0; i < modelTableGH.getRowCount(); i++) {
+            total += Integer.parseInt(modelTableGH.getValueAt(i, 4)+"");
+            String maSP = modelTableGH.getValueAt(i, 0)+"";
+            String donGia = modelTableGH.getValueAt(i, 2)+"";
+            String soLuong = modelTableGH.getValueAt(i, 3)+"";
+            String thanhTien = modelTableGH.getValueAt(i, 4)+"";
+            
+            cthdBUS.addChiTietHoaDon(maSP, soLuong, donGia, thanhTien);
+        }
+		hdBUS.luuHoaDon(1, 1, total, "Đã thanh toán");
 	}
 }

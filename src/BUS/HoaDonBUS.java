@@ -1,5 +1,8 @@
 package BUS;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import DTO.HoaDon;
 
@@ -13,4 +16,17 @@ public class HoaDonBUS {
 		listHD = hoaDonDAO.getListHoaDon();
 		return listHD;
 	}
+	public void luuHoaDon(int maKH, int nhanVien, int tongTien, String ghiChu) {
+        HoaDon hd = new HoaDon();
+//        String[] arrNV = nhanVien.split(" - ");
+//        int maNV = Integer.parseInt(arrNV[0]);
+//        hd.setidNV(maNV);
+        hd.setidKH(maKH);
+        hd.setGhiChu(ghiChu);
+        hd.setTongTien(tongTien);
+        Date currentDate = new Date();
+        hd.setNgayLap(currentDate);
+        hd.setidNV(1);
+        hoaDonDAO.addHoaDon(hd);
+    }
 }
