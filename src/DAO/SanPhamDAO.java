@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.sql.Statement;
 import DTO.SanPham;
 public class SanPhamDAO {
-	
+	ConnectDB conDB = new ConnectDB();
 	public ArrayList<SanPham> getDanhSachSanPham(){
 		
 		try {
 			String sql = "SELECT *FROM sanpham";
-			PreparedStatement prest =ConnectDB.con.prepareStatement(sql);	
+			PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 			ResultSet rs = prest.executeQuery();
 			ArrayList <SanPham> DSSanPham = new ArrayList<>();
 			while (rs.next()){
@@ -39,7 +39,7 @@ public class SanPhamDAO {
 	public SanPham getSanPham(int ma) { // Lay san pham dua theo maSp
 		try {
 			String sql = "SELECT *FROM sanpham WHERE id=?";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			prest.setInt(1, ma);
 			ResultSet rs = prest.executeQuery();
 			while (rs.next()){
@@ -64,7 +64,7 @@ public class SanPhamDAO {
 	public ArrayList<SanPham> getSanPhamTheoLoai (int maLoai){
 		try {
 			String sql = "SELECT *FROM sanpham WHERE idLoaiSP=?";
-			PreparedStatement prest =ConnectDB.con.prepareStatement(sql);	
+			PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 			ResultSet rs = prest.executeQuery();
 			ArrayList <SanPham> DSSanPhamTheoLoai = new ArrayList<>();
 			while (rs.next()){
@@ -91,7 +91,7 @@ public class SanPhamDAO {
 	public String getAnh(int ma) {
 		try {
 			String sql = "SELECT HinhAnh FORM sanpham WHERE id=?";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			prest.setInt(1, ma);
 			ResultSet rs = prest.executeQuery();
 			if(rs.next()) {
@@ -110,7 +110,7 @@ public class SanPhamDAO {
 		sp.setSoLuong(soLuong + soLuongMa);
 		try {
 			String sql = "UPDATE sanpham SET SoLuong=? WHERE id=" + ma;
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			prest.setInt(1, sp.getSoLuong());
 			prest.executeUpdate();
 		} catch (SQLException e) {
@@ -121,7 +121,7 @@ public class SanPhamDAO {
 		try {
 			String sql = "INSERT INTO sanpham(TenSP, idLoaiSP,SoLuong,idCongThuc,HinhAnh,DonGia)"
 					+"VALUES (?,?,?,?,?,?)";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			
 			prest.setString(1, sp.getTenSP());
 			prest.setInt(2, sp.getMaLoai());
@@ -140,7 +140,7 @@ public class SanPhamDAO {
     public boolean xoaSanPham(int maSP) {
         try {
             String sql = "DELETE FROM sanpham WHERE id=" + maSP;
-            Statement st = ConnectDB.con.createStatement();
+            Statement st = conDB.conn.createStatement();
             st.execute(sql);
             return true;
         } catch (SQLException e) {
@@ -153,7 +153,7 @@ public class SanPhamDAO {
 					+ "TenSP=?, "
 					+ "idLoaiSp=? ,SoLuong=?, idCongThuc=? ,HinhAnh=? ,DonGia=? "
 					+ "WHERE id=?";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			
 			prest.setString(1, sp.getTenSP());
 			prest.setInt(2, sp.getMaLoai());

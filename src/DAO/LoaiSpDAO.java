@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import DTO.LoaiSanPham;
 
 public class LoaiSpDAO {
+	ConnectDB conDB = new ConnectDB();
 	public ArrayList<LoaiSanPham> getDanhSachLoai(){
 		
 		try {
 			String sql = "SELECT * FROM loaisanpham";
-			PreparedStatement prest =ConnectDB.con.prepareStatement(sql);	
+			PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 			ResultSet rs = prest.executeQuery();
 			ArrayList <LoaiSanPham> DSLoaiSanPham = new ArrayList<>();
 			while (rs.next()){
@@ -34,7 +35,7 @@ public class LoaiSpDAO {
 	public LoaiSanPham getLoaiSanPham(int maLoai) {
 		try {
 			String sql = "SELECT *FROM loaisanpham WHERE idLoaiSP=?";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			prest.setInt(1, maLoai);
 			ResultSet rs = prest.executeQuery();
 			while (rs.next()) {
@@ -55,7 +56,7 @@ public class LoaiSpDAO {
 		try {
 			String sql = "INSERT INTO loaisanpham(TenLoaiSP)"
 					+ "VALUES (?)";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			
 			prest.setString(1, lsp.getTenLoaiSP());
 			
@@ -69,7 +70,7 @@ public class LoaiSpDAO {
     public boolean xoaLoaiSanPham(int maLoaiSP) {
         try {
             String sql = "DELETE FROM loaisanpham WHERE idLoaiSP=" + maLoaiSP;
-            Statement st = ConnectDB.con.createStatement();
+            Statement st = conDB.conn.createStatement();
             st.execute(sql);
             return true;
         } catch (SQLException e) {
@@ -81,7 +82,7 @@ public class LoaiSpDAO {
 			String sql = "UPDATE loaisanpham SET"
 					+ "TenLoaiSP=?"
 					+ "WHERE idLoaiSP=?";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			
 			prest.setString(1, lsp.getTenLoaiSP());
 			prest.setInt(2, lsp.getMaLoai());

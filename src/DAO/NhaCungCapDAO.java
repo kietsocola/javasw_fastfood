@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import DTO.NhaCungCap;
 
 public class NhaCungCapDAO {
+	ConnectDB conDB = new ConnectDB();
 	public ArrayList<NhaCungCap> getDanhSachNhaCungCap() {
         try {
             ArrayList<NhaCungCap> DSNCC = new ArrayList<>();
             String sql = "SELECT * FROM nhacungcap";
-            PreparedStatement prest =ConnectDB.con.prepareStatement(sql);	
+            PreparedStatement prest =conDB.conn.prepareStatement(sql);	
             ResultSet rs = prest.executeQuery(sql);
             while (rs.next()) {
                 NhaCungCap ncc = new NhaCungCap();
@@ -31,7 +32,7 @@ public class NhaCungCapDAO {
         NhaCungCap ncc = null;
         try {
             String sql = "SELECT * FROM nhacungcap WHERE id=" + MaNCC;
-            Statement stmt = ConnectDB.con.createStatement();
+            Statement stmt = conDB.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 ncc = new NhaCungCap();
@@ -49,7 +50,7 @@ public class NhaCungCapDAO {
         boolean result = false;
         try {
             String sql = "INSERT INTO nhacungcap VALUES(?,?)";
-            PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+            PreparedStatement prest = conDB.conn.prepareStatement(sql);
             prest.setInt(1, ncc.getMaNCC());
             prest.setString(2, ncc.getTenNCC());
             result = prest.executeUpdate() > 0;
@@ -63,7 +64,7 @@ public class NhaCungCapDAO {
         boolean result = false;
         try {
             String sql = "UPDATE nhacungcap SET Ten=? WHERE id=?";
-            PreparedStatement prep = ConnectDB.con.prepareStatement(sql);
+            PreparedStatement prep = conDB.conn.prepareStatement(sql);
             prep.setString(1, ncc.getTenNCC());
             prep.setInt(2, ncc.getMaNCC());
             result = prep.executeUpdate() > 0;
@@ -78,7 +79,7 @@ public class NhaCungCapDAO {
         boolean result = false;
         try {
             String sql = "DELETE FROM nhacungcap WHERE id=" + MaNCC;
-            Statement stmt = ConnectDB.con.createStatement();
+            Statement stmt = conDB.conn.createStatement();
             result = stmt.executeUpdate(sql) > 0;
         } catch (SQLException ex) {
             return false;

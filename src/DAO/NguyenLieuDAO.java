@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import DTO.NguyenLieu;
 
 public class NguyenLieuDAO {
+	ConnectDB conDB = new ConnectDB();
+
 	public ArrayList<NguyenLieu> getDanhSachNguyenLieu(){
 		
 		try {
 			String sql = "SELECT * FROM nguyenlieu";
-			PreparedStatement prest =ConnectDB.con.prepareStatement(sql);	
+			PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 			ResultSet rs = prest.executeQuery();
 			ArrayList <NguyenLieu> DSNguyenLieu = new ArrayList<>();
 			while (rs.next()){
@@ -37,7 +39,7 @@ public class NguyenLieuDAO {
 	public NguyenLieu getNguyenLieu (int maNL) {
 		try {
 			String sql = "SELECT *FROM nguyenlieu WHERE id=?";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			prest.setInt(1, maNL);
 			ResultSet rs = prest.executeQuery();
 			while (rs.next()) {
@@ -57,7 +59,7 @@ public class NguyenLieuDAO {
 		try {
 			String sql = "INSET INTO nguyenlieu(Ten, SoLuong)"
 					+ "VALUE (?,?)";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			
 			prest.setString(1, nl.getTenNL());
 			prest.setInt(2, nl.getsoLuongNL());
@@ -72,7 +74,7 @@ public class NguyenLieuDAO {
 	public boolean xoaNguyenLieu(int maNL) {
         try {
             String sql = "DELETE FROM nguyenlieu WHERE id=" + maNL;
-            Statement st = ConnectDB.con.createStatement();
+            Statement st = conDB.conn.createStatement();
             st.execute(sql);
             return true;
         } catch (SQLException e) {
@@ -84,7 +86,7 @@ public class NguyenLieuDAO {
 			String sql = "UPDATE nguyenlieu SET"
 					+ "Ten=?, SoLuong=? "
 					+ "WHERE id=?";
-			PreparedStatement prest = ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest = conDB.conn.prepareStatement(sql);
 			
 			prest.setString(1, nl.getTenNL());
 			prest.setInt(2, nl.getsoLuongNL());

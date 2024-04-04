@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import DTO.ChiTietPhieuNhap;
 
 public class CTPhieuNhapDAO {
+	ConnectDB conDB = new ConnectDB();
 	public ArrayList<ChiTietPhieuNhap> getDanhSachCTPhieuNhap(){
 		
 		try {
 			String sql = "SELECT * FROM chitietphieunhap";
-			PreparedStatement prest =ConnectDB.con.prepareStatement(sql);	
+			PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 			ResultSet rs = prest.executeQuery();
 			ArrayList <ChiTietPhieuNhap> DSCTPhieuNhap = new ArrayList<>();
 			while (rs.next()){
@@ -39,7 +40,7 @@ public class CTPhieuNhapDAO {
 	public ChiTietPhieuNhap getCTSP(int ma) {
 		try {
 			String sql = "SELECT * FROM chitietphieunhap WHERE ma=?";
-			PreparedStatement prest =ConnectDB.con.prepareStatement(sql);
+			PreparedStatement prest =conDB.conn.prepareStatement(sql);
 			prest.setInt(1, ma);
 			ResultSet rs = prest.executeQuery();
 			while (rs.next()){
@@ -64,14 +65,14 @@ public class CTPhieuNhapDAO {
 		try {
 			//update số lượng nguyên liệu trong kho
 			String sqlUpdateNL = "UPDATE nguyenlieu SET SoLuong = SoLuong + ? WHERE id=? ";
-			PreparedStatement pre1 = ConnectDB.con.prepareCall(sqlUpdateNL);
+			PreparedStatement pre1 = conDB.conn.prepareCall(sqlUpdateNL);
 			pre1.setInt(1, ctpn.getSoLuong());
 			pre1.setInt(2, ctpn.getMaNL());
 			pre1.executeUpdate();
 			
 			String sqlUpdateCTPN="INSERT INTO chitietphieunhap(idNguyenLieu,DonGia,SoLuong,ThanhTien"
 					+ "VALUES(?,?,?,?)";
-			PreparedStatement pre2 = ConnectDB.con.prepareStatement(sqlUpdateCTPN);
+			PreparedStatement pre2 = conDB.conn.prepareStatement(sqlUpdateCTPN);
 			
 			pre2.setInt(1, ctpn.getMaNL());
 			pre2.setInt(2, ctpn.getDonGia());
@@ -88,7 +89,7 @@ public class CTPhieuNhapDAO {
 	public boolean xoaCTPN(int maCTPN) {
 		try {
             String sql = "DELETE FROM chitietphieunhap WHERE idChiTietPhieuNhap=" + maCTPN;
-            Statement st = ConnectDB.con.createStatement();
+            Statement st = conDB.conn.createStatement();
             st.execute(sql);
             return true;
         } catch (SQLException e) {
