@@ -3,9 +3,8 @@ package BUS;
 import java.util.ArrayList;
 
 import DAO.KhachHangDAO;
-import DAO.NhanVienDao;
 import DTO.KhachHang;
-import DTO.NhanVien;
+
 
 public class KhachHangBus {
 
