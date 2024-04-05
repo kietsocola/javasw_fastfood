@@ -14,7 +14,7 @@ public class ChiTietHoaDonDAO {
 		ArrayList<ChiTietHoaDon> arrChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT * FROM ChiTietHoaDon WHERE MaHD="+idHD;
+				String sql = "SELECT * FROM ChiTietHoaDon WHERE idHoaDon="+idHD;
 				Statement stmt = conDB.conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				while(rs.next()) {

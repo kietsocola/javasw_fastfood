@@ -23,6 +23,7 @@ import BUS.HoaDonBUS;
 import BUS.SanPhamBUS;
 import Custom.MyPanel;
 import Custom.MyTextField;
+import DTO.ChiTietHoaDon;
 import DTO.HoaDon;
 import DTO.SanPham;
 import Custom.MyLabel;
@@ -50,8 +51,8 @@ public class QLyBanHangGUI {
 	private MyTextField txtDonGia;
 	private MyTextField txtSoLuong;
 	private MyTextField txtNhanVien;
-	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH;
-	private JTable tableSP, tableGH;
+	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD;
+	private JTable tableSP, tableGH, tableHD,tableCTHD;
 	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD;
 	
 	HoaDonBUS hdBUS = new HoaDonBUS();
@@ -307,10 +308,11 @@ public class QLyBanHangGUI {
 		modelTableHD.addColumn("Ghi chú");
 
 		loadDataTableHoaDon();
-		JTable tableHD = new JTable(modelTableHD);
+		tableHD = new JTable(modelTableHD);
 		JScrollPane scrollPaneHD = new JScrollPane(tableHD);
 		panel_tableHD.add(scrollPaneHD);
 		scrollPaneHD.getViewport().setBackground(primaryColor);
+		
 
 		//tạo table chi tiết hd
 		MyPanelSecond panel_tableCTHD = new MyPanelSecond();
@@ -319,19 +321,17 @@ public class QLyBanHangGUI {
 
 		MyLabelSecond lblCTHoaDon = new MyLabelSecond("Chi tiết hóa đơn");
 		panel_tableCTHD.add(lblCTHoaDon, BorderLayout.NORTH);
-		DefaultTableModel modelTableCTHD = new DefaultTableModel();
+		modelTableCTHD = new DefaultTableModel();
 		modelTableCTHD.addColumn("Mã SP");
 		modelTableCTHD.addColumn("Tên SP");
 		modelTableCTHD.addColumn("Số lượng");
 		modelTableCTHD.addColumn("Đơn giá");
 		modelTableCTHD.addColumn("Thành tiền");
-		Object[] rowData4 = { 1, "ABC", 2, 10000, 20000 };
-		modelTableCTHD.addRow(rowData4);
-		JTable tableCTHD = new JTable(modelTableGH);
+		tableCTHD = new JTable(modelTableCTHD);
 		JScrollPane scrollPaneCTHD = new JScrollPane(tableCTHD);
 		scrollPaneCTHD.getViewport().setBackground(primaryColor);
 		panel_tableCTHD.add(scrollPaneCTHD);
-		
+		clickTableHoaDon();
 		
 		MyPanel panel_HD_CTHD = new MyPanel();
 		panel_HD_CTHD.setLayout(new GridLayout(2, 1, 0, 0));
@@ -395,6 +395,38 @@ public class QLyBanHangGUI {
 	}
 	
 	private void addEventsBanHang() {
+		btnXoaSP.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				xoaSPfromGioHang();
+				btnXoaSP.setEnabled(false);
+			}
+		});
 		btnXuatHD.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -527,6 +559,35 @@ public class QLyBanHangGUI {
         });
 	}
 	
+	private void clickTableHoaDon() {
+		ListSelectionModel selectionModel = tableHD.getSelectionModel();
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedRow = tableHD.getSelectedRow();
+                if (selectedRow != -1) { // If a row is selected
+                	int maHD = Integer.parseInt(tableHD.getValueAt(selectedRow, 0) + "");
+                	ArrayList<ChiTietHoaDon> listCTHD = cthdBUS.getListCTHDtheoIdHoaDon(maHD);
+                	addDataTableCTHD(listCTHD);
+                }
+            }
+        });
+		
+	}
+	
+	private void addDataTableCTHD(ArrayList<ChiTietHoaDon> listCTHD) {
+		modelTableCTHD.setRowCount(0);
+		for (ChiTietHoaDon ct : listCTHD) {
+            Vector<String> vec = new Vector<>();
+            vec.add(ct.getIdSanPham() + "");
+            vec.add(ct.getIdHoaDon() + "");
+            vec.add(ct.getDonGia() + "");
+            vec.add(ct.getSoLuong() + "");
+            vec.add(ct.getThanhTien() + "");
+            modelTableCTHD.addRow(vec);
+        }
+	}
+	
 	private void themVaoGioHang() {
 		int row = tableSP.getSelectedRow();
         if (row < 0) {
@@ -568,5 +629,13 @@ public class QLyBanHangGUI {
             cthdBUS.addChiTietHoaDon(maSP, soLuong, donGia, thanhTien);
         }
 		hdBUS.luuHoaDon(1, 1, total, "Đã thanh toán");
+	}
+	
+	private void xoaSPfromGioHang() {
+		int selectedRow = tableGH.getSelectedRow();
+	    if (selectedRow != -1) { // Nếu có hàng được chọn
+	        DefaultTableModel model = (DefaultTableModel) tableGH.getModel();
+	        model.removeRow(selectedRow);
+	    }
 	}
 }
