@@ -18,10 +18,17 @@ import Custom.*;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Vector;
+
 import javax.swing.JTable;
 import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.table.TableModel;
+
+import BUS.SanPhamBUS;
+import DTO.SanPham;
+
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 public class SanPhamGUI extends JFrame {
@@ -34,6 +41,7 @@ public class SanPhamGUI extends JFrame {
 	private MyButton btnThem,btnXoa,btnSua,btnChonAnh;
 	private MyTextField txtMaSP, txtTenSP, txtSoLuong,txtCongThuc, txtDonGia;
 	private JComboBox<String> cmbLoaiSP;
+	private SanPhamBUS spBUS = new SanPhamBUS();
 	/**
 	 * Launch the application.
 	 */
@@ -203,7 +211,7 @@ public class SanPhamGUI extends JFrame {
 		
 		tblSanPham = new JTable();
 		tblSanPham.setModel(dtmSanPham);
-			
+		loadDataToTblSanPham();
 		Color primaryColor = new Color(Integer.parseInt("39", 16), Integer.parseInt("3c", 16), Integer.parseInt("49", 16));
 		JScrollPane  scrTableSanPham= new JScrollPane(tblSanPham);
 		scrTableSanPham.getViewport().setBackground(primaryColor);
@@ -211,6 +219,25 @@ public class SanPhamGUI extends JFrame {
 		panel_table.add(scrTableSanPham, BorderLayout.NORTH);
 //---------------------------------------------------------------------------------------------		
 
+	}
+	private void loadDataToTblSanPham() {
+		spBUS.docListSanPham();
+		dtmSanPham.setRowCount(0);
+		
+		ArrayList <SanPham> dssp = spBUS.getDSSanPham();
+		
+		for (SanPham sp : dssp) {
+			Vector vec = new Vector();
+			vec.add(sp.getMaSP());
+			vec.add(sp.getTenSP());
+			vec.add(sp.getMaLoai());
+			vec.add(sp.getSoLuong());
+			vec.add(sp.getMaCongThuc());
+			vec.add(sp.getDonGia());
+			vec.add(sp.getHinhAnh());
+			
+			dtmSanPham.addRow(vec);
+		}
 	}
 
 }
