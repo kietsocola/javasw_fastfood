@@ -7,10 +7,23 @@ import DTO.HoaDon;
 import DTO.SanPham;
 
 public class SanPhamBUS {
-	private ArrayList<SanPham> listSP;
+	private ArrayList<SanPham> listSP = null;
 	private SanPhamDAO sanPhamDAO = new SanPhamDAO();
+	public SanPhamBUS() {
+		listSP = getListSanPham();
+	}
 	public ArrayList<SanPham> getListSanPham(){
 		listSP = sanPhamDAO.getListSanPham();
 		return listSP;
 	}
+	public ArrayList<SanPham> getSanPhamTheoTen(String ten) {
+        ArrayList<SanPham> dssp = new ArrayList<>();
+        for (SanPham sp : listSP) {
+            String tenSP = sp.getTenSP().toLowerCase();
+            if (tenSP.toLowerCase().contains(ten.toLowerCase())) {
+                dssp.add(sp);
+            }
+        }
+        return dssp;
+    }
 }

@@ -35,6 +35,38 @@ public class HoaDonDAO {
 		}
 		return arrHoaDon;
 	}
+	public ArrayList<HoaDon> getListHoaDon(Date dateMin, Date dateMax) {
+		if (conDB.openConnectDB()) {
+        try {
+            String sql = "SELECT * FROM hoadon WHERE NgayLap BETWEEN CAST(? AS DATE) AND CAST(? AS DATE)";
+            PreparedStatement pre = conDB.conn.prepareStatement(sql);
+            pre.setDate(1, dateMin);
+            pre.setDate(2, dateMax);
+            ResultSet rs = pre.executeQuery();
+
+            ArrayList<HoaDon> dshd = new ArrayList<>();
+
+            while (rs.next()) {
+                HoaDon hd = new HoaDon();
+                hd.setidHD(rs.getInt("id"));
+				hd.setidNV(rs.getInt("idNhanVien"));
+				hd.setidKH(rs.getInt("idKhachHang"));
+				hd.setNgayLap(rs.getDate("NgayLap"));
+				hd.setTongTien(rs.getInt("TongTien"));
+				hd.setTrangThai(rs.getInt("TrangThai"));
+				hd.setGhiChu(rs.getString("ghiChu"));
+                dshd.add(hd);
+            }
+            return dshd;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        	 conDB.closeConnectDB();
+        }
+		}
+        return null;
+		
+    }
 
 	public boolean addHoaDon(HoaDon hd) {
 		boolean result = false;

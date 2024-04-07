@@ -18,7 +18,7 @@ public class MyTextField extends JTextField{
         	    new LineBorder(MyColor.BORDER_COLOR), // Border mặc định
         	    new EmptyBorder(0, 5, 0, 5)); // Khoảng cách giữa border và vùng chứa text
         setBorder(border);
-        setPreferredSize(new Dimension(200, 30));
+        setPreferredSize(new Dimension(120, 30));
         setMaximumSize(new Dimension(500, 40));
     }
 }

@@ -1,5 +1,6 @@
 package BUS;
 import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,5 +29,21 @@ public class HoaDonBUS {
         hd.setNgayLap(currentDate);
         hd.setidNV(1);
         hoaDonDAO.addHoaDon(hd);
+    }
+	public ArrayList<HoaDon> getListHoaDonTheoNgay(String min, String max) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date minDate = sdf.parse(min);
+            Date maxDate = sdf.parse(max);
+
+            java.sql.Date dateMin = new java.sql.Date(minDate.getTime());
+            java.sql.Date dateMax = new java.sql.Date(maxDate.getTime());
+
+            ArrayList<HoaDon> dshd = hoaDonDAO.getListHoaDon(dateMin, dateMax);
+            return dshd;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
