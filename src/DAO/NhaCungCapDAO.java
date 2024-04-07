@@ -11,80 +11,105 @@ import DTO.NhaCungCap;
 public class NhaCungCapDAO {
 	ConnectDB conDB = new ConnectDB();
 	public ArrayList<NhaCungCap> getDanhSachNhaCungCap() {
-        try {
-            ArrayList<NhaCungCap> DSNCC = new ArrayList<>();
-            String sql = "SELECT * FROM nhacungcap";
-            PreparedStatement prest =conDB.conn.prepareStatement(sql);	
-            ResultSet rs = prest.executeQuery(sql);
-            while (rs.next()) {
-                NhaCungCap ncc = new NhaCungCap();
-                ncc.setMaNCC(rs.getInt("id"));
-                ncc.setTenNCC(rs.getString("Ten"));
-               
-                DSNCC.add(ncc);
-            }
-            return DSNCC;
-        } catch (SQLException ex) {
-            return null;
-        }
+		ArrayList<NhaCungCap> DSNCC = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+		           
+	            String sql = "SELECT * FROM nhacungcap";
+	            PreparedStatement prest =conDB.conn.prepareStatement(sql);	
+	            ResultSet rs = prest.executeQuery(sql);
+	            while (rs.next()) {
+	                NhaCungCap ncc = new NhaCungCap();
+	                
+	                ncc.setMaNCC(rs.getInt("id"));
+	                ncc.setTenNCC(rs.getString("Ten"));
+	               
+	                DSNCC.add(ncc);
+	            }
+	            
+	        } catch (SQLException ex) {
+	            ex.printStackTrace(); 
+	        } finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return DSNCC;
     }
 	public NhaCungCap getNhaCungCap(int MaNCC) {
         NhaCungCap ncc = null;
-        try {
-            String sql = "SELECT * FROM nhacungcap WHERE id=" + MaNCC;
-            Statement stmt = conDB.conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                ncc = new NhaCungCap();
-                ncc.setMaNCC(rs.getInt("id"));
-                ncc.setTenNCC(rs.getString("Ten"));
+        if (conDB.openConnectDB()) {
+            try {
+                String sql = "SELECT * FROM nhacungcap WHERE id=?";
+                PreparedStatement prest = conDB.conn.prepareStatement(sql);
+                prest.setInt(1, MaNCC);
+                ResultSet rs = prest.executeQuery(sql);
+                while (rs.next()) {
+                    ncc = new NhaCungCap();
+                    ncc.setMaNCC(rs.getInt("id"));
+                    ncc.setTenNCC(rs.getString("Ten"));
 
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+            	conDB.closeConnectDB();
             }
-        } catch (SQLException ex) {
-            return null;
+        
         }
         return ncc;
-    }
-
+	}
     public boolean addNCC(NhaCungCap ncc) {
         boolean result = false;
-        try {
-            String sql = "INSERT INTO nhacungcap VALUES(?,?)";
-            PreparedStatement prest = conDB.conn.prepareStatement(sql);
-            prest.setInt(1, ncc.getMaNCC());
-            prest.setString(2, ncc.getTenNCC());
-            result = prest.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            return false;
+        if(conDB.openConnectDB()) {
+        	try {
+                String sql = "INSERT INTO nhacungcap VALUES(?,?)";
+                PreparedStatement prest = conDB.conn.prepareStatement(sql);
+                prest.setInt(1, ncc.getMaNCC());
+                prest.setString(2, ncc.getTenNCC());
+                if(prest.executeUpdate() >=1)
+    				result = true;
+            } catch (SQLException ex) {
+                
+            } finally {
+            	conDB.closeConnectDB();
+            }
         }
         return result;
     }
 
     public boolean updateNCC(NhaCungCap ncc) {
-        boolean result = false;
-        try {
-            String sql = "UPDATE nhacungcap SET Ten=? WHERE id=?";
-            PreparedStatement prep = conDB.conn.prepareStatement(sql);
-            prep.setString(1, ncc.getTenNCC());
-            prep.setInt(2, ncc.getMaNCC());
-            result = prep.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
+    	boolean result = false;
+        if (conDB.openConnectDB()) {
+            try {
+                String sql = "UPDATE nhacungcap SET Ten=? WHERE id=?";
+                PreparedStatement prep = conDB.conn.prepareStatement(sql);
+                prep.setString(1, ncc.getTenNCC());
+                prep.setInt(2, ncc.getMaNCC());
+                result = prep.executeUpdate() > 0;
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                conDB.closeConnectDB();
+            }
         }
         return result;
     }
 
     public boolean deleteNCC(int MaNCC) {
-        boolean result = false;
-        try {
-            String sql = "DELETE FROM nhacungcap WHERE id=" + MaNCC;
-            Statement stmt = conDB.conn.createStatement();
-            result = stmt.executeUpdate(sql) > 0;
-        } catch (SQLException ex) {
-            return false;
-        }
-        return result;
+    	 boolean result = false;
+    	    if (conDB.openConnectDB()) {
+    	        try {
+    	            String sql = "DELETE FROM nhacungcap WHERE id=?";
+    	            PreparedStatement prep = conDB.conn.prepareStatement(sql);
+    	            prep.setInt(1, MaNCC);
+    	            result = prep.executeUpdate() > 0;
+    	        } catch (SQLException ex) {
+    	            ex.printStackTrace();
+    	        } finally {
+    	            conDB.closeConnectDB();
+    	        }
+    	    }
+    	    return result;
     }
 	
 }

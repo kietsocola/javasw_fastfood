@@ -31,7 +31,9 @@ public class SanPhamDAO {
 						
 				}
 			} catch (SQLException e) {
-				return null;
+				e.printStackTrace();
+			} finally {
+				conDB.closeConnectDB();
 			}
 			
 		}
@@ -55,8 +57,6 @@ public class SanPhamDAO {
 					sp.setSoLuong(rs.getInt("SoLuong"));
 					sp.setHinhAnh(rs.getString("HinhAnh"));
 					sp.setMaCongThuc(rs.getInt("idCongThuc"));				
-					
-					return sp;
 				}
 				
 			} catch (SQLException e) {
@@ -157,38 +157,46 @@ public class SanPhamDAO {
 	}
 	public boolean xoaSanPham(int maSP) {
 	    boolean result = false;
-	    try {
-	        String sql = "DELETE FROM sanpham WHERE id=" + maSP;
-	        Statement st = conDB.conn.createStatement();
-	        // Thực hiện truy vấn và kiểm tra số hàng đã bị ảnh hưởng
-	        if (st.executeUpdate(sql) >= 1)
-	            result = true;
-	    } catch (SQLException e) {
-	        e.printStackTrace();
+	    if (conDB.openConnectDB()) {
+	    	try {
+		        String sql = "DELETE FROM sanpham WHERE id=" + maSP;
+		        Statement st = conDB.conn.createStatement();
+		        // Thực hiện truy vấn và kiểm tra số hàng đã bị ảnh hưởng
+		        if (st.executeUpdate(sql) >= 1)
+		            result = true;
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+				conDB.closeConnectDB();
+			}
 	    }
 	    return result;
 	}
 	public boolean suaSanPham(SanPham sp) {
 	    boolean result = false;
-	    try {
-	        String sql = "UPDATE sanpham SET "
-	        		+ "TenSP=?, idLoaiSp=?, SoLuong=?, "
-	        		+ "idCongThuc=?, HinhAnh=?, DonGia=? WHERE id=?";
-	        PreparedStatement prest = conDB.conn.prepareStatement(sql);
+	    if(conDB.openConnectDB()) {
+		    try {
+		        String sql = "UPDATE sanpham SET "
+		        		+ "TenSP=?, idLoaiSp=?, SoLuong=?, "
+		        		+ "idCongThuc=?, HinhAnh=?, DonGia=? WHERE id=?";
+		        PreparedStatement prest = conDB.conn.prepareStatement(sql);
 
-	        prest.setString(1, sp.getTenSP());
-	        prest.setInt(2, sp.getMaLoai());
-	        prest.setInt(3, sp.getSoLuong());
-	        prest.setInt(4, sp.getMaCongThuc());
-	        prest.setString(5, sp.getHinhAnh());
-	        prest.setInt(6, sp.getDonGia());
-	        prest.setInt(7, sp.getMaSP());
+		        prest.setString(1, sp.getTenSP());
+		        prest.setInt(2, sp.getMaLoai());
+		        prest.setInt(3, sp.getSoLuong());
+		        prest.setInt(4, sp.getMaCongThuc());
+		        prest.setString(5, sp.getHinhAnh());
+		        prest.setInt(6, sp.getDonGia());
+		        prest.setInt(7, sp.getMaSP());
 
-	        // Thực hiện truy vấn và kiểm tra số hàng đã bị ảnh hưởng
-	        if (prest.executeUpdate() >= 1)
-	            result = true;
-	    } catch (SQLException e) {
-	        e.printStackTrace();
+		        // Thực hiện truy vấn và kiểm tra số hàng đã bị ảnh hưởng
+		        if (prest.executeUpdate() >= 1)
+		            result = true;
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+				conDB.closeConnectDB();
+			}
 	    }
 	    return result;
 	}

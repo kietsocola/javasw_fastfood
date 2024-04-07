@@ -10,88 +10,110 @@ import DTO.LoaiSanPham;
 public class LoaiSpDAO {
 	ConnectDB conDB = new ConnectDB();
 	public ArrayList<LoaiSanPham> getDanhSachLoai(){
-		
-		try {
-			String sql = "SELECT * FROM loaisanpham";
-			PreparedStatement prest =conDB.conn.prepareStatement(sql);	
-			ResultSet rs = prest.executeQuery();
-			ArrayList <LoaiSanPham> DSLoaiSanPham = new ArrayList<>();
-			while (rs.next()){
-				LoaiSanPham lsp = new LoaiSanPham();
+		ArrayList <LoaiSanPham> DSLoaiSanPham = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM loaisanpham";
+				PreparedStatement prest =conDB.conn.prepareStatement(sql);	
+				ResultSet rs = prest.executeQuery();
 				
-				lsp.setMaLoai(rs.getInt("idLoaiSP"));
-				lsp.setTenLoaiSP(rs.getString("TenLoaiSP"));
+				while (rs.next()){
+					LoaiSanPham lsp = new LoaiSanPham();
+					
+					lsp.setMaLoai(rs.getInt("idLoaiSP"));
+					lsp.setTenLoaiSP(rs.getString("TenLoaiSP"));
+					
+					DSLoaiSanPham.add(lsp);
+					
+					
+				}
 				
-				DSLoaiSanPham.add(lsp);
-				
-				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				conDB.closeConnectDB();
 			}
-			return DSLoaiSanPham;
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
-		return null;
+		return DSLoaiSanPham;
 	}
 	public LoaiSanPham getLoaiSanPham(int maLoai) {
-		try {
-			String sql = "SELECT *FROM loaisanpham WHERE idLoaiSP=?";
-			PreparedStatement prest = conDB.conn.prepareStatement(sql);
-			prest.setInt(1, maLoai);
-			ResultSet rs = prest.executeQuery();
-			while (rs.next()) {
-				LoaiSanPham lsp = new LoaiSanPham();
+		LoaiSanPham lsp = null;
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT *FROM loaisanpham WHERE idLoaiSP=?";
+				PreparedStatement prest = conDB.conn.prepareStatement(sql);
+				prest.setInt(1, maLoai);
+				ResultSet rs = prest.executeQuery();
+				while (rs.next()) {
+					 lsp= new LoaiSanPham();
+					
+					lsp.setTenLoaiSP(rs.getString("TenLoaiSP"));
+					
+				}
 				
-				lsp.setTenLoaiSP(rs.getString("TenLoaiSP"));
-				
-				return lsp;
+			} catch (SQLException e) {
+				// TODO: handle exception
+			}finally {
+				conDB.closeConnectDB();
 			}
-			
-		} catch (SQLException e) {
-			// TODO: handle exception
 		}
-		return null;
+		return lsp;
 	}
 // thêm xóa sửa
 	public boolean themLoaiSanPham(LoaiSanPham lsp) {
-		try {
-			String sql = "INSERT INTO loaisanpham(TenLoaiSP)"
-					+ "VALUES (?)";
-			PreparedStatement prest = conDB.conn.prepareStatement(sql);
-			
-			prest.setString(1, lsp.getTenLoaiSP());
-			
-			prest.execute();
-			return true;
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-		return false;
+		boolean result = false;
+	    if (conDB.openConnectDB()) {
+	        try {
+	            String sql = "INSERT INTO loaisanpham(TenLoaiSP) VALUES (?)";
+	            PreparedStatement prest = conDB.conn.prepareStatement(sql);
+	            prest.setString(1, lsp.getTenLoaiSP());
+	            if (prest.executeUpdate() >= 1) {
+	                result = true;
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            conDB.closeConnectDB();
+	        }
+	    }
+	    return result;
+
 	}
     public boolean xoaLoaiSanPham(int maLoaiSP) {
-        try {
-            String sql = "DELETE FROM loaisanpham WHERE idLoaiSP=" + maLoaiSP;
-            Statement st = conDB.conn.createStatement();
-            st.execute(sql);
-            return true;
-        } catch (SQLException e) {
-        }
-        return false;
+    	 boolean result = false;
+    	    if (conDB.openConnectDB()) {
+    	        try {
+    	            String sql = "DELETE FROM loaisanpham WHERE idLoaiSP=?";
+    	            PreparedStatement prest = conDB.conn.prepareStatement(sql);
+    	            prest.setInt(1, maLoaiSP);
+    	            if (prest.executeUpdate() >= 1) {
+    	                result = true;
+    	            }
+    	        } catch (SQLException e) {
+    	            e.printStackTrace();
+    	        } finally {
+    	            conDB.closeConnectDB();
+    	        }
+    	    }
+    	    return result;
     }
     public boolean suaLoaiSanPham(LoaiSanPham lsp) {
-    	try {
-			String sql = "UPDATE loaisanpham SET"
-					+ "TenLoaiSP=?"
-					+ "WHERE idLoaiSP=?";
-			PreparedStatement prest = conDB.conn.prepareStatement(sql);
-			
-			prest.setString(1, lsp.getTenLoaiSP());
-			prest.setInt(2, lsp.getMaLoai());
-			
-			prest.execute();
-			return true;
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-    	return false;
+    	boolean result = false;
+        if (conDB.openConnectDB()) {
+            try {
+                String sql = "UPDATE loaisanpham SET TenLoaiSP=? WHERE idLoaiSP=?";
+                PreparedStatement prest = conDB.conn.prepareStatement(sql);
+                prest.setString(1, lsp.getTenLoaiSP());
+                prest.setInt(2, lsp.getMaLoai());
+                if (prest.executeUpdate() >= 1) {
+                    result = true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                conDB.closeConnectDB();
+            }
+        }
+        return result;
     }
 }
