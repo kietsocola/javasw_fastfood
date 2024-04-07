@@ -1,231 +1,210 @@
 package DAO;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
+import java.sql.*;
+import java.util.List; 
+import java.sql.Date;
+import DTO.ChiTietHoaDon;
 import DTO.HoaDon;
 import DTO.KhachHang;
 import DTO.SanPham;
 
 public class ThongKeDAO {
-	private ConnectDatabase conn;
+	ConnectDB conDB = new ConnectDB();
 
-	public ThongKeDAO(ConnectDatabase conn) {
-		this.conn = conn;
-	}
-
-	public ArrayList<KhachHang> layDuLieuKhachHang() {
-		Connection connection = conn.getConnection();
-		String sql = "SELECT id, Ten, SoDienThoai, TongChiTieu, GioiTinh FROM khachhang";
-		ArrayList<KhachHang> result = new ArrayList<>();
-
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			ResultSet resultSet = statement.executeQuery();
-
-			// Xử lý kết quả
-			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
-				String Ten = resultSet.getString("Ten");
-				String SoDienThoai = resultSet.getString("SoDienThoai");
-				int TongChiTieu = resultSet.getInt("TongChiTieu");
-				String GioiTinh = resultSet.getString("GioiTinh");
-
-				KhachHang khachHang = new KhachHang(id, Ten, GioiTinh, SoDienThoai, TongChiTieu);
-
-				result.add(khachHang);
+	public ArrayList<String> getListTenLoaiSP() {
+		ArrayList<String> listTenLoaiSP = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT TenLoaiSP FROM LoaiSanPham";
+				Statement stmt = conDB.conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+					listTenLoaiSP.add(rs.getString("TenLoaiSP"));
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
 			}
-
-		} catch (SQLException e) {
-			System.out.println("Lỗi khi lấy dữ liệu từ bảng khachHang: " + e.getMessage());
 		}
-		return result;
+		return listTenLoaiSP;
 	}
 
-	public int tinhTongSoLuongKhachHang() {
-		Connection connection = conn.getConnection();
-		String sql = "SELECT COUNT(*) AS total FROM khachhang";
-		int total = 0;
-
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			ResultSet resultSet = statement.executeQuery();
-
-			// Xử lý kết quả
-			if (resultSet.next()) {
-				total = resultSet.getInt("total");
+	public ArrayList<SanPham> getAllSanPham() {
+		ArrayList<SanPham> listSanPham = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM SanPham";
+				Statement stmt = conDB.conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+					SanPham sp = new SanPham();
+					sp.setMaSP(rs.getInt("id"));
+					sp.setMaLoai(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setMaCongThuc(rs.getInt("idCongThuc"));
+					listSanPham.add(sp);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
 			}
-
-		} catch (SQLException e) {
-			System.out.println("Lỗi khi tính tổng số lượng khách hàng: " + e.getMessage());
 		}
-		return total;
+		return listSanPham;
 	}
 
-	public ArrayList<SanPham> layDuLieuSanPham() {
-		Connection connection = conn.getConnection();
-		String sql = "SELECT id, idLoaiSP, TenSP, DonGia, SoLuong,HinhAnh,idCongThuc FROM sanpham";
-		ArrayList<SanPham> result = new ArrayList<>();
-
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			ResultSet resultSet = statement.executeQuery();
-			// Xử lý kết quả
-			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
-				String TenSP = resultSet.getString("TenSP");
-				int idLoaiSP = resultSet.getInt("idLoaiSP");
-				int SoLuong = resultSet.getInt("SoLuong");
-				String HinhAnh = resultSet.getString("HinhAnh");
-				int DonGia = resultSet.getInt("DonGia");
-				int idCongThuc = resultSet.getInt("idCongThuc");
-
-				SanPham SanPham = new SanPham(id, TenSP, idLoaiSP, SoLuong, HinhAnh, DonGia);
-
-				result.add(SanPham);
+	public ArrayList<SanPham> getSanPhamByLoaiSP(String loaiSP) {
+		ArrayList<SanPham> listSanPham = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT s.* FROM SanPham s JOIN LoaiSanPham l ON s.idLoaiSP = l.id WHERE l.TenLoaiSP = ?";
+				PreparedStatement stmt = conDB.conn.prepareStatement(sql);
+				stmt.setString(1, loaiSP);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					SanPham sp = new SanPham();
+					sp.setMaSP(rs.getInt("id"));
+					sp.setMaLoai(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setMaCongThuc(rs.getInt("idCongThuc"));
+					listSanPham.add(sp);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
 			}
-
-		} catch (SQLException e) {
-			System.out.println("Lỗi khi lấy dữ liệu từ bảng sanpham: " + e.getMessage());
 		}
-		return result;
+		return listSanPham;
 	}
-	
-	public int tinhTongSoLuongSanPham() {
-		Connection connection = conn.getConnection();
-		String sql = "SELECT COUNT(*) AS total FROM sanpham";
-		int total = 0;
 
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			ResultSet resultSet = statement.executeQuery();
-
-			// Xử lý kết quả
-			if (resultSet.next()) {
-				total = resultSet.getInt("total");
+	public HoaDon getHoaDonById(int idHoaDon) {
+		HoaDon hoaDon = null;
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM HoaDon WHERE id = ?";
+				PreparedStatement stmt = conDB.conn.prepareStatement(sql);
+				stmt.setInt(1, idHoaDon);
+				ResultSet rs = stmt.executeQuery();
+				if (rs.next()) {
+					hoaDon = new HoaDon();
+					hoaDon.setidHD(rs.getInt("id"));
+					hoaDon.setNgayLap(rs.getDate("NgayLap"));
+					hoaDon.setTongTien(rs.getInt("TongTien"));
+					hoaDon.setTrangThai(rs.getInt("TrangThai"));
+					hoaDon.setidNV(rs.getInt("idNhanVien"));
+					hoaDon.setidKH(rs.getInt("idKhachHang"));
+					hoaDon.setGhiChu(rs.getString("ghiChu"));
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
 			}
-
-		} catch (SQLException e) {
-			System.out.println("Lỗi khi tính tổng số lượng sản phẩm: " + e.getMessage());
 		}
-		return total;
+		return hoaDon;
 	}
 
-	public ArrayList<HoaDon> layDuLieuHoaDon() {
-		Connection connection = conn.getConnection();
-		String sql = "SELECT id, NgayLap, TongTien FROM HoaDon";
-		ArrayList<HoaDon> result = new ArrayList<>();
-
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			ResultSet resultSet = statement.executeQuery();
-
-			// Xử lý kết quả
-			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
-				Date ngayLap = resultSet.getDate("NgayLap");
-				int tongTien = resultSet.getInt("TongTien");
-
-				HoaDon hoaDon = new HoaDon(id, ngayLap, tongTien);
-				result.add(hoaDon);
+	public ArrayList<ChiTietHoaDon> getChiTietHoaDonBySanPham(int idSanPham) {
+		ArrayList<ChiTietHoaDon> listChiTietHoaDon = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM ChiTietHoaDon WHERE idSanPham = ?";
+				PreparedStatement stmt = conDB.conn.prepareStatement(sql);
+				stmt.setInt(1, idSanPham);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					ChiTietHoaDon cthd = new ChiTietHoaDon();
+					cthd.setId(rs.getInt("id"));
+					cthd.setIdHoaDon(rs.getInt("idHoaDon"));
+					cthd.setIdSanPham(rs.getInt("idSanPham"));
+					cthd.setDonGia(rs.getInt("DonGia"));
+					cthd.setSoLuong(rs.getInt("SoLuong"));
+					cthd.setThanhTien(rs.getInt("ThanhTien"));
+					cthd.setIdKhuyenMai(rs.getInt("idKhuyenMai"));
+					listChiTietHoaDon.add(cthd);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
 			}
-
-		} catch (SQLException e) {
-			System.out.println("Lỗi khi lấy dữ liệu từ bảng HoaDon: " + e.getMessage());
 		}
-		return result;
+		return listChiTietHoaDon;
 	}
 
-	public ArrayList<HoaDon> layDuLieuHoaDonWithDate(Date ngayBatDau, Date ngayKetThuc) {
-		Connection connection = conn.getConnection();
-		String sql = "SELECT id, NgayLap, TongTien FROM HoaDon WHERE NgayLap BETWEEN ? AND ?";
-		ArrayList<HoaDon> result = new ArrayList<>();
-
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			statement.setDate(1, ngayBatDau);
-			statement.setDate(2, ngayKetThuc);
-			ResultSet resultSet = statement.executeQuery();
-
-			// Xử lý kết quả
-			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
-				Date ngayLap = resultSet.getDate("NgayLap");
-				int tongTien = resultSet.getInt("TongTien");
-
-				HoaDon hoaDon = new HoaDon(id, ngayLap, tongTien);
-				result.add(hoaDon);
+	public ArrayList<SanPham> getSanPhamByDate(Date startDate, Date endDate) {
+		ArrayList<SanPham> listSanPham = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT DISTINCT sp.* FROM SanPham sp "
+						+ "JOIN ChiTietHoaDon cthd ON sp.id = cthd.idSanPham "
+						+ "JOIN HoaDon hd ON cthd.idHoaDon = hd.id " + "WHERE hd.NgayLap BETWEEN ? AND ?";
+				PreparedStatement stmt = conDB.conn.prepareStatement(sql);
+				stmt.setDate(1, startDate);
+				stmt.setDate(2, endDate);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					SanPham sp = new SanPham();
+					sp.setMaSP(rs.getInt("id"));
+					sp.setMaLoai(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setMaCongThuc(rs.getInt("idCongThuc"));
+					listSanPham.add(sp);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
 			}
-
-		} catch (SQLException e) {
-			System.out.println("Lỗi khi lấy dữ liệu từ bảng HoaDon: " + e.getMessage());
 		}
-		return result;
+		return listSanPham;
 	}
 
-	public Map<KhachHang, ArrayList<HoaDon>> thongKeHoaDonKhachHang() {
-		Map<KhachHang, ArrayList<HoaDon>> hoaDonTheoKhachHang = new HashMap<>();
-
-		// Lấy danh sách khách hàng
-		ArrayList<KhachHang> khachHangList = layDuLieuKhachHang();
-
-		// Duyệt qua từng khách hàng
-		for (KhachHang khachHang : khachHangList) {
-			// Lấy danh sách hóa đơn của khách hàng
-			ArrayList<HoaDon> hoaDonList = layDuLieuHoaDonTheoKhachHang(khachHang.getMaKH());
-
-			// Thêm vào map
-			hoaDonTheoKhachHang.put(khachHang, hoaDonList);
-		}
-
-		return hoaDonTheoKhachHang;
-	}
-
-	private ArrayList<HoaDon> layDuLieuHoaDonTheoKhachHang(int idKhachHang) {
-		Connection connection = conn.getConnection();
-		String sql = "SELECT id, NgayLap, TongTien FROM HoaDon WHERE idKhachHang = ?";
-		ArrayList<HoaDon> result = new ArrayList<>();
-
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			statement.setInt(1, idKhachHang);
-			ResultSet resultSet = statement.executeQuery();
-
-			// Xử lý kết quả
-			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
-				Date ngayLap = resultSet.getDate("NgayLap");
-				int tongTien = resultSet.getInt("TongTien");
-
-				HoaDon hoaDon = new HoaDon(id, ngayLap, tongTien);
-				result.add(hoaDon);
+	public ArrayList<SanPham> getSanPhamByDateAndCategory(String loaiSP, Date startDate, Date endDate) {
+		ArrayList<SanPham> listSanPham = null;
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT DISTINCT sp.* FROM SanPham sp "
+						+ "JOIN ChiTietHoaDon cthd ON sp.id = cthd.idSanPham "
+						+ "JOIN HoaDon hd ON cthd.idHoaDon = hd.id " + "JOIN LoaiSanPham lsp ON sp.idLoaiSP = lsp.id "
+						+ "WHERE hd.NgayLap BETWEEN ? AND ? AND lsp.TenLoaiSP = ?";
+				PreparedStatement stmt = conDB.conn.prepareStatement(sql);
+				stmt.setDate(1, startDate);
+				stmt.setDate(2, endDate);
+				stmt.setString(3, loaiSP);
+				ResultSet rs = stmt.executeQuery();
+				listSanPham = new ArrayList<>();
+				while (rs.next()) {
+					SanPham sp = new SanPham();
+					sp.setMaSP(rs.getInt("id"));
+					sp.setMaLoai(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setMaCongThuc(rs.getInt("idCongThuc"));
+					listSanPham.add(sp);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
 			}
-
-		} catch (SQLException e) {
-			System.out.println("Lỗi khi lấy dữ liệu từ bảng HoaDon: " + e.getMessage());
 		}
-		return result;
+		return listSanPham;
 	}
 
-	public double thongKeDoanhThu(Date ngayBatDau, Date ngayKetThuc) {
-		Connection connection = conn.getConnection();
-		String sqlHoaDon = "SELECT SUM(TongTien) AS doanhThu FROM hoadon WHERE NgayLap BETWEEN ? AND ?";
-		double doanhThu = 0;
-
-		try (PreparedStatement statementHoaDon = connection.prepareStatement(sqlHoaDon)) {
-			// Thiết lập tham số cho truy vấn hoá đơn
-			statementHoaDon.setDate(1, ngayBatDau);
-			statementHoaDon.setDate(2, ngayKetThuc);
-			ResultSet resultSetHoaDon = statementHoaDon.executeQuery();
-
-			// Lấy doanh thu từ hóa đơn
-			if (resultSetHoaDon.next()) {
-				doanhThu += resultSetHoaDon.getDouble("doanhThu");
-			}
-
-		} catch (SQLException e) {
-			System.out.println("Lỗi khi thống kê doanh thu: " + e.getMessage());
-		}
-
-		return doanhThu;
-	}
 }
