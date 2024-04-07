@@ -30,7 +30,7 @@ public class KhachHangDAO {
 				kh.setTen(rs.getString(2));
 				kh.setGioiTinh(rs.getString(3));
 				kh.setSoDT(rs.getString(4));
-				kh.setTongChiTieu(rs.getDouble(5));
+				kh.setTongChiTieu(rs.getInt(5));
 				
 	            dskh.add(kh);
 			}
@@ -59,7 +59,7 @@ public class KhachHangDAO {
 				kh.setTen(rs.getString(2));
 				kh.setGioiTinh(rs.getString(3));
 				kh.setSoDT(rs.getString(4));
-				kh.setTongChiTieu(rs.getDouble(5));
+				kh.setTongChiTieu(rs.getInt(5));
 			}
 		}catch(SQLException e) {
 			return null;
@@ -78,7 +78,7 @@ public class KhachHangDAO {
 			pre.setString(1, kh.getTen());
 			pre.setString(2, kh.getGioiTinh());
 			pre.setString(3, kh.getSoDT());
-			pre.setDouble(4, kh.getTongChiTieu());
+			pre.setInt(4, kh.getTongChiTieu());
 			pre.setInt(5, kh.getMaKH());
 		}catch (SQLException ex) {
             return false;
@@ -113,7 +113,7 @@ public class KhachHangDAO {
 			pre.setString(1, kh.getTen());
 			pre.setString(2, kh.getGioiTinh());
 			pre.setString(3, kh.getSoDT());
-			pre.setDouble(4, kh.getTongChiTieu());
+			pre.setInt(4, kh.getTongChiTieu());
 			result=pre.executeUpdate()>0;
 		}catch (SQLException ex) {
             return false;
