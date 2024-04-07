@@ -15,7 +15,7 @@ public class taiKhoan_DAO  {
 	public boolean checkAccount(taiKhoan_DTO account) throws SQLException  {
 		boolean result = false;
 		con.connect();
-		String sql = "select * from acount where user_name = ? and password =?";
+		String sql = "select * from taikhoan where TenDangNhap = ? and MatKhau =?";
 		PreparedStatement preparedStatement =con.getCon().prepareStatement(sql);
 		
 		preparedStatement.setString(1,account.getTenTaiKhoan());
@@ -31,7 +31,7 @@ public class taiKhoan_DAO  {
 		
 		connectDatabase con = new connectDatabase();
 		con.connect();
-		String sql = "select * from acount where user_name = ? and password =?";
+		String sql = "select * from taikhoan where TenDangNhap = ? and MatKhau =?";
 		PreparedStatement preparedStatement =con.getCon().prepareStatement(sql);
 			
 		preparedStatement.setString(1,account.getTenTaiKhoan());
@@ -39,16 +39,16 @@ public class taiKhoan_DAO  {
 			
 		ResultSet resultset = preparedStatement.executeQuery();
 		if(resultset.next())
-			return resultset.getInt("status");
+			return resultset.getInt("TrangThai");
 		con.close();
-		return 0;
+		return 1;
 	}
 	
 	public String getTen(taiKhoan_DTO account) throws SQLException {
 		
 		connectDatabase con = new connectDatabase();
 		con.connect();
-		String sql = "select * from acount as a,nguoidung as nd where a.user_name = ? and a.password =? and nd.id_acount = a.id";
+		String sql = "select * from taikhoan where TenDangNhap = ? and MatKhau =?";
 		PreparedStatement preparedStatement =con.getCon().prepareStatement(sql);
 			
 		preparedStatement.setString(1,account.getTenTaiKhoan());
@@ -56,7 +56,7 @@ public class taiKhoan_DAO  {
 			
 		ResultSet resultset = preparedStatement.executeQuery();
 		if(resultset.next())
-			return resultset.getString("fullname");
+			return resultset.getString("TenDangNhap");
 		con.close();
 		return null;
 	}

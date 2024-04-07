@@ -5,23 +5,33 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import java.awt.Color;
-import javax.swing.JPanel;
+
+import java.awt.BorderLayout;
 import java.awt.Font;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import BUS.taiKhoan_BUS;
+import DTO.taiKhoan_DTO;
+
+import javax.swing.ImageIcon;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
-import javax.swing.border.LineBorder;
-
-import Custom.MyPanel;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.DropMode;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-import BUS.taiKhoan_BUS;
-import DTO.taiKhoan_DTO;
+
 public class dangnhap {
 
 	private JFrame frame;
@@ -46,61 +56,68 @@ public class dangnhap {
 
 	/**
 	 * Create the application.
-	 * @throws SQLException 
 	 */
-	public dangnhap() throws SQLException {
+	public dangnhap() {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() throws SQLException {
+	private void initialize() {
 		frame = new JFrame();
 		frame.setUndecorated(true);
-		frame.getContentPane().setForeground(new Color(255, 255, 255));
-		frame.setBounds(100, 100, 295, 257);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 422, 252);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setLocationRelativeTo(null);
 		
-		MyPanel panel = new MyPanel();
-		panel.setBorder(new LineBorder(new Color(255, 128, 255), 3, true));
-		panel.setBackground(new Color(31, 29, 43));
-		panel.setForeground(new Color(255, 255, 255));
-		panel.setBounds(0, 0, 293, 256);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
+		EmptyBorder border = new EmptyBorder(20, 20, 20, 20);
+
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(45, 48, 62));
-		panel_1.setBounds(10, 10, 273, 236);
-		panel.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel panel = new JPanel();
+		frame.getContentPane().add(panel, BorderLayout.CENTER);
+		panel.setBorder(border);
+		panel.setLayout(new GridLayout(4, 1, 0, 8));
 		
-		JLabel lblNewLabel = new JLabel("Tên đang nhập");
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel.setBounds(10, 10, 157, 20);
-		panel_1.add(lblNewLabel);
+		JLabel txtNameApp = new JLabel("FOOD AND DRINK");
+		txtNameApp.setHorizontalAlignment(SwingConstants.CENTER);
+		txtNameApp.setVerticalAlignment(SwingConstants.CENTER);
+		panel.add(txtNameApp);
+		txtNameApp.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		JPanel panelTenDangNhap = new JPanel();
+		panel.add(panelTenDangNhap);
+		panelTenDangNhap.setLayout(new BoxLayout(panelTenDangNhap, BoxLayout.X_AXIS));
+		panelTenDangNhap.add(Box.createHorizontalGlue());
+		
+		JLabel labelDangNhap = new JLabel("Tên đăng nhập:");
+		labelDangNhap.setHorizontalAlignment(SwingConstants.LEFT);
+		labelDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panelTenDangNhap.add(labelDangNhap);
 		
 		tenDangNhap = new JTextField();
+		tenDangNhap.setAlignmentX(Component.LEFT_ALIGNMENT);
 		tenDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		tenDangNhap.setBounds(10, 35, 253, 39);
-		panel_1.add(tenDangNhap);
-		tenDangNhap.setColumns(10);
+		panelTenDangNhap.add(tenDangNhap);
+		tenDangNhap.setColumns(15);
+		panelTenDangNhap.add(Box.createHorizontalGlue());
 		
-		JLabel lblNewLabel_1 = new JLabel("Mật khẩu");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(10, 97, 82, 20);
-		panel_1.add(lblNewLabel_1);
+		JPanel panelMatKhau = new JPanel();
+		panel.add(panelMatKhau);
+		panelMatKhau.setLayout(new BoxLayout(panelMatKhau, BoxLayout.X_AXIS));
+		
+		JLabel labelMatKhau = new JLabel("Mật Khẩu         :");
+		labelMatKhau.setHorizontalAlignment(SwingConstants.LEFT);
+		labelMatKhau.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelMatKhau.add(labelMatKhau);
 		
 		matKhau = new JTextField();
 		matKhau.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		matKhau.setBounds(10, 127, 253, 39);
-		panel_1.add(matKhau);
+		panelMatKhau.add(matKhau);
 		matKhau.setColumns(10);
+		
+		JPanel panelBtnDangNhap = new JPanel();
+		panel.add(panelBtnDangNhap);
 		
 		JButton btnNewButton = new JButton("Đăng nhập");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -122,8 +139,39 @@ public class dangnhap {
 				}
 			}
 		});
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton.setBounds(148, 188, 115, 21);
-		panel_1.add(btnNewButton);
+		panelBtnDangNhap.setLayout(new GridLayout(0, 2, 15, 20));
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panelBtnDangNhap.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Thoát");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int choice = JOptionPane.showOptionDialog(
+		                null, // parentComponent, null để hiển thị ở giữa màn hình
+		                "Bạn có muốn thoát không?", // message
+		                "Xác nhận", // title
+		                JOptionPane.YES_NO_CANCEL_OPTION, // optionType
+		                JOptionPane.QUESTION_MESSAGE, // messageType
+		                null, // icon
+		                new String[]{"Yes", "No"}, // options
+		                "Yes" // initialValue
+		        );
+
+		        // Xử lý lựa chọn
+		        switch (choice) {
+		            case JOptionPane.YES_OPTION:
+		                System.exit(0);
+		                break;
+		            case JOptionPane.NO_OPTION:
+		               frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		                break;
+		            default:
+		                System.out.println("Bạn đã đóng hộp thoại");
+		        }
+			}
+		});
+		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panelBtnDangNhap.add(btnNewButton_1);
 	}
+
 }

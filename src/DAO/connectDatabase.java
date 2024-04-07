@@ -7,7 +7,7 @@ import java.sql.Statement;
 public class connectDatabase {
 		private Connection con ;
 		private String url = "jdbc:mysql://localhost:3306/";
-		private String nameDatabase = "web2";
+		private String nameDatabase = "foodanddrink";
 		private String user ="root";
 		private String password ="";
 		private Statement s;
