@@ -17,13 +17,17 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
+import BUS.CheBienBUS;
 import BUS.ChiTietHoaDonBUS;
 import BUS.HoaDonBUS;
+import BUS.NguyenLieuBUS;
 import BUS.SanPhamBUS;
 import Custom.MyPanel;
 import Custom.MyTextField;
 import DTO.ChiTietHoaDon;
+import DTO.CongThuc;
 import DTO.HoaDon;
+import DTO.NguyenLieu;
 import DTO.SanPham;
 import Custom.MyLabel;
 import Custom.MyButton;
@@ -53,15 +57,18 @@ public class QLyBanHangGUI {
 	private MyTextField txtMaSP;
 	private MyTextField txtTenSP;
 	private MyTextField txtDonGia;
-	private MyTextField txtSoLuong;
+	private MyTextField txtSoLuong, txtSoLuongCB;
 //	private MyTextField txtNhanVien;
-	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD, modelTableCB;
+	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD, modelTableNguyenLieuCB, modelTableSPCheBien;
 	private JTable tableSP, tableGH, tableHD, tableCTHD;
-	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD, btnTimKiem, btnTimKiemHD;
+	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD, btnTimKiem, btnTimKiemHD, btnCheBien;
 
 	HoaDonBUS hdBUS = new HoaDonBUS();
 	SanPhamBUS spBUS = new SanPhamBUS();
+	CheBienBUS chebienBUS = new CheBienBUS();
 	ChiTietHoaDonBUS cthdBUS = new ChiTietHoaDonBUS();
+	NguyenLieuBUS nlBUS = new NguyenLieuBUS();
+	
 	private JTextField txtTimTheoTen;
 	private JComboBox ngayBD, thangBD, namBD, ngayKT, thangKT, namKT;
 	private JTable tableSanPhamCheBien;
@@ -445,8 +452,12 @@ public class QLyBanHangGUI {
 		
 		
 		//================================Menu chế biến=============================================
+		MyLabelSecond tabCheBien = new MyLabelSecond("CheBien");
+		tabCheBien.setPreferredSize(new Dimension(200, 30));
+		panel_tab.add(tabCheBien);
+		
 		JPanel panelMenuCheBien = new JPanel();
-		panelCard.add(panelMenuCheBien, "name_1208463899822900");
+		panelCard.add(panelMenuCheBien, "CheBien");
 		panelMenuCheBien.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelBtnCheBien = new JPanel();
@@ -455,10 +466,10 @@ public class QLyBanHangGUI {
 		
 		
 		
-		textField = new JTextField();
-		panelBtnCheBien.add(textField);
-		textField.setColumns(10);
-		JButton btnCheBien = new JButton("Chế biến");
+		txtSoLuongCB = new MyTextField();
+		panelBtnCheBien.add(txtSoLuongCB);
+		txtSoLuongCB.setColumns(10);
+		btnCheBien = new MyButton("Chế biến");
 		panelBtnCheBien.add(btnCheBien);
 		
 		JPanel panelTableCheBien = new JPanel();
@@ -475,9 +486,14 @@ public class QLyBanHangGUI {
 		JScrollPane scrollPaneSanPham = new JScrollPane();
 		panelTableSanPham.add(scrollPaneSanPham, BorderLayout.CENTER);
 		
-		
-		tableSanPhamCheBien = new JTable(modelTableSP);
+		modelTableSPCheBien = new DefaultTableModel();
+		modelTableSPCheBien.addColumn("Mã SP");
+		modelTableSPCheBien.addColumn("Tên SP");
+		modelTableSPCheBien.addColumn("Đơn giá");
+		modelTableSPCheBien.addColumn("Còn lại");
+		tableSanPhamCheBien = new JTable(modelTableSPCheBien);
 		scrollPaneSanPham.setViewportView(tableSanPhamCheBien);
+		clickTableSanPhamCheBien();
 		
 		JPanel panelCongThucCheBien = new JPanel();
 		panelTableCheBien.add(panelCongThucCheBien);
@@ -489,12 +505,15 @@ public class QLyBanHangGUI {
 		JScrollPane scrollPaneNguyenLieu = new JScrollPane();
 		panelCongThucCheBien.add(scrollPaneNguyenLieu, BorderLayout.CENTER);
 		
-		modelTableCB = new DefaultTableModel();
-		modelTableCB.addColumn("Mã NL");
-		modelTableCB.addColumn("Tên nguyên liệu");
-		modelTableCB.addColumn("Số lượng");
-		tableNguyenLieuCheBien = new JTable(modelTableCB);
+		modelTableNguyenLieuCB = new DefaultTableModel();
+		modelTableNguyenLieuCB.addColumn("Mã SP");
+		modelTableNguyenLieuCB.addColumn("Mã NL");
+		modelTableNguyenLieuCB.addColumn("Tên nguyên liệu");
+		modelTableNguyenLieuCB.addColumn("Số lượng cần");
+		modelTableNguyenLieuCB.addColumn("Số lượng còn lại");
+		tableNguyenLieuCheBien = new JTable(modelTableNguyenLieuCB);
 		scrollPaneNguyenLieu.setViewportView(tableNguyenLieuCheBien);
+		loadDataTableSanPhamCB();
 		
 		
 		//=============================================================================
@@ -507,6 +526,7 @@ public class QLyBanHangGUI {
 				cardLayout.show(panelCard, "BanHang");
 				tabBanHang.setForeground(Color.BLUE);
 				tabHoaDon.setForeground(Color.WHITE);
+				tabCheBien.setForeground(Color.WHITE);
 			}
 		});
 		tabHoaDon.addMouseListener(new MouseAdapter() {
@@ -515,12 +535,54 @@ public class QLyBanHangGUI {
 				cardLayout.show(panelCard, "HoaDon");
 				tabBanHang.setForeground(Color.WHITE);
 				tabHoaDon.setForeground(Color.BLUE);
+				tabCheBien.setForeground(Color.WHITE);
+			}
+		});
+		tabCheBien.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(panelCard, "CheBien");
+				tabCheBien.setForeground(Color.BLUE);
+				tabBanHang.setForeground(Color.WHITE);
+				tabHoaDon.setForeground(Color.WHITE);
 			}
 		});
 
 	}
 
 	private void addEventsBanHang() {
+		btnCheBien.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				xulyCheBien();
+				
+			}
+		});
 		btnTimKiemHD.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -858,6 +920,84 @@ public class QLyBanHangGUI {
 		String ngayKetThucString = ngayKetThuc + "/" + thangKetThuc + "/" + namKetThuc;
 		ArrayList<HoaDon> dshd = hdBUS.getListHoaDonTheoNgay(ngayBatDauString, ngayKetThucString);
 		addDataToTableHoaDon(dshd);
+	}
+	
+	private void clickTableSanPhamCheBien() {
+		ListSelectionModel selectionModel = tableSanPhamCheBien.getSelectionModel();
+		selectionModel.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				int selectedRow = tableSanPhamCheBien.getSelectedRow();
+				if (selectedRow != -1) { // If a row is selected
+					int maSP = Integer.parseInt(tableSanPhamCheBien.getValueAt(selectedRow, 0) + "");
+					ArrayList<CongThuc> listCT = chebienBUS.getCongThucbyIdSanPham(maSP);
+					addDataTableNguyenLieu(listCT);
+				}
+			}
+		});
+
+	}
+	private void addDataTableNguyenLieu(ArrayList<CongThuc> listCT) {
+		modelTableNguyenLieuCB.setRowCount(0);
+		for (CongThuc ct : listCT) {
+			Vector<String> vec = new Vector<>();
+			vec.add(ct.getIdSanPham() + "");
+			vec.add(ct.getIdNguyenLieu() + "");
+			NguyenLieu nl = nlBUS.getNguyenLieubyId(ct.getIdNguyenLieu());
+			vec.add(nl.getTenNL());
+			vec.add(ct.getSoLuongDung()+"");
+			vec.add(nl.getsoLuongNL()+"");
+			modelTableNguyenLieuCB.addRow(vec);
+		}
+	}
+	
+	private void loadDataTableSanPhamCB() {
+		ArrayList<SanPham> listSP = spBUS.getListSanPham();
+		addDataToTableSanPhamCB(listSP);
+	}
+
+	private void addDataToTableSanPhamCB(ArrayList<SanPham> listSP) {
+		modelTableSPCheBien.setRowCount(0);
+		for (SanPham sp : listSP) {
+			Vector<String> vec = new Vector<>();
+			vec.add(sp.getId() + "");
+			vec.add(sp.getTenSP());
+			vec.add(sp.getDonGia() + "");
+			vec.add(sp.getSoLuong() + "");
+			modelTableSPCheBien.addRow(vec);
+		}
+	}
+	private void xulyCheBien() {
+		if((txtSoLuongCB.getText())==null) return;
+		int soLuong = Integer.parseInt(txtSoLuongCB.getText()+"");
+		if(soLuong==0) return;
+		
+		
+		
+		
+		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
+            int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3)+"");
+            int soLuongCan = soLuong0*soLuong;
+            int soLuongConLai = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 4)+"");
+            if(soLuongCan>soLuongConLai) {
+            	return;
+            }
+
+        }
+		boolean rs = true;
+		int maSP = -1;
+		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
+			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3)+"");
+            int soLuongCan = soLuong0*soLuong;
+            int idNL = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 1)+"");
+            rs = chebienBUS.giamSoLuongNLkhiCheBien(idNL, soLuongCan);
+            maSP=Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 0)+"");
+        }
+		if(rs==true) {
+			spBUS.tangSoLuongSP(maSP, soLuong);
+		}
+		
+		
 	}
 
 }

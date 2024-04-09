@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -36,5 +37,23 @@ public class SanPhamDAO {
 
 		}
 		return arrSanPham;
+	}
+	public boolean tangSoLuongSanPham(int id, int sl) {
+		boolean result = false;
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "UPDATE sanpham SET SoLuong=SoLuong+? WHERE id=?";
+	            PreparedStatement prest = conDB.conn.prepareStatement(sql);
+	            prest.setInt(1, sl);
+	            prest.setInt(2, id);
+	            result = prest.executeUpdate()>0;
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+
+		}
+		return result;
 	}
 }

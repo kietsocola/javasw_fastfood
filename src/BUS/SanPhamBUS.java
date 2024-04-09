@@ -26,4 +26,11 @@ public class SanPhamBUS {
         }
         return dssp;
     }
+	public void tangSoLuongSP(int id, int sl) {
+		try {
+			sanPhamDAO.tangSoLuongSanPham(id, sl);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

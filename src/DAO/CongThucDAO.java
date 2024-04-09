@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import DTO.CongThuc;
 
-public class CheBienDAO {
+public class CongThucDAO {
 	ConnectDB conDB = new ConnectDB();
 
 	public ArrayList<CongThuc> getListCongThuc() {
@@ -36,29 +36,28 @@ public class CheBienDAO {
 		return arrCongThuc;
 	}
 
-	public CongThuc getCongThuc_byIdSanPham(int idSP) {
-		CongThuc ct = null;
+	public ArrayList<CongThuc> getCongThuc_byIdSanPham(int idSP) {
+		ArrayList<CongThuc> arrCongThuc = new ArrayList<CongThuc>();
 		if (conDB.openConnectDB()) {
 			try {
 				String sql = "Select * from CongThuc where idSanPham = " + idSP;
 				Statement stmt = conDB.conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				while (rs.next()) {
-					ct = new CongThuc();
+					CongThuc ct = new CongThuc();
 					ct.setid(rs.getInt("id"));
 					ct.setIdNguyenLieu(rs.getInt("idNguyenLieu"));
 					ct.setIdSanPham(rs.getInt("idSanPham"));
 					ct.setSoLuongDung(rs.getInt("SoLuongDung"));
-
+					arrCongThuc.add(ct);
 				}
 			} catch (SQLException ex) {
 				System.out.println(ex);
 			} finally {
 				conDB.closeConnectDB();
 			}
-
 		}
-		return ct;
+		return arrCongThuc;
 	}
 	public boolean addCongThuc(CongThuc congThuc) {
 	    boolean result = false;
