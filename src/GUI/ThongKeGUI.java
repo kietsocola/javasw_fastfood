@@ -17,7 +17,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.*;
@@ -38,9 +38,11 @@ public class ThongKeGUI {
 	private JButton btnLoc;
 	private JTable jTable;
 	private JPanel panel_47;
+	private JPanel panel_48;
 	private JComboBox<String> comboBoxLoaiSP;
 	ThongKeBUS thongKeBUS = new ThongKeBUS();
 	private ArrayList<SanPham> listSanPham;
+	private HashMap<Integer, Integer> idQuantityMap;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -61,6 +63,7 @@ public class ThongKeGUI {
 	}
 
 	private void initialize() {
+		idQuantityMap = new HashMap<>();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1194, 834);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -414,7 +417,7 @@ public class ThongKeGUI {
 		panel_40.setPreferredSize(new Dimension(200, 50));
 		panel2_2.setBackground(new Color(37, 40, 54));
 		panel_40.add(panel2_2, "Panel 2-2");
-		panel2_2.setLayout(new BorderLayout(0, 0));
+		panel2_2.setLayout(new BorderLayout(10, 5));
 
 		JPanel panel_46 = new JPanel();
 		panel_46.setPreferredSize(new Dimension(200, 40));
@@ -486,10 +489,8 @@ public class ThongKeGUI {
 					ArrayList<SanPham> filteredSanPhamList = thongKeBUS.getSanPhamByDateAndCategory(selectedCategory,
 							startDate, endDate);
 					displaySanPham(filteredSanPhamList, startDate, endDate);
+					displaySanPham5(filteredSanPhamList, startDate, endDate);
 				}
-
-				// Hiển thị danh sách sản phẩm lấy được lên JTable
-
 			}
 		});
 		comboBoxLoaiSP.addActionListener(new ActionListener() {
@@ -529,11 +530,17 @@ public class ThongKeGUI {
 
 					// Hiển thị danh sách sản phẩm lấy được lên JTable
 					displaySanPham(filteredSanPhamList, startDate, endDate);
+					displaySanPham5(filteredSanPhamList, startDate, endDate);
 				}
 			}
 		});
 
 		panel_46.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		panel_48 = new JPanel();
+		panel_48.setPreferredSize(new Dimension(324, 200));
+		panel_48.setLayout(new BorderLayout());
+		panel2_2.add(panel_48, BorderLayout.SOUTH);
 
 		JButton btnPanel2 = new JButton("Bảng");
 		btnPanel2.addActionListener(new ActionListener() {
@@ -802,12 +809,14 @@ public class ThongKeGUI {
 	private void showAllSanPham() {
 		listSanPham = thongKeBUS.getAllSanPham();
 		displaySanPham(listSanPham);
+		displaySanPham5(listSanPham);
+
 	}
 
-	// Hiển thị sản phẩm theo loại sản phẩm
 	private void showSanPhamByLoaiSP(String loaiSP) {
 		listSanPham = thongKeBUS.getSanPhamByLoaiSP(loaiSP);
 		displaySanPham(listSanPham);
+		displaySanPham5(listSanPham);
 	}
 
 	public ArrayList<Object[]> displaySanPhamOnTable(ArrayList<SanPham> listSanPham) {
@@ -835,9 +844,9 @@ public class ThongKeGUI {
 		for (Object[] rowData : rowDataList) {
 			model.addRow(rowData);
 		}
-
 		jTable = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
+
 		panel_47.removeAll();
 		panel_47.setLayout(new BorderLayout());
 		panel_47.add(scrollPane, BorderLayout.CENTER);
@@ -874,15 +883,130 @@ public class ThongKeGUI {
 		for (Object[] rowData : rowDataList) {
 			model.addRow(rowData);
 		}
-
 		jTable = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
+
 		panel_47.removeAll();
 		panel_47.setLayout(new BorderLayout());
 		panel_47.add(scrollPane, BorderLayout.CENTER);
 
 		panel_47.revalidate();
 		panel_47.repaint();
+
+	}
+
+	public ArrayList<Object[]> displaySanPhamOnTable5(ArrayList<SanPham> listSanPham) {
+		ArrayList<Object[]> rowDataList = new ArrayList<>();
+
+		// Xóa dữ liệu cũ trong HashMap trước khi thêm dữ liệu mới
+		idQuantityMap.clear();
+
+		for (SanPham sp : listSanPham) {
+			ArrayList<ChiTietHoaDon> listChiTietHoaDon = thongKeBUS.getChiTietHoaDonBySanPham(sp.getMaSP());
+			for (ChiTietHoaDon cthd : listChiTietHoaDon) {
+				int id = sp.getMaSP();
+				int quantity = cthd.getSoLuong();
+
+				// Cập nhật hoặc thêm số lượng vào HashMap
+				if (idQuantityMap.containsKey(id)) {
+					quantity += idQuantityMap.get(id);
+				}
+				idQuantityMap.put(id, quantity);
+			}
+		}
+
+		// Tạo dữ liệu cho bảng từ HashMap
+		for (Integer id : idQuantityMap.keySet()) {
+			SanPham sp = timSanPhamTheoID(listSanPham, id);
+			int totalQuantity = idQuantityMap.get(id);
+			Object[] rowData = { sp.getMaSP(), sp.getTenSP(), sp.getDonGia(), totalQuantity,
+					sp.getDonGia() * totalQuantity };
+			rowDataList.add(rowData);
+		}
+		return rowDataList;
+	}
+
+	private SanPham timSanPhamTheoID(ArrayList<SanPham> listSanPham, int id) {
+		for (SanPham sp : listSanPham) {
+			if (sp.getMaSP() == id) {
+				return sp;
+			}
+		}
+		return null;
+	}
+
+	public void displaySanPham5(ArrayList<SanPham> listSanPham) {
+		ArrayList<Object[]> rowDataList = displaySanPhamOnTable5(listSanPham);
+
+		String[] columnNames = { "ID", "Tên sản phẩm", "Đơn giá", "Số lượng sản phẩm", "Thành tiền sản phẩm" };
+		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+		for (Object[] rowData : rowDataList) {
+			model.addRow(rowData);
+		}
+
+		jTable = new JTable(model);
+		JScrollPane scrollPane = new JScrollPane(jTable);
+		scrollPane.setPreferredSize(new Dimension(300, 200));
+
+		panel_48.removeAll();
+		panel_48.setLayout(new BorderLayout());
+		panel_48.add(scrollPane, BorderLayout.CENTER);
+
+		panel_48.revalidate();
+		panel_48.repaint();
+	}
+
+	public ArrayList<Object[]> displaySanPhamOnTable5(ArrayList<SanPham> listSanPham, Date startDate, Date endDate) {
+		ArrayList<Object[]> rowDataList = new ArrayList<>();
+		HashMap<Integer, Integer> idQuantityMap = new HashMap<>(); // Tạo một HashMap mới để tính tổng số lượng cho từng
+																	// ID
+		for (SanPham sp : listSanPham) {
+			ArrayList<ChiTietHoaDon> listChiTietHoaDon = thongKeBUS.getChiTietHoaDonBySanPham(sp.getMaSP());
+			for (ChiTietHoaDon cthd : listChiTietHoaDon) {
+				HoaDon hd = thongKeBUS.getHoaDonById(cthd.getIdHoaDon());
+				// Kiểm tra xem ngày hóa đơn có nằm trong khoảng thời gian được chọn không
+				if (hd.getNgayLap().compareTo(startDate) >= 0 && hd.getNgayLap().compareTo(endDate) <= 0) {
+					int id = sp.getMaSP();
+					int quantity = cthd.getSoLuong();
+					// Cập nhật hoặc thêm số lượng vào HashMap
+					if (idQuantityMap.containsKey(id)) {
+						quantity += idQuantityMap.get(id);
+					}
+					idQuantityMap.put(id, quantity);
+				}
+			}
+		}
+		// Tạo dữ liệu cho bảng từ HashMap
+		for (Integer id : idQuantityMap.keySet()) {
+			SanPham sp = timSanPhamTheoID(listSanPham, id);
+			int totalQuantity = idQuantityMap.get(id);
+			Object[] rowData = { sp.getMaSP(), sp.getTenSP(), sp.getDonGia(), totalQuantity,
+					sp.getDonGia() * totalQuantity };
+			rowDataList.add(rowData);
+		}
+		return rowDataList;
+	}
+
+	public void displaySanPham5(ArrayList<SanPham> listSanPham, Date startDate, Date endDate) {
+		// Gọi phương thức để lấy dữ liệu từ displaySanPhamOnTable5
+		ArrayList<Object[]> rowDataList = displaySanPhamOnTable5(listSanPham, startDate, endDate);
+
+		// Tạo lại model cho JTable với dữ liệu mới
+		String[] columnNames = { "ID", "Tên sản phẩm", "Đơn giá", "Số lượng sản phẩm", "Thành tiền sản phẩm" };
+		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+		for (Object[] rowData : rowDataList) {
+			model.addRow(rowData);
+		}
+
+		jTable = new JTable(model);
+		JScrollPane scrollPane = new JScrollPane(jTable);
+		scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, 200));
+
+		panel_48.removeAll();
+		panel_48.setLayout(new BorderLayout());
+		panel_48.add(scrollPane, BorderLayout.CENTER);
+		panel_48.revalidate();
+		panel_48.repaint();
 	}
 
 }
