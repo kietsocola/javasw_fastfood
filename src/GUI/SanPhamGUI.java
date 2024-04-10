@@ -112,10 +112,10 @@ public class SanPhamGUI extends JFrame {
 		panel_main.add(panel_input, BorderLayout.NORTH);
 		panel_input.setLayout(new BorderLayout(10, 10));
 		
-		MyLabel lblNewLabel = new MyLabel("Quản lý sản phẩm");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 30));
-		panel_input.add(lblNewLabel, BorderLayout.NORTH);
+		MyLabel lblTitle = new MyLabel("Quản lý sản phẩm");
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setFont(new Font("Arial", Font.BOLD, 30));
+		panel_input.add(lblTitle, BorderLayout.NORTH);
 		
 		MyPanelSecond pnInputOptions = new MyPanelSecond();
 		panel_input.add(pnInputOptions,BorderLayout.CENTER);
@@ -135,6 +135,7 @@ public class SanPhamGUI extends JFrame {
  		
 		MyPanel pnLoai = new MyPanel();
 		cmbLoaiSP = new JComboBox<String>();
+		cmbLoaiSP.setPreferredSize(new Dimension(200, 30));
 		lblLoaiSP = new MyLabelSecond("Loại");
 		pnLoai.add(lblLoaiSP);
 		pnLoai.add(cmbLoaiSP);

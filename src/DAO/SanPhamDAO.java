@@ -159,7 +159,7 @@ public class SanPhamDAO {
 	    boolean result = false;
 	    if (conDB.openConnectDB()) {
 	    	try {
-		        String sql = "DELETE FROM sanpham WHERE id=" + maSP;
+		        String sql = "DELETE FROM sanpham WHERE id=?" + maSP;
 		        Statement st = conDB.conn.createStatement();
 		        // Thực hiện truy vấn và kiểm tra số hàng đã bị ảnh hưởng
 		        if (st.executeUpdate(sql) >= 1)
