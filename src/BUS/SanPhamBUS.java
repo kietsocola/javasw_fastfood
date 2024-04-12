@@ -10,7 +10,7 @@ public class SanPhamBUS {
 	private ArrayList<SanPham> listSP = null;
 	private SanPhamDAO sanPhamDAO = new SanPhamDAO();
 	public SanPhamBUS() {
-		listSP = getListSanPham();
+		docListSanPham();
 	}
 	public ArrayList<SanPham> getListSanPham(){
 		listSP = sanPhamDAO.getListSanPham();
@@ -32,5 +32,8 @@ public class SanPhamBUS {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public void docListSanPham() {
+		listSP = sanPhamDAO.getListSanPham();
 	}
 }

@@ -31,6 +31,7 @@ import DTO.NguyenLieu;
 import DTO.SanPham;
 import Custom.MyLabel;
 import Custom.MyButton;
+import Custom.MyColor;
 import Custom.MyLabelSecond;
 import Custom.MyPanelSecond;
 
@@ -45,102 +46,64 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JButton;
 import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
-public class QLyBanHangGUI {
+public class QLyBanHangGUI extends JPanel {
 
-	private JFrame frame;
 	private MyTextField txtMaSP;
 	private MyTextField txtTenSP;
 	private MyTextField txtDonGia;
 	private MyTextField txtSoLuong, txtSoLuongCB;
-//	private MyTextField txtNhanVien;
-	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD, modelTableNguyenLieuCB, modelTableSPCheBien;
+	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD, modelTableNguyenLieuCB,
+			modelTableSPCheBien;
 	private JTable tableSP, tableGH, tableHD, tableCTHD;
 	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD, btnTimKiem, btnTimKiemHD, btnCheBien;
-
 	HoaDonBUS hdBUS = new HoaDonBUS();
 	SanPhamBUS spBUS = new SanPhamBUS();
 	CheBienBUS chebienBUS = new CheBienBUS();
 	ChiTietHoaDonBUS cthdBUS = new ChiTietHoaDonBUS();
 	NguyenLieuBUS nlBUS = new NguyenLieuBUS();
-	
+
 	private JTextField txtTimTheoTen;
 	private JComboBox ngayBD, thangBD, namBD, ngayKT, thangKT, namKT;
 	private JTable tableSanPhamCheBien;
 	private JTable tableNguyenLieuCheBien;
-	private JTextField textField;
+//	private JTextField textField;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					QLyBanHangGUI window = new QLyBanHangGUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					QLyBanHangGUI window = new QLyBanHangGUI();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.
 	 */
 	public QLyBanHangGUI() {
-		initialize();
+		addControlsBanHang();
 		addEventsBanHang();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-//		frame.pack();
-
-		MyPanel panel_Category = new MyPanel();
-		frame.getContentPane().add(panel_Category, BorderLayout.WEST);
-		panel_Category.setLayout(new BoxLayout(panel_Category, BoxLayout.Y_AXIS));
-
-		// các option cho menu
-		MyLabel panel_logo = new MyLabel("");
-		panel_Category.add(panel_logo);
-
-		MyLabel lblBanHang = new MyLabel("Bán hàng");
-		panel_Category.add(lblBanHang);
-
-		MyLabel lblKhuyenMai = new MyLabel("Khuyến mãi");
-		panel_Category.add(lblKhuyenMai);
-
-		MyLabel lblSanPham = new MyLabel("Sản phẩm");
-		panel_Category.add(lblSanPham);
-
-		MyLabel lblNhanvien = new MyLabel("Nhân viên");
-		panel_Category.add(lblNhanvien);
-
-		MyLabel lblKhachhang = new MyLabel("Khách hàng");
-		panel_Category.add(lblKhachhang);
-
-		MyLabel lblNhapHang = new MyLabel("Nhập hàng");
-		panel_Category.add(lblNhapHang);
-
-		MyLabel lblThongKe = new MyLabel("Thống kê");
-		panel_Category.add(lblThongKe);
+	private void addControlsBanHang() {
 
 		// panel chứa tab và các table
+		this.setLayout(new BorderLayout());
 		MyPanelSecond panel_main = new MyPanelSecond();
-		frame.getContentPane().add(panel_main, BorderLayout.CENTER);
+		this.add(panel_main, BorderLayout.CENTER);
+		//frame.getContentPane().add(panel_main, BorderLayout.CENTER);
 		panel_main.setLayout(new BorderLayout(0, 0));
 
 		// panel chứa tab
@@ -378,58 +341,58 @@ public class QLyBanHangGUI {
 		MyPanel panel_MaHD = new MyPanel();
 		panel_xemHD.add(panel_MaHD);
 		panel_MaHD.setLayout(new GridLayout(2, 1, 0, 0));
-		
+
 		MyPanel panel_3 = new MyPanel();
 		panel_MaHD.add(panel_3);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
-		
+
 		MyLabelSecond lblNewLabel_2 = new MyLabelSecond("Từ ngày");
 		panel_3.add(lblNewLabel_2);
-		
+
 		ngayBD = new JComboBox();
 		panel_3.add(ngayBD);
 
 		thangBD = new JComboBox();
 		panel_3.add(thangBD);
-		
+
 		namBD = new JComboBox();
 		panel_3.add(namBD);
-		
+
 		MyPanel panel_2 = new MyPanel();
 		panel_MaHD.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
-		
+
 		MyLabelSecond lblNewLabel_3 = new MyLabelSecond("Tới ngày");
 		panel_2.add(lblNewLabel_3);
-		
+
 		ngayKT = new JComboBox();
 		panel_2.add(ngayKT);
-		
+
 		thangKT = new JComboBox();
 		panel_2.add(thangKT);
-		
+
 		namKT = new JComboBox();
 		panel_2.add(namKT);
-		
+
 		for (int i = 1; i <= 31; i++) {
-            ngayBD.addItem(i);
-            ngayKT.addItem(i);
-        }
-        
-        // Thêm số lựa chọn cho các JComboBox tháng (ví dụ: từ 1 đến 12)
-        for (int i = 1; i <= 12; i++) {
-            thangBD.addItem(i);
-            thangKT.addItem(i);
-        }
-        
-        // Thêm số lựa chọn cho các JComboBox năm (ví dụ: từ 2000 đến 2025)
-        for (int i = 2000; i <= 2025; i++) {
-            namBD.addItem(i);
-            namKT.addItem(i);
-        }
+			ngayBD.addItem(i);
+			ngayKT.addItem(i);
+		}
+
+		// Thêm số lựa chọn cho các JComboBox tháng (ví dụ: từ 1 đến 12)
+		for (int i = 1; i <= 12; i++) {
+			thangBD.addItem(i);
+			thangKT.addItem(i);
+		}
+
+		// Thêm số lựa chọn cho các JComboBox năm (ví dụ: từ 2000 đến 2025)
+		for (int i = 2000; i <= 2025; i++) {
+			namBD.addItem(i);
+			namKT.addItem(i);
+		}
 		MyPanel panel_NgayTaoHD = new MyPanel();
 		panel_xemHD.add(panel_NgayTaoHD);
-		
+
 		btnTimKiemHD = new MyButton("Tìm");
 		panel_NgayTaoHD.add(btnTimKiemHD);
 
@@ -449,43 +412,41 @@ public class QLyBanHangGUI {
 
 		panelCard.add(panelTabHoaDon, "HoaDon");
 		panel_main.add(panelCard);
-		
-		
-		//================================Menu chế biến=============================================
+
+		// ================================Menu chế
+		// biến=============================================
 		MyLabelSecond tabCheBien = new MyLabelSecond("CheBien");
 		tabCheBien.setPreferredSize(new Dimension(200, 30));
 		panel_tab.add(tabCheBien);
-		
+
 		JPanel panelMenuCheBien = new JPanel();
 		panelCard.add(panelMenuCheBien, "CheBien");
 		panelMenuCheBien.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panelBtnCheBien = new JPanel();
 		panelMenuCheBien.add(panelBtnCheBien, BorderLayout.EAST);
 		panelBtnCheBien.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		
-		
+
 		txtSoLuongCB = new MyTextField();
 		panelBtnCheBien.add(txtSoLuongCB);
 		txtSoLuongCB.setColumns(10);
 		btnCheBien = new MyButton("Chế biến");
 		panelBtnCheBien.add(btnCheBien);
-		
+
 		JPanel panelTableCheBien = new JPanel();
 		panelMenuCheBien.add(panelTableCheBien, BorderLayout.CENTER);
 		panelTableCheBien.setLayout(new GridLayout(2, 1, 0, 0));
-		
+
 		JPanel panelTableSanPham = new JPanel();
 		panelTableCheBien.add(panelTableSanPham);
 		panelTableSanPham.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblSanPhamCheBien = new JLabel("Sản phẩm");
 		panelTableSanPham.add(lblSanPhamCheBien, BorderLayout.NORTH);
-		
+
 		JScrollPane scrollPaneSanPham = new JScrollPane();
 		panelTableSanPham.add(scrollPaneSanPham, BorderLayout.CENTER);
-		
+
 		modelTableSPCheBien = new DefaultTableModel();
 		modelTableSPCheBien.addColumn("Mã SP");
 		modelTableSPCheBien.addColumn("Tên SP");
@@ -494,17 +455,17 @@ public class QLyBanHangGUI {
 		tableSanPhamCheBien = new JTable(modelTableSPCheBien);
 		scrollPaneSanPham.setViewportView(tableSanPhamCheBien);
 		clickTableSanPhamCheBien();
-		
+
 		JPanel panelCongThucCheBien = new JPanel();
 		panelTableCheBien.add(panelCongThucCheBien);
 		panelCongThucCheBien.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblCTCB = new JLabel("Nguyên liệu");
 		panelCongThucCheBien.add(lblCTCB, BorderLayout.NORTH);
-		
+
 		JScrollPane scrollPaneNguyenLieu = new JScrollPane();
 		panelCongThucCheBien.add(scrollPaneNguyenLieu, BorderLayout.CENTER);
-		
+
 		modelTableNguyenLieuCB = new DefaultTableModel();
 		modelTableNguyenLieuCB.addColumn("Mã SP");
 		modelTableNguyenLieuCB.addColumn("Mã NL");
@@ -514,11 +475,9 @@ public class QLyBanHangGUI {
 		tableNguyenLieuCheBien = new JTable(modelTableNguyenLieuCB);
 		scrollPaneNguyenLieu.setViewportView(tableNguyenLieuCheBien);
 		loadDataTableSanPhamCB();
-		
-		
-		//=============================================================================
-		
-		
+
+		// =============================================================================
+
 		// chuyển tab
 		tabBanHang.addMouseListener(new MouseAdapter() {
 			@Override
@@ -552,95 +511,95 @@ public class QLyBanHangGUI {
 
 	private void addEventsBanHang() {
 		btnCheBien.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				xulyCheBien();
-				
+
 			}
 		});
 		btnTimKiemHD.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				timTheoKhoangNgay();
-				
+
 			}
 		});
 		btnTimKiem.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				timSPTheoTen();
@@ -898,20 +857,21 @@ public class QLyBanHangGUI {
 		ArrayList<SanPham> dssp = spBUS.getSanPhamTheoTen(ten);
 		for (SanPham sp : dssp) {
 			Vector<String> vec = new Vector<>();
-			vec.add(sp.getId()+"");
-			vec.add(sp.getTenSP()+"");
-			vec.add(sp.getDonGia()+"");
-			vec.add(sp.getSoLuong()+"");
+			vec.add(sp.getId() + "");
+			vec.add(sp.getTenSP() + "");
+			vec.add(sp.getDonGia() + "");
+			vec.add(sp.getSoLuong() + "");
 			modelTableSP.addRow(vec);
 		}
 	}
+
 	private void timTheoKhoangNgay() {
-		String ngayBatDau =ngayBD.getSelectedItem() + "";
+		String ngayBatDau = ngayBD.getSelectedItem() + "";
 		String thangBatDau = thangBD.getSelectedItem() + "";
-		String namBatDau = namBD.getSelectedItem()+ "";
-		String ngayKetThuc = ngayKT.getSelectedItem()+ "";
-		String thangKetThuc = thangKT.getSelectedItem()+ "";
-		String namKetThuc = namKT.getSelectedItem()+ "";
+		String namBatDau = namBD.getSelectedItem() + "";
+		String ngayKetThuc = ngayKT.getSelectedItem() + "";
+		String thangKetThuc = thangKT.getSelectedItem() + "";
+		String namKetThuc = namKT.getSelectedItem() + "";
 		ngayBatDau = (ngayBatDau.length() == 1) ? "0" + ngayBatDau : ngayBatDau;
 		thangBatDau = (thangBatDau.length() == 1) ? "0" + thangBatDau : thangBatDau;
 		ngayKetThuc = (ngayKetThuc.length() == 1) ? "0" + ngayKetThuc : ngayKetThuc;
@@ -921,7 +881,7 @@ public class QLyBanHangGUI {
 		ArrayList<HoaDon> dshd = hdBUS.getListHoaDonTheoNgay(ngayBatDauString, ngayKetThucString);
 		addDataToTableHoaDon(dshd);
 	}
-	
+
 	private void clickTableSanPhamCheBien() {
 		ListSelectionModel selectionModel = tableSanPhamCheBien.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
@@ -937,6 +897,7 @@ public class QLyBanHangGUI {
 		});
 
 	}
+
 	private void addDataTableNguyenLieu(ArrayList<CongThuc> listCT) {
 		modelTableNguyenLieuCB.setRowCount(0);
 		for (CongThuc ct : listCT) {
@@ -945,12 +906,12 @@ public class QLyBanHangGUI {
 			vec.add(ct.getIdNguyenLieu() + "");
 			NguyenLieu nl = nlBUS.getNguyenLieubyId(ct.getIdNguyenLieu());
 			vec.add(nl.getTenNL());
-			vec.add(ct.getSoLuongDung()+"");
-			vec.add(nl.getsoLuongNL()+"");
+			vec.add(ct.getSoLuongDung() + "");
+			vec.add(nl.getsoLuongNL() + "");
 			modelTableNguyenLieuCB.addRow(vec);
 		}
 	}
-	
+
 	private void loadDataTableSanPhamCB() {
 		ArrayList<SanPham> listSP = spBUS.getListSanPham();
 		addDataToTableSanPhamCB(listSP);
@@ -967,37 +928,35 @@ public class QLyBanHangGUI {
 			modelTableSPCheBien.addRow(vec);
 		}
 	}
-	private void xulyCheBien() {
-		if((txtSoLuongCB.getText())==null) return;
-		int soLuong = Integer.parseInt(txtSoLuongCB.getText()+"");
-		if(soLuong==0) return;
-		
-		
-		
-		
-		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
-            int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3)+"");
-            int soLuongCan = soLuong0*soLuong;
-            int soLuongConLai = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 4)+"");
-            if(soLuongCan>soLuongConLai) {
-            	return;
-            }
 
-        }
+	private void xulyCheBien() {
+		if ((txtSoLuongCB.getText()) == null)
+			return;
+		int soLuong = Integer.parseInt(txtSoLuongCB.getText() + "");
+		if (soLuong == 0)
+			return;
+
+		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
+			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3) + "");
+			int soLuongCan = soLuong0 * soLuong;
+			int soLuongConLai = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 4) + "");
+			if (soLuongCan > soLuongConLai) {
+				return;
+			}
+
+		}
 		boolean rs = true;
 		int maSP = -1;
 		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
-			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3)+"");
-            int soLuongCan = soLuong0*soLuong;
-            int idNL = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 1)+"");
-            rs = chebienBUS.giamSoLuongNLkhiCheBien(idNL, soLuongCan);
-            maSP=Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 0)+"");
-        }
-		if(rs==true) {
+			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3) + "");
+			int soLuongCan = soLuong0 * soLuong;
+			int idNL = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 1) + "");
+			rs = chebienBUS.giamSoLuongNLkhiCheBien(idNL, soLuongCan);
+			maSP = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 0) + "");
+		}
+		if (rs == true) {
 			spBUS.tangSoLuongSP(maSP, soLuong);
 		}
-		
-		
 	}
 
 }
