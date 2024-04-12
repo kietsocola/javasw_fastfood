@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import DTO.taiKhoan_DTO;
-
 public class taiKhoan_DAO  {
 	connectDatabase con = new connectDatabase();
 

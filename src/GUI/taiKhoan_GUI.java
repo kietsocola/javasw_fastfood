@@ -10,12 +10,14 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import BUS.taiKhoan_BUS;
 import DTO.taiKhoan_DTO;
 
 import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
@@ -31,8 +33,13 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+import java.awt.ComponentOrientation;
+import java.awt.Rectangle;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
-public class dangnhap {
+public class taiKhoan_GUI {
 
 	private JFrame frame;
 	private JTextField tenDangNhap;
@@ -45,7 +52,7 @@ public class dangnhap {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					dangnhap window = new dangnhap();
+					taiKhoan_GUI window = new taiKhoan_GUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,7 +64,7 @@ public class dangnhap {
 	/**
 	 * Create the application.
 	 */
-	public dangnhap() {
+	public taiKhoan_GUI() {
 		initialize();
 	}
 
@@ -68,16 +75,25 @@ public class dangnhap {
 		frame = new JFrame();
 		frame.setUndecorated(true);
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 422, 252);
+		frame.setBounds(100, 100, 800, 337);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		EmptyBorder border = new EmptyBorder(20, 20, 20, 20);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setPreferredSize(new Dimension(300, 200));
+		lblNewLabel.setBorder(new EmptyBorder(20, 20, 20, 20));
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\lenovo\\Pictures\\fastfood1.jpg"));
+		frame.getContentPane().add(lblNewLabel, BorderLayout.WEST);
 
 		
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setBorder(border);
-		panel.setLayout(new GridLayout(4, 1, 0, 8));
+		panel.setLayout(new GridLayout(4, 1, 0, 0));
 		
 		JLabel txtNameApp = new JLabel("FOOD AND DRINK");
 		txtNameApp.setHorizontalAlignment(SwingConstants.CENTER);
@@ -86,8 +102,10 @@ public class dangnhap {
 		txtNameApp.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		JPanel panelTenDangNhap = new JPanel();
+		panelTenDangNhap.setPreferredSize(new Dimension(10, 5));
 		panel.add(panelTenDangNhap);
 		panelTenDangNhap.setLayout(new BoxLayout(panelTenDangNhap, BoxLayout.X_AXIS));
+		panelTenDangNhap.setBorder(new EmptyBorder(15, 20, 20, 20));
 		panelTenDangNhap.add(Box.createHorizontalGlue());
 		
 		JLabel labelDangNhap = new JLabel("Tên đăng nhập:");
@@ -96,6 +114,7 @@ public class dangnhap {
 		panelTenDangNhap.add(labelDangNhap);
 		
 		tenDangNhap = new JTextField();
+		tenDangNhap.setBorder(new LineBorder(new Color(171, 173, 179), 1, true));
 		tenDangNhap.setAlignmentX(Component.LEFT_ALIGNMENT);
 		tenDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelTenDangNhap.add(tenDangNhap);
@@ -103,8 +122,10 @@ public class dangnhap {
 		panelTenDangNhap.add(Box.createHorizontalGlue());
 		
 		JPanel panelMatKhau = new JPanel();
+		panelMatKhau.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.add(panelMatKhau);
 		panelMatKhau.setLayout(new BoxLayout(panelMatKhau, BoxLayout.X_AXIS));
+		panelMatKhau.setBorder(new EmptyBorder(15, 20, 20, 20));
 		
 		JLabel labelMatKhau = new JLabel("Mật Khẩu         :");
 		labelMatKhau.setHorizontalAlignment(SwingConstants.LEFT);
@@ -112,6 +133,7 @@ public class dangnhap {
 		panelMatKhau.add(labelMatKhau);
 		
 		matKhau = new JTextField();
+		matKhau.setBorder(new LineBorder(new Color(171, 173, 179), 1, true));
 		matKhau.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelMatKhau.add(matKhau);
 		matKhau.setColumns(10);
@@ -120,6 +142,7 @@ public class dangnhap {
 		panel.add(panelBtnDangNhap);
 		
 		JButton btnNewButton = new JButton("Đăng nhập");
+		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -140,10 +163,12 @@ public class dangnhap {
 			}
 		});
 		panelBtnDangNhap.setLayout(new GridLayout(0, 2, 15, 20));
+		panelBtnDangNhap.setBorder(border);
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelBtnDangNhap.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Thoát");
+		btnNewButton_1.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int choice = JOptionPane.showOptionDialog(
