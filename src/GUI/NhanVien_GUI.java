@@ -252,18 +252,25 @@ public class NhanVien_GUI extends JFrame {
 		btnHuy = new JButton("Hủy");
 		
 		btnThem = new JButton("Thêm quyền");
+		btnSua = new JButton("Sửa quyền");
+		btnXoa = new JButton("Xóa quyền");
 		btnThem.setEnabled(false);
 		btnThem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					JCheckBox[] ql = {QLNhapHang , QLSanPham , QLNhanVien , QLKhachHang ,QLThongKe } ;
-					btnHuy.setEnabled(true);
 					
+					btnHuy.setEnabled(true);
+					btnThem.setEnabled(false);
+					btnXoa.setEnabled(false);
 					comboBox.addItem("");
+					comboBox.setEditable(true);
 					comboBox.setSelectedItem("");
 //					comboBox.setSelectedIndex(comboBox.getItemCount());
-//					comboBox.setEditable(true);
 					
 					System.out.println(comboBox.getItemCount());
+					btnSua.setEnabled(false);
+					
+					
 					
 					QLNhapHang.setEnabled(true);
 					QLSanPham.setEnabled(true);
@@ -282,7 +289,6 @@ public class NhanVien_GUI extends JFrame {
         Image resizedImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon = new ImageIcon(resizedImg);
         btnThem.setIcon(resizedIcon);
-		btnSua = new JButton("Sửa quyền");
 		btnSua.setEnabled(false);
         ImageIcon icon1 = new ImageIcon("D:\\netbean\\javasw_fastfood\\images\\edit.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
@@ -292,7 +298,6 @@ public class NhanVien_GUI extends JFrame {
         btnSua.setIcon(resizedIcon1);
 		btnChucNang.add(btnSua);
 		
-		btnXoa = new JButton("Xóa quyền");
 		btnXoa.setEnabled(false);
         ImageIcon icon2 = new ImageIcon("D:\\netbean\\javasw_fastfood\\images\\delete.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
@@ -306,6 +311,9 @@ public class NhanVien_GUI extends JFrame {
 		btnHuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnHuy.setEnabled(false);
+				btnThem.setEnabled(true);
+				btnSua.setEnabled(true);
+				btnXoa.setEnabled(true);
 				QLNhapHang.setEnabled(false);
 				QLSanPham.setEnabled(false);
 				QLNhanVien.setEnabled(false);

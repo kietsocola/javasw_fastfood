@@ -28,6 +28,7 @@ public class phanquyen_DAO {
 			item.setThongke(result.getBoolean(7));
 			ds.add(item);
 		}
+		
 		return ds;
 	}
 }
