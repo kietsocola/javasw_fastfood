@@ -26,6 +26,7 @@ public class MainQuanlyGUI extends JFrame {
 	private QuanLyKhachHangGUI pnKhachhang;
 	private QuanLyNhanVienGUI pnNhanvien;
 	private ThongKeGUI pnThongke;
+	private NhapHangGUI pnNhapHang;
 	
 	private MyLabel panel_logo, lblBanHang, lblKhuyenMai, lblSanPham, lblNhanvien, lblKhachhang, lblNhapHang,
 			lblThongKe;
@@ -97,12 +98,14 @@ public class MainQuanlyGUI extends JFrame {
 		pnKhachhang = new QuanLyKhachHangGUI();
 		pnNhanvien = new QuanLyNhanVienGUI();
 		pnThongke = new ThongKeGUI();
+		pnNhapHang= new NhapHangGUI();
 		
 		pnCard.add(pnBanHang, "banhang");
 		pnCard.add(pnSanpham, "sanpham");
 		pnCard.add(pnKhachhang, "khachhang");
 		pnCard.add(pnNhanvien, "nhanvien");
 		pnCard.add(pnThongke, "thongke");
+		pnCard.add(pnNhapHang, "nhaphang");
 
 		pnMain.add(pnCard, BorderLayout.CENTER);
 		
@@ -150,10 +153,8 @@ public class MainQuanlyGUI extends JFrame {
 						cardName = "nhanvien";
 					} else if (lbl == lblThongKe) {
 						cardName = "thongke";
-					} else if (lbl == lblKhachhang) {
-						cardName = "6";
-					} else if (lbl == lblThongKe) {
-						cardName = "6";
+					} else if (lbl == lblNhapHang) {
+						cardName = "nhaphang";
 					}
 					cardMenuLeftGroup.show(pnCard, cardName);
 				}
