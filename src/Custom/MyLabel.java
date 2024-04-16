@@ -9,9 +9,9 @@ import javax.swing.JLabel;
 public class MyLabel extends JLabel{
 	public MyLabel(String name) {
         super(name);
-        setForeground(MyColor.PRIMARY_TEXT_COLOR);
-        setPreferredSize(new Dimension(120, 40));
-        setMaximumSize(new Dimension(120, 40));
+        setForeground(Color.black);
+        setPreferredSize(new Dimension(180, 50));
+        setMaximumSize(new Dimension(200, 50));
         setFont(new Font("Arial", Font.BOLD, 16));
     }
 }

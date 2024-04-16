@@ -30,11 +30,11 @@ public class HoaDonBUS {
         hd.setidNV(1);
         hoaDonDAO.addHoaDon(hd);
     }
-	public ArrayList<HoaDon> getListHoaDonTheoNgay(String min, String max) {
+	public ArrayList<HoaDon> getListHoaDonTheoNgay(Date minDate, Date maxDate) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date minDate = sdf.parse(min);
-            Date maxDate = sdf.parse(max);
+//            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//            Date minDate = sdf.parse(min);
+//            Date maxDate = sdf.parse(max);
 
             java.sql.Date dateMin = new java.sql.Date(minDate.getTime());
             java.sql.Date dateMax = new java.sql.Date(maxDate.getTime());
