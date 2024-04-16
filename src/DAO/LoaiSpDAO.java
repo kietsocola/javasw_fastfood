@@ -13,14 +13,14 @@ public class LoaiSpDAO {
 		ArrayList <LoaiSanPham> DSLoaiSanPham = new ArrayList<>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT * FROM loaisanpham";
+				String sql = "SELECT *FROM loaisanpham";
 				PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 				ResultSet rs = prest.executeQuery();
 				
 				while (rs.next()){
 					LoaiSanPham lsp = new LoaiSanPham();
 					
-					lsp.setMaLoai(rs.getInt("idLoaiSP"));
+					lsp.setMaLoai(rs.getInt("id"));
 					lsp.setTenLoaiSP(rs.getString("TenLoaiSP"));
 					
 					DSLoaiSanPham.add(lsp);
@@ -83,7 +83,7 @@ public class LoaiSpDAO {
     	 boolean result = false;
     	    if (conDB.openConnectDB()) {
     	        try {
-    	            String sql = "DELETE FROM loaisanpham WHERE idLoaiSP=?";
+    	            String sql = "DELETE FROM loaisanpham WHERE id=?";
     	            PreparedStatement prest = conDB.conn.prepareStatement(sql);
     	            prest.setInt(1, maLoaiSP);
     	            if (prest.executeUpdate() >= 1) {
@@ -101,7 +101,7 @@ public class LoaiSpDAO {
     	boolean result = false;
         if (conDB.openConnectDB()) {
             try {
-                String sql = "UPDATE loaisanpham SET TenLoaiSP=? WHERE idLoaiSP=?";
+                String sql = "UPDATE loaisanpham SET TenLoaiSP=? WHERE id=?";
                 PreparedStatement prest = conDB.conn.prepareStatement(sql);
                 prest.setString(1, lsp.getTenLoaiSP());
                 prest.setInt(2, lsp.getMaLoai());
@@ -116,4 +116,18 @@ public class LoaiSpDAO {
         }
         return result;
     }
+//    public static void main(String[] args) {
+//        LoaiSpDAO loaiSpDAO = new LoaiSpDAO();
+//        ArrayList<LoaiSanPham> danhSachLoai = loaiSpDAO.getDanhSachLoai();
+//        
+//        // Kiểm tra nếu danh sách không rỗng
+//        if (!danhSachLoai.isEmpty()) {
+//            // Hiển thị thông tin về mỗi loại sản phẩm
+//            for (LoaiSanPham loai : danhSachLoai) {
+//                System.out.println("Mã loại: " + loai.getMaLoai() + ", Tên loại: " + loai.getTenLoaiSP());
+//            }
+//        } else {
+//            System.out.println("Danh sách loại sản phẩm rỗng.");
+//        }
+//    }
 }
