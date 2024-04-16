@@ -49,7 +49,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				try {
-//					QuanLyNhanVien frame = new QuanLyNhanVien();
+//					QuanLyNhanVienGUI frame = new QuanLyNhanVienGUI();
 //					frame.setVisible(true);
 //				} catch (Exception e) {
 //					e.printStackTrace();

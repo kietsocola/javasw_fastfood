@@ -42,7 +42,7 @@ import DTO.phanquyen_DTO;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class NhanVien_GUI extends JFrame {
+public class PhanQuyen_GUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -57,7 +57,7 @@ public class NhanVien_GUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NhanVien_GUI frame = new NhanVien_GUI();
+					PhanQuyen_GUI frame = new PhanQuyen_GUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -69,7 +69,7 @@ public class NhanVien_GUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NhanVien_GUI() {
+	public PhanQuyen_GUI() {
 		JButton btnThem , btnSua ,btnXoa,btnHuy;
 		JComboBox comboBox;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

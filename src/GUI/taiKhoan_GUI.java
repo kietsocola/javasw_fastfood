@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 import BUS.taiKhoan_BUS;
 import DTO.taiKhoan_DTO;
+import GUI.MainQuanlyGUI;
 
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
@@ -49,16 +50,18 @@ public class taiKhoan_GUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					taiKhoan_GUI window = new taiKhoan_GUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					taiKhoan_GUI window = new taiKhoan_GUI();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+		taiKhoan_GUI window = new taiKhoan_GUI();
+		window.frame.setVisible(true);
 	}
 
 	/**
@@ -71,6 +74,10 @@ public class taiKhoan_GUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
+	public void run(taiKhoan_GUI window) {
+		window.frame.setVisible(true);
+	}
 	private void initialize() {
 		frame = new JFrame();
 		frame.setUndecorated(true);
@@ -152,7 +159,17 @@ public class taiKhoan_GUI {
 				taiKhoan_BUS tk_BUS = new taiKhoan_BUS();
 					// TODO Auto-generated catch block\
 				try {
-					JOptionPane.showMessageDialog(btnNewButton, tk_BUS.checkDangNhap(account),"Thong bao",0);
+					if(tk_BUS.checkDangNhap(account) == 0)
+						JOptionPane.showMessageDialog(btnNewButton, "vui long nhap day du thong tin","Thong bao",0);
+					else if(tk_BUS.checkDangNhap(account) == 1)
+					{
+						JOptionPane.showMessageDialog(btnNewButton, "hello","Thong bao",0);
+						MainQuanlyGUI main = new MainQuanlyGUI();
+						main.showWindow();
+						frame.setVisible(false);
+					}
+					else if(tk_BUS.checkDangNhap(account) == 2)
+						JOptionPane.showMessageDialog(btnNewButton, "ten tai khoan hoac mat khau cua ban bi sai","Thong bao",0);
 				} catch (HeadlessException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

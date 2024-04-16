@@ -39,7 +39,7 @@ public class taiKhoan_DAO  {
 		if(resultset.next())
 			return resultset.getInt("TrangThai");
 		con.close();
-		return 1;
+		return 0;
 	}
 	
 	public String getTen(taiKhoan_DTO account) throws SQLException {
