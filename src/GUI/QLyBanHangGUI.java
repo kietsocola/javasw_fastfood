@@ -20,7 +20,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
-import com.toedter.calendar.JDateChooser;
+//import com.toedter.calendar.JDateChooser;
 
 import BUS.CheBienBUS;
 import BUS.ChiTietHoaDonBUS;
@@ -79,7 +79,7 @@ public class QLyBanHangGUI extends JPanel {
 	private JComboBox ngayBD, thangBD, namBD, ngayKT, thangKT, namKT;
 	private MyTable tableSanPhamCheBien;
 	private MyTable tableNguyenLieuCheBien;
-	private JDateChooser startDateChooser, endDateChooser;
+//	private JDateChooser startDateChooser, endDateChooser;
 //	private JTextField textField;
 
 	/**
@@ -446,12 +446,12 @@ public class QLyBanHangGUI extends JPanel {
 
 		MyLabelSecond lblNewLabel_2 = new MyLabelSecond("Từ ngày");
 		panel_3.add(lblNewLabel_2);
-		startDateChooser = new JDateChooser();
-		startDateChooser.setBackground(new Color(0, 0, 0));
-		startDateChooser.setPreferredSize(new Dimension(120, 30));
-		startDateChooser.setForeground(Color.BLUE); // Thiết lập màu chữ
-		startDateChooser.setFont(new Font("Arial", Font.BOLD, 14)); // Thiết lập font chữ
-		panel_3.add(startDateChooser);
+//		startDateChooser = new JDateChooser();
+//		startDateChooser.setBackground(new Color(0, 0, 0));
+//		startDateChooser.setPreferredSize(new Dimension(120, 30));
+//		startDateChooser.setForeground(Color.BLUE); // Thiết lập màu chữ
+//		startDateChooser.setFont(new Font("Arial", Font.BOLD, 14)); // Thiết lập font chữ
+//		panel_3.add(startDateChooser);
 		
 //		ngayBD = new JComboBox();
 //		panel_3.add(ngayBD);
@@ -468,10 +468,10 @@ public class QLyBanHangGUI extends JPanel {
 //
 		MyLabelSecond lblNewLabel_3 = new MyLabelSecond("Tới ngày");
 		panel_2.add(lblNewLabel_3);
-		endDateChooser = new JDateChooser();
-		endDateChooser.setBackground(new Color(0, 0, 0));
-		endDateChooser.setPreferredSize(new Dimension(120, 30));
-		panel_2.add(endDateChooser);
+//		endDateChooser = new JDateChooser();
+//		endDateChooser.setBackground(new Color(0, 0, 0));
+//		endDateChooser.setPreferredSize(new Dimension(120, 30));
+//		panel_2.add(endDateChooser);
 //
 //		ngayKT = new JComboBox();
 //		panel_2.add(ngayKT);
@@ -1005,10 +1005,10 @@ public class QLyBanHangGUI extends JPanel {
 	}
 
 	private void timTheoKhoangNgay() {
-		java.util.Date utilStartDate = startDateChooser.getDate();
-		java.util.Date utilEndDate = endDateChooser.getDate();
-		ArrayList<HoaDon> dshd = hdBUS.getListHoaDonTheoNgay(utilStartDate, utilEndDate);
-		addDataToTableHoaDon(dshd);
+//		java.util.Date utilStartDate = startDateChooser.getDate();
+//		java.util.Date utilEndDate = endDateChooser.getDate();
+//		ArrayList<HoaDon> dshd = hdBUS.getListHoaDonTheoNgay(utilStartDate, utilEndDate);
+//		addDataToTableHoaDon(dshd);
 	}
 
 	private void clickTableSanPhamCheBien() {
