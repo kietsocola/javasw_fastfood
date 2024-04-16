@@ -31,11 +31,12 @@ public class MainQuanlyGUI extends JFrame {
 	private SanPhamGUI pnSanpham;
 	private QuanLyKhachHangGUI pnKhachhang;
 	private QuanLyNhanVienGUI pnNhanvien;
-	private ThongKeGUI pnThongke;
+	private PhanQuyen_GUI pnPhanQuyen;
+//	private ThongKeGUI pnThongke;
 	private NhapHangGUI pnNhapHang;
 	
 	private MyLabel panel_logo, lblBanHang, lblKhuyenMai, lblSanPham, lblNhanvien, lblKhachhang, lblNhapHang,
-			lblThongKe;
+			lblThongKe,lblPhanQuyen;
 
 	private MyLabel lastClickedLabel;
 	public MainQuanlyGUI() {
@@ -138,6 +139,7 @@ public class MainQuanlyGUI extends JFrame {
 		listMenuLeft.add(lblKhachhang);
 		listMenuLeft.add(lblNhapHang);
 		listMenuLeft.add(lblThongKe);
+//		listMenuLeft.add(lblPhanQuyen);
 
 		for (MyLabel lbl : listMenuLeft) {
 			lbl.addMouseListener(new LabelMouseListener());
@@ -156,15 +158,18 @@ public class MainQuanlyGUI extends JFrame {
 		pnSanpham = new SanPhamGUI();
 		pnKhachhang = new QuanLyKhachHangGUI();
 		pnNhanvien = new QuanLyNhanVienGUI();
-		pnThongke = new ThongKeGUI();
+//		pnThongke = new ThongKeGUI();
 		pnNhapHang= new NhapHangGUI();
+//		pnPhanQuyen =  new PhanQuyen_GUI();
 		
 		pnCard.add(pnBanHang, "banhang");
 		pnCard.add(pnSanpham, "sanpham");
 		pnCard.add(pnKhachhang, "khachhang");
 		pnCard.add(pnNhanvien, "nhanvien");
-		pnCard.add(pnThongke, "thongke");
+//		pnCard.add(pnThongke, "thongke");
 		pnCard.add(pnNhapHang, "nhaphang");
+//		pnCard.add(pnPhanQuyen,"phanquyen");
+//		
 
 		pnMain.add(pnCard, BorderLayout.CENTER);
 		
