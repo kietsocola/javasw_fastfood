@@ -24,7 +24,7 @@ public class KhachHang_DAO {
 	            	KhachHang kh = new KhachHang();
 	            	kh.setMaKH(rs.getInt(1));
 					kh.setTen(rs.getString(2));
-					kh.setGioiTinh(rs.getString(5));
+					kh.setGioiTinh(rs.getInt(5));
 					kh.setSoDT(rs.getString(3));
 					kh.setTongChiTieu(rs.getInt(4));
 					
@@ -51,7 +51,7 @@ public class KhachHang_DAO {
 				
 				kh.setMaKH(rs.getInt(1));
 				kh.setTen(rs.getString(2));
-				kh.setGioiTinh(rs.getString(3));
+				kh.setGioiTinh(rs.getInt(3));
 				kh.setSoDT(rs.getString(4));
 				kh.setTongChiTieu(rs.getInt(5));
 			}
@@ -69,7 +69,7 @@ public class KhachHang_DAO {
 			String sql ="UPDATE khachhang SET Ten=?, GioiTinh=?, SoDienThoai=? WHERE id=?";
 			PreparedStatement pre= conDB.conn.prepareStatement(sql);
 			pre.setString(1, kh.getTen());
-			pre.setString(2, kh.getGioiTinh());
+			pre.setInt(2, kh.getGioiTinh());
 			pre.setString(3, kh.getSoDT());
 			pre.setInt(4, maKH);
 			result = pre.executeUpdate() > 0;
@@ -102,7 +102,7 @@ public class KhachHang_DAO {
 			String sql="INSERT INTO KhachHang(Ten, GioiTinh, SoDienThoai, TongChiTieu)" + "VALUES(?,?,?,?)" ;
 			PreparedStatement pre= conDB.conn.prepareStatement(sql);
 			pre.setString(1, kh.getTen());
-			pre.setString(2, kh.getGioiTinh());
+			pre.setInt(2, kh.getGioiTinh());
 			pre.setString(3, kh.getSoDT());
 			pre.setInt(4, kh.getTongChiTieu());
 			result=pre.executeUpdate()>0;

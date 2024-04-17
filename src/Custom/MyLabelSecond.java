@@ -10,7 +10,7 @@ public class MyLabelSecond extends JLabel{
 	public MyLabelSecond(String name) {
         super(name);
         setForeground(new Color(43, 42, 63));
-        setPreferredSize(new Dimension(80, 40));
+        setPreferredSize(new Dimension(150, 40));
         setMaximumSize(new Dimension(80, 40));
         setFont(new Font("Arial", Font.PLAIN, 15));
     }

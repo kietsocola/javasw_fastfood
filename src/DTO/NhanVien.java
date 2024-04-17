@@ -4,13 +4,13 @@ public class NhanVien {
 	 private int maNV;
 	    private String ten;
 	    private String ngaySinh;
-	    private String gioiTinh;
+	    private int gioiTinh;
 	    private String soDT;
 
 	    public NhanVien() {
 	    }
 
-	    public NhanVien(int maNV, String ten,String ngaySinh, String gioiTinh, String soDT) {
+	    public NhanVien(int maNV, String ten,String ngaySinh, int gioiTinh, String soDT) {
 	        this.maNV = maNV;
 	        this.ten = ten;
 	        this.ngaySinh=ngaySinh;
@@ -42,11 +42,11 @@ public class NhanVien {
 	    	this.ngaySinh=ngaySinh;
 	    }
 
-	    public String getGioiTinh() {
+	    public int getGioiTinh() {
 	        return gioiTinh;
 	    }
 
-	    public void setGioiTinh(String gioiTinh) {
+	    public void setGioiTinh(int gioiTinh) {
 	        this.gioiTinh = gioiTinh;
 	    }
 
