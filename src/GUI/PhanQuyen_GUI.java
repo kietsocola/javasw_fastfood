@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import BUS.phanquyen_BUS;
 import Custom.*;
 import javax.swing.JTabbedPane;
 import java.awt.GridLayout;
@@ -55,6 +56,7 @@ public class phanquyen2 extends JFrame {
 	private boolean isThem = false,isSua = false , isXoa = false;
 	private boolean isBtnChucNang = false;
 	private phanquyen_DAO temp = new phanquyen_DAO();
+	private phanquyen_BUS pqB = new phanquyen_BUS();
 	/**
 	 * Launch the application.
 	 */
@@ -198,7 +200,7 @@ public class phanquyen2 extends JFrame {
 		QLThongKe.setEnabled(false);
 		panel_21.add(QLThongKe);
 		
-		
+		JCheckBox[] ql = {QLNhapHang , QLSanPham , QLNhanVien , QLKhachHang ,QLThongKe } ;
 		
 		
 		JPanel btnChucNang = new JPanel();
@@ -226,7 +228,7 @@ public class phanquyen2 extends JFrame {
 		btnThem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					isBtnChucNang = true;
-					JCheckBox[] ql = {QLNhapHang , QLSanPham , QLNhanVien , QLKhachHang ,QLThongKe } ;
+
 					
 					btnHuy.setEnabled(true);
 					btnLuu.setEnabled(true);
@@ -234,11 +236,6 @@ public class phanquyen2 extends JFrame {
 					btnXoa.setEnabled(false);
 					btnSua.setEnabled(false);
 					btnLamMoi.setEnabled(false);
-					QLNhapHang.setEnabled(true);
-					QLSanPham.setEnabled(true);
-					QLNhanVien.setEnabled(true);
-					QLKhachHang.setEnabled(true);
-					QLThongKe.setEnabled(true);
 					
 					System.out.println("dang them  1 phan tu moi vao comboBox ");
 					
@@ -247,14 +244,13 @@ public class phanquyen2 extends JFrame {
 						comboBox.addItem(newItem);
 						comboBox.setSelectedItem(newItem);
 						isThem = true;
+						for(JCheckBox item : ql) {
+							item.setSelected(false);
+							item.setEnabled(true);
+						}
 	                } else {
 	                    // Người dùng đã hủy hoặc không nhập dữ liệu
 	                	JOptionPane.showMessageDialog(btnThem,"người dùng đã hủy hoặc không nhập dữ liệu vì thế không thể thêm","Thong bao",0);
-	    				QLNhapHang.setEnabled(false);
-	    				QLSanPham.setEnabled(false);
-	    				QLNhanVien.setEnabled(false);
-	    				QLKhachHang.setEnabled(false);
-	    				QLThongKe.setEnabled(false);
 	    				
 	    				btnHuy.setEnabled(false);
 	    				btnLuu.setEnabled(false);
@@ -273,11 +269,9 @@ public class phanquyen2 extends JFrame {
 				btnXoa.setEnabled(false);
 				btnSua.setEnabled(false);
 				btnLamMoi.setEnabled(false);
-				QLNhapHang.setEnabled(true);
-				QLSanPham.setEnabled(true);
-				QLNhanVien.setEnabled(true);
-				QLKhachHang.setEnabled(true);
-				QLThongKe.setEnabled(true);
+				for(JCheckBox item : ql) {
+					item.setEnabled(true);
+				}
 				
 				comboBox.setEditable(true);
 				
@@ -340,11 +334,9 @@ public class phanquyen2 extends JFrame {
 					isSua = false;
 				}
 				
-				QLNhapHang.setEnabled(false);
-				QLSanPham.setEnabled(false);
-				QLNhanVien.setEnabled(false);
-				QLKhachHang.setEnabled(false);
-				QLThongKe.setEnabled(false);
+				for(JCheckBox item : ql) {
+					item.setEnabled(false);
+				}
 				
 				btnHuy.setEnabled(false);
 				btnLuu.setEnabled(false);
@@ -379,30 +371,28 @@ public class phanquyen2 extends JFrame {
 				if(isThem) {
 					/// tang id tu dong
 					phanquyen.setIdPhanQuyen(ds.get(ds.size() - 1).getIdPhanQuyen() + 1);
-					temp.insertPhanQuyen(phanquyen);
+					JOptionPane.showMessageDialog(btnXoa,pqB.themPhanQuyen(phanquyen),"Thong bao",0);
 					isThem = false;
 				}
 				
 				if(isSua) {
 					phanquyen.setIdPhanQuyen(tempPQ.getIdPhanQuyen());
-					temp.updatePhanQuyen(phanquyen);
+					JOptionPane.showMessageDialog(btnXoa,pqB.suaPhanQuyen(phanquyen),"Thong bao",0);
 					isSua=false;
 				}
 				
 				if(isXoa) {
 					phanquyen.setIdPhanQuyen(tempPQ.getIdPhanQuyen());
-					temp.deletePhanQuyen(phanquyen);
+					JOptionPane.showMessageDialog(btnXoa,pqB.xoaPhanQuyen(phanquyen),"Thong bao",0);
 					isXoa=false;
 				}
 				
 				
 				
 				///BAT TAT CAC NUT////
-				QLNhapHang.setEnabled(false);
-				QLSanPham.setEnabled(false);
-				QLNhanVien.setEnabled(false);
-				QLKhachHang.setEnabled(false);
-				QLThongKe.setEnabled(false);
+				for(JCheckBox item : ql) {
+					item.setEnabled(false);
+				}
 				btnHuy.setEnabled(false);
 				btnLuu.setEnabled(false);
 				btnThem.setEnabled(true);
@@ -419,12 +409,17 @@ public class phanquyen2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 					try {
 						ds = temp.getData();
+						if(ds.size() <= 0)
+						{
+							btnThem.setEnabled(true);
+							btnLamMoi.setEnabled(false);
+							return ;
+						}
 					} catch (SQLException e1) {
 						System.out.println("lay danh sach quyen that bai");
 					}
-				
+					
 					comboBox.removeAllItems();
-					System.out.print(ds.size());
 					for(int i = 0 ; i <  ds.size() ; i++ )
 						comboBox.addItem(ds.get(i).getTenPhanQuyen());
 					btnThem.setEnabled(true);
