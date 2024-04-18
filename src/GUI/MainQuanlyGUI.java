@@ -32,7 +32,7 @@ public class MainQuanlyGUI extends JFrame {
 	private QuanLyKhachHangGUI pnKhachhang;
 	private QuanLyNhanVienGUI pnNhanvien;
 	private PhanQuyen_GUI pnPhanQuyen;
-//	private ThongKeGUI pnThongke;
+	private ThongKeGUI pnThongke;
 	private NhapHangGUI pnNhapHang;
 	
 	private MyLabel panel_logo, lblBanHang, lblKhuyenMai, lblSanPham, lblNhanvien, lblKhachhang, lblNhapHang,
@@ -128,8 +128,8 @@ public class MainQuanlyGUI extends JFrame {
 		Image newImg7 = img7.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconThongKe.setImage(newImg7);
 		lblThongKe.setIcon(iconThongKe);
-//		lblThongKe.addMouseListener(new LabelMouseListener());
-//		panel_Category.add(lblThongKe);
+		lblThongKe.addMouseListener(new LabelMouseListener());
+		panel_Category.add(lblThongKe);
 		listMenuLeft = new ArrayList<>();
 		listMenuLeft.add(panel_logo);
 		listMenuLeft.add(lblBanHang);
@@ -158,7 +158,7 @@ public class MainQuanlyGUI extends JFrame {
 		pnSanpham = new SanPhamGUI();
 		pnKhachhang = new QuanLyKhachHangGUI();
 		pnNhanvien = new QuanLyNhanVienGUI();
-//		pnThongke = new ThongKeGUI();
+		pnThongke = new ThongKeGUI();
 		pnNhapHang= new NhapHangGUI();
 //		pnPhanQuyen =  new PhanQuyen_GUI();
 		
@@ -166,7 +166,7 @@ public class MainQuanlyGUI extends JFrame {
 		pnCard.add(pnSanpham, "sanpham");
 		pnCard.add(pnKhachhang, "khachhang");
 		pnCard.add(pnNhanvien, "nhanvien");
-//		pnCard.add(pnThongke, "thongke");
+		pnCard.add(pnThongke, "thongke");
 		pnCard.add(pnNhapHang, "nhaphang");
 //		pnCard.add(pnPhanQuyen,"phanquyen");
 //		
