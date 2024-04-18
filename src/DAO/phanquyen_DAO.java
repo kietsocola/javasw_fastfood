@@ -33,7 +33,24 @@ public class phanquyen_DAO {
 		return ds;
 	}
 	
-	public void insertPhanQuyen(phanquyen_DTO phanquyen) {
+	public boolean hasNamePhanQuyen(phanquyen_DTO item) {
+		
+		con.connect();
+		String sql = "select * from phanquyen where TenQuyen = ?";
+		try {
+			PreparedStatement ps = con.getCon().prepareStatement(sql);
+			ps.setString(1,item.getTenPhanQuyen());
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+		}
+		return false;
+	
+	}
+	
+	public boolean insertPhanQuyen(phanquyen_DTO phanquyen) {
 		con.connect();
 		String sql ;
 		try {
@@ -47,15 +64,15 @@ public class phanquyen_DAO {
 				pstmt.setBoolean(6, phanquyen.getKhachhang());
 				pstmt.setBoolean(7, phanquyen.getThongke());
 				int index = pstmt.executeUpdate();
-				
+				return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
 		
 	}
 	
-	public void updatePhanQuyen(phanquyen_DTO item) {
+	public boolean updatePhanQuyen(phanquyen_DTO item) {
 		con.connect();
 		try {
 				int index;
@@ -69,14 +86,15 @@ public class phanquyen_DAO {
 				pstmt.setBoolean(5, item.getKhachhang());
 				pstmt.setBoolean(6, item.getThongke());
 				index = pstmt.executeUpdate();
+				return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
 		con.close();
+		return false;
 	}
 	
-	public void deletePhanQuyen(phanquyen_DTO item) {
+	public boolean deletePhanQuyen(phanquyen_DTO item) {
 		con.connect();
 		try {
 			int index;
@@ -84,9 +102,12 @@ public class phanquyen_DAO {
 			PreparedStatement pstmt = con.getCon().prepareStatement(sql);
 			pstmt.setInt(1,item.getIdPhanQuyen());
 			index = pstmt.executeUpdate();
+			return true;
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+		con.close();
+		return false;
 	}
 }
