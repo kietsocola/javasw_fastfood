@@ -151,12 +151,12 @@ public class PhanQuyen_GUI extends JFrame {
 		JLabel lblNewLabel_3 = new JLabel("Nhóm quyền : ");
 		PanelTenQuyen.add(lblNewLabel_3);
 	
-		
 		QuyenNhapHang = new MyPanel();
 		QuyenNhapHang.setBorder(new EmptyBorder(0, 0, 0, 15));
 		MainPhanQuyen.add(QuyenNhapHang);
 		QuyenNhapHang.setLayout(new BoxLayout(QuyenNhapHang, BoxLayout.X_AXIS));
 		JCheckBox QLNhapHang = new JCheckBox("Quản lí nhập hàng");
+		QLNhapHang.setFont(new Font("Arial" , Font.BOLD , 16));
 		QLNhapHang.setEnabled(false);
 		QLNhapHang.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 		QuyenNhapHang.add(QLNhapHang);
@@ -168,6 +168,7 @@ public class PhanQuyen_GUI extends JFrame {
 		JCheckBox QLSanPham = new JCheckBox("Quản lí sản phẩm");
 		QLSanPham.setEnabled(false);
 		QLSanPham.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QLSanPham.setFont(new Font("Arial" , Font.BOLD , 16));
 		QuyenSanPham.add(QLSanPham);
 		
 		QuyenNhanVien = new MyPanel();
@@ -177,6 +178,7 @@ public class PhanQuyen_GUI extends JFrame {
 		JCheckBox QLNhanVien = new JCheckBox("Quản lí nhân viên");
 		QLNhanVien.setEnabled(false);
 		QLNhanVien.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QLNhanVien.setFont(new Font("Arial" , Font.BOLD , 16));
 		QuyenNhanVien.add(QLNhanVien);
 		
 		QuyenKhachHang = new MyPanel();
@@ -186,6 +188,7 @@ public class PhanQuyen_GUI extends JFrame {
 		JCheckBox QLKhachHang = new JCheckBox("Quản lí khách hàng");
 		QLKhachHang.setEnabled(false);
 		QLKhachHang.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QLKhachHang.setFont(new Font("Arial" , Font.BOLD , 16));
 		QuyenKhachHang.add(QLKhachHang);
 		
 		QuyenThongKe = new MyPanel();
@@ -196,13 +199,14 @@ public class PhanQuyen_GUI extends JFrame {
 		JCheckBox QLThongKe = new JCheckBox("Quân lí thống kê");
 		QLThongKe.setEnabled(false);
 		QLThongKe.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QLThongKe.setFont(new Font("Arial" , Font.BOLD , 16));
 		QuyenThongKe.add(QLThongKe);
 		
 		JCheckBox[] ql = {QLNhapHang , QLSanPham , QLNhanVien , QLKhachHang ,QLThongKe } ;
 		
 		
 		btnChucNang = new MyPanel();
-		btnChucNang.setBorder(new EmptyBorder(5, 0, 0, 0));
+		btnChucNang.setBorder(new EmptyBorder(30, 50, 50, 50));
 		MainPhanQuyen.add(btnChucNang);
 		btnChucNang.setLayout(new GridLayout(0, 7, 15, 0));
 		
@@ -215,6 +219,7 @@ public class PhanQuyen_GUI extends JFrame {
 		PanelTenQuyen.add(comboBox);
 		
 		btnLamMoi = new MyButton("Làm mới");
+		btnLamMoi.setPreferredSize(new Dimension(100,25));
 		btnHuy = new MyButton("Hủy");
 		btnThem = new MyButton("Thêm");
 		btnSua = new MyButton("Sửa");
