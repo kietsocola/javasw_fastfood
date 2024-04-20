@@ -51,7 +51,8 @@ public class PhanQuyen_GUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	
+	private MyButton btnThem , btnSua ,btnXoa,btnHuy,btnLuu,btnLamMoi;
+	private MyPanel PanelPhanQuyen,MainPhanQuyen,panel_22,LabelName,btnChucNang,QuyenThongKe,PanelTenQuyen,QuyenNhapHang,QuyenSanPham,QuyenNhanVien,QuyenKhachHang,panel_20;
 	private ArrayList<phanquyen_DTO> ds = new ArrayList<>();
 	private phanquyen_DTO tempPQ ;
 	private boolean isThem = false,isSua = false , isXoa = false;
@@ -78,7 +79,6 @@ public class PhanQuyen_GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PhanQuyen_GUI() {
-		JButton btnThem , btnSua ,btnXoa,btnHuy,btnLuu,btnLamMoi;
 		JComboBox comboBox;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(200, 0, 1000, 800);
@@ -126,106 +126,105 @@ public class PhanQuyen_GUI extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel PhanQuyenPanel = new JPanel();
-//		tabbedPane.addTab("Quyền", null, PhanQuyenPanel, null);
-		PhanQuyenPanel.setLayout(new GridLayout(3, 1, 0, 0));
+		PanelPhanQuyen = new MyPanel();
+		PanelPhanQuyen.setLayout(new GridLayout(2, 1, 0, 0));
+		panel.add(PanelPhanQuyen);
 		
-		JPanel panelpanel = new JPanel();
-		panelpanel.add(PhanQuyenPanel);
-		panel.add(panelpanel);
-		panelpanel.setLayout(new GridLayout(1, 0, 0, 0));
+		MainPhanQuyen = new MyPanel();
+		PanelPhanQuyen.add(MainPhanQuyen);
+		MainPhanQuyen.setLayout(new BoxLayout(MainPhanQuyen, BoxLayout.Y_AXIS));
 		
-		JPanel PhanQuyenMain = new JPanel();
-		PhanQuyenPanel.add(PhanQuyenMain);
-		PhanQuyenMain.setLayout(new BoxLayout(PhanQuyenMain, BoxLayout.Y_AXIS));
+		LabelName = new MyPanel();
+//		LabelName.setBorder(new EmptyBorder(20, 0, 0, 0));
+		MainPhanQuyen.add(LabelName);
+		LabelName.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JPanel panel_14 = new JPanel();
-		PhanQuyenMain.add(panel_14);
-		panel_14.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		JLabel lblNewLabel_2 = new JLabel("QUẢN LÍ PHÂN QUYỀN");
+		MyLabel lblNewLabel_2 = new MyLabel("QUẢN LÍ PHÂN QUYỀN");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_14.add(lblNewLabel_2);
+		LabelName.add(lblNewLabel_2);
 		
-		JPanel panel_15 = new JPanel();
-		panel_15.setBorder(new EmptyBorder(20, 0, 0, 0));
-		PhanQuyenMain.add(panel_15);
-		panel_15.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		PanelTenQuyen = new MyPanel();
+//		PanelTenQuyen.setBorder(new EmptyBorder(20, 0, 20, 0));
+		MainPhanQuyen.add(PanelTenQuyen);
+		PanelTenQuyen.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblNewLabel_3 = new JLabel("Nhóm quyền : ");
-		panel_15.add(lblNewLabel_3);
+		PanelTenQuyen.add(lblNewLabel_3);
 	
 		
-		JPanel panel_16 = new JPanel();
-		panel_16.setBorder(new EmptyBorder(0, 0, 0, 15));
-		PhanQuyenMain.add(panel_16);
-		panel_16.setLayout(new BoxLayout(panel_16, BoxLayout.X_AXIS));
-		
+		QuyenNhapHang = new MyPanel();
+		QuyenNhapHang.setBorder(new EmptyBorder(0, 0, 0, 15));
+		MainPhanQuyen.add(QuyenNhapHang);
+		QuyenNhapHang.setLayout(new BoxLayout(QuyenNhapHang, BoxLayout.X_AXIS));
 		JCheckBox QLNhapHang = new JCheckBox("Quản lí nhập hàng");
 		QLNhapHang.setEnabled(false);
-		panel_16.add(QLNhapHang);
+		QLNhapHang.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QuyenNhapHang.add(QLNhapHang);
 		
-		JPanel panel_17 = new JPanel();
-		panel_17.setBorder(new EmptyBorder(0, 0, 0, 19));
-		PhanQuyenMain.add(panel_17);
-		panel_17.setLayout(new BoxLayout(panel_17, BoxLayout.X_AXIS));
-		
+		QuyenSanPham = new MyPanel();
+		QuyenSanPham.setBorder(new EmptyBorder(0, 0, 0, 19));
+		MainPhanQuyen.add(QuyenSanPham);
+		QuyenSanPham.setLayout(new BoxLayout(QuyenSanPham, BoxLayout.X_AXIS));
 		JCheckBox QLSanPham = new JCheckBox("Quản lí sản phẩm");
 		QLSanPham.setEnabled(false);
-		panel_17.add(QLSanPham);
+		QLSanPham.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QuyenSanPham.add(QLSanPham);
 		
-		JPanel panel_18 = new JPanel();
-		panel_18.setBorder(new EmptyBorder(0, 0, 0, 19));
-		PhanQuyenMain.add(panel_18);
-		panel_18.setLayout(new BoxLayout(panel_18, BoxLayout.X_AXIS));
-		
+		QuyenNhanVien = new MyPanel();
+		QuyenNhanVien.setBorder(new EmptyBorder(0, 0, 0, 19));
+		MainPhanQuyen.add(QuyenNhanVien);
+		QuyenNhanVien.setLayout(new BoxLayout(QuyenNhanVien, BoxLayout.X_AXIS));
 		JCheckBox QLNhanVien = new JCheckBox("Quản lí nhân viên");
 		QLNhanVien.setEnabled(false);
-		panel_18.add(QLNhanVien);
+		QLNhanVien.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QuyenNhanVien.add(QLNhanVien);
 		
-		JPanel panel_19 = new JPanel();
-		panel_19.setBorder(new EmptyBorder(0, 0, 0, 11));
-		PhanQuyenMain.add(panel_19);
-		panel_19.setLayout(new BoxLayout(panel_19, BoxLayout.X_AXIS));
-		
+		QuyenKhachHang = new MyPanel();
+		QuyenKhachHang.setBorder(new EmptyBorder(0, 0, 0, 11));
+		MainPhanQuyen.add(QuyenKhachHang);
+		QuyenKhachHang.setLayout(new BoxLayout(QuyenKhachHang, BoxLayout.X_AXIS));
 		JCheckBox QLKhachHang = new JCheckBox("Quản lí khách hàng");
 		QLKhachHang.setEnabled(false);
-		panel_19.add(QLKhachHang);
+		QLKhachHang.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QuyenKhachHang.add(QLKhachHang);
 		
-		JPanel panel_21 = new JPanel();
-		panel_21.setBorder(new EmptyBorder(0, 0, 0, 25));
-		PhanQuyenMain.add(panel_21);
-		panel_21.setLayout(new BoxLayout(panel_21, BoxLayout.X_AXIS));
+		QuyenThongKe = new MyPanel();
+		QuyenThongKe.setBorder(new EmptyBorder(0, 0, 0, 25));
+		MainPhanQuyen.add(QuyenThongKe);
+		QuyenThongKe.setLayout(new BoxLayout(QuyenThongKe, BoxLayout.X_AXIS));
 		
 		JCheckBox QLThongKe = new JCheckBox("Quân lí thống kê");
 		QLThongKe.setEnabled(false);
-		panel_21.add(QLThongKe);
+		QLThongKe.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		QuyenThongKe.add(QLThongKe);
 		
 		JCheckBox[] ql = {QLNhapHang , QLSanPham , QLNhanVien , QLKhachHang ,QLThongKe } ;
 		
 		
-		JPanel btnChucNang = new JPanel();
+		btnChucNang = new MyPanel();
 		btnChucNang.setBorder(new EmptyBorder(5, 0, 0, 0));
-		PhanQuyenMain.add(btnChucNang);
+		MainPhanQuyen.add(btnChucNang);
 		btnChucNang.setLayout(new GridLayout(0, 7, 15, 0));
 		
-		JPanel panel_22 = new JPanel();
+		panel_22 = new MyPanel();
 		btnChucNang.add(panel_22);
 		
 		comboBox = new JComboBox() ;
 
 		comboBox.setPreferredSize(new Dimension(150, 21));
-		panel_15.add(comboBox);
+		PanelTenQuyen.add(comboBox);
 		
-		btnLamMoi = new JButton("Làm mới");
-		btnHuy = new JButton("Hủy");
-		btnThem = new JButton("Thêm");
-		btnSua = new JButton("Sửa");
-		btnXoa = new JButton("Xóa");
-		btnLuu = new JButton("Lưu");
+		btnLamMoi = new MyButton("Làm mới");
+		btnHuy = new MyButton("Hủy");
+		btnThem = new MyButton("Thêm");
+		btnSua = new MyButton("Sửa");
+		btnXoa = new MyButton("Xóa");
+		btnLuu = new MyButton("Lưu");
 		btnLuu.setEnabled(false);
 		btnThem.setEnabled(false);
 		btnXoa.setEnabled(false);
+		btnSua.setEnabled(false);
+		btnHuy.setEnabled(false);
 		btnThem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					isBtnChucNang = true;
@@ -240,7 +239,7 @@ public class PhanQuyen_GUI extends JFrame {
 					
 					System.out.println("dang them  1 phan tu moi vao comboBox ");
 					
-					String newItem  =  JOptionPane.showInputDialog("Enter new item:");
+					String newItem  =  JOptionPane.showInputDialog("Nhâp tên quyền:");
 					if (newItem != null && !newItem.isEmpty()) {
 						comboBox.addItem(newItem);
 						comboBox.setSelectedItem(newItem);
@@ -305,15 +304,14 @@ public class PhanQuyen_GUI extends JFrame {
         Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon = new ImageIcon(resizedImg);
         btnThem.setIcon(resizedIcon);
-		btnSua.setEnabled(false);
+        
         ImageIcon icon1 = new ImageIcon("..\\javasw_fastfood\\images\\edit.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
         Image img1 = icon1.getImage();
         Image resizedImg1 = img1.getScaledInstance(18, 18, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon1 = new ImageIcon(resizedImg1);
         btnSua.setIcon(resizedIcon1);
-		
-		btnXoa.setEnabled(false);
+        
         ImageIcon icon2 = new ImageIcon("..\\javasw_fastfood\\images\\delete.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
         Image img2 = icon2.getImage();
@@ -321,7 +319,6 @@ public class PhanQuyen_GUI extends JFrame {
         ImageIcon resizedIcon2 = new ImageIcon(resizedImg2);
         btnXoa.setIcon(resizedIcon2);
 		
-		btnHuy.setEnabled(false);
 		btnHuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(isThem) {
@@ -445,7 +442,7 @@ public class PhanQuyen_GUI extends JFrame {
 					QLThongKe.setSelected(ds.get(index).getThongke());
 					
 	                // Hiển thị giá trị được chọn trong Console (hoặc làm bất kỳ điều gì bạn muốn với giá trị này)
-	                System.out.println("Selected Quyen: " + selectedLanguage );
+//	                System.out.println("Selected Quyen: " + selectedLanguage );
 				}
 			}
 		});
@@ -455,14 +452,15 @@ public class PhanQuyen_GUI extends JFrame {
 	            }
 	        });
 		
-		JPanel panel_20 = new JPanel();
-		panel_15.add(btnLamMoi);
+		
+		panel_20 = new MyPanel();
+		PanelTenQuyen.add(btnLamMoi);
 		btnChucNang.add(btnThem);
 		btnChucNang.add(btnSua);
 		btnChucNang.add(btnXoa);
 		btnChucNang.add(btnHuy);
 		btnChucNang.add(btnLuu);
-		PhanQuyenPanel.add(panel_20);
+		PanelPhanQuyen.add(panel_20);
 		
 
 
