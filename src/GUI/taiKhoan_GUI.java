@@ -14,6 +14,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import BUS.taiKhoan_BUS;
+import Custom.MyButton;
+import Custom.MyPanel;
 import DTO.taiKhoan_DTO;
 import GUI.MainQuanlyGUI;
 
@@ -39,17 +41,20 @@ import java.awt.ComponentOrientation;
 import java.awt.Rectangle;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import javax.swing.border.MatteBorder;
 
 public class taiKhoan_GUI {
 
 	private JFrame frame;
 	private JTextField tenDangNhap;
 	private JTextField matKhau;
+	private MyPanel panel ,panel_1 ,panel_2 ,panelTenDangNhap,panelMatKhau,panelBtnDangNhap;
+	private MyButton btnDangNhap ,btnThoat;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				try {
@@ -60,10 +65,10 @@ public class taiKhoan_GUI {
 //				}
 //			}
 //		});
-		taiKhoan_GUI window = new taiKhoan_GUI();
-		window.frame.setVisible(true);
+//	}
+	public void run(taiKhoan_GUI login) {
+		login.frame.setVisible(true);
 	}
-
 	/**
 	 * Create the application.
 	 */
@@ -74,32 +79,34 @@ public class taiKhoan_GUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	
-	public void run(taiKhoan_GUI window) {
-		window.frame.setVisible(true);
-	}
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setForeground(new Color(255, 255, 255));
+		frame.getContentPane().setPreferredSize(new Dimension(700, 200));
 		frame.setUndecorated(true);
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 337);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Border border1 = BorderFactory.createLineBorder(Color.BLACK, 2);
 		
 		EmptyBorder border = new EmptyBorder(20, 20, 20, 20);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setPreferredSize(new Dimension(300, 200));
-		lblNewLabel.setBorder(new EmptyBorder(20, 20, 20, 20));
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\lenovo\\Pictures\\fastfood1.jpg"));
-		frame.getContentPane().add(lblNewLabel, BorderLayout.WEST);
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		
+		panel_1 = new MyPanel();
+		panel_1.setBorder(new EmptyBorder(0, 10, 0, 0));
+		panel_1.setPreferredSize(new Dimension(320, 400));
+//		frame.getContentPane().add(panel_1);
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+		
+		JLabel lbImageApp = new JLabel("");
+		lbImageApp.setPreferredSize(new Dimension(320, 320));
+		lbImageApp.setHorizontalAlignment(SwingConstants.CENTER);
+		lbImageApp.setIcon(new ImageIcon("..\\javasw_fastfood\\images\\fd1.jpg"));
+		panel_1.add(lbImageApp);
 
 		
-		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setBorder(border);
+		panel = new MyPanel();
+//		frame.getContentPane().add(panel);
 		panel.setLayout(new GridLayout(4, 1, 0, 0));
 		
 		JLabel txtNameApp = new JLabel("FOOD AND DRINK");
@@ -108,11 +115,11 @@ public class taiKhoan_GUI {
 		panel.add(txtNameApp);
 		txtNameApp.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
-		JPanel panelTenDangNhap = new JPanel();
+		panelTenDangNhap = new MyPanel();
+		panelTenDangNhap.setBorder(new EmptyBorder(20, 20, 20, 20));
 		panelTenDangNhap.setPreferredSize(new Dimension(10, 5));
 		panel.add(panelTenDangNhap);
 		panelTenDangNhap.setLayout(new BoxLayout(panelTenDangNhap, BoxLayout.X_AXIS));
-		panelTenDangNhap.setBorder(new EmptyBorder(15, 20, 20, 20));
 		panelTenDangNhap.add(Box.createHorizontalGlue());
 		
 		JLabel labelDangNhap = new JLabel("Tên đăng nhập:");
@@ -128,11 +135,11 @@ public class taiKhoan_GUI {
 		tenDangNhap.setColumns(15);
 		panelTenDangNhap.add(Box.createHorizontalGlue());
 		
-		JPanel panelMatKhau = new JPanel();
+		panelMatKhau = new MyPanel();
+		panelMatKhau.setBorder(new EmptyBorder(20, 20, 20, 20));
 		panelMatKhau.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.add(panelMatKhau);
 		panelMatKhau.setLayout(new BoxLayout(panelMatKhau, BoxLayout.X_AXIS));
-		panelMatKhau.setBorder(new EmptyBorder(15, 20, 20, 20));
 		
 		JLabel labelMatKhau = new JLabel("Mật Khẩu         :");
 		labelMatKhau.setHorizontalAlignment(SwingConstants.LEFT);
@@ -145,12 +152,12 @@ public class taiKhoan_GUI {
 		panelMatKhau.add(matKhau);
 		matKhau.setColumns(10);
 		
-		JPanel panelBtnDangNhap = new JPanel();
+		panelBtnDangNhap = new MyPanel();
 		panel.add(panelBtnDangNhap);
 		
-		JButton btnNewButton = new JButton("Đăng nhập");
-		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
-		btnNewButton.addActionListener(new ActionListener() {
+		btnDangNhap = new MyButton("Đăng nhập");
+		btnDangNhap.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
+		btnDangNhap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				taiKhoan_DTO account = new taiKhoan_DTO();
@@ -160,16 +167,16 @@ public class taiKhoan_GUI {
 					// TODO Auto-generated catch block\
 				try {
 					if(tk_BUS.checkDangNhap(account) == 0)
-						JOptionPane.showMessageDialog(btnNewButton, "vui long nhap day du thong tin","Thong bao",0);
+						JOptionPane.showMessageDialog(btnDangNhap, "vui long nhap day du thong tin","Thong bao",0);
 					else if(tk_BUS.checkDangNhap(account) == 1)
 					{
-						JOptionPane.showMessageDialog(btnNewButton, "hello","Thong bao",0);
+						JOptionPane.showMessageDialog(btnDangNhap, "hello","Thong bao",0);
 						MainQuanlyGUI main = new MainQuanlyGUI();
 						main.showWindow();
 						frame.setVisible(false);
 					}
 					else if(tk_BUS.checkDangNhap(account) == 2)
-						JOptionPane.showMessageDialog(btnNewButton, "ten tai khoan hoac mat khau cua ban bi sai","Thong bao",0);
+						JOptionPane.showMessageDialog(btnDangNhap, "ten tai khoan hoac mat khau cua ban bi sai","Thong bao",0);
 				} catch (HeadlessException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -180,13 +187,13 @@ public class taiKhoan_GUI {
 			}
 		});
 		panelBtnDangNhap.setLayout(new GridLayout(0, 2, 15, 20));
-		panelBtnDangNhap.setBorder(border);
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panelBtnDangNhap.add(btnNewButton);
+		panelBtnDangNhap.setBorder(new EmptyBorder(25, 20, 25, 20));
+		btnDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panelBtnDangNhap.add(btnDangNhap);
 		
-		JButton btnNewButton_1 = new JButton("Thoát");
-		btnNewButton_1.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnThoat = new MyButton("Thoát");
+		btnThoat.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
+		btnThoat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int choice = JOptionPane.showOptionDialog(
 		                null, // parentComponent, null để hiển thị ở giữa màn hình
@@ -212,8 +219,15 @@ public class taiKhoan_GUI {
 		        }
 			}
 		});
-		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panelBtnDangNhap.add(btnNewButton_1);
+		btnThoat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panelBtnDangNhap.add(btnThoat);
+		
+		panel_2 = new MyPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_2.add(panel_1);
+		panel_2.add(panel);
+		frame.getContentPane().add(panel_2);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 	}
 
 }

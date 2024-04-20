@@ -3,7 +3,7 @@ package DTO;
 public class KhachHang {
     private int maKH;
     private String ten;
-    private String gioiTinh;
+    private int gioiTinh;
     private String soDT;
     private int tongChiTieu;
     
@@ -11,7 +11,7 @@ public class KhachHang {
     public KhachHang() {
     }
 
-    public KhachHang(int maKH, String ten, String gioiTinh, String soDT, int tongChiTieu) {
+    public KhachHang(int maKH, String ten, int gioiTinh, String soDT, int tongChiTieu) {
         this.maKH = maKH;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
@@ -28,8 +28,6 @@ public class KhachHang {
         this.maKH = maKH;
     }
 
-   
-
     public String getTen() {
         return ten;
     }
@@ -38,11 +36,11 @@ public class KhachHang {
         this.ten = ten;
     }
 
-    public String getGioiTinh() {
+    public int getGioiTinh() {
         return gioiTinh;
     }
 
-    public void setGioiTinh(String gioiTinh) {
+    public void setGioiTinh(int gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
     public String getSoDT() {

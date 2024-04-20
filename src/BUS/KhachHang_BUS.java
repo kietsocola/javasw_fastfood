@@ -25,7 +25,7 @@ public class KhachHang_BUS {
         return this.listKH;
     }
 
-    public boolean themKhachHang(String ten, String gioiTinh, String soDT) {
+    public boolean themKhachHang(String ten, int gioiTinh, String soDT) {
         ten = ten.trim();
         soDT = soDT.trim();
         if (ten.equals("")) {
@@ -35,6 +35,11 @@ public class KhachHang_BUS {
         if (soDT.equals("")) {
             JOptionPane.showMessageDialog(null, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
+        }
+        String regex = "^0\\d{9,10}$";
+        if (!soDT.matches(regex)) {
+        	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        	 return false;
         }
         KhachHang kh = new KhachHang();
         kh.setTen(ten);
@@ -50,9 +55,9 @@ public class KhachHang_BUS {
         return flag;
     }
 
-    public boolean suaKhachHang(String ma, String ten, String gioiTinh, String soDT) {
+    public boolean suaKhachHang(String ma, String ten, int gioiTinh, String soDT) {
+    	try {
         int maKH = Integer.parseInt(ma);
-
         if (ten.equals("")) {
             JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -60,6 +65,11 @@ public class KhachHang_BUS {
         if (soDT.equals("")) {
             JOptionPane.showMessageDialog(null, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
+        }
+        String regex = "^0\\d{9,10}$";
+        if (!soDT.matches(regex)) {
+        	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        	 return false;
         }
         KhachHang kh = new KhachHang();
         kh.setTen(ten);
@@ -73,6 +83,10 @@ public class KhachHang_BUS {
             JOptionPane.showMessageDialog(null, "Sửa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         return flag;
+    	}catch(NumberFormatException e) {
+        	JOptionPane.showMessageDialog(null, "Chưa chọn nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        	return false;
+        }
     }
 
     public ArrayList<KhachHang> timKhachHang(String tuKhoa) {
@@ -80,10 +94,8 @@ public class KhachHang_BUS {
         ArrayList<KhachHang> dskh = new ArrayList<>();
         for (KhachHang kh : listKH) {
         	String ten = kh.getTen().toLowerCase();
-        	String gioitinh=kh.getGioiTinh().toLowerCase();
         	String sodt=kh.getSoDT().toLowerCase();
-            if (ten.contains(tuKhoa) || gioitinh.contains(tuKhoa)
-                    || sodt.contains(tuKhoa)) {
+            if (ten.contains(tuKhoa) ||  sodt.contains(tuKhoa)) {
                 dskh.add(kh);
             }
         }

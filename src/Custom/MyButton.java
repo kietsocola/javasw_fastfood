@@ -13,11 +13,12 @@ public class MyButton extends JButton{
 	public MyButton(String name) {
         super(name);
         setBackground(MyColor.BACKGROUND_BUTTON_COLOR);
-        setForeground(MyColor.SECOND_TEXT_COLOR);
+        setForeground(MyColor.PRIMARY_TEXT_COLOR);
         Border border = BorderFactory.createCompoundBorder(
         	    new LineBorder(MyColor.BACKGROUND_BUTTON_COLOR), // Border mặc định
         	    new EmptyBorder(5, 5, 5, 5)); // Khoảng cách giữa border và vùng chứa text
         setBorder(border);
-        setPreferredSize(new Dimension(100, 30));
+        setPreferredSize(new Dimension(120, 40));
+//        setBorder(new RoundedBorder(10));
     }
 }

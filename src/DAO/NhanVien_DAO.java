@@ -27,7 +27,7 @@ public class NhanVien_DAO {
 		                nv.setMaNV(rs.getInt(1));
 		                nv.setTen(rs.getString(4));
 		                nv.setNgaySinh(rs.getString(6));
-		                nv.setGioiTinh(rs.getString(5));
+		                nv.setGioiTinh(rs.getInt(5));
 		                nv.setSoDT(rs.getString(2));
 		                dsnv.add(nv);
 		            }
@@ -49,7 +49,7 @@ public class NhanVien_DAO {
 	            nv.setMaNV(rs.getInt(1));
 	            nv.setTen(rs.getString(4));
 	            nv.setNgaySinh(rs.getString(6));
-	            nv.setGioiTinh(rs.getString(5));
+	            nv.setGioiTinh(rs.getInt(5));
 	            nv.setSoDT(rs.getString(2));
 	        }
 	    } catch (SQLException e) {
@@ -69,7 +69,7 @@ public class NhanVien_DAO {
 	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
-	        pre.setString(3, nv.getGioiTinh());
+	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
 	        pre.setInt(5, nv.getMaNV());
 	        
@@ -103,7 +103,7 @@ public class NhanVien_DAO {
 	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
-	        pre.setString(3, nv.getGioiTinh());
+	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
 	        
 	        result = pre.executeUpdate() > 0;

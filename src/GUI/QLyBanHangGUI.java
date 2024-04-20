@@ -1,6 +1,8 @@
 package GUI;
 
 import java.util.Vector;
+
+import javax.swing.ImageIcon;
 import java.util.ArrayList;
 
 import java.awt.EventQueue;
@@ -13,9 +15,12 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
+
+//import com.toedter.calendar.JDateChooser;
 
 import BUS.CheBienBUS;
 import BUS.ChiTietHoaDonBUS;
@@ -36,17 +41,23 @@ import Custom.MyLabelSecond;
 import Custom.MyPanelSecond;
 
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JTable;
+import Custom.MyTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 public class QLyBanHangGUI extends JPanel {
 
@@ -56,7 +67,7 @@ public class QLyBanHangGUI extends JPanel {
 	private MyTextField txtSoLuong, txtSoLuongCB;
 	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD, modelTableNguyenLieuCB,
 			modelTableSPCheBien;
-	private JTable tableSP, tableGH, tableHD, tableCTHD;
+	private MyTable tableSP, tableGH, tableHD, tableCTHD;
 	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD, btnTimKiem, btnTimKiemHD, btnCheBien;
 	HoaDonBUS hdBUS = new HoaDonBUS();
 	SanPhamBUS spBUS = new SanPhamBUS();
@@ -66,8 +77,9 @@ public class QLyBanHangGUI extends JPanel {
 
 	private JTextField txtTimTheoTen;
 	private JComboBox ngayBD, thangBD, namBD, ngayKT, thangKT, namKT;
-	private JTable tableSanPhamCheBien;
-	private JTable tableNguyenLieuCheBien;
+	private MyTable tableSanPhamCheBien;
+	private MyTable tableNguyenLieuCheBien;
+//	private JDateChooser startDateChooser, endDateChooser;
 //	private JTextField textField;
 
 	/**
@@ -110,12 +122,17 @@ public class QLyBanHangGUI extends JPanel {
 		MyPanel panel_tab = new MyPanel();
 		panel_main.add(panel_tab, BorderLayout.NORTH);
 		panel_tab.setLayout(new BoxLayout(panel_tab, BoxLayout.X_AXIS));
+		
+		JLabel lblNewLabel_4 = new JLabel("       ");
+		panel_tab.add(lblNewLabel_4);
 
 		MyLabelSecond tabBanHang = new MyLabelSecond("Bán hàng");
+		tabBanHang.setText("  Bán hàng");
 		tabBanHang.setPreferredSize(new Dimension(200, 30));
 		panel_tab.add(tabBanHang);
 
 		MyLabelSecond tabHoaDon = new MyLabelSecond("Hóa đơn");
+		tabHoaDon.setText("  Hóa đơn");
 		tabHoaDon.setPreferredSize(new Dimension(200, 30));
 		panel_tab.add(tabHoaDon);
 
@@ -128,17 +145,25 @@ public class QLyBanHangGUI extends JPanel {
 		panelCard.add(panelTabBanHang, "BanHang");
 
 		// panel chứa table
-		MyPanelSecond panel_table = new MyPanelSecond();
+		MyPanel panel_table = new MyPanel();
 		panelTabBanHang.add(panel_table, BorderLayout.CENTER);
 		panel_table.setLayout(new GridLayout(2, 1, 0, 0));
-
+		panel_table.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
+		
+		MyPanel panel_containtableSP = new MyPanel();
+		panel_containtableSP.setLayout(new BorderLayout());
+		panel_table.add(panel_containtableSP);
 		MyPanelSecond panel_tableSP = new MyPanelSecond();
-		panel_table.add(panel_tableSP);
+		panel_tableSP.setBorder(new EmptyBorder(10, 10, 10, 10));
+		panel_containtableSP.add(panel_tableSP, BorderLayout.CENTER);
+		MyPanel pnSpace = new MyPanel();
+		pnSpace.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		panel_containtableSP.add(pnSpace, BorderLayout.SOUTH);
 		panel_tableSP.setLayout(new BorderLayout(0, 0));
 
 		MyLabelSecond lblDSSP = new MyLabelSecond("Danh sách sản phẩm");
 		panel_tableSP.add(lblDSSP, BorderLayout.NORTH);
-
+		
 		Color primaryColor = new Color(Integer.parseInt("39", 16), Integer.parseInt("3c", 16),
 				Integer.parseInt("49", 16));
 		// tạo table sản phẩm
@@ -147,15 +172,16 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableSP.addColumn("Tên SP");
 		modelTableSP.addColumn("Đơn giá");
 		modelTableSP.addColumn("Còn lại");
-		tableSP = new JTable(modelTableSP);
+		tableSP = new MyTable(modelTableSP);
 		JScrollPane scrollPaneSP = new JScrollPane(tableSP);
 		panel_tableSP.add(scrollPaneSP);
-		scrollPaneSP.getViewport().setBackground(primaryColor);
+		scrollPaneSP.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		loadDataTableSanPham();
 		clickTableBanHang();
 
 		// tạo table giỏ hàng
 		MyPanelSecond panel_tableGH = new MyPanelSecond();
+		panel_tableGH.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panel_table.add(panel_tableGH);
 		panel_tableGH.setLayout(new BorderLayout(0, 0));
 
@@ -167,27 +193,36 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableGH.addColumn("Số lượng");
 		modelTableGH.addColumn("Đơn giá");
 		modelTableGH.addColumn("Thành tiền");
-		tableGH = new JTable(modelTableGH);
+		tableGH = new MyTable(modelTableGH);
 		JScrollPane scrollPaneGH = new JScrollPane(tableGH);
-		scrollPaneGH.getViewport().setBackground(primaryColor);
+		scrollPaneGH.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		panel_tableGH.add(scrollPaneGH);
 
 		// panel chi tiết sp
-		MyPanel panel_DetailSP = new MyPanel();
-		panelTabBanHang.add(panel_DetailSP, BorderLayout.EAST);
-		panel_DetailSP.setLayout(new BoxLayout(panel_DetailSP, BoxLayout.Y_AXIS));
+		MyPanel panel_ContainDetailSP = new MyPanel();
+		panel_ContainDetailSP.setLayout(new BorderLayout());
+		MyPanelSecond panel_DetailSP = new MyPanelSecond();
+		panel_ContainDetailSP.add(panel_DetailSP, BorderLayout.CENTER);
+		panelTabBanHang.add(panel_ContainDetailSP, BorderLayout.EAST);
+		panel_DetailSP.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+		panel_DetailSP.setLayout(new BorderLayout());
+		MyPanel pnSpace1 = new MyPanel();
+		panel_ContainDetailSP.add(pnSpace1, BorderLayout.EAST);
+		MyPanel pnSpace2 = new MyPanel();
+		panel_ContainDetailSP.add(pnSpace2, BorderLayout.SOUTH);
 
-		MyPanel panel_TimSP = new MyPanel();
-		panel_DetailSP.add(panel_TimSP);
+		MyPanelSecond panel_TimSP = new MyPanelSecond();
+		panel_DetailSP.add(panel_TimSP, BorderLayout.NORTH);
 		panel_TimSP.setLayout(new BoxLayout(panel_TimSP, BoxLayout.Y_AXIS));
 
-		MyPanel panel_1 = new MyPanel();
+		MyPanelSecond panel_1 = new MyPanelSecond();
 		panel_TimSP.add(panel_1);
 
 //		MyLabelSecond lblNewLabel_2 = new MyLabelSecond("Tìm kiếm");
 //		panel_1.add(lblNewLabel_2);
 
-		MyPanel panel_timTheoLoai = new MyPanel();
+		MyPanelSecond panel_timTheoLoai = new MyPanelSecond();
+		panel_timTheoLoai.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_TimSP.add(panel_timTheoLoai);
 		panel_timTheoLoai.setLayout(new BorderLayout(0, 0));
 
@@ -199,6 +234,7 @@ public class QLyBanHangGUI extends JPanel {
 		panel_timTheoLoai.add(comboBox, BorderLayout.CENTER);
 
 		JPanel panel_TimTheoTen = new JPanel();
+//		panel_TimTheoTen.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_TimSP.add(panel_TimTheoTen);
 		panel_TimTheoTen.setLayout(new BorderLayout(0, 0));
 
@@ -207,18 +243,29 @@ public class QLyBanHangGUI extends JPanel {
 		txtTimTheoTen.setColumns(10);
 
 		btnTimKiem = new MyButton("Tìm kiếm");
+		ImageIcon iconTimkiem = new ImageIcon("images/loupe.png");
+		Image img0 = iconTimkiem.getImage();
+		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconTimkiem.setImage(newImg0);
+		btnTimKiem.setIcon(iconTimkiem);
+		
 		panel_TimTheoTen.add(btnTimKiem, BorderLayout.EAST);
 
-		MyPanel panel = new MyPanel();
-		panel_DetailSP.add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
+		MyPanelSecond pnInput = new MyPanelSecond();
+		pnInput.setLayout(new BoxLayout(pnInput, BoxLayout.Y_AXIS));
+		panel_DetailSP.add(pnInput, BorderLayout.CENTER);
+//		MyPanel panel = new MyPanel();
+//		pnInput.add(panel);
+//		panel.setLayout(new BorderLayout(0, 0));
 
 		MyLabelSecond lblNewLabel_1 = new MyLabelSecond("Chi tiết");
-		lblNewLabel_1.setText("Chi tiết sản phẩm");
-		panel.add(lblNewLabel_1, BorderLayout.CENTER);
-
-		MyPanel panel_MaSP = new MyPanel();
-		panel_DetailSP.add(panel_MaSP);
+		lblNewLabel_1.setText("Chi tiết");
+//		panel.add(lblNewLabel_1, BorderLayout.NORTH);
+		pnInput.add(lblNewLabel_1);
+		MyPanelSecond panel_MaSP = new MyPanelSecond();
+		panel_MaSP.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		pnInput.add(panel_MaSP);
+		panel_MaSP.setLayout(new BoxLayout(panel_MaSP, BoxLayout.X_AXIS));
 
 		MyLabelSecond lblMaSP = new MyLabelSecond("Mã SP");
 		panel_MaSP.add(lblMaSP);
@@ -227,8 +274,10 @@ public class QLyBanHangGUI extends JPanel {
 		panel_MaSP.add(txtMaSP);
 		txtMaSP.setColumns(10);
 
-		MyPanel panel_TenSP = new MyPanel();
-		panel_DetailSP.add(panel_TenSP);
+		MyPanelSecond panel_TenSP = new MyPanelSecond();
+		panel_TenSP.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		pnInput.add(panel_TenSP);
+		panel_TenSP.setLayout(new BoxLayout(panel_TenSP, BoxLayout.X_AXIS));
 
 		MyLabelSecond lblTenSP = new MyLabelSecond("Tên SP");
 		panel_TenSP.add(lblTenSP);
@@ -237,8 +286,10 @@ public class QLyBanHangGUI extends JPanel {
 		panel_TenSP.add(txtTenSP);
 		txtTenSP.setColumns(10);
 
-		MyPanel panel_DonGia = new MyPanel();
-		panel_DetailSP.add(panel_DonGia);
+		MyPanelSecond panel_DonGia = new MyPanelSecond();
+		panel_DonGia.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		pnInput.add(panel_DonGia);
+		panel_DonGia.setLayout(new BoxLayout(panel_DonGia, BoxLayout.X_AXIS));
 
 		MyLabelSecond lblDonGia = new MyLabelSecond("Đơn giá");
 		panel_DonGia.add(lblDonGia);
@@ -247,8 +298,10 @@ public class QLyBanHangGUI extends JPanel {
 		panel_DonGia.add(txtDonGia);
 		txtDonGia.setColumns(10);
 
-		MyPanel panel_SoLuong = new MyPanel();
-		panel_DetailSP.add(panel_SoLuong);
+		MyPanelSecond panel_SoLuong = new MyPanelSecond();
+		panel_SoLuong.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		pnInput.add(panel_SoLuong);
+		panel_SoLuong.setLayout(new BoxLayout(panel_SoLuong, BoxLayout.X_AXIS));
 
 		MyLabelSecond lblSoLuong = new MyLabelSecond("Số lượng");
 		panel_SoLuong.add(lblSoLuong);
@@ -257,8 +310,8 @@ public class QLyBanHangGUI extends JPanel {
 		panel_SoLuong.add(txtSoLuong);
 		txtSoLuong.setColumns(10);
 
-		MyPanel panel_NhanVien = new MyPanel();
-		panel_DetailSP.add(panel_NhanVien);
+//		MyPanel panel_NhanVien = new MyPanel();
+//		pnInput.add(panel_NhanVien);
 
 //		MyLabelSecond lblNhanVien = new MyLabelSecond("Nhân viên");
 //		panel_NhanVien.add(lblNhanVien);
@@ -266,41 +319,75 @@ public class QLyBanHangGUI extends JPanel {
 //		txtNhanVien = new MyTextField();
 //		panel_NhanVien.add(txtNhanVien);
 //		txtNhanVien.setColumns(10);
-
-		MyPanel panel_ThemGH = new MyPanel();
-		panel_DetailSP.add(panel_ThemGH);
+//		MyPanel panel_ThemGH = new MyPanel();
+//		panel_DetailSP.add(panel_ThemGH);
 
 		// các button chức năng
+
+		MyPanelSecond panel_HinhAnhSP = new MyPanelSecond();
+		pnInput.add(panel_HinhAnhSP);
+
+		MyPanelSecond pnBTN = new MyPanelSecond();
+		pnBTN.setLayout(new BoxLayout(pnBTN, BoxLayout.Y_AXIS));
+		panel_DetailSP.add(pnBTN, BorderLayout.SOUTH);
 		btnThemGioHang = new MyButton("Thêm giỏ hàng");
-		panel_ThemGH.add(btnThemGioHang);
+		ImageIcon icon = new ImageIcon("images/cart.png");
+		Image img = icon.getImage();
+		Image newImg = img.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		icon.setImage(newImg);
+		btnThemGioHang.setIcon(icon);
+		pnBTN.add(btnThemGioHang);
 
-		MyPanel panel_HinhAnhSP = new MyPanel();
-		panel_DetailSP.add(panel_HinhAnhSP);
-
-		MyPanel panel_XoaSP_XuatHD = new MyPanel();
-		panel_DetailSP.add(panel_XoaSP_XuatHD);
+		MyPanelSecond panel_XoaSP_XuatHD = new MyPanelSecond();
+		pnBTN.add(panel_XoaSP_XuatHD);
 
 		btnXoaSP = new MyButton("Xóa");
+		ImageIcon iconXoa = new ImageIcon("images/remove.png");
+		Image img2 = iconXoa.getImage();
+		Image newImg2 = img2.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconXoa.setImage(newImg2);
+		btnXoaSP.setIcon(iconXoa);
+		
 		clickTableGioHang();
 		panel_XoaSP_XuatHD.add(btnXoaSP);
 
 		btnXuatHD = new MyButton("Xuất hóa đơn");
+		ImageIcon iconXuatHD = new ImageIcon("images/invoice.png");
+		Image img3 = iconXuatHD.getImage();
+		Image newImg3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconXuatHD.setImage(newImg3);
+		btnXuatHD.setIcon(iconXuatHD);
+		
 		panel_XoaSP_XuatHD.add(btnXuatHD);
 
 		MyPanelSecond panelTabHoaDon = new MyPanelSecond();
 		panelTabHoaDon.setLayout(new BorderLayout(0, 0));
+		
 
-		MyPanelSecond panel_tableHoaDon = new MyPanelSecond();
+		MyPanel panel_tableHoaDon = new MyPanel();
+		panel_tableHoaDon.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
 		panelTabHoaDon.add(panel_tableHoaDon, BorderLayout.CENTER);
 		panel_tableHoaDon.setLayout(new GridLayout(2, 1, 0, 0));
 
+		MyPanelSecond panel_containTableHD = new MyPanelSecond();
+		panel_containTableHD.setLayout(new BorderLayout());
 		MyPanelSecond panel_tableHD = new MyPanelSecond();
-		panel_tableHoaDon.add(panel_tableHD);
+		panel_containTableHD.add(panel_tableHD, BorderLayout.CENTER);
+		MyPanel pnSpace3 = new MyPanel();
+		pnSpace3.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		panel_containTableHD.add(pnSpace3, BorderLayout.SOUTH);
+		panel_tableHoaDon.add(panel_containTableHD);
 		panel_tableHD.setLayout(new BorderLayout(0, 0));
+		panel_tableHD.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		MyLabelSecond lblDSHD = new MyLabelSecond("Danh sách hóa đơn");
 		panel_tableHD.add(lblDSHD, BorderLayout.NORTH);
-
+		
+		
+		
+		/*=================================HÓA ĐƠN======================================*/
+		
+		
 		// tạo table hóa đơn
 		modelTableHD = new DefaultTableModel();
 		modelTableHD.addColumn("Mã HD");
@@ -309,15 +396,16 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableHD.addColumn("Ghi chú");
 
 		loadDataTableHoaDon();
-		tableHD = new JTable(modelTableHD);
+		tableHD = new MyTable(modelTableHD);
 		JScrollPane scrollPaneHD = new JScrollPane(tableHD);
 		panel_tableHD.add(scrollPaneHD);
-		scrollPaneHD.getViewport().setBackground(primaryColor);
+		scrollPaneHD.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 
 		// tạo table chi tiết hd
 		MyPanelSecond panel_tableCTHD = new MyPanelSecond();
 		panel_tableHoaDon.add(panel_tableCTHD);
 		panel_tableCTHD.setLayout(new BorderLayout(0, 0));
+		panel_tableCTHD.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		MyLabelSecond lblCTHoaDon = new MyLabelSecond("Chi tiết hóa đơn");
 		panel_tableCTHD.add(lblCTHoaDon, BorderLayout.NORTH);
@@ -327,104 +415,130 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableCTHD.addColumn("Số lượng");
 		modelTableCTHD.addColumn("Đơn giá");
 		modelTableCTHD.addColumn("Thành tiền");
-		tableCTHD = new JTable(modelTableCTHD);
+		tableCTHD = new MyTable(modelTableCTHD);
 		JScrollPane scrollPaneCTHD = new JScrollPane(tableCTHD);
-		scrollPaneCTHD.getViewport().setBackground(primaryColor);
+		scrollPaneCTHD.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		panel_tableCTHD.add(scrollPaneCTHD);
 		clickTableHoaDon();
 
-		MyPanel panel_HD_CTHD = new MyPanel();
+		MyPanel Contain_Panel_HD_CTHD = new MyPanel();
+		Contain_Panel_HD_CTHD.setLayout(new BorderLayout());
+		MyPanel pnSpace4 = new MyPanel();
+		Contain_Panel_HD_CTHD.add(pnSpace4, BorderLayout.EAST);
+		MyPanel pnSpace5 = new MyPanel();
+		Contain_Panel_HD_CTHD.add(pnSpace5, BorderLayout.SOUTH);
+		MyPanelSecond panel_HD_CTHD = new MyPanelSecond();
+		Contain_Panel_HD_CTHD.add(panel_HD_CTHD, BorderLayout.CENTER);
+		
 		panel_HD_CTHD.setLayout(new GridLayout(2, 1, 0, 0));
+		panel_HD_CTHD.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		MyPanel panel_xemHD = new MyPanel();
-		panel_xemHD.setLayout(new BoxLayout(panel_xemHD, BoxLayout.Y_AXIS));
-		MyPanel panel_MaHD = new MyPanel();
-		panel_xemHD.add(panel_MaHD);
+		MyPanelSecond panel_xemHD = new MyPanelSecond();
+		panel_xemHD.setLayout(new BorderLayout());
+		MyPanelSecond panel_MaHD = new MyPanelSecond();
+		panel_xemHD.add(panel_MaHD, BorderLayout.NORTH);
 		panel_MaHD.setLayout(new GridLayout(2, 1, 0, 0));
 
-		MyPanel panel_3 = new MyPanel();
+		MyPanelSecond panel_3 = new MyPanelSecond();
+		panel_3.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_MaHD.add(panel_3);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 
 		MyLabelSecond lblNewLabel_2 = new MyLabelSecond("Từ ngày");
 		panel_3.add(lblNewLabel_2);
-
-		ngayBD = new JComboBox();
-		panel_3.add(ngayBD);
-
-		thangBD = new JComboBox();
-		panel_3.add(thangBD);
-
-		namBD = new JComboBox();
-		panel_3.add(namBD);
-
-		MyPanel panel_2 = new MyPanel();
+//		startDateChooser = new JDateChooser();
+//		startDateChooser.setBackground(new Color(0, 0, 0));
+//		startDateChooser.setPreferredSize(new Dimension(120, 30));
+//		startDateChooser.setForeground(Color.BLUE); // Thiết lập màu chữ
+//		startDateChooser.setFont(new Font("Arial", Font.BOLD, 14)); // Thiết lập font chữ
+//		panel_3.add(startDateChooser);
+		
+//		ngayBD = new JComboBox();
+//		panel_3.add(ngayBD);
+//
+//		thangBD = new JComboBox();
+//		panel_3.add(thangBD);
+//
+//		namBD = new JComboBox();
+//		panel_3.add(namBD);
+//
+		MyPanelSecond panel_2 = new MyPanelSecond();
 		panel_MaHD.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
-
+//
 		MyLabelSecond lblNewLabel_3 = new MyLabelSecond("Tới ngày");
 		panel_2.add(lblNewLabel_3);
-
-		ngayKT = new JComboBox();
-		panel_2.add(ngayKT);
-
-		thangKT = new JComboBox();
-		panel_2.add(thangKT);
-
-		namKT = new JComboBox();
-		panel_2.add(namKT);
-
-		for (int i = 1; i <= 31; i++) {
-			ngayBD.addItem(i);
-			ngayKT.addItem(i);
-		}
-
-		// Thêm số lựa chọn cho các JComboBox tháng (ví dụ: từ 1 đến 12)
-		for (int i = 1; i <= 12; i++) {
-			thangBD.addItem(i);
-			thangKT.addItem(i);
-		}
-
-		// Thêm số lựa chọn cho các JComboBox năm (ví dụ: từ 2000 đến 2025)
-		for (int i = 2000; i <= 2025; i++) {
-			namBD.addItem(i);
-			namKT.addItem(i);
-		}
-		MyPanel panel_NgayTaoHD = new MyPanel();
-		panel_xemHD.add(panel_NgayTaoHD);
+//		endDateChooser = new JDateChooser();
+//		endDateChooser.setBackground(new Color(0, 0, 0));
+//		endDateChooser.setPreferredSize(new Dimension(120, 30));
+//		panel_2.add(endDateChooser);
+//
+//		ngayKT = new JComboBox();
+//		panel_2.add(ngayKT);
+//
+//		thangKT = new JComboBox();
+//		panel_2.add(thangKT);
+//
+//		namKT = new JComboBox();
+//		panel_2.add(namKT);
+//
+//		for (int i = 1; i <= 31; i++) {
+//			ngayBD.addItem(i);
+//			ngayKT.addItem(i);
+//		}
+//
+//		// Thêm số lựa chọn cho các JComboBox tháng (ví dụ: từ 1 đến 12)
+//		for (int i = 1; i <= 12; i++) {
+//			thangBD.addItem(i);
+//			thangKT.addItem(i);
+//		}
+//
+//		// Thêm số lựa chọn cho các JComboBox năm (ví dụ: từ 2000 đến 2025)
+//		for (int i = 2000; i <= 2025; i++) {
+//			namBD.addItem(i);
+//			namKT.addItem(i);
+//		}
+		MyPanelSecond panel_NgayTaoHD = new MyPanelSecond();
+		panel_xemHD.add(panel_NgayTaoHD, BorderLayout.SOUTH);
 
 		btnTimKiemHD = new MyButton("Tìm");
 		panel_NgayTaoHD.add(btnTimKiemHD);
 
 		panel_HD_CTHD.add(panel_xemHD);
 
-		MyPanel panel_xemCTHD = new MyPanel();
+		MyPanelSecond panel_xemCTHD = new MyPanelSecond();
 		panel_xemCTHD.setLayout(new BoxLayout(panel_xemCTHD, BoxLayout.Y_AXIS));
 		MyLabelSecond lblMaCTHD = new MyLabelSecond("Mã CTHD");
 		MyTextField txtMaCTHD = new MyTextField();
-		MyPanel panel_MaCTHD = new MyPanel();
+		MyPanelSecond panel_MaCTHD = new MyPanelSecond();
 		panel_MaCTHD.add(lblMaCTHD);
 		panel_MaCTHD.add(txtMaCTHD);
 		panel_xemCTHD.add(panel_MaCTHD);
 		panel_HD_CTHD.add(panel_xemCTHD);
 
-		panelTabHoaDon.add(panel_HD_CTHD, BorderLayout.EAST);
+		panelTabHoaDon.add(Contain_Panel_HD_CTHD, BorderLayout.EAST);
 
 		panelCard.add(panelTabHoaDon, "HoaDon");
 		panel_main.add(panelCard);
 
-		// ================================Menu chế
-		// biến=============================================
+		// ================================Menu chế biến=============================================
 		MyLabelSecond tabCheBien = new MyLabelSecond("CheBien");
+		tabCheBien.setText("  Chế biến");
 		tabCheBien.setPreferredSize(new Dimension(200, 30));
 		panel_tab.add(tabCheBien);
 
-		JPanel panelMenuCheBien = new JPanel();
+		MyPanel panelMenuCheBien = new MyPanel();
 		panelCard.add(panelMenuCheBien, "CheBien");
 		panelMenuCheBien.setLayout(new BorderLayout(0, 0));
 
-		JPanel panelBtnCheBien = new JPanel();
-		panelMenuCheBien.add(panelBtnCheBien, BorderLayout.EAST);
+		MyPanel Contain_panelBtnCheBien = new MyPanel();
+		Contain_panelBtnCheBien.setLayout(new BorderLayout());
+		MyPanel pnSpace7 = new MyPanel();
+		Contain_panelBtnCheBien.add(pnSpace7, BorderLayout.SOUTH);
+		MyPanelSecond panelBtnCheBien = new MyPanelSecond();
+		Contain_panelBtnCheBien.add(panelBtnCheBien, BorderLayout.CENTER);
+		panelMenuCheBien.add(Contain_panelBtnCheBien, BorderLayout.EAST);
+		panelMenuCheBien.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		panelBtnCheBien.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		txtSoLuongCB = new MyTextField();
@@ -433,15 +547,23 @@ public class QLyBanHangGUI extends JPanel {
 		btnCheBien = new MyButton("Chế biến");
 		panelBtnCheBien.add(btnCheBien);
 
-		JPanel panelTableCheBien = new JPanel();
+		MyPanel panelTableCheBien = new MyPanel();
+		panelTableCheBien.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
 		panelMenuCheBien.add(panelTableCheBien, BorderLayout.CENTER);
 		panelTableCheBien.setLayout(new GridLayout(2, 1, 0, 0));
 
-		JPanel panelTableSanPham = new JPanel();
-		panelTableCheBien.add(panelTableSanPham);
+		MyPanel Contain_PanelTableSanPham = new MyPanel();
+		Contain_PanelTableSanPham.setLayout(new BorderLayout());
+		MyPanel pnSpace6 = new MyPanel();
+		pnSpace6.setBorder(new EmptyBorder(0, 0, 5, 0));
+		Contain_PanelTableSanPham.add(pnSpace6, BorderLayout.SOUTH);
+		MyPanelSecond panelTableSanPham = new MyPanelSecond();
+		Contain_PanelTableSanPham.add(panelTableSanPham, BorderLayout.CENTER);
+		panelTableCheBien.add(Contain_PanelTableSanPham);
 		panelTableSanPham.setLayout(new BorderLayout(0, 0));
+		panelTableSanPham.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		JLabel lblSanPhamCheBien = new JLabel("Sản phẩm");
+		MyLabelSecond lblSanPhamCheBien = new MyLabelSecond("Sản phẩm");
 		panelTableSanPham.add(lblSanPhamCheBien, BorderLayout.NORTH);
 
 		JScrollPane scrollPaneSanPham = new JScrollPane();
@@ -452,19 +574,22 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableSPCheBien.addColumn("Tên SP");
 		modelTableSPCheBien.addColumn("Đơn giá");
 		modelTableSPCheBien.addColumn("Còn lại");
-		tableSanPhamCheBien = new JTable(modelTableSPCheBien);
+		tableSanPhamCheBien = new MyTable(modelTableSPCheBien);
 		scrollPaneSanPham.setViewportView(tableSanPhamCheBien);
+		scrollPaneSanPham.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		clickTableSanPhamCheBien();
 
-		JPanel panelCongThucCheBien = new JPanel();
+		MyPanelSecond panelCongThucCheBien = new MyPanelSecond();
+		panelCongThucCheBien.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panelTableCheBien.add(panelCongThucCheBien);
 		panelCongThucCheBien.setLayout(new BorderLayout(0, 0));
 
-		JLabel lblCTCB = new JLabel("Nguyên liệu");
+		MyLabelSecond lblCTCB = new MyLabelSecond("Nguyên liệu");
 		panelCongThucCheBien.add(lblCTCB, BorderLayout.NORTH);
 
 		JScrollPane scrollPaneNguyenLieu = new JScrollPane();
 		panelCongThucCheBien.add(scrollPaneNguyenLieu, BorderLayout.CENTER);
+		scrollPaneNguyenLieu.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 
 		modelTableNguyenLieuCB = new DefaultTableModel();
 		modelTableNguyenLieuCB.addColumn("Mã SP");
@@ -472,7 +597,7 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableNguyenLieuCB.addColumn("Tên nguyên liệu");
 		modelTableNguyenLieuCB.addColumn("Số lượng cần");
 		modelTableNguyenLieuCB.addColumn("Số lượng còn lại");
-		tableNguyenLieuCheBien = new JTable(modelTableNguyenLieuCB);
+		tableNguyenLieuCheBien = new MyTable(modelTableNguyenLieuCB);
 		scrollPaneNguyenLieu.setViewportView(tableNguyenLieuCheBien);
 		loadDataTableSanPhamCB();
 
@@ -483,27 +608,39 @@ public class QLyBanHangGUI extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(panelCard, "BanHang");
-				tabBanHang.setForeground(Color.BLUE);
-				tabHoaDon.setForeground(Color.WHITE);
-				tabCheBien.setForeground(Color.WHITE);
+//				tabBanHang.setForeground(MyColor.PRIMARY_TEXT_COLOR);
+//				tabHoaDon.setForeground(Color.WHITE);
+//				tabCheBien.setForeground(Color.WHITE);
+				tabBanHang.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+				tabBanHang.setOpaque(true);
+				tabCheBien.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+				tabHoaDon.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 			}
 		});
 		tabHoaDon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(panelCard, "HoaDon");
-				tabBanHang.setForeground(Color.WHITE);
-				tabHoaDon.setForeground(Color.BLUE);
-				tabCheBien.setForeground(Color.WHITE);
+//				tabBanHang.setForeground(Color.WHITE);
+//				tabHoaDon.setForeground(Color.BLUE);
+//				tabCheBien.setForeground(Color.WHITE);
+				tabHoaDon.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+				tabHoaDon.setOpaque(true);
+				tabBanHang.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+				tabCheBien.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 			}
 		});
 		tabCheBien.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(panelCard, "CheBien");
-				tabCheBien.setForeground(Color.BLUE);
-				tabBanHang.setForeground(Color.WHITE);
-				tabHoaDon.setForeground(Color.WHITE);
+//				tabCheBien.setForeground(Color.BLUE);
+//				tabBanHang.setForeground(Color.WHITE);
+//				tabHoaDon.setForeground(Color.WHITE);
+				tabCheBien.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+				tabCheBien.setOpaque(true);
+				tabBanHang.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+				tabHoaDon.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 			}
 		});
 
@@ -803,10 +940,12 @@ public class QLyBanHangGUI extends JPanel {
 	private void themVaoGioHang() {
 		int row = tableSP.getSelectedRow();
 		if (row < 0) {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		String soLuong = txtSoLuong.getText();
 		if (soLuong.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		String ma = txtMaSP.getText();
@@ -866,20 +1005,10 @@ public class QLyBanHangGUI extends JPanel {
 	}
 
 	private void timTheoKhoangNgay() {
-		String ngayBatDau = ngayBD.getSelectedItem() + "";
-		String thangBatDau = thangBD.getSelectedItem() + "";
-		String namBatDau = namBD.getSelectedItem() + "";
-		String ngayKetThuc = ngayKT.getSelectedItem() + "";
-		String thangKetThuc = thangKT.getSelectedItem() + "";
-		String namKetThuc = namKT.getSelectedItem() + "";
-		ngayBatDau = (ngayBatDau.length() == 1) ? "0" + ngayBatDau : ngayBatDau;
-		thangBatDau = (thangBatDau.length() == 1) ? "0" + thangBatDau : thangBatDau;
-		ngayKetThuc = (ngayKetThuc.length() == 1) ? "0" + ngayKetThuc : ngayKetThuc;
-		thangKetThuc = (thangKetThuc.length() == 1) ? "0" + thangKetThuc : thangKetThuc;
-		String ngayBatDauString = ngayBatDau + "/" + thangBatDau + "/" + namBatDau;
-		String ngayKetThucString = ngayKetThuc + "/" + thangKetThuc + "/" + namKetThuc;
-		ArrayList<HoaDon> dshd = hdBUS.getListHoaDonTheoNgay(ngayBatDauString, ngayKetThucString);
-		addDataToTableHoaDon(dshd);
+//		java.util.Date utilStartDate = startDateChooser.getDate();
+//		java.util.Date utilEndDate = endDateChooser.getDate();
+//		ArrayList<HoaDon> dshd = hdBUS.getListHoaDonTheoNgay(utilStartDate, utilEndDate);
+//		addDataToTableHoaDon(dshd);
 	}
 
 	private void clickTableSanPhamCheBien() {
@@ -930,11 +1059,22 @@ public class QLyBanHangGUI extends JPanel {
 	}
 
 	private void xulyCheBien() {
-		if ((txtSoLuongCB.getText()) == null)
+		if (txtSoLuongCB.getText() == "") {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			return;
-		int soLuong = Integer.parseInt(txtSoLuongCB.getText() + "");
-		if (soLuong == 0)
+		}
+		int soLuong=0;
+		try {			
+			soLuong = Integer.parseInt(txtSoLuongCB.getText().trim() + "");
+		} catch (Exception e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			return;
+		}
+		if (soLuong == 0) {
+			JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 
 		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
 			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3) + "");
