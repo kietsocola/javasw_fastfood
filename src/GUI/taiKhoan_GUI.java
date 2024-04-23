@@ -54,18 +54,18 @@ public class taiKhoan_GUI {
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					taiKhoan_GUI window = new taiKhoan_GUI();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					taiKhoan_GUI window = new taiKhoan_GUI();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	public void run(taiKhoan_GUI login) {
 		login.frame.setVisible(true);
 	}
@@ -87,6 +87,7 @@ public class taiKhoan_GUI {
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 337);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
 		Border border1 = BorderFactory.createLineBorder(Color.BLACK, 2);
 		
 		EmptyBorder border = new EmptyBorder(20, 20, 20, 20);
@@ -195,16 +196,7 @@ public class taiKhoan_GUI {
 		btnThoat.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
 		btnThoat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int choice = JOptionPane.showOptionDialog(
-		                null, // parentComponent, null để hiển thị ở giữa màn hình
-		                "Bạn có muốn thoát không?", // message
-		                "Xác nhận", // title
-		                JOptionPane.YES_NO_CANCEL_OPTION, // optionType
-		                JOptionPane.QUESTION_MESSAGE, // messageType
-		                null, // icon
-		                new String[]{"Yes", "No"}, // options
-		                "Yes" // initialValue
-		        );
+				 int choice = JOptionPane.showConfirmDialog(null, "Bạn muốn thoát không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 
 		        // Xử lý lựa chọn
 		        switch (choice) {
