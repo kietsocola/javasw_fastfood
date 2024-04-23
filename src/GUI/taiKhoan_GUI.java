@@ -14,6 +14,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import BUS.taiKhoan_BUS;
+import Custom.MyButton;
+import Custom.MyPanel;
 import DTO.taiKhoan_DTO;
 import GUI.MainQuanlyGUI;
 
@@ -46,6 +48,8 @@ public class taiKhoan_GUI {
 	private JFrame frame;
 	private JTextField tenDangNhap;
 	private JTextField matKhau;
+	private MyPanel panel ,panel_1 ,panel_2 ,panelTenDangNhap,panelMatKhau,panelBtnDangNhap;
+	private MyButton btnDangNhap ,btnThoat;
 
 	/**
 	 * Launch the application.
@@ -62,7 +66,9 @@ public class taiKhoan_GUI {
 			}
 		});
 	}
-
+	public void run(taiKhoan_GUI login) {
+		login.frame.setVisible(true);
+	}
 	/**
 	 * Create the application.
 	 */
@@ -81,25 +87,26 @@ public class taiKhoan_GUI {
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 337);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
 		Border border1 = BorderFactory.createLineBorder(Color.BLACK, 2);
 		
 		EmptyBorder border = new EmptyBorder(20, 20, 20, 20);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
-		JPanel panel_1 = new JPanel();
+		panel_1 = new MyPanel();
 		panel_1.setBorder(new EmptyBorder(0, 10, 0, 0));
 		panel_1.setPreferredSize(new Dimension(320, 400));
 //		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setPreferredSize(new Dimension(320, 320));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\lenovo\\Pictures\\fd1.jpg"));
-		panel_1.add(lblNewLabel);
+		JLabel lbImageApp = new JLabel("");
+		lbImageApp.setPreferredSize(new Dimension(320, 320));
+		lbImageApp.setHorizontalAlignment(SwingConstants.CENTER);
+		lbImageApp.setIcon(new ImageIcon("..\\javasw_fastfood\\images\\fd1.jpg"));
+		panel_1.add(lbImageApp);
 
 		
-		JPanel panel = new JPanel();
+		panel = new MyPanel();
 //		frame.getContentPane().add(panel);
 		panel.setLayout(new GridLayout(4, 1, 0, 0));
 		
@@ -109,7 +116,7 @@ public class taiKhoan_GUI {
 		panel.add(txtNameApp);
 		txtNameApp.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
-		JPanel panelTenDangNhap = new JPanel();
+		panelTenDangNhap = new MyPanel();
 		panelTenDangNhap.setBorder(new EmptyBorder(20, 20, 20, 20));
 		panelTenDangNhap.setPreferredSize(new Dimension(10, 5));
 		panel.add(panelTenDangNhap);
@@ -129,7 +136,7 @@ public class taiKhoan_GUI {
 		tenDangNhap.setColumns(15);
 		panelTenDangNhap.add(Box.createHorizontalGlue());
 		
-		JPanel panelMatKhau = new JPanel();
+		panelMatKhau = new MyPanel();
 		panelMatKhau.setBorder(new EmptyBorder(20, 20, 20, 20));
 		panelMatKhau.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.add(panelMatKhau);
@@ -146,12 +153,12 @@ public class taiKhoan_GUI {
 		panelMatKhau.add(matKhau);
 		matKhau.setColumns(10);
 		
-		JPanel panelBtnDangNhap = new JPanel();
+		panelBtnDangNhap = new MyPanel();
 		panel.add(panelBtnDangNhap);
 		
-		JButton btnNewButton = new JButton("Đăng nhập");
-		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
-		btnNewButton.addActionListener(new ActionListener() {
+		btnDangNhap = new MyButton("Đăng nhập");
+		btnDangNhap.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
+		btnDangNhap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				taiKhoan_DTO account = new taiKhoan_DTO();
@@ -161,16 +168,16 @@ public class taiKhoan_GUI {
 					// TODO Auto-generated catch block\
 				try {
 					if(tk_BUS.checkDangNhap(account) == 0)
-						JOptionPane.showMessageDialog(btnNewButton, "vui long nhap day du thong tin","Thong bao",0);
+						JOptionPane.showMessageDialog(btnDangNhap, "vui long nhap day du thong tin","Thong bao",0);
 					else if(tk_BUS.checkDangNhap(account) == 1)
 					{
-						JOptionPane.showMessageDialog(btnNewButton, "hello","Thong bao",0);
+						JOptionPane.showMessageDialog(btnDangNhap, "hello","Thong bao",0);
 						MainQuanlyGUI main = new MainQuanlyGUI();
 						main.showWindow();
 						frame.setVisible(false);
 					}
 					else if(tk_BUS.checkDangNhap(account) == 2)
-						JOptionPane.showMessageDialog(btnNewButton, "ten tai khoan hoac mat khau cua ban bi sai","Thong bao",0);
+						JOptionPane.showMessageDialog(btnDangNhap, "ten tai khoan hoac mat khau cua ban bi sai","Thong bao",0);
 				} catch (HeadlessException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -182,23 +189,14 @@ public class taiKhoan_GUI {
 		});
 		panelBtnDangNhap.setLayout(new GridLayout(0, 2, 15, 20));
 		panelBtnDangNhap.setBorder(new EmptyBorder(25, 20, 25, 20));
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panelBtnDangNhap.add(btnNewButton);
+		btnDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panelBtnDangNhap.add(btnDangNhap);
 		
-		JButton btnNewButton_1 = new JButton("Thoát");
-		btnNewButton_1.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnThoat = new MyButton("Thoát");
+		btnThoat.setBorder(new LineBorder(new Color(0, 0, 0), 0, true));
+		btnThoat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int choice = JOptionPane.showOptionDialog(
-		                null, // parentComponent, null để hiển thị ở giữa màn hình
-		                "Bạn có muốn thoát không?", // message
-		                "Xác nhận", // title
-		                JOptionPane.YES_NO_CANCEL_OPTION, // optionType
-		                JOptionPane.QUESTION_MESSAGE, // messageType
-		                null, // icon
-		                new String[]{"Yes", "No"}, // options
-		                "Yes" // initialValue
-		        );
+				 int choice = JOptionPane.showConfirmDialog(null, "Bạn muốn thoát không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 
 		        // Xử lý lựa chọn
 		        switch (choice) {
@@ -213,10 +211,10 @@ public class taiKhoan_GUI {
 		        }
 			}
 		});
-		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panelBtnDangNhap.add(btnNewButton_1);
+		btnThoat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panelBtnDangNhap.add(btnThoat);
 		
-		JPanel panel_2 = new JPanel();
+		panel_2 = new MyPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel_2.add(panel_1);
 		panel_2.add(panel);
