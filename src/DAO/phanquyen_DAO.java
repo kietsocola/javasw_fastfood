@@ -41,11 +41,17 @@ public class phanquyen_DAO {
 			PreparedStatement ps = con.getCon().prepareStatement(sql);
 			ps.setString(1,item.getTenPhanQuyen());
 			ResultSet rs = ps.executeQuery();
-			if(rs.next())
-				return true;
+			boolean check = false;
+			while(rs.next())
+			{
+				if(rs.getInt(1) != item.getIdPhanQuyen())
+					check = true;
+			}
+			if(check) return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 		}
+		con.close();
 		return false;
 	
 	}
@@ -67,8 +73,11 @@ public class phanquyen_DAO {
 				return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			return false;
+			e.printStackTrace();
 		}
+		
+		con.close();
+		return false;
 		
 	}
 	

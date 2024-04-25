@@ -20,7 +20,6 @@ public class phanquyen_BUS {
 		
 		if(temp.hasNamePhanQuyen(item))
 			return "ten phan quyen da ton tai";
-		
 		if(temp.updatePhanQuyen(item))
 			return "sua thanh cong";
 		return "sua that bai";
