@@ -82,11 +82,10 @@ public class CongThucDAO {
 	    boolean result = false;
 	    if (conDB.openConnectDB()) {
 	        try {
-	            String sql = "UPDATE CongThuc SET idNguyenLieu = ?, SoLuongDung = ? WHERE id = ?";
+	            String sql = "UPDATE CongThuc set SoLuongDung=? where idNguyenLieu=? ";
 	            PreparedStatement prep = conDB.conn.prepareStatement(sql);
-	            prep.setInt(1, congThuc.getIdNguyenLieu());
-	            prep.setInt(2, congThuc.getSoLuongDung());
-	            prep.setInt(3, congThuc.getid());
+	            prep.setInt(1, congThuc.getSoLuongDung());
+	            prep.setInt(2, congThuc.getIdNguyenLieu());
 	            if (prep.executeUpdate() >= 1)
 	                result = true;
 	        } catch (SQLException ex) {
@@ -97,6 +96,25 @@ public class CongThucDAO {
 	    }
 	    return result;
 	}
+//	public boolean updateCongThuc(CongThuc congThuc) {
+//	    boolean result = false;
+//	    if (conDB.openConnectDB()) {
+//	        try {
+//	            String sql = "UPDATE CongThuc SET idNguyenLieu = ?, SoLuongDung = ? WHERE id = ?";
+//	            PreparedStatement prep = conDB.conn.prepareStatement(sql);
+//	            prep.setInt(1, congThuc.getIdNguyenLieu());
+//	            prep.setInt(2, congThuc.getSoLuongDung());
+//	            prep.setInt(3, congThuc.getid());
+//	            if (prep.executeUpdate() >= 1)
+//	                result = true;
+//	        } catch (SQLException ex) {
+//	            System.out.println(ex);
+//	        } finally {
+//	            conDB.closeConnectDB();
+//	        }
+//	    }
+//	    return result;
+//	}
 	public boolean deleteCongThuc(int id) {
 	    boolean result = false;
 	    if (conDB.openConnectDB()) {

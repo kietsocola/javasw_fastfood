@@ -47,7 +47,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
-public class phanquyen2 extends JFrame {
+public class PhanQuyen_GUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -64,7 +64,7 @@ public class phanquyen2 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					phanquyen2 frame = new phanquyen2();
+					PhanQuyen_GUI frame = new PhanQuyen_GUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -76,7 +76,7 @@ public class phanquyen2 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public phanquyen2() {
+	public PhanQuyen_GUI() {
 		JButton btnThem , btnSua ,btnXoa,btnHuy,btnLuu,btnLamMoi;
 		JComboBox comboBox;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

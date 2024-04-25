@@ -163,7 +163,7 @@ public class taiKhoan_GUI {
 						JOptionPane.showMessageDialog(btnNewButton, "vui long nhap day du thong tin","Thong bao",0);
 					else if(tk_BUS.checkDangNhap(account) == 1)
 					{
-						JOptionPane.showMessageDialog(btnNewButton, "hello","Thong bao",0);
+//						JOptionPane.showMessageDialog(btnNewButton, "hello","Thong bao",0);
 						MainQuanlyGUI main = new MainQuanlyGUI();
 						main.showWindow();
 						frame.setVisible(false);
