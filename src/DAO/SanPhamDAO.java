@@ -182,16 +182,16 @@ public class SanPhamDAO {
 		boolean result = false;
 		if(conDB.openConnectDB()) {
 			try {
-				String sql = "INSERT INTO sanpham(TenSP, idLoaiSP,SoLuong,idCongThuc,HinhAnh,DonGia)"
+				String sql = "INSERT INTO sanpham(idLoaiSP ,TenSP ,DonGia,SoLuong,HinhAnh,idCongThuc)"
 						+"VALUES (?,?,?,?,?,?)";
 				PreparedStatement prest = conDB.conn.prepareStatement(sql);
 				
-				prest.setString(1, sp.getTenSP());
-				prest.setInt(2, sp.getId());
-				prest.setInt(3, sp.getSoLuong());
-				prest.setInt(4, sp.getIdCongThuc());
+				prest.setInt(1, sp.getIdLoaiSP());
+				prest.setString(2, sp.getTenSP());
+				prest.setInt(3, sp.getDonGia());
+				prest.setInt(4, sp.getSoLuong());
 				prest.setString(5, sp.getHinhAnh());
-				prest.setInt(6, sp.getDonGia());
+				prest.setInt(6, sp.getIdCongThuc());
 				
 				if(prest.executeUpdate() >=1)
 				result = true;
