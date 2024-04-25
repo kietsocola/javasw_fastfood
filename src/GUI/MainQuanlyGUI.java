@@ -31,7 +31,7 @@ public class MainQuanlyGUI extends JFrame {
 	private SanPhamGUI pnSanpham;
 	private QuanLyKhachHangGUI pnKhachhang;
 	private QuanLyNhanVienGUI pnNhanvien;
-	private PhanQuyen_GUI pnPhanQuyen;
+//	private PhanQuyen_GUI pnPhanQuyen;
 	private ThongKeGUI pnThongke;
 	private NhapHangGUI pnNhapHang;
 	

@@ -857,7 +857,7 @@ public class QLyBanHangGUI extends JPanel {
 	}
 
 	private void loadDataTableSanPham() {
-		ArrayList<SanPham> listSP = spBUS.getListSanPham();
+		ArrayList<SanPham> listSP = spBUS.getDSSanPham();
 		addDataToTableSanPham(listSP);
 	}
 
@@ -1042,7 +1042,7 @@ public class QLyBanHangGUI extends JPanel {
 	}
 
 	private void loadDataTableSanPhamCB() {
-		ArrayList<SanPham> listSP = spBUS.getListSanPham();
+		ArrayList<SanPham> listSP = spBUS.getDSSanPham();
 		addDataToTableSanPhamCB(listSP);
 	}
 
