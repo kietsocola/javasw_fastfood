@@ -5,18 +5,19 @@ import DTO.CongThuc;
 
 public class CongThucBUS {
 	CongThucDAO ctDAO = new CongThucDAO();
-	public boolean addCongThuc(int maNL, int soluong, int maSP) {
+	public boolean addUpdate(int maNL, int soluong, int maSP) {
 		CongThuc ct = new CongThuc();
 		ct.setIdNguyenLieu(maNL);
 		ct.setSoLuongDung(soluong);
 		ct.setIdSanPham(maSP);
-		return ctDAO.addCongThuc(ct);
+		if(!ctDAO.checkExistingCongThuc(ct)) {
+			return ctDAO.addCongThuc(ct);
+		} else return ctDAO.updateCongThuc(ct);
 	}
-	public boolean updateCongThuc(int maNL, int soluong, int maSP) {
+	public boolean deleteCongThuc(int maNL, int maSP) {
 		CongThuc ct = new CongThuc();
 		ct.setIdNguyenLieu(maNL);
-		ct.setSoLuongDung(soluong);
 		ct.setIdSanPham(maSP);
-		return ctDAO.updateCongThuc(ct);
+		return ctDAO.deleteCongThuc(maSP, maNL);
 	}
 }

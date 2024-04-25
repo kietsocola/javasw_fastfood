@@ -21,16 +21,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 
-interface InputDialogListener {
-    void inputReceived(String input);
-}
+//interface InputDialogListener {
+//    void inputReceived(String input);
+//}
 
 
 public class CustomJDialog extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	public String inputTemp ;
-	private InputDialogListener listener;
+//	private InputDialogListener listener;
 	public boolean isRun = false;
 
 	/**

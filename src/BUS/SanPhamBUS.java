@@ -24,6 +24,16 @@ public class SanPhamBUS {
         ArrayList<SanPham> dssp = new ArrayList<>();
         for (SanPham sp : DSSanPham) {
             String tenSP = sp.getTenSP().toLowerCase();
+            if (tenSP.toLowerCase().contains(ten.toLowerCase())) {
+                dssp.add(sp);
+            }
+        }
+        return dssp;
+    }
+	public ArrayList<SanPham> getSanPhamTheoTenVaLoai(String ten, int maLoai) {
+        ArrayList<SanPham> dssp = new ArrayList<>();
+        for (SanPham sp : DSSanPham) {
+            String tenSP = sp.getTenSP().toLowerCase();
             if (tenSP.toLowerCase().contains(ten.toLowerCase()) && sp.getIdLoaiSP()==maLoai) {
                 dssp.add(sp);
             }

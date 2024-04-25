@@ -31,6 +31,7 @@ import BUS.HoaDonBUS;
 import BUS.NguyenLieuBUS;
 import BUS.SanPhamBUS;
 import BUS.KhuyenMaiBUS;
+import BUS.LoaiBUS;
 import Custom.MyPanel;
 import Custom.MyTextField;
 import DTO.ChiTietHoaDon;
@@ -81,6 +82,7 @@ public class QLyBanHangGUI extends JPanel {
 	ChiTietHoaDonBUS cthdBUS = new ChiTietHoaDonBUS();
 	NguyenLieuBUS nlBUS = new NguyenLieuBUS();
 	KhuyenMaiBUS kmBUS = new KhuyenMaiBUS();
+	LoaiBUS loaiBUS = new LoaiBUS();
 
 	private JTextField txtTimTheoTen;
 	private JComboBox ngayBD, thangBD, namBD, ngayKT, thangKT, namKT;
@@ -1008,7 +1010,7 @@ public class QLyBanHangGUI extends JPanel {
 	
 	private ArrayList<LoaiSanPham> getListLoaiSP(){
 		ArrayList<LoaiSanPham> arr = new ArrayList<>();
-		arr = spBUS.getListLoaiSanPham();
+		arr = loaiBUS.getListLoaiSP();
 		if(arr != null) return arr;
 		return null;
 	}
