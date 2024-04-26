@@ -34,11 +34,14 @@ public class MainQuanlyGUI extends JFrame {
 //	private PhanQuyen_GUI pnPhanQuyen;
 	private ThongKeGUI pnThongke;
 	private NhapHangGUI pnNhapHang;
+	private KhuyenMaiGUI pnKhuyenMai;
+	private CongThucGUI pnCongThuc;
 	
 	private MyLabel panel_logo, lblBanHang, lblKhuyenMai, lblSanPham, lblNhanvien, lblKhachhang, lblNhapHang,
 			lblThongKe,lblPhanQuyen;
 
 	private MyLabel lastClickedLabel;
+	private MyLabel lblCongThuc;
 	public MainQuanlyGUI() {
 		this.setTitle("Phần mềm quản lý cửa hàng đồ ăn nhanh");
 		this.setSize(1280, 800);
@@ -130,6 +133,14 @@ public class MainQuanlyGUI extends JFrame {
 		lblThongKe.setIcon(iconThongKe);
 		lblThongKe.addMouseListener(new LabelMouseListener());
 		panel_Category.add(lblThongKe);
+		
+		lblCongThuc = new MyLabel("  Công thức");
+		ImageIcon iconCongThuc = new ImageIcon("images/vegetable.png");
+		Image img8 = iconNhapHang.getImage();
+		Image newImg8 = img8.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconCongThuc.setImage(newImg8);
+		lblCongThuc.setIcon(iconCongThuc);
+		
 		listMenuLeft = new ArrayList<>();
 		listMenuLeft.add(panel_logo);
 		listMenuLeft.add(lblBanHang);
@@ -139,6 +150,7 @@ public class MainQuanlyGUI extends JFrame {
 		listMenuLeft.add(lblKhachhang);
 		listMenuLeft.add(lblNhapHang);
 		listMenuLeft.add(lblThongKe);
+		listMenuLeft.add(lblCongThuc);
 //		listMenuLeft.add(lblPhanQuyen);
 
 		for (MyLabel lbl : listMenuLeft) {
@@ -160,6 +172,8 @@ public class MainQuanlyGUI extends JFrame {
 		pnNhanvien = new QuanLyNhanVienGUI();
 		pnThongke = new ThongKeGUI();
 		pnNhapHang= new NhapHangGUI();
+		pnKhuyenMai = new KhuyenMaiGUI();
+		pnCongThuc = new CongThucGUI();
 //		pnPhanQuyen =  new PhanQuyen_GUI();
 		
 		pnCard.add(pnBanHang, "banhang");
@@ -168,6 +182,8 @@ public class MainQuanlyGUI extends JFrame {
 		pnCard.add(pnNhanvien, "nhanvien");
 		pnCard.add(pnThongke, "thongke");
 		pnCard.add(pnNhapHang, "nhaphang");
+		pnCard.add(pnKhuyenMai, "khuyenmai");
+		pnCard.add(pnCongThuc, "congthuc");
 //		pnCard.add(pnPhanQuyen,"phanquyen");
 //		
 
@@ -194,13 +210,17 @@ public class MainQuanlyGUI extends JFrame {
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
+					if (lbl.getBackground() != MyColor.BACKGROUND_CLICK_COLOR) {
+		                lbl.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+		            }
 
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
+					if (lbl.getBackground() != MyColor.BACKGROUND_CLICK_COLOR) {
+		                lbl.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		            }
 
 				}
 
@@ -219,6 +239,10 @@ public class MainQuanlyGUI extends JFrame {
 						cardName = "thongke";
 					} else if (lbl == lblNhapHang) {
 						cardName = "nhaphang";
+					} else if (lbl == lblKhuyenMai) {
+						cardName = "khuyenmai";
+					} else if (lbl == lblCongThuc) {
+						cardName = "congthuc";
 					}
 					lbl.setBackground(MyColor.BACKGROUND_CLICK_COLOR);
 					lbl.setForeground(new Color(255, 255, 255));

@@ -296,7 +296,7 @@ public class PhanQuyen_GUI extends JFrame {
 				btnSua.setEnabled(false);
 				btnLamMoi.setEnabled(false);
 				System.out.println("dang them  1 phan tu moi vao comboBox ");
-            	CustomJDialog dialog = new CustomJDialog();
+				CustomJDialog dialog = new CustomJDialog();
             	dialog.EnterInput();
 //            	while (!dialog.isRun) {
 //    

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import DAO.SanPhamDAO;
+import DAO.LoaiSpDAO;
 import DTO.HoaDon;
+import DTO.LoaiSanPham;
 import DTO.SanPham;
 
 public class SanPhamBUS {
@@ -23,6 +25,16 @@ public class SanPhamBUS {
         for (SanPham sp : DSSanPham) {
             String tenSP = sp.getTenSP().toLowerCase();
             if (tenSP.toLowerCase().contains(ten.toLowerCase())) {
+                dssp.add(sp);
+            }
+        }
+        return dssp;
+    }
+	public ArrayList<SanPham> getSanPhamTheoTenVaLoai(String ten, int maLoai) {
+        ArrayList<SanPham> dssp = new ArrayList<>();
+        for (SanPham sp : DSSanPham) {
+            String tenSP = sp.getTenSP().toLowerCase();
+            if (tenSP.toLowerCase().contains(ten.toLowerCase()) && sp.getIdLoaiSP()==maLoai) {
                 dssp.add(sp);
             }
         }
