@@ -39,7 +39,7 @@ public class SanPhamGUI extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 //	private JPanel contentPane;
-	private JTable tblSanPham;
+	private MyTable tblSanPham;
 	private DefaultTableModel dtmSanPham;
 	private MyLabelSecond lblMaSP, lblTenSP, lblLoaiSP, lblSoLuong,lblCongThuc, lblDonGia, lblHinhAnh;
 	private MyButton btnThem,btnXoa,btnSua,btnChonAnh;
@@ -200,7 +200,7 @@ public class SanPhamGUI extends JPanel {
 		dtmSanPham.addColumn("Đơn giá");
 		dtmSanPham.addColumn("Ảnh");
 		
-		tblSanPham = new JTable();
+		tblSanPham = new MyTable();
 		tblSanPham.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -209,9 +209,8 @@ public class SanPhamGUI extends JPanel {
 		});
 		tblSanPham.setModel(dtmSanPham);
 		loadDataToTblSanPham();
-		Color primaryColor = new Color(Integer.parseInt("39", 16), Integer.parseInt("3c", 16), Integer.parseInt("49", 16));
 		JScrollPane  scrTableSanPham= new JScrollPane(tblSanPham);
-		scrTableSanPham.getViewport().setBackground(primaryColor);
+		scrTableSanPham.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		panel_table.setLayout(new BorderLayout(0, 0));
 		panel_table.add(scrTableSanPham, BorderLayout.NORTH);
 
