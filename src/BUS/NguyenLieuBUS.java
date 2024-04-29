@@ -1,4 +1,6 @@
 package BUS;
+import java.util.ArrayList;
+
 import DAO.NguyenLieuDAO;
 import DTO.NguyenLieu;
 public class NguyenLieuBUS {
@@ -12,5 +14,15 @@ public class NguyenLieuBUS {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	public ArrayList<NguyenLieu> getDSachNguyenLieu(){
+		ArrayList<NguyenLieu> arr = new ArrayList<>();
+		try {
+			arr = nlDAO.getDanhSachNguyenLieu();
+		} catch (Exception e) {
+			arr = null;
+			e.printStackTrace();
+		}
+		return arr;
 	}
 }

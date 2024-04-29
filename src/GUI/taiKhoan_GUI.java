@@ -14,6 +14,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import BUS.NhanVien_BUS;
+import BUS.phanquyen_BUS;
 import BUS.taiKhoan_BUS;
 import Custom.MyButton;
 import Custom.MyPanel;
@@ -37,6 +38,7 @@ import javax.swing.DropMode;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.ComponentOrientation;
@@ -168,6 +170,7 @@ public class taiKhoan_GUI {
 				account.setMatKhau(matKhau.getText());
 				taiKhoan_BUS tk_BUS = new taiKhoan_BUS();
 				NhanVien_BUS nv_BUS = new NhanVien_BUS();
+				phanquyen_BUS pq_BUS = new phanquyen_BUS();
 					// TODO Auto-generated catch block\
 				try {
 					if(tk_BUS.checkDangNhap(account) == 0)
@@ -175,10 +178,14 @@ public class taiKhoan_GUI {
 					else if(tk_BUS.checkDangNhap(account) == 1)
 					{	
 						int idPhanQuyen = tk_BUS.IdPhanQuyen(account);
+						ArrayList<Boolean> PhanQuyen = pq_BUS.loaiPhanQuyen(idPhanQuyen);
+//						for(boolean x : PhanQuyen)
+//							System.out.print(x + " la quyen cua tai khoan \n");
 						String TenNhanVien = nv_BUS.getTenNhanVien(tk_BUS.idTaiKhoan(account));
 						System.out.print(tk_BUS.idTaiKhoan(account) + " la id cua tai khoan \n");
 						JOptionPane.showMessageDialog(null, "Xin Chào " + TenNhanVien,"Thong bao",JOptionPane.INFORMATION_MESSAGE);
-						MainQuanlyGUI main = new MainQuanlyGUI();
+
+						MainQuanlyGUI main = new MainQuanlyGUI(PhanQuyen);
 						main.showWindow();
 						frame.setVisible(false);
 					}

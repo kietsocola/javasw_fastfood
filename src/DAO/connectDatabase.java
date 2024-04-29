@@ -22,18 +22,14 @@ public class connectDatabase {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				this.con = DriverManager.getConnection(url+ nameDatabase  ,user ,password);
 				s = con.createStatement();
-				System.out.println("ket not csdl thanh cong");
 			}catch(Exception e) {
-				System.out.println("ket not csdl that bai");
 			}
 		}
 		
 		public void close() {
 			try {
 				con.close();
-				System.out.println("dong co so du lieu thanh cong");
 			}catch(Exception e) {
-				System.out.println("dong co so du lieu that bai");
 			}
 		}
 		
