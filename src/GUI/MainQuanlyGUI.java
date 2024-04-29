@@ -26,7 +26,7 @@ public class MainQuanlyGUI extends JFrame {
 	private ArrayList<MyLabel> listMenuLeft;
 	private CardLayout cardMenuLeftGroup = new CardLayout();
 	private MyPanel pnCard;
-	
+
 	private QLyBanHangGUI pnBanHang;
 	private SanPhamGUI pnSanpham;
 	private QuanLyKhachHangGUI pnKhachhang;
@@ -34,11 +34,12 @@ public class MainQuanlyGUI extends JFrame {
 	private PhanQuyen_GUI pnPhanQuyen;
 	private ThongKeGUI pnThongke;
 	private NhapHangGUI pnNhapHang;
-	
+
 	private MyLabel panel_logo, lblBanHang, lblKhuyenMai, lblSanPham, lblNhanvien, lblKhachhang, lblNhapHang,
-			lblThongKe,lblPhanQuyen;
+			lblThongKe, lblPhanQuyen;
 
 	private MyLabel lastClickedLabel;
+
 	public MainQuanlyGUI() {
 		this.setTitle("Phần mềm quản lý cửa hàng đồ ăn nhanh");
 		this.setSize(1280, 800);
@@ -84,7 +85,7 @@ public class MainQuanlyGUI extends JFrame {
 		Image newImg = img.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconBanHang.setImage(newImg);
 		lblBanHang.setIcon(iconBanHang);
-		
+
 //		lblBanHang.setForeground(MyColor.SECOND_TEXT_COLOR);
 		lastClickedLabel = lblBanHang;
 		lblKhuyenMai = new MyLabel("  Khuyến mãi");
@@ -93,35 +94,35 @@ public class MainQuanlyGUI extends JFrame {
 		Image newImg2 = img2.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconKhuyenMai.setImage(newImg2);
 		lblKhuyenMai.setIcon(iconKhuyenMai);
-		
+
 		lblSanPham = new MyLabel("  Sản phẩm");
 		ImageIcon iconSanPham = new ImageIcon("images/fast-food.png");
 		Image img3 = iconSanPham.getImage();
 		Image newImg3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconSanPham.setImage(newImg3);
 		lblSanPham.setIcon(iconSanPham);
-		
+
 		lblNhanvien = new MyLabel("  Nhân viên");
 		ImageIcon iconNhanVien = new ImageIcon("images/staff.png");
 		Image img4 = iconNhanVien.getImage();
 		Image newImg4 = img4.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconNhanVien.setImage(newImg4);
 		lblNhanvien.setIcon(iconNhanVien);
-		
+
 		lblKhachhang = new MyLabel("  Khách hàng");
 		ImageIcon iconKhachHang = new ImageIcon("images/customer.png");
 		Image img5 = iconKhachHang.getImage();
 		Image newImg5 = img5.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconKhachHang.setImage(newImg5);
 		lblKhachhang.setIcon(iconKhachHang);
-		
+
 		lblNhapHang = new MyLabel("  Nhập hàng");
 		ImageIcon iconNhapHang = new ImageIcon("images/vegetable.png");
 		Image img6 = iconNhapHang.getImage();
 		Image newImg6 = img6.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconNhapHang.setImage(newImg6);
 		lblNhapHang.setIcon(iconNhapHang);
-		
+
 		lblThongKe = new MyLabel("  Thống kê");
 		ImageIcon iconThongKe = new ImageIcon("images/analytics.png");
 		Image img7 = iconThongKe.getImage();
@@ -153,15 +154,15 @@ public class MainQuanlyGUI extends JFrame {
 		 */
 
 		pnCard = new MyPanel(cardMenuLeftGroup);
-		
+
 		pnBanHang = new QLyBanHangGUI();
 		pnSanpham = new SanPhamGUI();
 		pnKhachhang = new QuanLyKhachHangGUI();
 		pnNhanvien = new QuanLyNhanVienGUI();
 		pnThongke = new ThongKeGUI();
-		pnNhapHang= new NhapHangGUI();
+		pnNhapHang = new NhapHangGUI();
 //		pnPhanQuyen =  new PhanQuyen_GUI();
-		
+
 		pnCard.add(pnBanHang, "banhang");
 		pnCard.add(pnSanpham, "sanpham");
 		pnCard.add(pnKhachhang, "khachhang");
@@ -172,7 +173,7 @@ public class MainQuanlyGUI extends JFrame {
 //		
 
 		pnMain.add(pnCard, BorderLayout.CENTER);
-		
+
 		con.add(pnMain);
 	}
 
