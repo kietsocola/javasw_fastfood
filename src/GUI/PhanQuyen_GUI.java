@@ -87,10 +87,13 @@ public class PhanQuyen_GUI extends JPanel {
 //		LabelName.setBorder(new EmptyBorder(20, 0, 0, 0));
 		MainPhanQuyen.add(LabelName);
 		LabelName.setLayout(new GridLayout(1, 0, 0, 0));
+		LabelName.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		
 		MyLabel lblNewLabel_2 = new MyLabel("QUẢN LÍ PHÂN QUYỀN");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		LabelName.add(lblNewLabel_2);
+		lblNewLabel_2.setFont(new Font("Arial", Font.BOLD, 25));
+
 		
 		PanelTenQuyen = new MyPanel();
 //		PanelTenQuyen.setBorder(new EmptyBorder(20, 0, 20, 0));
@@ -221,6 +224,17 @@ public class PhanQuyen_GUI extends JPanel {
 				btnXoa.setEnabled(true);
 				isBtnChucNang = false;
 				btnLamMoi.setEnabled(false);
+				// Lấy giá trị được chọn từ ComboBox
+                String selectedLanguage = (String) comboBox.getSelectedItem();
+                int index = (int)comboBox.getSelectedIndex();
+				QLNhapHang.setSelected(ds.get(index).getNhaphang());
+				QLSanPham.setSelected(ds.get(index).getSanpham());
+				QLNhanVien.setSelected(ds.get(index).getNhanvien());
+				QLKhachHang.setSelected(ds.get(index).getKhachhang());
+				QLThongKe.setSelected(ds.get(index).getThongke());
+				
+                // Hiển thị giá trị được chọn trong Console (hoặc làm bất kỳ điều gì bạn muốn với giá trị này)
+                System.out.println("Selected Quyen: " + selectedLanguage );
 		}
 	};
 		
@@ -237,9 +251,30 @@ public class PhanQuyen_GUI extends JPanel {
 				System.out.println("dang them  1 phan tu moi vao comboBox ");
             	CustomJDialog dialog = new CustomJDialog();
             	String newItem = JOptionPane.showInputDialog("nhap ten quyen : ");
+            	int ketqua  =0;
 
+            	
+            	
                 	if (newItem != null && !newItem.isEmpty()) {
+                    	try {
+        					ketqua = pqB.hasPhanQuyen(newItem);
+                        	if(ketqua == 1)
+                        	{
+                        		dialog.notifi("Tên phân quyền đã tồn tại");
+                                btnHuy.setEnabled(false);
+                        	   	btnLuu.setEnabled(false);
+                        	   	btnThem.setEnabled(true);
+                        	   	btnSua.setEnabled(true);
+                        	   	btnXoa.setEnabled(true);
+                        	   	btnLamMoi.setEnabled(true);
+                        		return;
+                        	}
+        				} catch (SQLException e1) {
+        					// TODO Auto-generated catch block
+        					e1.printStackTrace();
+        				}
                         // Thêm mục vào ComboBox
+                    	dialog.notifi("Tên phân quyền hợp lệ");
                         comboBox.addItem(newItem);
                         comboBox.setSelectedItem(newItem);
                         isThem = true;
@@ -276,7 +311,6 @@ public class PhanQuyen_GUI extends JPanel {
 				}
 				
 				comboBox.setEditable(true);
-				
 				isSua = true;
 				isBtnChucNang = true;
 				tempPQ = ds.get(comboBox.getSelectedIndex());
@@ -320,6 +354,29 @@ public class PhanQuyen_GUI extends JPanel {
         Image resizedImg2 = img2.getScaledInstance(18, 18, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon2 = new ImageIcon(resizedImg2);
         btnXoa.setIcon(resizedIcon2);
+        
+        
+        ImageIcon icon3 = new ImageIcon("..\\javasw_fastfood\\images\\Huy.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        // Thiết lập kích thước mới cho biểu tượng
+        Image img3 = icon3.getImage();
+        Image resizedImg3 = img3.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        ImageIcon resizedIcon3 = new ImageIcon(resizedImg3);
+        btnHuy.setIcon(resizedIcon3);
+        
+        ImageIcon icon4 = new ImageIcon("..\\javasw_fastfood\\images\\Luu.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        // Thiết lập kích thước mới cho biểu tượng
+        Image img4 = icon4.getImage();
+        Image resizedImg4 = img4.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        ImageIcon resizedIcon4 = new ImageIcon(resizedImg4);
+        btnLuu.setIcon(resizedIcon4);
+        
+        ImageIcon icon5 = new ImageIcon("..\\javasw_fastfood\\images\\LamMoi.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        // Thiết lập kích thước mới cho biểu tượng
+        Image img5 = icon5.getImage();
+        Image resizedImg5 = img5.getScaledInstance(16, 16, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        ImageIcon resizedIcon5 = new ImageIcon(resizedImg5);
+        btnLamMoi.setIcon(resizedIcon5);
+        
         
 		btnHuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
