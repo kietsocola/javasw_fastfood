@@ -1,10 +1,18 @@
 package BUS;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import DAO.phanquyen_DAO;
 import DTO.phanquyen_DTO;
 
 
 public class phanquyen_BUS {
 	phanquyen_DAO temp = new phanquyen_DAO();
+	
+	
+	public ArrayList<phanquyen_DTO> getData() throws SQLException{
+		return temp.getData();
+	}
 	
 	public String themPhanQuyen(phanquyen_DTO item) {
 		
@@ -30,6 +38,10 @@ public class phanquyen_BUS {
 		if(temp.deletePhanQuyen(item))
 			return "xoa thanh cong";
 		return "xoa that bai";
+	}
+	
+	public	ArrayList<Boolean> loaiPhanQuyen(int idPhanQuyen) throws SQLException{
+		return temp.getLoaiPhanQuyen(idPhanQuyen);
 	}
 	
 }

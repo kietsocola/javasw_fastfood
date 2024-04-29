@@ -1,4 +1,4 @@
-package GUI;
+package lam;
 
 import java.awt.BorderLayout;
 
@@ -51,7 +51,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
 
-public class PhanQuyen_GUI extends JPanel {
+public class PhanQuyen_GUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -66,18 +66,38 @@ public class PhanQuyen_GUI extends JPanel {
 	 * Launch the application.
 	 */
 	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PhanQuyen_GUI frame = new PhanQuyen_GUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public PhanQuyen_GUI() {
 		JComboBox comboBox;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(200, 0, 1000, 800);
+		contentPane = new MyPanelSecond();
+		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(20, 0));
 		
-		this.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.CENTER);
+		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		PanelPhanQuyen = new MyPanel();
 		PanelPhanQuyen.setLayout(new GridLayout(2, 1, 0, 0));
-		this.add(PanelPhanQuyen);
+		panel.add(PanelPhanQuyen);
 		
 		MainPhanQuyen = new MyPanel();
 		PanelPhanQuyen.add(MainPhanQuyen);

@@ -6,6 +6,7 @@ public class NhanVien {
 	    private String ngaySinh;
 	    private int gioiTinh;
 	    private String soDT;
+	    private int idTaiKhoan;
 
 	    public NhanVien() {
 	    }
@@ -57,4 +58,12 @@ public class NhanVien {
 	    public void setSoDT(String soDT) {
 	        this.soDT = soDT;
 	    }
+
+		public int getIdTaiKhoan() {
+			return idTaiKhoan;
+		}
+
+		public void setIdTaiKhoan(int idTaiKhoan) {
+			this.idTaiKhoan = idTaiKhoan;
+		}
 }
