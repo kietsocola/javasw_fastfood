@@ -14,4 +14,14 @@ public class taiKhoan_BUS {
 			return 1;
 		return 2 ;
 	}
+	
+	public int IdPhanQuyen(taiKhoan_DTO account) throws SQLException {
+		taiKhoan_DAO check = new taiKhoan_DAO();
+		return check.getIdPhanQuyen(account);	
+	}
+	
+	public int idTaiKhoan(taiKhoan_DTO account) throws SQLException {
+		taiKhoan_DAO check = new taiKhoan_DAO();
+		return check.getId(account);	
+	}
 }

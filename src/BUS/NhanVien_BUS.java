@@ -24,6 +24,22 @@ public class NhanVien_BUS {
             this.docDanhSach();
         return this.listNV;
     }
+    
+    public void indanhsach() {
+    	System.out.println(listNV.size() + "  la kich thuoc cua danh sach nhan vien");
+    	for(NhanVien nv : listNV) {
+    		System.out.print(nv.getTen() + " \n");
+    	}
+    }
+    
+    public String getTenNhanVien(int idTaiKhoan) {
+    	for(NhanVien nv : listNV) {
+    		System.out.print(nv.getIdTaiKhoan() + " id cua tai khoan o nhan vien bus\n");
+    			if(nv.getIdTaiKhoan() == idTaiKhoan)
+    				return nv.getTen();
+    	}
+    	return "";
+    }
 
     public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT) {
         ten = ten.trim();

@@ -1,47 +1,53 @@
 package GUI;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 
 import Custom.*;
+import DAO.SanPhamDAO;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import java.awt.Font;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JTable;
-import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.table.TableModel;
 
-import BUS.SanPhamBUS;
-import DTO.SanPham;
+import BUS.*;
+import DTO.*;
 
-import java.awt.Component;
-import java.awt.ComponentOrientation;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 public class SanPhamGUI extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTable tblSanPham;
+//	private JPanel contentPane;
+	private MyTable tblSanPham;
 	private DefaultTableModel dtmSanPham;
 	private MyLabelSecond lblMaSP, lblTenSP, lblLoaiSP, lblSoLuong,lblCongThuc, lblDonGia, lblHinhAnh;
 	private MyButton btnThem,btnXoa,btnSua,btnChonAnh;
 	private MyTextField txtMaSP, txtTenSP, txtSoLuong,txtCongThuc, txtDonGia;
-	private JComboBox<String> cmbLoaiSP;
+	private JComboBox<String> cmbLoai;
 	private SanPhamBUS spBUS = new SanPhamBUS();
+	private LoaiBUS loaiBUS = new LoaiBUS();
+	private JLabel lblAnhSP;
 	/**
 	 * Launch the application.
 	 */
@@ -98,11 +104,12 @@ public class SanPhamGUI extends JPanel {
 		pnTenSP.add(txtTenSP);
  		
 		MyPanel pnLoai = new MyPanel();
-		cmbLoaiSP = new JComboBox<String>();
-		cmbLoaiSP.setPreferredSize(new Dimension(200, 30));
+		cmbLoai = new JComboBox<String>();
+		cmbLoai.setPreferredSize(new Dimension(200, 30));
 		lblLoaiSP = new MyLabelSecond("Loại");
+		loadDataCmbLoai();
 		pnLoai.add(lblLoaiSP);
-		pnLoai.add(cmbLoaiSP);
+		pnLoai.add(cmbLoai);
 		
 		MyPanel pnSoLuong = new MyPanel();
 		txtSoLuong = new MyTextField();
@@ -134,26 +141,45 @@ public class SanPhamGUI extends JPanel {
 		pnAnh.setPreferredSize(new Dimension(300, 10));
 		panel_input.add(pnAnh,BorderLayout.EAST);
 		JPanel pnChuaAnh = new JPanel();
+		lblAnhSP = new JLabel();
+        lblAnhSP.setPreferredSize(new Dimension(120, 120));
+        lblAnhSP.setIcon(getAnhSP(""));
 		FlowLayout flowLayout = (FlowLayout) pnChuaAnh.getLayout();
+		pnChuaAnh.add(lblAnhSP);
 		pnChuaAnh.setMaximumSize(new Dimension(120, 120));
 		pnChuaAnh.setPreferredSize(new Dimension(120, 120));
         
 		MyPanel pnButtonAnh = new MyPanel();
 		pnButtonAnh.setPreferredSize(new Dimension(
                 (int) pnChuaAnh.getPreferredSize().getHeight(), 40));
-        pnAnh.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
+		pnAnh.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
         pnAnh.add(pnChuaAnh);
         pnAnh.add(pnButtonAnh);
         btnChonAnh = new  MyButton("Chọn Ảnh");
+        btnChonAnh.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		xuLyChonAnh();
+        	}
+        });
         pnButtonAnh.add(btnChonAnh);
         //Panel nút
         MyPanel pnButton = new MyPanel();
         pnButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnThem = new MyButton("Thêm");
+        btnThem.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		xuLyThemSanPham();
+        	}
+        });
         btnThem.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnXoa = new MyButton("Xóa");
         btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnSua = new MyButton("Sửa");
+        btnSua.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		xuLySuaSanPham();
+        	}
+        });
         btnSua.setFont(new Font("Tahoma", Font.PLAIN, 16));
         pnButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa);
@@ -174,14 +200,20 @@ public class SanPhamGUI extends JPanel {
 		dtmSanPham.addColumn("Đơn giá");
 		dtmSanPham.addColumn("Ảnh");
 		
-		tblSanPham = new JTable();
+		tblSanPham = new MyTable();
+		tblSanPham.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				xulyClickTblSanPham();
+			}
+		});
 		tblSanPham.setModel(dtmSanPham);
 		loadDataToTblSanPham();
-		Color primaryColor = new Color(Integer.parseInt("39", 16), Integer.parseInt("3c", 16), Integer.parseInt("49", 16));
 		JScrollPane  scrTableSanPham= new JScrollPane(tblSanPham);
-		scrTableSanPham.getViewport().setBackground(primaryColor);
+		scrTableSanPham.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		panel_table.setLayout(new BorderLayout(0, 0));
 		panel_table.add(scrTableSanPham, BorderLayout.NORTH);
+
 //---------------------------------------------------------------------------------------------		
 
 	}
@@ -189,7 +221,7 @@ public class SanPhamGUI extends JPanel {
 		spBUS.docListSanPham();
 		dtmSanPham.setRowCount(0);
 		
-		ArrayList <SanPham> dssp = spBUS.getListSanPham();
+		ArrayList <SanPham> dssp = spBUS.getDSSanPham();
 		
 		for (SanPham sp : dssp) {
 			Vector vec = new Vector();
@@ -204,5 +236,126 @@ public class SanPhamGUI extends JPanel {
 			dtmSanPham.addRow(vec);
 		}
 	}
+	private void loadDataCmbLoai() {
+        cmbLoai.removeAllItems();
+        
+        ArrayList<LoaiSanPham> dsl = loaiBUS.getListLoaiSP();
+        cmbLoai.addItem("0 - Chọn loại");
+        for (LoaiSanPham loai : dsl) {
+            cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoaiSP());
+        }
+        cmbLoai.addItem("Khác...");
+    }
+	private void xulyClickTblSanPham() { // khi ấn vào sẽ hiển thị trên các lbl
+		int row = tblSanPham.getSelectedRow();
+		if (row > -1) {
+			String ma = tblSanPham.getValueAt(row, 0) + "";
+			String ten = tblSanPham.getValueAt(row, 1) + "";
+			String loai = tblSanPham.getValueAt(row, 2) + "";
+			String soLuong = tblSanPham.getValueAt(row, 3) + "";
+			String congThuc = tblSanPham.getValueAt(row, 4) + "";
+			String donGia = tblSanPham.getValueAt(row, 5) + "";
+			String anh = tblSanPham.getValueAt(row, 6) + "";
+			
+			 txtMaSP.setText(ma);
+             txtTenSP.setText(ten);
+             cmbLoai.setSelectedItem(loai);
+             txtSoLuong.setText(soLuong);
+             txtCongThuc.setText(congThuc);
+             txtDonGia.setText(donGia);
+             
+             int flag = 0;
+             for (int i = 0; i < cmbLoai.getItemCount(); i++) {
+                 if (cmbLoai.getItemAt(i).contains(loai)) {
+                     flag = i;
+                     break;
+                 }
+             }
+             cmbLoai.setSelectedIndex(flag);
+             loadAnh("images/SanPham/" + anh);
+		}
+	}
+	File fileAnhSP;
+	private ImageIcon getAnhSP(String src) {
+        src = src.trim().equals("") ? "default.png" : src;
+        //Xử lý ảnh
+        BufferedImage img = null;
+        File fileImg = new File(src);
 
+        if (!fileImg.exists()) {
+            src = "default.png";
+            fileImg = new File("images/" + src);
+        }
+
+        try {
+            img = ImageIO.read(fileImg);
+            fileAnhSP = new File(src);
+        } catch (IOException e) {
+            fileAnhSP = new File("images/default.png");
+        }
+
+        if (img != null) {
+            Image dimg = img.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            return new ImageIcon(dimg);
+        }
+
+        return null;
+    }
+	 private void loadAnh(String anh) {
+	        lblAnhSP.setIcon(getAnhSP(anh));
+	    }
+//----------------Xử lý các nút chức năng --------------------------------//
+	 //nút chọn ảnh
+	 private void xuLyChonAnh() {
+	        JFileChooser fileChooser = new JFileChooser("images/SanPham/");
+	        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+	                "Tệp hình ảnh", "jpg", "png", "jpeg");
+	        fileChooser.setFileFilter(filter);
+	        int returnVal = fileChooser.showOpenDialog(null);
+
+	        if (returnVal == JFileChooser.APPROVE_OPTION) {
+	            fileAnhSP = fileChooser.getSelectedFile();
+	            lblAnhSP.setIcon(getAnhSP(fileAnhSP.getPath()));
+	        }
+	    }
+	 private void luuFileAnh() {
+	        BufferedImage bImage = null;
+	        try {
+	            File initialImage = new File(fileAnhSP.getPath());
+	            bImage = ImageIO.read(initialImage);
+	            
+	            ImageIO.write(bImage, "png" , new File("images/SanPham/" + fileAnhSP.getName()));
+
+	        } catch (IOException e) {
+	            System.out.println("Exception occured :" + e.getMessage());
+	        }
+	    }
+	    private void xuLyThemSanPham() {
+	    	
+	        String ten = txtTenSP.getText();
+	        int loai = cmbLoai.getSelectedIndex();
+	        int soLuong = Integer.parseInt(txtSoLuong.getText());
+	        int idCongThuc = Integer.parseInt(txtCongThuc.getText());
+	        String anh = fileAnhSP.getName();
+	        int donGia = Integer.parseInt(txtDonGia.getText());
+	        // Kiểm tra và xử lý dữ liệu trước khi thêm
+	        boolean flag = spBUS.themSanPham(ten, loai, soLuong, idCongThuc, anh, donGia);
+	        spBUS.docListSanPham();
+	        loadDataToTblSanPham();
+	        luuFileAnh();
+	    }
+	    private void xuLySuaSanPham() {
+	    	int id = Integer.parseInt(txtMaSP.getText());
+	        String ten = txtTenSP.getText();
+	        int loai = cmbLoai.getSelectedIndex();
+	        int soLuong = Integer.parseInt(txtSoLuong.getText());
+	        int idCongThuc = Integer.parseInt(txtCongThuc.getText());
+	        String anh = fileAnhSP.getName();
+	        int donGia = Integer.parseInt(txtDonGia.getText());
+	        // Kiểm tra và xử lý dữ liệu trước khi thêm
+	        boolean flag = spBUS.suaSanPham(id,ten, loai, soLuong, idCongThuc, anh, donGia);
+	        spBUS.docListSanPham();
+	        loadDataToTblSanPham();
+	        luuFileAnh();
+	    }
 }

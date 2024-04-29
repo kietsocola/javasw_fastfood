@@ -33,6 +33,25 @@ public class phanquyen_DAO {
 		return ds;
 	}
 	
+	public ArrayList<Boolean> getLoaiPhanQuyen(int idPhanQuyen) throws SQLException{
+		ArrayList<Boolean> list = new ArrayList<>();
+		con.connect();
+		String sql = "select * from phanquyen where id =  ?";
+		PreparedStatement ps = con.getCon().prepareStatement(sql);
+		ps.setInt(1,idPhanQuyen);
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs.next()) {
+			list.add(rs.getBoolean(3));
+			list.add(rs.getBoolean(4));
+			list.add(rs.getBoolean(5));
+			list.add(rs.getBoolean(6));
+			list.add(rs.getBoolean(7));
+		}
+		con.close();
+		return list;
+	}
+	
 	public boolean hasNamePhanQuyen(phanquyen_DTO item) {
 		
 		con.connect();
@@ -41,11 +60,17 @@ public class phanquyen_DAO {
 			PreparedStatement ps = con.getCon().prepareStatement(sql);
 			ps.setString(1,item.getTenPhanQuyen());
 			ResultSet rs = ps.executeQuery();
-			if(rs.next())
-				return true;
+			boolean check = false;
+			while(rs.next())
+			{
+				if(rs.getInt(1) != item.getIdPhanQuyen())
+					check = true;
+			}
+			if(check) return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 		}
+		con.close();
 		return false;
 	
 	}
@@ -67,8 +92,11 @@ public class phanquyen_DAO {
 				return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			return false;
+			e.printStackTrace();
 		}
+		
+		con.close();
+		return false;
 		
 	}
 	

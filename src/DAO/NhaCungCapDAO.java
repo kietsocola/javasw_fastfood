@@ -21,9 +21,10 @@ public class NhaCungCapDAO {
 	            while (rs.next()) {
 	                NhaCungCap ncc = new NhaCungCap();
 	                
-	                ncc.setMaNCC(rs.getInt("id"));
-	                ncc.setTenNCC(rs.getString("Ten"));
-	               
+	                ncc.setMaNCC(rs.getInt(1));
+	                ncc.setTenNCC(rs.getString(2));
+	                ncc.setSoDT(rs.getString(3));
+	                ncc.setDiaChi(rs.getString(4));
 	                DSNCC.add(ncc);
 	            }
 	            
@@ -45,9 +46,10 @@ public class NhaCungCapDAO {
                 ResultSet rs = prest.executeQuery(sql);
                 while (rs.next()) {
                     ncc = new NhaCungCap();
-                    ncc.setMaNCC(rs.getInt("id"));
-                    ncc.setTenNCC(rs.getString("Ten"));
-
+                    ncc.setMaNCC(rs.getInt(1));
+	                ncc.setTenNCC(rs.getString(2));
+	                ncc.setSoDT(rs.getString(3));
+	                ncc.setDiaChi(rs.getString(4));
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -62,11 +64,13 @@ public class NhaCungCapDAO {
         boolean result = false;
         if(conDB.openConnectDB()) {
         	try {
-                String sql = "INSERT INTO nhacungcap VALUES(?,?)";
-                PreparedStatement prest = conDB.conn.prepareStatement(sql);
-                prest.setInt(1, ncc.getMaNCC());
-                prest.setString(2, ncc.getTenNCC());
-                if(prest.executeUpdate() >=1)
+                String sql = "INSERT INTO nhacungcap(Ten, SoDienThoai, DiaChi)" 
+                		+"VALUES(?,?,?)";
+                PreparedStatement pre = conDB.conn.prepareStatement(sql);
+                pre.setString(1, ncc.getTenNCC());
+                pre.setString(2, ncc.getSoDT());
+                pre.setString(3, ncc.getDiaChi());
+                if(pre.executeUpdate() >=1)
     				result = true;
             } catch (SQLException ex) {
                 
@@ -81,11 +85,13 @@ public class NhaCungCapDAO {
     	boolean result = false;
         if (conDB.openConnectDB()) {
             try {
-                String sql = "UPDATE nhacungcap SET Ten=? WHERE id=?";
-                PreparedStatement prep = conDB.conn.prepareStatement(sql);
-                prep.setString(1, ncc.getTenNCC());
-                prep.setInt(2, ncc.getMaNCC());
-                result = prep.executeUpdate() > 0;
+                String sql = "UPDATE nhacungcap SET Ten=?, SoDienThoai=?, DiaChi=? WHERE id=?";
+                PreparedStatement pre = conDB.conn.prepareStatement(sql);
+                pre.setString(1, ncc.getTenNCC());
+                pre.setString(2, ncc.getSoDT());
+                pre.setString(3, ncc.getDiaChi());
+                pre.setInt(4, ncc.getMaNCC());
+                result = pre.executeUpdate() > 0;
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } finally {

@@ -57,6 +57,37 @@ public class SanPhamDAO {
 		return result;
 	}
 	// Phần của quản lý sản phẩm 
+	public ArrayList<SanPham> getDanhSachSanPham(){
+		ArrayList <SanPham> DSSanPham = new ArrayList<>();
+		if(conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT *FROM sanpham";
+				PreparedStatement prest =conDB.conn.prepareStatement(sql);	
+				ResultSet rs = prest.executeQuery();
+				
+				while (rs.next()){
+					SanPham sp = new SanPham();
+					
+					sp.setId(rs.getInt("id"));
+					sp.setIdLoaiSP(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setIdCongThuc(rs.getInt("idCongThuc"));
+					
+					DSSanPham.add(sp);
+						
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				conDB.closeConnectDB();
+			}
+			
+		}
+		return DSSanPham;
+	}
 	public SanPham getSanPham(int ma) { // Lay san pham dua theo maSp
 		SanPham sp = null;
 		if (conDB.openConnectDB()) {
@@ -151,16 +182,16 @@ public class SanPhamDAO {
 		boolean result = false;
 		if(conDB.openConnectDB()) {
 			try {
-				String sql = "INSERT INTO sanpham(TenSP, idLoaiSP,SoLuong,idCongThuc,HinhAnh,DonGia)"
+				String sql = "INSERT INTO sanpham(idLoaiSP ,TenSP ,DonGia,SoLuong,HinhAnh,idCongThuc)"
 						+"VALUES (?,?,?,?,?,?)";
 				PreparedStatement prest = conDB.conn.prepareStatement(sql);
 				
-				prest.setString(1, sp.getTenSP());
-				prest.setInt(2, sp.getId());
-				prest.setInt(3, sp.getSoLuong());
-				prest.setInt(4, sp.getIdCongThuc());
+				prest.setInt(1, sp.getIdLoaiSP());
+				prest.setString(2, sp.getTenSP());
+				prest.setInt(3, sp.getDonGia());
+				prest.setInt(4, sp.getSoLuong());
 				prest.setString(5, sp.getHinhAnh());
-				prest.setInt(6, sp.getDonGia());
+				prest.setInt(6, sp.getIdCongThuc());
 				
 				if(prest.executeUpdate() >=1)
 				result = true;
