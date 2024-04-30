@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import BUS.ThongKeBUS;
 import Custom.MyButton;
+import Custom.MyPanelSecond;
 import DTO.ChiTietHoaDon;
 import DTO.HoaDon;
 import DTO.SanPham;
@@ -91,14 +92,15 @@ public class ThongKeGUI extends JPanel {
 
 	private void initialize() {
 		idQuantityMap = new HashMap<>();
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1194, 834);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-
-		// Tạo một JPanel chứa BorderLayout
+//		frame = new JFrame();
+//		frame.setBounds(100, 100, 1194, 834);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		this.setLayout(new BorderLayout());
 		JPanel mainPanel = new JPanel(new BorderLayout());
-		frame.getContentPane().add(mainPanel);
+		this.add(mainPanel, BorderLayout.CENTER);
+		// Tạo một JPanel chứa BorderLayout
+//		frame.getContentPane().add(mainPanel);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 240, 228));
@@ -808,7 +810,7 @@ public class ThongKeGUI extends JPanel {
 		panelWest.setBackground(Color.BLACK);
 
 		// Đặt JFrame ở giữa màn hình
-		frame.setLocationRelativeTo(null);
+//		frame.setLocationRelativeTo(null);
 	}
 
 	// Hiển thị tất cả sản phẩm

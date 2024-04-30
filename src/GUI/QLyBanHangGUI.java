@@ -587,6 +587,7 @@ public class QLyBanHangGUI extends JPanel {
 //				tabHoaDon.setForeground(Color.WHITE);
 //				tabCheBien.setForeground(Color.WHITE);
 				tabBanHang.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+				tabHoaDon.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 				tabBanHang.setOpaque(true);
 			}
 		});
@@ -598,6 +599,7 @@ public class QLyBanHangGUI extends JPanel {
 //				tabHoaDon.setForeground(Color.BLUE);
 //				tabCheBien.setForeground(Color.WHITE);
 				tabHoaDon.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+				tabBanHang.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 				tabHoaDon.setOpaque(true);
 			}
 		});
