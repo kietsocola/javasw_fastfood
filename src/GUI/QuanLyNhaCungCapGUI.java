@@ -14,6 +14,7 @@ import BUS.NhaCungCap_BUS;
 import Custom.MyButton;
 import Custom.MyPanel;
 import Custom.MyPanelSecond;
+import Custom.MyTable;
 import DTO.NhaCungCap;
 
 import javax.swing.GroupLayout;
@@ -29,7 +30,6 @@ import javax.swing.JOptionPane;
 public class QuanLyNhaCungCapGUI extends JDialog {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
 	private DefaultTableModel tableModel;
 	private NhaCungCap_BUS nccbus=new NhaCungCap_BUS();
 	private NhaCungCap nhaCungCapChon = null;
@@ -53,9 +53,9 @@ public class QuanLyNhaCungCapGUI extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	private MyPanel pnTitle;
-	private MyPanelSecond panel_table;
-	private JTable table;
+	
+	private MyPanelSecond pnTitle,panel_table,pnBtn,contentPane ;
+	private MyTable table;
 	private MyButton btnChon,btnThem, btnSua;
 	
 	 public NhaCungCap getNhaCungCap() {
@@ -72,16 +72,16 @@ public class QuanLyNhaCungCapGUI extends JDialog {
 	
 	public void addControlsNCC() {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		contentPane = new JPanel();
+		contentPane = new MyPanelSecond();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		
-		 pnTitle = new MyPanel();
+		 pnTitle = new MyPanelSecond();
 		
 		 panel_table = new MyPanelSecond();
 		 
-		 JPanel pnBtn = new JPanel();
+		 pnBtn = new MyPanelSecond();
 		
 
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -106,7 +106,7 @@ public class QuanLyNhaCungCapGUI extends JDialog {
 
 		
 		JLabel lblTitle = new JLabel("Chọn Nhà Cung Cấp");
-		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 20));
 		pnTitle.add(lblTitle);
 		contentPane.setLayout(gl_contentPane);
 		
@@ -114,7 +114,7 @@ public class QuanLyNhaCungCapGUI extends JDialog {
 		contentPane.add(panel_table);
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Mã NCC", "Tên NCC", "Số ĐT", "Địa Chỉ"});
-        table = new JTable(tableModel);
+        table = new MyTable(tableModel);
         table.setFont(new Font("Tahoma", Font.PLAIN, 13));
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(453, 150)); 
