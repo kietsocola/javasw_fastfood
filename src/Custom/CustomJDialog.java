@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -21,12 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 
-//interface InputDialogListener {
-//    void inputReceived(String input);
-//}
 
-
-public class CustomJDialog extends JFrame {
+public class CustomJDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	public String inputTemp ;
@@ -63,22 +58,9 @@ public class CustomJDialog extends JFrame {
 	}
 	
     public String waitForInput() {
-//    	Thread inputThread = new Thread(() -> {
-//            // Chờ cho đến khi người dùng nhập hoặc đóng dialog
-//            while (!isRun) {
-//                try {
-//                    Thread.sleep(100);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            // Sau khi người dùng nhập dữ liệu hoặc đóng dialog, bạn có thể thực hiện các tác vụ cần thiết ở đây
-//            System.out.println("Dữ liệu đã nhập: " + inputTemp);
-//        });
-//        inputThread.start();
     	while (!isRun) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

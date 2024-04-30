@@ -1,9 +1,9 @@
 package DAO;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import java.sql.*;
-import java.util.List; 
+import java.util.List;
 import java.sql.Date;
 import DTO.ChiTietHoaDon;
 import DTO.HoaDon;
@@ -57,6 +57,285 @@ public class ThongKeDAO {
 			}
 		}
 		return listSanPham;
+	}
+
+	public ArrayList<HoaDon> getAllHoaDon() {
+		ArrayList<HoaDon> listHoaDon = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM HoaDon";
+				Statement stmt = conDB.conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+					HoaDon hoaDon = new HoaDon();
+					hoaDon.setidHD(rs.getInt("id"));
+					hoaDon.setNgayLap(rs.getDate("NgayLap"));
+					hoaDon.setTongTien(rs.getInt("TongTien"));
+					hoaDon.setTrangThai(rs.getInt("TrangThai"));
+					hoaDon.setidNV(rs.getInt("idNhanVien"));
+					hoaDon.setidKH(rs.getInt("idKhachHang"));
+					hoaDon.setGhiChu(rs.getString("ghiChu"));
+					listHoaDon.add(hoaDon);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return listHoaDon;
+	}
+
+	public ArrayList<HoaDon> getHoaDonByMonth(int month) {
+		ArrayList<HoaDon> hoaDonList = new ArrayList<>();
+
+		if (conDB.openConnectDB()) {
+			try {
+				// Tạo câu truy vấn SQL để lấy danh sách hóa đơn trong tháng
+				String sql = "SELECT * FROM HoaDon WHERE MONTH(NgayLap) = ?";
+				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
+				preparedStatement.setInt(1, month);
+
+				// Thực thi truy vấn
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				// Lặp qua kết quả và thêm hóa đơn vào danh sách
+				while (resultSet.next()) {
+					HoaDon hoaDon = new HoaDon();
+					// Đọc thông tin từ kết quả và thiết lập vào đối tượng hóa đơn
+					hoaDon.setidHD(resultSet.getInt("id"));
+					hoaDon.setNgayLap(resultSet.getDate("NgayLap"));
+					hoaDon.setTongTien(resultSet.getInt("TongTien"));
+					hoaDon.setTrangThai(resultSet.getInt("TrangThai"));
+					hoaDon.setidNV(resultSet.getInt("idNhanVien"));
+					hoaDon.setidKH(resultSet.getInt("idKhachHang"));
+					hoaDon.setGhiChu(resultSet.getString("ghiChu"));
+
+					// Thêm hóa đơn vào danh sách
+					hoaDonList.add(hoaDon);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+
+		return hoaDonList;
+	}
+
+	public SanPham getProductById(int productId) {
+		SanPham product = null;
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM SanPham WHERE id = ?";
+				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
+				preparedStatement.setInt(1, productId);
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				if (resultSet.next()) {
+					product = new SanPham();
+					product.setId(resultSet.getInt("id"));
+					product.setIdLoaiSP(resultSet.getInt("idLoaiSP"));
+					product.setTenSP(resultSet.getString("TenSP"));
+					product.setDonGia(resultSet.getInt("DonGia"));
+					product.setSoLuong(resultSet.getInt("SoLuong"));
+					product.setHinhAnh(resultSet.getString("HinhAnh"));
+					product.setIdCongThuc(resultSet.getInt("idCongThuc"));
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return product;
+	}
+
+	public ArrayList<ChiTietHoaDon> getAllChiTietHoaDon() {
+		ArrayList<ChiTietHoaDon> chiTietHoaDonList = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM ChiTietHoaDon";
+				Statement stmt = conDB.conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+					ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
+					chiTietHoaDon.setId(rs.getInt("id"));
+					chiTietHoaDon.setIdHoaDon(rs.getInt("idHoaDon"));
+					chiTietHoaDon.setIdSanPham(rs.getInt("idSanPham"));
+					chiTietHoaDon.setSoLuong(rs.getInt("SoLuong"));
+					chiTietHoaDon.setDonGia(rs.getInt("DonGia"));
+					chiTietHoaDonList.add(chiTietHoaDon);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return chiTietHoaDonList;
+	}
+
+	public ArrayList<HoaDon> getHoaDon() {
+		ArrayList<HoaDon> hoaDonList = new ArrayList<>();
+
+		if (conDB.openConnectDB()) {
+			try {
+				// Tạo câu truy vấn SQL để lấy danh sách hóa đơn trong tháng
+				String sql = "SELECT * FROM HoaDon";
+				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
+
+				// Thực thi truy vấn
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				// Lặp qua kết quả và thêm hóa đơn vào danh sách
+				while (resultSet.next()) {
+					HoaDon hoaDon = new HoaDon();
+					// Đọc thông tin từ kết quả và thiết lập vào đối tượng hóa đơn
+					hoaDon.setidHD(resultSet.getInt("id"));
+					hoaDon.setNgayLap(resultSet.getDate("NgayLap"));
+					hoaDon.setTongTien(resultSet.getInt("TongTien"));
+					hoaDon.setTrangThai(resultSet.getInt("TrangThai"));
+					hoaDon.setidNV(resultSet.getInt("idNhanVien"));
+					hoaDon.setidKH(resultSet.getInt("idKhachHang"));
+					hoaDon.setGhiChu(resultSet.getString("ghiChu"));
+
+					// Thêm hóa đơn vào danh sách
+					hoaDonList.add(hoaDon);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+
+		return hoaDonList;
+	}
+
+	public ArrayList<SanPham> getTop10BestSellingProducts() {
+		ArrayList<SanPham> top10Products = new ArrayList<>();
+		HashMap<Integer, Integer> productIdToTotalQuantityMap = new HashMap<>();
+
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT idSanPham, SUM(SoLuong) AS TotalQuantity " + "FROM ChiTietHoaDon "
+						+ "GROUP BY idSanPham " + "ORDER BY TotalQuantity DESC " + "LIMIT 10";
+				Statement stmt = conDB.conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				while (rs.next()) {
+					int productId = rs.getInt("idSanPham");
+					int totalQuantity = rs.getInt("TotalQuantity");
+					productIdToTotalQuantityMap.put(productId, totalQuantity);
+				}
+
+				for (int productId : productIdToTotalQuantityMap.keySet()) {
+					SanPham product = getProductInfo(productId);
+					if (product != null) {
+						top10Products.add(product);
+					}
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+
+		return top10Products;
+	}
+
+	private SanPham getProductInfo(int productId) {
+		SanPham product = null;
+
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM SanPham WHERE id = ?";
+				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
+				preparedStatement.setInt(1, productId);
+
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				if (resultSet.next()) {
+					product = new SanPham();
+					product.setId(resultSet.getInt("id"));
+					product.setIdLoaiSP(resultSet.getInt("idLoaiSP"));
+					product.setTenSP(resultSet.getString("TenSP"));
+					product.setDonGia(resultSet.getInt("DonGia"));
+					product.setSoLuong(resultSet.getInt("SoLuong"));
+					product.setHinhAnh(resultSet.getString("HinhAnh"));
+					product.setIdCongThuc(resultSet.getInt("idCongThuc"));
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+
+		return product;
+	}
+
+	public ArrayList<ChiTietHoaDon> getChiTietHoaDonByHoaDonId(int hoaDonId) {
+		ArrayList<ChiTietHoaDon> chiTietHoaDonList = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT * FROM ChiTietHoaDon WHERE idHoaDon = ?";
+				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
+				preparedStatement.setInt(1, hoaDonId);
+
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				while (resultSet.next()) {
+					ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
+					chiTietHoaDon.setId(resultSet.getInt("id"));
+					chiTietHoaDon.setIdHoaDon(resultSet.getInt("idHoaDon"));
+					chiTietHoaDon.setIdSanPham(resultSet.getInt("idSanPham"));
+					chiTietHoaDon.setSoLuong(resultSet.getInt("SoLuong"));
+					chiTietHoaDon.setDonGia(resultSet.getInt("DonGia"));
+
+					chiTietHoaDonList.add(chiTietHoaDon);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+
+		return chiTietHoaDonList;
+	}
+
+	public ArrayList<SanPham> getSanPhamDaBan() {
+		ArrayList<SanPham> sanPhamDaBan = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT DISTINCT sp.* FROM SanPham sp "
+						+ "JOIN ChiTietHoaDon cthd ON sp.id = cthd.idSanPham "
+						+ "JOIN HoaDon hd ON cthd.idHoaDon = hd.id";
+				Statement stmt = conDB.conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+
+				while (rs.next()) {
+					SanPham sp = new SanPham();
+					sp.setId(rs.getInt("id"));
+					sp.setIdLoaiSP(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setIdCongThuc(rs.getInt("idCongThuc"));
+					sanPhamDaBan.add(sp);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return sanPhamDaBan;
 	}
 
 	public ArrayList<SanPham> getSanPhamByLoaiSP(String loaiSP) {
@@ -205,6 +484,25 @@ public class ThongKeDAO {
 			}
 		}
 		return listSanPham;
+	}
+
+	public int getTotal(String table) {
+		int totalCustomers = 0;
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT COUNT(*) AS total FROM " + table;
+				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
+				ResultSet resultSet = preparedStatement.executeQuery();
+				if (resultSet.next()) {
+					totalCustomers = resultSet.getInt("total");
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return totalCustomers;
 	}
 
 }

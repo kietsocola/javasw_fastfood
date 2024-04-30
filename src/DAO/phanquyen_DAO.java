@@ -33,6 +33,25 @@ public class phanquyen_DAO {
 		return ds;
 	}
 	
+	public ArrayList<Boolean> getLoaiPhanQuyen(int idPhanQuyen) throws SQLException{
+		ArrayList<Boolean> list = new ArrayList<>();
+		con.connect();
+		String sql = "select * from phanquyen where id =  ?";
+		PreparedStatement ps = con.getCon().prepareStatement(sql);
+		ps.setInt(1,idPhanQuyen);
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs.next()) {
+			list.add(rs.getBoolean(3));
+			list.add(rs.getBoolean(4));
+			list.add(rs.getBoolean(5));
+			list.add(rs.getBoolean(6));
+			list.add(rs.getBoolean(7));
+		}
+		con.close();
+		return list;
+	}
+	
 	public boolean hasNamePhanQuyen(phanquyen_DTO item) {
 		
 		con.connect();

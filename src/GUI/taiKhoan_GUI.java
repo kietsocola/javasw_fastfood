@@ -13,9 +13,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import BUS.NhanVien_BUS;
+import BUS.phanquyen_BUS;
 import BUS.taiKhoan_BUS;
 import Custom.MyButton;
 import Custom.MyPanel;
+import DTO.NhanVien;
 import DTO.taiKhoan_DTO;
 import GUI.MainQuanlyGUI;
 
@@ -35,6 +38,7 @@ import javax.swing.DropMode;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.ComponentOrientation;
@@ -165,19 +169,28 @@ public class taiKhoan_GUI {
 				account.setTenTaiKhoan(tenDangNhap.getText());
 				account.setMatKhau(matKhau.getText());
 				taiKhoan_BUS tk_BUS = new taiKhoan_BUS();
+				NhanVien_BUS nv_BUS = new NhanVien_BUS();
+				phanquyen_BUS pq_BUS = new phanquyen_BUS();
 					// TODO Auto-generated catch block\
 				try {
 					if(tk_BUS.checkDangNhap(account) == 0)
-						JOptionPane.showMessageDialog(btnDangNhap, "vui long nhap day du thong tin","Thong bao",0);
+						JOptionPane.showMessageDialog(null, "vui long nhap day du thong tin","Thong bao",0);
 					else if(tk_BUS.checkDangNhap(account) == 1)
-					{
-//						JOptionPane.showMessageDialog(btnNewButton, "hello","Thong bao",0);
-						MainQuanlyGUI main = new MainQuanlyGUI();
+					{	
+						int idPhanQuyen = tk_BUS.IdPhanQuyen(account);
+						ArrayList<Boolean> PhanQuyen = pq_BUS.loaiPhanQuyen(idPhanQuyen);
+//						for(boolean x : PhanQuyen)
+//							System.out.print(x + " la quyen cua tai khoan \n");
+						String TenNhanVien = nv_BUS.getTenNhanVien(tk_BUS.idTaiKhoan(account));
+						System.out.print(tk_BUS.idTaiKhoan(account) + " la id cua tai khoan \n");
+						JOptionPane.showMessageDialog(null, "Xin Chào " + TenNhanVien,"Thong bao",JOptionPane.INFORMATION_MESSAGE);
+
+						MainQuanlyGUI main = new MainQuanlyGUI(PhanQuyen);
 						main.showWindow();
 						frame.setVisible(false);
 					}
 					else if(tk_BUS.checkDangNhap(account) == 2)
-						JOptionPane.showMessageDialog(btnDangNhap, "ten tai khoan hoac mat khau cua ban bi sai","Thong bao",0);
+						JOptionPane.showMessageDialog(null, "ten tai khoan hoac mat khau cua ban bi sai","Thong bao",1);
 				} catch (HeadlessException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

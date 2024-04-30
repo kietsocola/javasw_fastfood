@@ -29,6 +29,7 @@ public class NhanVien_DAO {
 		                nv.setNgaySinh(rs.getString(6));
 		                nv.setGioiTinh(rs.getInt(5));
 		                nv.setSoDT(rs.getString(2));
+		                nv.setIdTaiKhoan(rs.getInt(3));
 		                dsnv.add(nv);
 		            }
 		        } catch (SQLException e) {
@@ -36,7 +37,7 @@ public class NhanVien_DAO {
 		        } 
 		    }
 		    return dsnv;
-		}
+	}
 
 
 	public NhanVien getNhanVien(int maNV) {
