@@ -306,17 +306,26 @@ public class ThongKeGUI extends JPanel {
 					java.util.Date modifiedStartDate = calendarStart.getTime();
 
 					// Chuyển đổi sang kiểu java.sql.Date
-					Date startDate = new java.sql.Date(modifiedStartDate.getTime());
-					Date endDate = new java.sql.Date(utilEndDate.getTime());
+					java.sql.Date startDate = new java.sql.Date(modifiedStartDate.getTime());
+					java.sql.Date endDate = new java.sql.Date(utilEndDate.getTime());
 
 					// Gọi phương thức của BUS để lấy danh sách sản phẩm dựa trên ngày và loại sản
 					// phẩm được chọn
-					ArrayList<SanPham> filteredSanPhamList = thongKeBUS.getSanPhamByDateAndCategory(selectedCategory,
-							startDate, endDate);
 
-					// Hiển thị danh sách sản phẩm lấy được lên JTable
-					displaySanPham(filteredSanPhamList, startDate, endDate);
-					displaySanPham5(filteredSanPhamList, startDate, endDate);
+					if (selectedCategory.equals("Tất cả")) {
+						ArrayList<SanPham> filteredSanPhamList = thongKeBUS.getSanPhamByDate(startDate, endDate);
+
+						// Hiển thị danh sách sản phẩm lấy được lên JTable
+						displaySanPham(filteredSanPhamList, startDate, endDate);
+						displaySanPham5(filteredSanPhamList, startDate, endDate);
+					} else {
+						ArrayList<SanPham> filteredSanPhamList = thongKeBUS
+								.getSanPhamByDateAndCategory(selectedCategory, startDate, endDate);
+
+						// Hiển thị danh sách sản phẩm lấy được lên JTable
+						displaySanPham(filteredSanPhamList, startDate, endDate);
+						displaySanPham5(filteredSanPhamList, startDate, endDate);
+					}
 				}
 			}
 		});
@@ -387,10 +396,6 @@ public class ThongKeGUI extends JPanel {
 		panel_7.add(panel_9);
 		panel_9.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_10 = new JPanel();
-		panel_10.setBackground(new Color(228, 228, 255));
-		panel_9.add(panel_10, BorderLayout.NORTH);
-
 		JPanel panel_16 = new JPanel();
 		panel_16.setBackground(new Color(228, 228, 255));
 		panel_9.add(panel_16, BorderLayout.WEST);
@@ -431,11 +436,6 @@ public class ThongKeGUI extends JPanel {
 		panel_7.add(panel_15);
 		panel_15.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_22 = new JPanel();
-		panel_22.setBackground(new Color(228, 228, 255));
-		panel_22.setForeground(new Color(228, 228, 255));
-		panel_15.add(panel_22, BorderLayout.NORTH);
-
 		JPanel panel_23 = new JPanel();
 		panel_23.setBackground(new Color(228, 228, 255));
 		panel_23.setForeground(new Color(228, 228, 255));
@@ -463,7 +463,7 @@ public class ThongKeGUI extends JPanel {
 		panel_25.add(panel_29, BorderLayout.CENTER);
 
 		JLabel lblNewLabel_5_2 = new JLabel("");
-		lblNewLabel_5_2.setIcon(new ImageIcon("D:\\Downloads\\user.png"));
+		lblNewLabel_5_2.setIcon(new ImageIcon("images/user.png"));
 		lblNewLabel_5_2.setPreferredSize(new Dimension(70, 70));
 		panel_29.add(lblNewLabel_5_2);
 
@@ -504,10 +504,6 @@ public class ThongKeGUI extends JPanel {
 		panel_9_1.add(panel_9_2, BorderLayout.CENTER);
 		panel_9_2.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_10_1 = new JPanel();
-		panel_10_1.setBackground(new Color(255, 244, 216));
-		panel_9_2.add(panel_10_1, BorderLayout.NORTH);
-
 		JPanel panel_16_1 = new JPanel();
 		panel_16_1.setBackground(new Color(255, 244, 216));
 		panel_9_2.add(panel_16_1, BorderLayout.WEST);
@@ -543,10 +539,6 @@ public class ThongKeGUI extends JPanel {
 		panel_7_1.add(panel_15_1);
 		panel_15_1.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_22_2 = new JPanel();
-		panel_22_2.setBackground(new Color(255, 244, 216));
-		panel_15_1.add(panel_22_2, BorderLayout.NORTH);
-
 		JPanel panel_23_1 = new JPanel();
 		panel_23_1.setBackground(new Color(255, 244, 216));
 		panel_15_1.add(panel_23_1, BorderLayout.EAST);
@@ -566,7 +558,7 @@ public class ThongKeGUI extends JPanel {
 
 		JLabel lblNewLabel_5_2_1 = new JLabel("");
 		lblNewLabel_5_2_1.setBackground(new Color(255, 244, 216));
-		lblNewLabel_5_2_1.setIcon(new ImageIcon("D:\\Downloads\\Icon.png"));
+		lblNewLabel_5_2_1.setIcon(new ImageIcon("images/Icon.png"));
 		lblNewLabel_5_2_1.setPreferredSize(new Dimension(70, 70));
 		panel_29_1.add(lblNewLabel_5_2_1);
 
@@ -622,10 +614,6 @@ public class ThongKeGUI extends JPanel {
 		lblNewLabel_1_1_1_2_1_1.setBackground(new Color(255, 240, 228));
 		panel_27_1_1.add(lblNewLabel_1_1_1_2_1_1);
 
-		JPanel panel_10_1_1 = new JPanel();
-		panel_10_1_1.setBackground(new Color(221, 255, 238));
-		panel_26_1_1.add(panel_10_1_1, BorderLayout.NORTH);
-
 		JPanel panel_10_1_1_1 = new JPanel();
 		panel_10_1_1_1.setBackground(new Color(221, 255, 238));
 		panel_26_1_1.add(panel_10_1_1_1, BorderLayout.SOUTH);
@@ -652,13 +640,9 @@ public class ThongKeGUI extends JPanel {
 		panel_15_1_3.add(panel_29_1_1, BorderLayout.CENTER);
 
 		JLabel lblNewLabel_5_2_1_1 = new JLabel("");
-		lblNewLabel_5_2_1_1.setIcon(new ImageIcon("D:\\Downloads\\doanh thu.png"));
+		lblNewLabel_5_2_1_1.setIcon(new ImageIcon("images/doanh thu.png"));
 		lblNewLabel_5_2_1_1.setPreferredSize(new Dimension(70, 70));
 		panel_29_1_1.add(lblNewLabel_5_2_1_1);
-
-		JPanel panel_10_1_1_3 = new JPanel();
-		panel_10_1_1_3.setBackground(new Color(221, 255, 238));
-		panel_15_1_3.add(panel_10_1_1_3, BorderLayout.NORTH);
 
 		JPanel panel_10_1_1_4 = new JPanel();
 		panel_10_1_1_4.setBackground(new Color(221, 255, 238));
@@ -706,10 +690,6 @@ public class ThongKeGUI extends JPanel {
 		panel_9_2_2.setPreferredSize(new Dimension(50, 50));
 		panel_9_1_4.add(panel_9_2_2, BorderLayout.CENTER);
 		panel_9_2_2.setLayout(new BorderLayout(0, 0));
-
-		JPanel panel_10_1_4 = new JPanel();
-		panel_10_1_4.setBackground(new Color(255, 230, 220));
-		panel_9_2_2.add(panel_10_1_4, BorderLayout.NORTH);
 
 		JPanel panel_26_1_2 = new JPanel();
 		panel_9_2_2.add(panel_26_1_2, BorderLayout.CENTER);
@@ -761,13 +741,9 @@ public class ThongKeGUI extends JPanel {
 		panel_15_1_4.add(panel_29_1_2, BorderLayout.CENTER);
 
 		JLabel lblNewLabel_5_2_1_2 = new JLabel("");
-		lblNewLabel_5_2_1_2.setIcon(new ImageIcon("D:\\Downloads\\aa.png"));
+		lblNewLabel_5_2_1_2.setIcon(new ImageIcon("images/aa.png"));
 		lblNewLabel_5_2_1_2.setPreferredSize(new Dimension(70, 70));
 		panel_29_1_2.add(lblNewLabel_5_2_1_2);
-
-		JPanel panel_10_1_4_1_1 = new JPanel();
-		panel_10_1_4_1_1.setBackground(new Color(255, 230, 220));
-		panel_15_1_4.add(panel_10_1_4_1_1, BorderLayout.NORTH);
 
 		JPanel panel_10_1_4_1_2 = new JPanel();
 		panel_10_1_4_1_2.setBackground(new Color(255, 230, 220));
@@ -802,12 +778,6 @@ public class ThongKeGUI extends JPanel {
 		panel_2_3.setPreferredSize(new Dimension(24, 24));
 		panel_2_3.setBackground(Color.WHITE);
 		panel.add(panel_2_3, BorderLayout.EAST);
-
-		// Tạo JPanel ở vị trí West
-		JPanel panelWest = new JPanel();
-		mainPanel.add(panelWest, BorderLayout.WEST);
-		panelWest.setPreferredSize(new Dimension(104, 80));
-		panelWest.setBackground(Color.BLACK);
 
 		// Đặt JFrame ở giữa màn hình
 //		frame.setLocationRelativeTo(null);
@@ -999,43 +969,22 @@ public class ThongKeGUI extends JPanel {
 		// Gọi phương thức để lấy dữ liệu từ displaySanPhamOnTable5
 		ArrayList<Object[]> rowDataList = displaySanPhamOnTable5(listSanPham, startDate, endDate);
 
-		// Tạo dữ liệu cho biểu đồ
-		ArrayList<String> tenSanPhamList = new ArrayList<>();
-		ArrayList<Integer> soLuongList = new ArrayList<>();
+		// Tạo lại model cho JTable với dữ liệu mới
+		String[] columnNames = { "ID", "Tên sản phẩm", "Đơn giá", "Số lượng sản phẩm", "Thành tiền sản phẩm" };
+		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 		for (Object[] rowData : rowDataList) {
-			String tenSP = (String) rowData[1];
-			int totalQuantity = (int) rowData[3];
-			tenSanPhamList.add(tenSP);
-			soLuongList.add(totalQuantity);
+			model.addRow(rowData);
 		}
 
-		// Tạo biểu đồ cột
-		CategoryChart chart = new CategoryChartBuilder().width(800).height(600).title("Số lượng sản phẩm bán được")
-				.xAxisTitle("Sản phẩm").yAxisTitle("Số lượng").build();
+		jTable = new JTable(model);
+		JScrollPane scrollPane = new JScrollPane(jTable);
+		scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, 200));
 
-		// Thêm dữ liệu vào biểu đồ
-		chart.getStyler().setLegendPosition(LegendPosition.OutsideE);
-
-		chart.addSeries("Số lượng", tenSanPhamList, soLuongList);
-
-		// Hiển thị biểu đồ trong cửa sổ Swing
-		new SwingWrapper<>(chart).displayChart();
-		// Tạo một XChartPanel từ biểu đồ
-		XChartPanel<CategoryChart> chartPanel = new XChartPanel<>(chart);
-
-		// Xóa tất cả các thành phần hiện có trong panel_48
 		panel_48.removeAll();
-
-		// Đặt layout của panel_48 thành BorderLayout để chứa biểu đồ
 		panel_48.setLayout(new BorderLayout());
-
-		// Thêm XChartPanel vào panel_48 ở vị trí Center
-		panel_48.add(chartPanel, BorderLayout.CENTER);
-
-		// Cập nhật lại panel_48 để hiển thị biểu đồ
+		panel_48.add(scrollPane, BorderLayout.CENTER);
 		panel_48.revalidate();
 		panel_48.repaint();
-
 	}
 
 	private void drawRevenueChartByMonth() {
