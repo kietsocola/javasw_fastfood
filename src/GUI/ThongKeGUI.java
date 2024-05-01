@@ -133,19 +133,13 @@ public class ThongKeGUI extends JPanel {
 		panel_11.setBackground(new Color(255, 255, 255));
 		panel_11.setPreferredSize(new Dimension(646, 60));
 		panel_8.add(panel_11, BorderLayout.NORTH);
-		panel_11.setLayout(new BorderLayout(0, 0));
+		panel_11.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		JLabel lblNewLabel_1 = new JLabel("Dashboard");
+		JLabel lblNewLabel_1 = new JLabel("Thống kê");
 		lblNewLabel_1.setBackground(new Color(0, 0, 0));
-		panel_11.add(lblNewLabel_1, BorderLayout.NORTH);
+		panel_11.add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 28));
-
-		JLabel lblNewLabel_2_1 = new JLabel("Tuesday 2 Feb, 2021");
-		panel_11.add(lblNewLabel_2_1, BorderLayout.SOUTH);
-		lblNewLabel_2_1.setPreferredSize(new Dimension(300, 30));
-		lblNewLabel_2_1.setForeground(new Color(0, 0, 0));
-		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 28));
 
 		JPanel panel_12 = new JPanel();
 		panel_12.setBackground(new Color(255, 240, 228));
