@@ -1,6 +1,7 @@
 package DTO;
 
 public class phanquyen_DTO {
+		private int stt;
 		private int idPhanQuyen ;
 		private String tenPhanQUyen ;
 		private Boolean nhaphang;
@@ -71,6 +72,14 @@ public class phanquyen_DTO {
 
 		public void setThongke(Boolean thongke) {
 			this.thongke = thongke;
+		}
+
+		public int getStt() {
+			return stt;
+		}
+
+		public void setStt(int stt) {
+			this.stt = stt;
 		}
 		
 		

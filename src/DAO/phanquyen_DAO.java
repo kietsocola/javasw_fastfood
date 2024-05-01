@@ -18,8 +18,10 @@ public class phanquyen_DAO {
 		String sql = "select * from phanquyen";
 		Statement stmt =   con.getCon().createStatement();
 		ResultSet result = stmt.executeQuery(sql);
+		int stt = 1;
 		while(result.next()) {
 			phanquyen_DTO item = new phanquyen_DTO();
+			item.setStt(stt++);
 			item.setIdPhanQuyen(result.getInt(1));
 			item.setTenPhanQuyen(result.getString(2));
 			item.setNhaphang(result.getBoolean(3));

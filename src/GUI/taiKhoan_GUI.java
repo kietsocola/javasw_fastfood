@@ -52,7 +52,8 @@ public class taiKhoan_GUI {
 	private JFrame frame;
 	private JTextField tenDangNhap;
 	private JTextField matKhau;
-	private MyPanel panel ,panel_1 ,panel_2 ,panelTenDangNhap,panelMatKhau,panelBtnDangNhap;
+	private MyPanel panel ,panel_2 ,panelTenDangNhap,panelMatKhau,panelBtnDangNhap;
+	JPanel panel_1;
 	private MyButton btnDangNhap ,btnThoat;
 
 	/**
@@ -97,7 +98,7 @@ public class taiKhoan_GUI {
 		EmptyBorder border = new EmptyBorder(20, 20, 20, 20);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
-		panel_1 = new MyPanel();
+		panel_1 = new JPanel();
 		panel_1.setBorder(new EmptyBorder(0, 10, 0, 0));
 		panel_1.setPreferredSize(new Dimension(320, 400));
 //		frame.getContentPane().add(panel_1);
