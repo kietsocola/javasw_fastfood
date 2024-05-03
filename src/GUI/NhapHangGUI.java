@@ -41,6 +41,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.Frame;
@@ -86,6 +87,7 @@ public class NhapHangGUI extends JPanel {
 	 */
 	public NhapHangGUI() {
 		addControlsNhapHang();
+		eventsNhapHang();
 	}
 	public void addControlsNhapHang() {
 		this.setLayout(new BorderLayout());
@@ -226,12 +228,7 @@ public class NhapHangGUI extends JPanel {
 		txtTimTheoTen.setColumns(10);
 
 		btnTimKiem = new MyButton("Tìm kiếm");
-		btnTimKiem.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				timNguyenLieuTheoTen();
-			}
-		});
+		
 		ImageIcon iconTimkiem = new ImageIcon("images/loupe.png");
 		Image img0 = iconTimkiem.getImage();
 		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
@@ -259,10 +256,13 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_MaNL);
 		panel_MaNL.setLayout(new BoxLayout(panel_MaNL, BoxLayout.X_AXIS));
 		
-		MyLabelSecond lblMaNL = new MyLabelSecond("Mã nguyên liệu");
+		MyLabelSecond lblMaNL = new MyLabelSecond("Mã nguyên liệu: ");
 		panel_MaNL.add(lblMaNL);
 		
 		txtMaNL = new MyTextField();
+		txtMaNL.setHorizontalAlignment(SwingConstants.CENTER);
+		txtMaNL.setEnabled(false);
+		txtMaNL.setDisabledTextColor(new Color(0, 0, 0));
 		panel_MaNL.add(txtMaNL);
 		txtMaNL.setColumns(10);
 		
@@ -271,10 +271,13 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_TenNL);
 		panel_TenNL.setLayout(new BoxLayout(panel_TenNL, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblTenNL = new MyLabelSecond("Tên nguyên liệu");
+		MyLabelSecond lblTenNL = new MyLabelSecond("Tên nguyên liệu: ");
 		panel_TenNL.add(lblTenNL);
 		
 		txtTenNL = new MyTextField();
+		txtTenNL.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTenNL.setEnabled(false);
+		txtTenNL.setDisabledTextColor(new Color(0, 0, 0));
 		panel_TenNL.add(txtTenNL);
 		txtTenNL.setColumns(10);
 		
@@ -283,10 +286,11 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_SoLuong);
 		panel_SoLuong.setLayout(new BoxLayout(panel_SoLuong, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblSoLuong = new MyLabelSecond("Số lượng nhập");
+		MyLabelSecond lblSoLuong = new MyLabelSecond("Số lượng nhập: ");
 		panel_SoLuong.add(lblSoLuong);
 
 		txtSoLuongNL = new MyTextField();
+		txtSoLuongNL.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_SoLuong.add(txtSoLuongNL);
 		txtSoLuongNL.setColumns(10);
 		
@@ -295,10 +299,11 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_DonGiaNL);
 		panel_DonGiaNL.setLayout(new BoxLayout(panel_DonGiaNL, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblDonGiaNL = new MyLabelSecond("Đơn giá");
+		MyLabelSecond lblDonGiaNL = new MyLabelSecond("Đơn giá: ");
 		panel_DonGiaNL.add(lblDonGiaNL);
 
 		txtDonGiaNL = new MyTextField();
+		txtDonGiaNL.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DonGiaNL.add(txtDonGiaNL);
 		txtDonGiaNL.setColumns(10);
 		
@@ -313,31 +318,17 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_NCC);
 		panel_NCC.setLayout(new BoxLayout(panel_NCC, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblNCC = new MyLabelSecond("Nhà cung cấp");
+		MyLabelSecond lblNCC = new MyLabelSecond("Nhà cung cấp: ");
 		panel_NCC.add(lblNCC);
 
 		cmbNCC = new JComboBox <String>();
 		cmbNCC.setMaximumSize(new Dimension(300, 30));
 		cmbNCC.setPreferredSize(new Dimension(200, 30));
 		panel_NCC.add(cmbNCC);
-		loadDataCmbNCC();
-//		txtNCC = new MyTextField();
-//		txtNCC.setPreferredSize(new Dimension(200, 30));
-//		panel_NCC.add(txtNCC);
-//		btnchonNCC = new MyButton("...");
-//		btnchonNCC.setPreferredSize(new Dimension(50, 40));
-//		panel_NCC.add(btnchonNCC);
-		//txtSoLuongNL.setColumns(10);
-		
+		loadDataCmbNCC();		
 		MyPanelSecond pnBTN = new MyPanelSecond();
 		pnInput.add(pnBTN);
 		btnChonNhap = new MyButton("Chọn nhập");
-		btnChonNhap.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ChonNhap();
-			}
-		});
 		btnChonNhap.setMaximumSize(new Dimension(80, 40));
 		btnChonNhap.setPreferredSize(new Dimension(80, 40));
 //		ImageIcon icon = new ImageIcon("images/cart.png");
@@ -349,13 +340,7 @@ public class NhapHangGUI extends JPanel {
 		pnBTN.add(btnChonNhap);
 		
 		btnXoa = new MyButton("Xóa");
-		btnXoa.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				xoaNLformXacNhan();
-				btnXoa.setEnabled(false);
-			}
-		});
+		
 		btnXoa.setMaximumSize(new Dimension(80, 40));
 		btnXoa.setPreferredSize(new Dimension(80, 40));
 		ImageIcon iconXoa = new ImageIcon("images/remove.png");
@@ -367,13 +352,7 @@ public class NhapHangGUI extends JPanel {
 		pnBTN.add(btnXoa);
 		
 		btnXuatPN = new MyButton("Xuất phiếu nhập");
-		btnXuatPN.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				xuatPN();
-				loadDataTablePhieuNhap();
-			}
-		});
+		
 		btnXuatPN.setMaximumSize(new Dimension(80, 40));
 		btnXuatPN.setPreferredSize(new Dimension(120, 40));
 //		ImageIcon iconXuatPN = new ImageIcon("images/.png");
@@ -456,7 +435,7 @@ public class NhapHangGUI extends JPanel {
 		panel_DetailPN.add(lblThongTinPN);
 		
 		MyPanelSecond pnMaPN = new MyPanelSecond();
-		MyLabelSecond lblMaPN = new MyLabelSecond("Mã PN");
+		MyLabelSecond lblMaPN = new MyLabelSecond("Mã PN: ");
 		lblMaPN.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DetailPN.add(pnMaPN);
 		pnMaPN.setLayout(new BoxLayout(pnMaPN, BoxLayout.X_AXIS));
@@ -466,7 +445,7 @@ public class NhapHangGUI extends JPanel {
 		pnMaPN.add(txtMaPN);
 		
 		MyPanelSecond pnMaNL2 = new MyPanelSecond();
-		MyLabelSecond lblMaNL2 = new MyLabelSecond("Mã NL");
+		MyLabelSecond lblMaNL2 = new MyLabelSecond("Mã NL: ");
 		lblMaNL2.setHorizontalAlignment(SwingConstants.CENTER);
 		pnMaNL2.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_DetailPN.add(pnMaNL2);
@@ -476,7 +455,7 @@ public class NhapHangGUI extends JPanel {
 		pnMaNL2.add(txtMaNL2);
 		
 		MyPanelSecond pnMaNCC = new MyPanelSecond();
-		MyLabelSecond lblMaNCC = new MyLabelSecond("Mã NCC");
+		MyLabelSecond lblMaNCC = new MyLabelSecond("Mã NCC: ");
 		lblMaNCC.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DetailPN.add(pnMaNCC);
 		pnMaNCC.setLayout(new BoxLayout(pnMaNCC, BoxLayout.X_AXIS));
@@ -486,7 +465,7 @@ public class NhapHangGUI extends JPanel {
 		pnMaNCC.add(txtMaNCC);
 		
 		MyPanelSecond pnTongTien = new MyPanelSecond();
-		MyLabelSecond lblTongTien = new MyLabelSecond("Tổng tiền");
+		MyLabelSecond lblTongTien = new MyLabelSecond("Tổng tiền: ");
 		lblTongTien.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DetailPN.add(pnTongTien);
 		pnTongTien.setLayout(new BoxLayout(pnTongTien, BoxLayout.X_AXIS));
@@ -506,7 +485,7 @@ public class NhapHangGUI extends JPanel {
 		panel_DetailCTPN.add(lblThongTinCTPN);
 		
 		MyPanelSecond pnNL = new MyPanelSecond();
-		MyLabelSecond lblNL = new MyLabelSecond("Nguyên liệu");
+		MyLabelSecond lblNL = new MyLabelSecond("Nguyên liệu: ");
 		lblNL.setHorizontalAlignment(SwingConstants.CENTER);
 		pnNL.add(lblNL);
 		txtNL = new MyTextField();
@@ -516,7 +495,7 @@ public class NhapHangGUI extends JPanel {
 		panel_DetailCTPN.add(pnNL);
 		
 		MyPanelSecond pnSL = new MyPanelSecond();
-		MyLabelSecond lblSL = new MyLabelSecond("Số lượng");
+		MyLabelSecond lblSL = new MyLabelSecond("Số lượng: ");
 		lblSL.setHorizontalAlignment(SwingConstants.CENTER);
 		pnSL.add(lblSL);
 		txtSL = new MyTextField();
@@ -526,7 +505,7 @@ public class NhapHangGUI extends JPanel {
 		panel_DetailCTPN.add(pnSL);
 		
 		MyPanelSecond pnDG = new MyPanelSecond();
-		MyLabelSecond lblDG = new MyLabelSecond("Đơn giá");
+		MyLabelSecond lblDG = new MyLabelSecond("Đơn giá: ");
 		lblDG.setHorizontalAlignment(SwingConstants.CENTER);
 		pnDG.add(lblDG);
 		txtDG = new MyTextField();
@@ -536,7 +515,7 @@ public class NhapHangGUI extends JPanel {
 		panel_DetailCTPN.add(pnDG);
 		
 		MyPanelSecond pnTT = new MyPanelSecond();
-		MyLabelSecond lblTT = new MyLabelSecond("Thành tiền");
+		MyLabelSecond lblTT = new MyLabelSecond("Thành tiền: ");
 		lblTT.setHorizontalAlignment(SwingConstants.CENTER);
 		pnTT.add(lblTT);
 		txtThanhTien = new MyTextField();
@@ -592,40 +571,7 @@ public class NhapHangGUI extends JPanel {
 					
 				});
 			}
-//				public void eventsNhapHang() {
-//					btnChonNhap.addMouseListener(new MouseListener() {
-//						
-//						@Override
-//						public void mouseReleased(MouseEvent e) {
-//							// TODO Auto-generated method stub
-//							
-//						}
-//						
-//						@Override
-//						public void mousePressed(MouseEvent e) {
-//							// TODO Auto-generated method stub
-//							
-//						}
-//						
-//						@Override
-//						public void mouseExited(MouseEvent e) {
-//							// TODO Auto-generated method stub
-//							
-//						}
-//						
-//						@Override
-//						public void mouseEntered(MouseEvent e) {
-//							// TODO Auto-generated method stub
-//							
-//						}
-//						
-//						@Override
-//						public void mouseClicked(MouseEvent e) {
-//							// TODO Auto-generated method stub
-//							ChonNhap();
-//						}
-//					});
-//				}
+
 			//Xử lý load dữ liệu	
 				private void addDataToTblNL() {
 					nlBUS.getDSachNguyenLieu();
@@ -807,4 +753,62 @@ public class NhapHangGUI extends JPanel {
 						modelTableNL.addRow(vec);
 						}
 				}
-	}
+				private void eventsNhapHang() {
+					btnChonNhap.addMouseListener(new MouseListener() {
+						
+						@Override
+						public void mouseReleased(MouseEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void mousePressed(MouseEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void mouseExited(MouseEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							// TODO Auto-generated method stub
+							ChonNhap();
+						}
+					});
+					btnXuatPN.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							xuatPN();
+							loadDataTablePhieuNhap();
+							addDataToTblNL();
+						}
+					});
+					btnXoa.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							xoaNLformXacNhan();
+							btnXoa.setEnabled(false);
+						}
+					});
+					btnTimKiem.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							timNguyenLieuTheoTen();
+							
+						}
+					});
+				}
+				
+}
+
