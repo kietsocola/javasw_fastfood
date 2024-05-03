@@ -17,6 +17,7 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -52,6 +53,9 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import Custom.MyTable;
 import javax.swing.ListSelectionModel;
@@ -94,6 +98,7 @@ public class QLyBanHangGUI extends JPanel {
 	private ArrayList<KhuyenMai> arrKhuyenMai;
 	private Map<Integer, String> optionMap, optionMapKM;
 	private JComboBox<String> comboBox, comboBoxKM;
+	private JLabel lblAnhSP;
 	/**
 	 * Launch the application.
 	 */
@@ -109,6 +114,7 @@ public class QLyBanHangGUI extends JPanel {
 //			}
 //		});
 //	}
+	private File fileAnhSP;
 
 	/**
 	 * Create the application.
@@ -338,6 +344,8 @@ public class QLyBanHangGUI extends JPanel {
 		panel_SoLuong.add(txtSoLuong);
 		txtSoLuong.setColumns(10);
 		
+		
+		
 		MyPanelSecond panel_KhuyenMai = new MyPanelSecond();
 		panel_KhuyenMai.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		pnInput.add(panel_KhuyenMai);
@@ -360,7 +368,20 @@ public class QLyBanHangGUI extends JPanel {
 
         // Tạo một JComboBox và thiết lập dữ liệu từ Map
         comboBoxKM = new JComboBox<>(optionMapKM.values().toArray(new String[0]));
+        comboBoxKM.setPreferredSize(new Dimension(200, 10));
         panel_KhuyenMai.add(comboBoxKM);
+        
+        
+
+		
+		JPanel pnChuaAnh = new JPanel();
+		lblAnhSP = new JLabel();
+        lblAnhSP.setPreferredSize(new Dimension(120, 120));
+        lblAnhSP.setIcon(getAnhSP(""));
+		pnChuaAnh.add(lblAnhSP);
+		pnChuaAnh.setMaximumSize(new Dimension(120, 120));
+		pnChuaAnh.setPreferredSize(new Dimension(120, 120));
+		pnInput.add(pnChuaAnh);
 
 //		MyPanel panel_NhanVien = new MyPanel();
 //		pnInput.add(panel_NhanVien);
@@ -767,6 +788,35 @@ public class QLyBanHangGUI extends JPanel {
 			}
 		});
 	}
+	
+	private ImageIcon getAnhSP(String src) {
+        src = src.trim().equals("") ? "default.png" : src;
+        //Xử lý ảnh
+        BufferedImage img = null;
+        File fileImg = new File(src);
+
+        if (!fileImg.exists()) {
+            src = "default.png";
+            fileImg = new File("images/" + src);
+        }
+
+        try {
+            img = ImageIO.read(fileImg);
+            fileAnhSP = new File(src);
+        } catch (IOException e) {
+            fileAnhSP = new File("images/default.png");
+        }
+
+        if (img != null) {
+            Image dimg = img.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            return new ImageIcon(dimg);
+        }
+
+        return null;
+    }
+	 private void loadAnh(String anh) {
+	        lblAnhSP.setIcon(getAnhSP(anh));
+	    }
 
 	private void loadDataTableHoaDon() {
 		ArrayList<HoaDon> listHD = hdBUS.getListHoaDon();
