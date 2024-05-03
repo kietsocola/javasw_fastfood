@@ -38,4 +38,12 @@ public class NguyenLieuBUS {
 
 	    return dsnl;
 	}
+	public boolean giamSoLuongNLkhiCheBien(int id, int slNL) {
+		try {
+			return nlDAO.suaSoLuongNguyenLieu(id, slNL);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

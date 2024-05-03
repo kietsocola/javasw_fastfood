@@ -20,25 +20,34 @@ public class SanPhamBUS {
 //		listSP = sanPhamDAO.getListSanPham();
 //		return listSP;
 //	}
-	public ArrayList<SanPham> getSanPhamTheoTen(String ten) {
-        ArrayList<SanPham> dssp = new ArrayList<>();
-        for (SanPham sp : DSSanPham) {
-            String tenSP = sp.getTenSP().toLowerCase();
-            if (tenSP.toLowerCase().contains(ten.toLowerCase())) {
-                dssp.add(sp);
-            }
-        }
-        return dssp;
-    }
+//	public ArrayList<SanPham> getSanPhamTheoTen(String ten) {
+//        ArrayList<SanPham> dssp = new ArrayList<>();
+//        for (SanPham sp : DSSanPham) {
+//            String tenSP = sp.getTenSP().toLowerCase();
+//            if (tenSP.toLowerCase().contains(ten.toLowerCase())) {
+//                dssp.add(sp);
+//            }
+//        }
+//        return dssp;
+//    }
 	public ArrayList<SanPham> getSanPhamTheoTenVaLoai(String ten, int maLoai) {
         ArrayList<SanPham> dssp = new ArrayList<>();
-        for (SanPham sp : DSSanPham) {
-            String tenSP = sp.getTenSP().toLowerCase();
-            if (tenSP.toLowerCase().contains(ten.toLowerCase()) && sp.getIdLoaiSP()==maLoai) {
-                dssp.add(sp);
-            }
-        }
+//        for (SanPham sp : DSSanPham) {
+//            String tenSP = sp.getTenSP().toLowerCase();
+//            if (tenSP.toLowerCase().contains(ten.toLowerCase()) && sp.getIdLoaiSP()==maLoai) {
+//                dssp.add(sp);
+//            }
+//        }
+        dssp = spDAO.getDanhSachSanPhamTheoTenVaLoai(ten, maLoai);
         return dssp;
+    }
+	public ArrayList<SanPham> getSanPhamTheoTen(String ten) {
+        ArrayList<SanPham> dssp = new ArrayList<>();
+        dssp = spDAO.getDanhSachSanPhamTheoTen(ten);
+        return dssp;
+    }
+	public SanPham getSanPhamTheoMa(int ma) {
+        return spDAO.getSanPham(ma);
     }
 	public void tangSoLuongSP(int id, int sl) {
 		try {

@@ -101,6 +101,9 @@ public class KhachHang_BUS {
         }
         return dskh;
     }
+   public KhachHang getKhachHangBySDT(String sdt) {
+	   return khdao.getKhachHangBySDT(sdt);
+   }
 
     public ArrayList<KhachHang> timKhachHang(String txtMin, String txtMax) {
         if (txtMax.trim().equals("") && txtMax.trim().equals(""))

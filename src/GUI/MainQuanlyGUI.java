@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.util.ArrayList;
 
@@ -79,6 +80,15 @@ public class MainQuanlyGUI extends JFrame {
 
 		// các option cho menu
 		panel_logo = new MyLabel("");
+		panel_logo.setHorizontalAlignment(JLabel.CENTER); // Căn giữa theo chiều ngang
+		panel_logo.setVerticalAlignment(JLabel.CENTER);
+		ImageIcon iconTimkiem = new ImageIcon("images/logo/logo2.png");
+		Image img0 = iconTimkiem.getImage();
+		Image newImg0 = img0.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
+		iconTimkiem.setImage(newImg0);
+		panel_logo.setIcon(iconTimkiem);
+		panel_Category.add(panel_logo);
+		
 		lblBanHang = new MyLabel("  Bán hàng");
 		lblBanHang.setOpaque(true);
 		lblBanHang.setBackground(MyColor.BACKGROUND_CLICK_COLOR);
@@ -134,7 +144,6 @@ public class MainQuanlyGUI extends JFrame {
 		iconThongKe.setImage(newImg7);
 		lblThongKe.setIcon(iconThongKe);
 		lblThongKe.addMouseListener(new LabelMouseListener());
-		panel_Category.add(lblThongKe);
 		
 		lblPhanQuyen = new MyLabel("Phân quyền");
 		ImageIcon iconPhanQuyen = new ImageIcon("images/analytics.png");
@@ -167,10 +176,13 @@ public class MainQuanlyGUI extends JFrame {
 //		listMenuLeft.add(lblPhanQuyen);
 		
 		listMenuLeft = new ArrayList<>();
-		listMenuLeft.add(panel_logo);
-		if(QuyenHan.get(0) == true) {
-			listMenuLeft.add(lblNhapHang);
+
+		if(QuyenHan.get(3) == true) {
+			listMenuLeft.add(lblBanHang);
+			listMenuLeft.add(lblKhuyenMai);
+			listMenuLeft.add(lblKhachhang);
 		}
+		
 		
 		if(QuyenHan.get(1) == true) {
 			listMenuLeft.add(lblSanPham);
@@ -182,16 +194,14 @@ public class MainQuanlyGUI extends JFrame {
 			listMenuLeft.add(lblPhanQuyen);
 		}
 		
-		if(QuyenHan.get(3) == true) {
-			listMenuLeft.add(lblBanHang);
-			listMenuLeft.add(lblKhuyenMai);
-			listMenuLeft.add(lblKhachhang);
-		}
 		
 		if(QuyenHan.get(4) == true) {
 			listMenuLeft.add(lblThongKe);
 		}
 
+		if(QuyenHan.get(0) == true) {
+			listMenuLeft.add(lblNhapHang);
+		}
 
 		for (MyLabel lbl : listMenuLeft) {
 			lbl.addMouseListener(new LabelMouseListener());
