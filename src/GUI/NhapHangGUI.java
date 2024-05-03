@@ -37,6 +37,8 @@ import javax.swing.ListSelectionModel;
 
 import java.awt.Color;
 import java.awt.Window.Type;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -202,10 +204,34 @@ public class NhapHangGUI extends JPanel {
 		panel_TimTheoTen.setLayout(new BorderLayout(0, 0));
 
 		txtTimTheoTen = new JTextField();
+		txtTimTheoTen.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (txtTimTheoTen.getText().equals("Nhập tên nguyên liệu")) {
+					txtTimTheoTen.setText("");
+
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (txtTimTheoTen.getText().equals("")) {
+					txtTimTheoTen.setText("Nhập tên nguyên liệu");
+					txtTimTheoTen.setForeground(new Color(192, 192, 192));
+
+				}
+			}
+		});
+		txtTimTheoTen.setText("Nhập tên nguyên liệu");
 		panel_TimTheoTen.add(txtTimTheoTen, BorderLayout.CENTER);
 		txtTimTheoTen.setColumns(10);
 
 		btnTimKiem = new MyButton("Tìm kiếm");
+		btnTimKiem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				timNguyenLieuTheoTen();
+			}
+		});
 		ImageIcon iconTimkiem = new ImageIcon("images/loupe.png");
 		Image img0 = iconTimkiem.getImage();
 		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
@@ -768,5 +794,17 @@ public class NhapHangGUI extends JPanel {
 							}
 						}
 					});
-}
+				}
+				private void timNguyenLieuTheoTen() {
+					modelTableNL.setRowCount(0);
+					String ten = txtTimTheoTen.getText();
+					ArrayList<NguyenLieu> dsnl = nlBUS.getNguyenLieuTheoTen(ten);
+					for (NguyenLieu nl : dsnl) {
+						Vector<String> vec = new Vector<>();
+						vec.add(nl.getMaNguyenLieu()+"");
+						vec.add(nl.getTenNL()+"");
+						vec.add(nl.getsoLuongNL()+"");
+						modelTableNL.addRow(vec);
+						}
+				}
 	}

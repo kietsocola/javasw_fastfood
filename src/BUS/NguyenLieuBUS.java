@@ -25,4 +25,17 @@ public class NguyenLieuBUS {
 		}
 		return arr;
 	}
+	public ArrayList<NguyenLieu> getNguyenLieuTheoTen(String ten) {
+	    ArrayList<NguyenLieu> dsnl = new ArrayList<>();
+	    ArrayList<NguyenLieu> allNguyenLieu = getDSachNguyenLieu(); // Lấy danh sách tất cả nguyên liệu
+
+	    for (NguyenLieu nl : allNguyenLieu) {
+	        String tenNL = nl.getTenNL().toLowerCase(); // Lấy tên nguyên liệu và chuyển về chữ thường
+	        if (tenNL.contains(ten.toLowerCase())) { // Kiểm tra xem tên có chứa từ khóa không
+	            dsnl.add(nl); // Nếu có, thêm vào danh sách kết quả
+	        }
+	    }
+
+	    return dsnl;
+	}
 }
