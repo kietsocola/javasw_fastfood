@@ -39,33 +39,32 @@ public class CTPhieuNhapDAO {
 		}
 		return DSCTPhieuNhap;
 	}
-	public ChiTietPhieuNhap getCTSP(int ma) {
-		ChiTietPhieuNhap ctpn = null;
+	public ArrayList<ChiTietPhieuNhap> getCTPNtheoIdPN(int idPN) {
+		ArrayList<ChiTietPhieuNhap> arrCTPN = new ArrayList<ChiTietPhieuNhap>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT * FROM chitietphieunhap WHERE ma=?";
+				String sql = "SELECT * FROM chitietphieunhap WHERE idPhieuNhap=?";
 				PreparedStatement prest =conDB.conn.prepareStatement(sql);
-				prest.setInt(1, ma);
+				prest.setInt(1, idPN);
 				ResultSet rs = prest.executeQuery();
 				while (rs.next()){
-					ctpn = new ChiTietPhieuNhap();
+					ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
 					
-					ctpn.setMaChitietPhieuNhap(rs.getInt("idChiTietPhieuNhap"));
 					ctpn.setMaPN(rs.getInt("idPhieuNhap"));
 					ctpn.setMaNL(rs.getInt("idNguyenLieu"));
 					ctpn.setDonGia(rs.getInt("DonGia"));
 					ctpn.setSoLuong(rs.getInt("SoLuong"));
 					ctpn.setThanhTien(rs.getInt("ThanhTien"));
 				
-					
+					arrCTPN.add(ctpn);
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				return null;
 			} finally {
 				conDB.closeConnectDB();
 			}
 		}
-		return ctpn;
+		return arrCTPN;
 	}
 // thêm xóa sửa
 	public boolean themCTPN (ChiTietPhieuNhap ctpn) {
@@ -79,14 +78,15 @@ public class CTPhieuNhapDAO {
 				pre1.setInt(2, ctpn.getMaNL());
 				pre1.executeUpdate();
 				
-				String sqlUpdateCTPN="INSERT INTO chitietphieunhap(idNguyenLieu,DonGia,SoLuong,ThanhTien"
-						+ "VALUES(?,?,?,?)";
+				String sqlUpdateCTPN="INSERT INTO chitietphieunhap(idNguyenLieu,idPhieuNhap,DonGia,SoLuong,ThanhTien)"
+						+ "VALUES(?,?,?,?,?)";
 				PreparedStatement pre2 = conDB.conn.prepareStatement(sqlUpdateCTPN);
 				
 				pre2.setInt(1, ctpn.getMaNL());
-				pre2.setInt(2, ctpn.getDonGia());
-				pre2.setInt(3, ctpn.getSoLuong());
-				pre2.setInt(4, ctpn.getThanhTien());
+				pre2.setInt(2, ctpn.getMaPN());
+				pre2.setInt(3, ctpn.getDonGia());
+				pre2.setInt(4, ctpn.getSoLuong());
+				pre2.setInt(5, ctpn.getThanhTien());
 				
 				pre2.executeUpdate();
 				result = true;
