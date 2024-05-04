@@ -10,7 +10,7 @@ public class ChiTietHoaDonBUS {
 	ArrayList<ChiTietHoaDon> listCTHD = new ArrayList<>();
 	ChiTietHoaDonDAO cthdDAO = new ChiTietHoaDonDAO();
 	HoaDonDAO hdDAO = new HoaDonDAO();
-	public void addChiTietHoaDon(String maSP, String soLuong, String donGia, String thanhTien) {
+	public boolean addChiTietHoaDon(String maSP, String soLuong, String donGia, String thanhTien) {
 		ChiTietHoaDon cthd = new ChiTietHoaDon();
 		
 		cthd.setIdHoaDon(hdDAO.getMaHoaDonMoiNhat()+1);
@@ -20,7 +20,7 @@ public class ChiTietHoaDonBUS {
         cthd.setThanhTien(Integer.parseInt(thanhTien));
         cthd.setIdKhuyenMai(1);
         
-        cthdDAO.addChiTietHoaDon(cthd);
+        return cthdDAO.addChiTietHoaDon(cthd);
 	}
 	public ArrayList<ChiTietHoaDon> getListCTHDtheoIdHoaDon(int idHD) {
 		listCTHD = cthdDAO.getListCTHDtheoIdHD(idHD);

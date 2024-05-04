@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -239,8 +241,6 @@ public class KhuyenMaiGUI extends JPanel {
 		dtmKhuyenMai.addColumn("Mã khuyến mãi");
 		dtmKhuyenMai.addColumn("Tên khuyến mãi");
 		dtmKhuyenMai.addColumn("Phần trăm");
-		dtmKhuyenMai.addColumn("Ngày bắt đầu");
-		dtmKhuyenMai.addColumn("Ngày kết thúc");
 		
 		tblkhuyenmai = new MyTable();
 		tblkhuyenmai.setModel(dtmKhuyenMai);
@@ -288,6 +288,7 @@ public class KhuyenMaiGUI extends JPanel {
 				txtMaKM.setText("");
 				txtTenKM.setText("");
 				txtPhanTram.setText("");
+				loadDataToTblkhuyenmai();
 			}
 		});
 		btnSua.addMouseListener(new MouseListener() {
@@ -354,6 +355,16 @@ public class KhuyenMaiGUI extends JPanel {
 				loadDataToTblkhuyenmai();
 			}
 		});
+		btnXoa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				xoaKhuyenMai();
+				txtMaKM.setText("");
+				txtTenKM.setText("");
+				txtPhanTram.setText("");
+			}
+		});
 	}
 	
 	
@@ -378,11 +389,11 @@ public class KhuyenMaiGUI extends JPanel {
 		String tenKM = txtTenKM.getText();
 		String phantram = txtPhanTram.getText();
 		if(!tenKM.trim().equals("") && !phantram.trim().equals("")) {
-			int pt = Integer.parseInt(phantram);
-			if(pt<=0) {
-				JOptionPane.showMessageDialog(null, "Phần trăm phải lớn hơn 0", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			if(phantram.matches("^[1-9]\\d*$")) {
+				JOptionPane.showMessageDialog(null, "Phần trăm không hợp lệ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
+			int pt = Integer.parseInt(phantram);
 			kmBUS.addKhuyenMai(tenKM, pt);
 		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -423,6 +434,21 @@ public class KhuyenMaiGUI extends JPanel {
 		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			return;
+		}
+	}
+
+	private void xoaKhuyenMai() {
+		String maKM = txtMaKM.getText();
+		if(maKM.equals("")) {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn dòng cần xóa", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		boolean rs = kmBUS.xoaKhuyenMai(Integer.parseInt(maKM));
+		if(rs) {
+			JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			loadDataToTblkhuyenmai();
+		} else {
+			JOptionPane.showMessageDialog(null, "Xóa thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

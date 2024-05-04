@@ -16,7 +16,7 @@ public class KhuyenMaiDAO {
 		ArrayList<KhuyenMai> arrKhuyenMai = new ArrayList<KhuyenMai>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "Select * from KhuyenMai";
+				String sql = "Select * from KhuyenMai where isDelete=0";
 				Statement stmt = conDB.conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				while (rs.next()) {
@@ -77,7 +77,7 @@ public class KhuyenMaiDAO {
 		KhuyenMai km = null;
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "Select * from KhuyenMai where id = "+id;
+				String sql = "Select * from KhuyenMai where isDelete=0 and id = "+id;
 				Statement stmt = conDB.conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				while (rs.next()) {
@@ -93,5 +93,22 @@ public class KhuyenMaiDAO {
 
 		}
 		return km;
+	}
+	public boolean deleteKhuyenMai(int id) {
+	    boolean result = false;
+	    if (conDB.openConnectDB()) {
+	        try {
+	            String sql = "UPDATE khuyenmai SET isDelete=1 WHERE id=?";
+	            PreparedStatement prep = conDB.conn.prepareStatement(sql);
+	            prep.setInt(1, id);
+	            if (prep.executeUpdate() >= 1)
+	                result = true;
+	        } catch (SQLException ex) {
+	            System.out.println(ex);
+	        } finally {
+	            conDB.closeConnectDB();
+	        }
+	    }
+	    return result;
 	}
 }

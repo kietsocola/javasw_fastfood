@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import DAO.PhieuNhapDAO;
+import DTO.HoaDon;
 import DTO.PhieuNhap;
 
 public class PhieuNhapBUS {
@@ -25,4 +26,17 @@ public class PhieuNhapBUS {
 		
 		phieuNhapDAO.themPhieuNhap(pn);
 	}
+	public ArrayList<PhieuNhap> getListPhieuNhapTheoNgay(Date minDate, Date maxDate) {
+        try {
+
+            java.sql.Date dateMin = new java.sql.Date(minDate.getTime());
+            java.sql.Date dateMax = new java.sql.Date(maxDate.getTime());
+
+            ArrayList<PhieuNhap> dshd = phieuNhapDAO.getListPhieuNhapTheoNgay(dateMin, dateMax);
+            return dshd;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
