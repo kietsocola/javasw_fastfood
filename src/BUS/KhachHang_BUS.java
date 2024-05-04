@@ -142,11 +142,12 @@ public class KhachHang_BUS {
         }
         return false;
     }
-    public void updateTongChiTieuKH(int maKH, int tongtien) {
+    public boolean updateTongChiTieuKH(int maKH, int tongtien) {
     	try {
-			khdao.updateChiTieuKH(maKH, tongtien);
+			return khdao.updateChiTieuKH(maKH, tongtien);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
     }
 }

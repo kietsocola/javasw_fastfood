@@ -20,7 +20,7 @@ public class HoaDonDAO {
 					hd.setidHD(rs.getInt("id"));
 					hd.setidNV(rs.getInt("idNhanVien"));
 					hd.setidKH(rs.getInt("idKhachHang"));
-					hd.setNgayLap(rs.getDate("NgayLap"));
+					hd.setNgayLap(rs.getTimestamp("NgayLap"));
 					hd.setTongTien(rs.getInt("TongTien"));
 					hd.setTrangThai(rs.getInt("TrangThai"));
 					hd.setGhiChu(rs.getString("ghiChu"));
@@ -51,7 +51,7 @@ public class HoaDonDAO {
                 hd.setidHD(rs.getInt("id"));
 				hd.setidNV(rs.getInt("idNhanVien"));
 				hd.setidKH(rs.getInt("idKhachHang"));
-				hd.setNgayLap(rs.getDate("NgayLap"));
+				hd.setNgayLap(rs.getTimestamp("NgayLap"));
 				hd.setTongTien(rs.getInt("TongTien"));
 				hd.setTrangThai(rs.getInt("TrangThai"));
 				hd.setGhiChu(rs.getString("ghiChu"));

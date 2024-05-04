@@ -20,12 +20,15 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import com.toedter.calendar.JDateChooser;
+
 import BUS.ChiTietPhieuNhapBUS;
 import BUS.NguyenLieuBUS;
 import BUS.NhaCungCap_BUS;
 import BUS.PhieuNhapBUS;
 import Custom.*;
 import DTO.ChiTietPhieuNhap;
+import DTO.HoaDon;
 import DTO.NguyenLieu;
 import DTO.NhaCungCap;
 import DTO.PhieuNhap;
@@ -37,6 +40,8 @@ import javax.swing.ListSelectionModel;
 
 import java.awt.Color;
 import java.awt.Window.Type;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
@@ -66,6 +71,7 @@ public class NhapHangGUI extends JPanel {
 	private ChiTietPhieuNhapBUS ctpnBUS = new ChiTietPhieuNhapBUS();
 	private PhieuNhapBUS pnBUS = new PhieuNhapBUS();
 	private MyButton btnChonNhap;
+	private MyButton btnTimKiemHD;
 	/**
 	 * Launch the application.
 	 */
@@ -81,6 +87,9 @@ public class NhapHangGUI extends JPanel {
 //			}
 //		});
 //	}
+	private JDateChooser startDateChooser;
+	private JDateChooser endDateChooser;
+	private MyButton btnLamMoi;
 
 	/**
 	 * Create the frame.
@@ -233,7 +242,8 @@ public class NhapHangGUI extends JPanel {
 		Image img0 = iconTimkiem.getImage();
 		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconTimkiem.setImage(newImg0);
-		btnTimKiem.setIcon(iconTimkiem);
+		
+		
 		
 		panel_TimTheoTen.add(btnTimKiem, BorderLayout.EAST);
 
@@ -524,6 +534,52 @@ public class NhapHangGUI extends JPanel {
 		pnTT.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_DetailCTPN.add(pnTT);
 		
+		// tìm theo ngày của Kiệt add dô
+		MyPanelSecond panel_FindHD = new MyPanelSecond();
+		panel_DetailCTPN.add(panel_FindHD, BorderLayout.NORTH);
+		panel_FindHD.setLayout(new GridLayout(2, 1, 0, 0));
+
+		MyPanelSecond panel_3 = new MyPanelSecond();
+		panel_3.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		panel_FindHD.add(panel_3);
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
+
+		MyLabelSecond lblNewLabel_2 = new MyLabelSecond("Từ ngày");
+		panel_3.add(lblNewLabel_2);
+		startDateChooser = new JDateChooser();
+		startDateChooser.setBackground(new Color(0, 0, 0));
+		startDateChooser.setPreferredSize(new Dimension(120, 30));
+		startDateChooser.setForeground(Color.BLUE); // Thiết lập màu chữ
+		startDateChooser.setFont(new Font("Arial", Font.BOLD, 14)); // Thiết lập font chữ
+		panel_3.add(startDateChooser);
+//
+		MyPanelSecond panel_2 = new MyPanelSecond();
+		panel_FindHD.add(panel_2);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
+//
+		MyLabelSecond lblNewLabel_3 = new MyLabelSecond("Tới ngày");
+		panel_2.add(lblNewLabel_3);
+		endDateChooser = new JDateChooser();
+		endDateChooser.setBackground(new Color(0, 0, 0));
+		endDateChooser.setPreferredSize(new Dimension(120, 30));
+		panel_2.add(endDateChooser);
+
+		MyPanelSecond panel_btnTimkiem = new MyPanelSecond();
+		panel_FindHD.add(panel_btnTimkiem);
+
+		btnTimKiemHD = new MyButton("Tìm kiếm");
+		btnTimKiemHD.setIcon(iconTimkiem);
+		btnTimKiem.setIcon(iconTimkiem);
+		btnLamMoi = new MyButton("Làm mới");
+		ImageIcon icon0 = new ImageIcon("images/LamMoi.png");
+		Image img01 = icon0.getImage();
+		Image newImg01 = img01.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		icon0.setImage(newImg01);
+		btnLamMoi.setIcon(icon0);
+		
+		panel_btnTimkiem.add(btnTimKiemHD);
+		panel_btnTimkiem.add(btnLamMoi);
+		
 		
 		//--------- phần thêm ---------
 		panel_main.add(panelCard);
@@ -753,6 +809,12 @@ public class NhapHangGUI extends JPanel {
 						modelTableNL.addRow(vec);
 						}
 				}
+				private void timTheoKhoangNgay() {
+					java.util.Date utilStartDate = startDateChooser.getDate();
+					java.util.Date utilEndDate = endDateChooser.getDate();
+					ArrayList<PhieuNhap> dspn = pnBUS.getListPhieuNhapTheoNgay(utilStartDate, utilEndDate);
+					addDataToTablePN(dspn);
+				}
 				private void eventsNhapHang() {
 					btnChonNhap.addMouseListener(new MouseListener() {
 						
@@ -806,6 +868,23 @@ public class NhapHangGUI extends JPanel {
 						public void mouseClicked(MouseEvent e) {
 							timNguyenLieuTheoTen();
 							
+						}
+					});
+					btnTimKiemHD.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							timTheoKhoangNgay();
+						}
+					});
+					btnLamMoi.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							loadDataTablePhieuNhap();
+							startDateChooser.setDate(null);
+							endDateChooser.setDate(null);
 						}
 					});
 				}

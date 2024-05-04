@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -231,47 +233,11 @@ public class CongThucGUI extends JPanel{
 	}
 	
 	private void addEventsCongThuc() {
-		btnXoa.addMouseListener(new MouseListener() {
+		btnXoa.addActionListener(new ActionListener() {
 			
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ListSelectionModel selectionModel = tableNguyenLieuCheBien.getSelectionModel();
-				selectionModel.addListSelectionListener(new ListSelectionListener() {
-					@Override
-					public void valueChanged(ListSelectionEvent e) {
-						int selectedRow = tableNguyenLieuCheBien.getSelectedRow();
-						if (selectedRow != -1) { // If a row is selected
-							xoaNguyenLieu();
-						} else {
-							JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm sau đó chọn nguyên liệu cần xóa", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-							return;
-						}
-					}
-				});
+			public void actionPerformed(ActionEvent e) {
+				xoaNguyenLieu();
 			}
 		});
 		btnReset.addMouseListener(new MouseListener() {
@@ -308,7 +274,7 @@ public class CongThucGUI extends JPanel{
 				txtSoLuongCB.setText("");
 				txtmaSP.setText("");
 				tableSanPhamCheBien.clearSelection();
-				tableNguyenLieuCheBien.clearSelection();
+				modelTableNguyenLieuCB.setRowCount(0);
 			}
 		});
 		btnUpdate.addMouseListener(new MouseListener() {
@@ -383,6 +349,11 @@ public class CongThucGUI extends JPanel{
 		ArrayList<SanPham> listSP = spBUS.getDSSanPham();
 		addDataToTableSanPhamCB(listSP);
 	}
+	private void loadDataTableNguyenLieuCB() {
+		int maSP = Integer.parseInt(txtmaSP.getText());
+		ArrayList<CongThuc> listSP = ctBUS.getCongThucbyIdSanPham(maSP);
+		addDataTableNguyenLieu(listSP);
+	}
 	private void clickTableSanPhamCheBien() {
 		comboBox.setFocusable(false);
 		ListSelectionModel selectionModel = tableSanPhamCheBien.getSelectionModel();
@@ -394,7 +365,7 @@ public class CongThucGUI extends JPanel{
 				if (selectedRow != -1) { // If a row is selected
 					int maSP = Integer.parseInt(tableSanPhamCheBien.getValueAt(selectedRow, 0) + "");
 					txtmaSP.setText(maSP+"");
-					ArrayList<CongThuc> listCT = chebienBUS.getCongThucbyIdSanPham(maSP);
+					ArrayList<CongThuc> listCT = ctBUS.getCongThucbyIdSanPham(maSP);
 					addDataTableNguyenLieu(listCT);
 				}
 			}
@@ -454,6 +425,8 @@ public class CongThucGUI extends JPanel{
 	}
 	
 	private void addCongThuc() {
+		if(!checkSoLuong()) return;
+		boolean rs = false;
 		int maSP = Integer.parseInt(txtmaSP.getText());
 		int maNL=0;
 		String selectedOption = (String) comboBox.getSelectedItem();
@@ -466,11 +439,17 @@ public class CongThucGUI extends JPanel{
         String num = txtSoLuongCB.getText();
         if(!num.trim().equals("")) {
         	int sl = Integer.parseInt(num);
-        	ctBUS.addUpdate(maNL, sl, maSP);
+        	rs = ctBUS.addUpdate(maNL, sl, maSP);
         }
+        if(rs) {
+        	JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else JOptionPane.showMessageDialog(null, "Thêm thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        loadDataTableNguyenLieuCB();
 		
 	}
 	private void updateNguyenLieu(){
+		if(!checkSoLuong()) return;
+		boolean rs = false;
 		int maSP = Integer.parseInt(txtmaSP.getText());
 		int maNL=0;
 		String selectedOption = (String) comboBox.getSelectedItem();
@@ -483,10 +462,18 @@ public class CongThucGUI extends JPanel{
         String num = txtSoLuongCB.getText();
         if(!num.trim().equals("")) {
         	int sl = Integer.parseInt(num);
-        	ctBUS.addUpdate(maNL, sl, maSP);
+        	rs = ctBUS.addUpdate(maNL, sl, maSP);
         }
+        if(rs) {
+        	JOptionPane.showMessageDialog(null, "Update thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else JOptionPane.showMessageDialog(null, "Update thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        loadDataTableNguyenLieuCB();
 	}
 	private void xoaNguyenLieu(){
+		if(txtmaSP.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm và nguyên liệu cần xóa", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 		int maSP = Integer.parseInt(txtmaSP.getText());
 		int maNL=0;
 		String selectedOption = (String) comboBox.getSelectedItem();
@@ -496,7 +483,20 @@ public class CongThucGUI extends JPanel{
                 break;
             }
         }
-        ctBUS.deleteCongThuc(maNL, maSP);
+        boolean rs = false;
+        rs = ctBUS.deleteCongThuc(maNL, maSP);
+        if(rs) {
+        	JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else JOptionPane.showMessageDialog(null, "Xóa thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        loadDataTableNguyenLieuCB();
+	}
+	private boolean checkSoLuong() {
+		String soLuong = txtSoLuongCB.getText();
+		if (!soLuong.matches("\\d+")) {
+			JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		return true;
 	}
 	
 }
