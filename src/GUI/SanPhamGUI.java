@@ -72,13 +72,14 @@ public class SanPhamGUI extends JPanel {
 //		addEventsBanHang();
 	}
 	public void addControlsSanPham() {
+		
 		this.setLayout(new BorderLayout());
 		MyPanelSecond panel_main = new MyPanelSecond();
 		this.add(panel_main, BorderLayout.CENTER);
 		
 		panel_main.setLayout(new BorderLayout(0, 0));
 // ------------------------------------------------------------------------------------------------------		
-		MyPanelSecond panel_input = new MyPanelSecond();
+		MyPanel panel_input = new MyPanel();
 		panel_main.add(panel_input, BorderLayout.NORTH);
 		panel_input.setLayout(new BorderLayout(10, 10));
 		
@@ -91,19 +92,19 @@ public class SanPhamGUI extends JPanel {
 		panel_input.add(pnInputOptions,BorderLayout.CENTER);
 		pnInputOptions.setLayout(new BoxLayout(pnInputOptions, BoxLayout.Y_AXIS));
 		
-		MyPanel pnMaSP = new MyPanel();
+		MyPanelSecond pnMaSP = new MyPanelSecond();
 		txtMaSP = new MyTextField();
 		lblMaSP = new MyLabelSecond("Mã SP");
 		pnMaSP.add(lblMaSP);
 		pnMaSP.add(txtMaSP);
 		
-		MyPanel pnTenSP = new MyPanel();
+		MyPanelSecond pnTenSP = new MyPanelSecond();
 		txtTenSP = new MyTextField();
 		lblTenSP = new MyLabelSecond("Tên SP");
 		pnTenSP.add(lblTenSP);
 		pnTenSP.add(txtTenSP);
  		
-		MyPanel pnLoai = new MyPanel();
+		MyPanelSecond pnLoai = new MyPanelSecond();
 		cmbLoai = new JComboBox<String>();
 		cmbLoai.setPreferredSize(new Dimension(200, 30));
 		lblLoaiSP = new MyLabelSecond("Loại");
@@ -111,19 +112,19 @@ public class SanPhamGUI extends JPanel {
 		pnLoai.add(lblLoaiSP);
 		pnLoai.add(cmbLoai);
 		
-		MyPanel pnSoLuong = new MyPanel();
+		MyPanelSecond pnSoLuong = new MyPanelSecond();
 		txtSoLuong = new MyTextField();
 		lblSoLuong = new MyLabelSecond("Số lượng");
 		pnSoLuong.add(lblSoLuong);
 		pnSoLuong.add(txtSoLuong);
 		
-		MyPanel pnCongThuc = new MyPanel();
+		MyPanelSecond pnCongThuc = new MyPanelSecond();
 		txtCongThuc = new MyTextField();
 		lblCongThuc = new MyLabelSecond("Công Thức");
 		pnCongThuc.add(lblCongThuc);
 		pnCongThuc.add(txtCongThuc);
 		
-		MyPanel pnDonGia = new MyPanel();
+		MyPanelSecond pnDonGia = new MyPanelSecond();
 		txtDonGia = new MyTextField();
 		lblDonGia = new MyLabelSecond("Đơn giá");
 		pnDonGia.add(lblDonGia);
@@ -137,9 +138,13 @@ public class SanPhamGUI extends JPanel {
 		pnInputOptions.add(pnDonGia);
 		
 		//Panel Ảnh
-		MyPanel pnAnh = new MyPanel();
+		MyPanelSecond pnAnh = new MyPanelSecond();
 		pnAnh.setPreferredSize(new Dimension(300, 10));
-		panel_input.add(pnAnh,BorderLayout.EAST);
+		MyPanel panel_containAnh = new MyPanel();
+		panel_input.add(panel_containAnh,BorderLayout.EAST);
+		panel_containAnh.setLayout(new BorderLayout(0, 0));
+		
+		panel_containAnh.add(pnAnh);
 		JPanel pnChuaAnh = new JPanel();
 		lblAnhSP = new JLabel();
         lblAnhSP.setPreferredSize(new Dimension(120, 120));
@@ -149,7 +154,7 @@ public class SanPhamGUI extends JPanel {
 		pnChuaAnh.setMaximumSize(new Dimension(120, 120));
 		pnChuaAnh.setPreferredSize(new Dimension(120, 120));
         
-		MyPanel pnButtonAnh = new MyPanel();
+		MyPanelSecond pnButtonAnh = new MyPanelSecond();
 		pnButtonAnh.setPreferredSize(new Dimension(
                 (int) pnChuaAnh.getPreferredSize().getHeight(), 40));
 		pnAnh.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
@@ -162,8 +167,10 @@ public class SanPhamGUI extends JPanel {
         	}
         });
         pnButtonAnh.add(btnChonAnh);
+        MyPanel space1_1 = new MyPanel();
+        panel_containAnh.add(space1_1, BorderLayout.EAST);
         //Panel nút
-        MyPanel pnButton = new MyPanel();
+        MyPanelSecond pnButton = new MyPanelSecond();
         pnButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnThem = new MyButton("Thêm");
         btnThem.addActionListener(new ActionListener() {
@@ -184,7 +191,29 @@ public class SanPhamGUI extends JPanel {
         pnButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa);
         
-        panel_input.add(pnButton,BorderLayout.SOUTH);
+        MyPanel panel_containBTN = new MyPanel();
+		panel_input.add(panel_containBTN, BorderLayout.SOUTH); 
+		panel_containBTN.setLayout(new BorderLayout(0, 0));
+		
+		MyPanel space6 = new MyPanel();
+		panel_containBTN.add(space6, BorderLayout.EAST);
+		
+		MyPanel space5 = new MyPanel();
+		panel_containBTN.add(space5, BorderLayout.SOUTH);
+		
+		MyPanel space4 = new MyPanel();
+		panel_containBTN.add(space4, BorderLayout.WEST);
+		
+		panel_containBTN.add(pnButton);
+        //panel_input.add(pnButton,BorderLayout.SOUTH);
+        
+       
+		
+        MyPanel space1 = new MyPanel();
+        FlowLayout flowLayout_1 = (FlowLayout) space1.getLayout();
+        flowLayout_1.setVgap(0);
+        flowLayout_1.setHgap(0);
+        panel_input.add(space1, BorderLayout.WEST);
 // ------------------------------------------------------------------------------------------------------ 
 		// Bảng Sản phẩm
 // ------------------------------------------------------------------------------------------------------
@@ -214,6 +243,17 @@ public class SanPhamGUI extends JPanel {
 		panel_table.setLayout(new BorderLayout(0, 0));
 		panel_table.add(scrTableSanPham, BorderLayout.NORTH);
 
+		MyPanel space2 = new MyPanel();
+		panel_table.add(space2, BorderLayout.SOUTH);
+		
+		MyPanel space3_1 = new MyPanel();
+		panel_main.add(space3_1, BorderLayout.SOUTH);
+		
+		MyPanel space3 = new MyPanel();
+		panel_main.add(space3, BorderLayout.WEST);
+		
+		MyPanel space3_2 = new MyPanel();
+		panel_main.add(space3_2, BorderLayout.EAST);
 //---------------------------------------------------------------------------------------------		
 
 	}

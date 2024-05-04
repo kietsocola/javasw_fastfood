@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -114,7 +116,7 @@ public class CongThucGUI extends JPanel{
 
         // Tạo một JComboBox và thiết lập dữ liệu từ Map
         comboBox = new JComboBox<>(optionMap.values().toArray(new String[0]));
-        
+        comboBox.setPreferredSize(new Dimension(182, 30));
         MyPanelSecond pnNL = new MyPanelSecond();
         MyLabelSecond lblNL = new MyLabelSecond("Nguyên liệu");
         pnNL.add(lblNL);
@@ -130,13 +132,35 @@ public class CongThucGUI extends JPanel{
         
         MyPanelSecond containBTN = new MyPanelSecond();
         btnCheBien = new MyButton("Thêm");
+        ImageIcon iconThem = new ImageIcon("images/plus.png");
+		Image img0 = iconThem.getImage();
+		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconThem.setImage(newImg0);
+		btnCheBien.setIcon(iconThem);
+		
         containBTN.add(btnCheBien);
         btnUpdate = new MyButton("Cập nhật");
+        ImageIcon iconUp = new ImageIcon("images/edit2.png");
+		Image img1 = iconUp.getImage();
+		Image newImg1 = img1.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconUp.setImage(newImg1);
+		btnUpdate.setIcon(iconUp);
         containBTN.add(btnUpdate);
         
         MyPanelSecond containBTN2 = new MyPanelSecond();
         btnReset = new MyButton("Làm mới");
+        ImageIcon iconRe = new ImageIcon("images/LamMoi.png");
+		Image img2 = iconRe.getImage();
+		Image newImg2 = img2.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconRe.setImage(newImg2);
+		btnReset.setIcon(iconRe);
+		
         btnXoa = new MyButton("Xóa");
+        ImageIcon iconDe = new ImageIcon("images/remove.png");
+		Image img3 = iconDe.getImage();
+		Image newImg3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconDe.setImage(newImg3);
+		btnXoa.setIcon(iconDe);
 //        btnXoa.setEnabled(false);
         containBTN2.add(btnXoa);
         containBTN2.add(btnReset);
@@ -317,6 +341,7 @@ public class CongThucGUI extends JPanel{
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
 				updateNguyenLieu();
+				clickTableSanPhamCheBien();
 			}
 		});
 		btnCheBien.addMouseListener(new MouseListener() {
@@ -348,6 +373,7 @@ public class CongThucGUI extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				addCongThuc();
+				clickTableSanPhamCheBien();
 			}
 		});
 	}

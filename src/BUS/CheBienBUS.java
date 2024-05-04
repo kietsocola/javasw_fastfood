@@ -20,8 +20,7 @@ public class CheBienBUS {
 	}
 	public boolean giamSoLuongNLkhiCheBien(int id, int slNL) {
 		try {
-			nlDAO.suaSoLuongNguyenLieu(id, slNL);
-			return true;
+			return nlDAO.suaSoLuongNguyenLieu(id, slNL);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

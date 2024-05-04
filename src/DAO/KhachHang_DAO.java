@@ -61,7 +61,30 @@ public class KhachHang_DAO {
 
 		return kh;
 	}
-	
+	public KhachHang getKhachHangBySDT(String sdt) {
+		KhachHang kh =null;
+
+		try {
+			String sql = "SELECT *FROM khachhang WHERE SoDienThoai=?";
+			PreparedStatement pre= conDB.conn.prepareStatement(sql);
+			pre.setString(1,sdt);
+			ResultSet rs=pre.executeQuery();
+			
+			while(rs.next()) {
+				kh = new KhachHang();
+				
+				kh.setMaKH(rs.getInt(1));
+				kh.setTen(rs.getString(2));
+				kh.setGioiTinh(rs.getInt(3));
+				kh.setSoDT(rs.getString(4));
+				kh.setTongChiTieu(rs.getInt(5));
+			}
+		}catch(SQLException e) {
+			return null;
+		}
+
+		return kh;
+	}
 	public boolean updateKH(int maKH,KhachHang kh) {
 		boolean result=false;
 
