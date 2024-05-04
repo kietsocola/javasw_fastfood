@@ -15,11 +15,13 @@ public class phanquyen_DAO {
 		con.connect();
 		ArrayList<phanquyen_DTO> ds = new ArrayList<>();
 		
-		String sql = "select * from phanquyen";
+		String sql = "select * from phanquyen where isDelete = 0";
 		Statement stmt =   con.getCon().createStatement();
 		ResultSet result = stmt.executeQuery(sql);
+		int stt = 1;
 		while(result.next()) {
 			phanquyen_DTO item = new phanquyen_DTO();
+			item.setStt(stt++);
 			item.setIdPhanQuyen(result.getInt(1));
 			item.setTenPhanQuyen(result.getString(2));
 			item.setNhaphang(result.getBoolean(3));
@@ -36,7 +38,7 @@ public class phanquyen_DAO {
 	public ArrayList<Boolean> getLoaiPhanQuyen(int idPhanQuyen) throws SQLException{
 		ArrayList<Boolean> list = new ArrayList<>();
 		con.connect();
-		String sql = "select * from phanquyen where id =  ?";
+		String sql = "select * from phanquyen where id =  ? and isDelete = 0";
 		PreparedStatement ps = con.getCon().prepareStatement(sql);
 		ps.setInt(1,idPhanQuyen);
 		ResultSet rs = ps.executeQuery();
@@ -52,10 +54,17 @@ public class phanquyen_DAO {
 		return list;
 	}
 	
+	public int idPhanQuyenMax() {
+		
+		return-1;
+	}
+	
+	
+	
 	public boolean hasNamePhanQuyen(phanquyen_DTO item) {
 		
 		con.connect();
-		String sql = "select * from phanquyen where TenQuyen = ?";
+		String sql = "select * from phanquyen where TenQuyen = ? and isDelete = 0";
 		try {
 			PreparedStatement ps = con.getCon().prepareStatement(sql);
 			ps.setString(1,item.getTenPhanQuyen());
@@ -126,7 +135,7 @@ public class phanquyen_DAO {
 		con.connect();
 		try {
 			int index;
-			String sql = "delete from phanquyen where id = ?";
+			String sql = "update phanquyen set isDelete = 1 where id = ?";
 			PreparedStatement pstmt = con.getCon().prepareStatement(sql);
 			pstmt.setInt(1,item.getIdPhanQuyen());
 			index = pstmt.executeUpdate();
