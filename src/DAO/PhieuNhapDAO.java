@@ -17,7 +17,7 @@ public class PhieuNhapDAO {
 		ArrayList <PhieuNhap> DSPhieuNhap = new ArrayList<>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT * FROM sanpham";
+				String sql = "SELECT * FROM phieunhap";
 				PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 				ResultSet rs = prest.executeQuery();
 				
@@ -78,7 +78,8 @@ public class PhieuNhapDAO {
 				
 				prest.setInt(1, pn.getMaNCC());
 				prest.setInt(2, pn.getTongTien());
-				prest.setDate(3, (Date) pn.getNgayLap());
+				//prest.setDate(3, (Date) pn.getNgayLap());
+				prest.setTimestamp(3, new java.sql.Timestamp(new java.util.Date().getTime()));
 				prest.setInt(4, pn.getMaNV());
 				
 				if(prest.executeUpdate() >=1)
@@ -130,5 +131,21 @@ public class PhieuNhapDAO {
 	        }
 	    }
 	    return result;
+	}
+	public int getMaPhieuNhapMoiNhat() {
+		if(conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT MAX(id) FROM phieunhap";
+				Statement st = conDB.conn.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				if(rs.next())
+					return rs.getInt(1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return -1;
 	}
 }

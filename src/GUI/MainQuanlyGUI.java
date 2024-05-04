@@ -39,11 +39,19 @@ public class MainQuanlyGUI extends JFrame {
 	private CongThucGUI pnCongThuc;
 	
 	private MyLabel panel_logo, lblBanHang, lblKhuyenMai, lblSanPham, lblNhanvien, lblKhachhang, lblNhapHang,
-			lblThongKe,lblPhanQuyen;
+			lblThongKe, lblPhanQuyen;
 
 	private MyLabel lastClickedLabel;
 	private MyLabel lblCongThuc;
 	public MainQuanlyGUI(ArrayList<Boolean> QuyenHan) {
+		this.QuyenHan = QuyenHan;
+		this.setTitle("Phần mềm quản lý cửa hàng đồ ăn nhanh");
+		this.setSize(1280, 800);
+		addControls();
+		addEvents();
+	}
+	
+	public MainQuanlyGUI() {
 		this.QuyenHan = QuyenHan;
 		this.setTitle("Phần mềm quản lý cửa hàng đồ ăn nhanh");
 		this.setSize(1280, 800);
@@ -89,7 +97,7 @@ public class MainQuanlyGUI extends JFrame {
 		Image newImg = img.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconBanHang.setImage(newImg);
 		lblBanHang.setIcon(iconBanHang);
-		
+
 //		lblBanHang.setForeground(MyColor.SECOND_TEXT_COLOR);
 		lastClickedLabel = lblBanHang;
 		lblKhuyenMai = new MyLabel("  Khuyến mãi");
@@ -98,35 +106,35 @@ public class MainQuanlyGUI extends JFrame {
 		Image newImg2 = img2.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconKhuyenMai.setImage(newImg2);
 		lblKhuyenMai.setIcon(iconKhuyenMai);
-		
+
 		lblSanPham = new MyLabel("  Sản phẩm");
 		ImageIcon iconSanPham = new ImageIcon("images/fast-food.png");
 		Image img3 = iconSanPham.getImage();
 		Image newImg3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconSanPham.setImage(newImg3);
 		lblSanPham.setIcon(iconSanPham);
-		
+
 		lblNhanvien = new MyLabel("  Nhân viên");
 		ImageIcon iconNhanVien = new ImageIcon("images/staff.png");
 		Image img4 = iconNhanVien.getImage();
 		Image newImg4 = img4.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconNhanVien.setImage(newImg4);
 		lblNhanvien.setIcon(iconNhanVien);
-		
+
 		lblKhachhang = new MyLabel("  Khách hàng");
 		ImageIcon iconKhachHang = new ImageIcon("images/customer.png");
 		Image img5 = iconKhachHang.getImage();
 		Image newImg5 = img5.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconKhachHang.setImage(newImg5);
 		lblKhachhang.setIcon(iconKhachHang);
-		
+
 		lblNhapHang = new MyLabel("  Nhập hàng");
 		ImageIcon iconNhapHang = new ImageIcon("images/vegetable.png");
 		Image img6 = iconNhapHang.getImage();
 		Image newImg6 = img6.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconNhapHang.setImage(newImg6);
 		lblNhapHang.setIcon(iconNhapHang);
-		
+
 		lblThongKe = new MyLabel("  Thống kê");
 		ImageIcon iconThongKe = new ImageIcon("images/analytics.png");
 		Image img7 = iconThongKe.getImage();
@@ -150,47 +158,47 @@ public class MainQuanlyGUI extends JFrame {
 		iconCongThuc.setImage(newImg9);
 		lblCongThuc.setIcon(iconCongThuc);
 		
-		for(boolean x : QuyenHan)
-		System.out.print(x + " la quyen cua tai khoan \n");
+//		for(boolean x : QuyenHan)
+//		System.out.print(x + " la quyen cua tai khoan \n");
 		
-		
-//		listMenuLeft = new ArrayList<>();
-//		listMenuLeft.add(panel_logo);
-//		listMenuLeft.add(lblBanHang);
-//		listMenuLeft.add(lblSanPham);
-//		listMenuLeft.add(lblKhuyenMai);
-//		listMenuLeft.add(lblNhanvien);
-//		listMenuLeft.add(lblKhachhang);
-//		listMenuLeft.add(lblNhapHang);
-//		listMenuLeft.add(lblThongKe);
-//		listMenuLeft.add(lblCongThuc);
-//		listMenuLeft.add(lblPhanQuyen);
 		
 		listMenuLeft = new ArrayList<>();
 		listMenuLeft.add(panel_logo);
-		if(QuyenHan.get(0) == true) {
-			listMenuLeft.add(lblNhapHang);
-		}
+		listMenuLeft.add(lblBanHang);
+		listMenuLeft.add(lblSanPham);
+		listMenuLeft.add(lblKhuyenMai);
+		listMenuLeft.add(lblNhanvien);
+		listMenuLeft.add(lblKhachhang);
+		listMenuLeft.add(lblNhapHang);
+		listMenuLeft.add(lblThongKe);
+		listMenuLeft.add(lblCongThuc);
+		listMenuLeft.add(lblPhanQuyen);
 		
-		if(QuyenHan.get(1) == true) {
-			listMenuLeft.add(lblSanPham);
-			listMenuLeft.add(lblCongThuc);
-		}
+//		listMenuLeft = new ArrayList<>();
+//		listMenuLeft.add(panel_logo);
+//		if(QuyenHan.get(0) == true) {
+//			listMenuLeft.add(lblNhapHang);
+//		}
+//		
+//		if(QuyenHan.get(1) == true) {
+//			listMenuLeft.add(lblSanPham);
+//			listMenuLeft.add(lblCongThuc);
+//		}
+//		
+//		if(QuyenHan.get(2) == true) {
+//			listMenuLeft.add(lblNhanvien);
+//			listMenuLeft.add(lblPhanQuyen);
+//		}
+//		
+//		if(QuyenHan.get(3) == true) {
+//			listMenuLeft.add(lblBanHang);
+//			listMenuLeft.add(lblKhuyenMai);
+//			listMenuLeft.add(lblKhachhang);
+//		}
 		
-		if(QuyenHan.get(2) == true) {
-			listMenuLeft.add(lblNhanvien);
-			listMenuLeft.add(lblPhanQuyen);
-		}
-		
-		if(QuyenHan.get(3) == true) {
-			listMenuLeft.add(lblBanHang);
-			listMenuLeft.add(lblKhuyenMai);
-			listMenuLeft.add(lblKhachhang);
-		}
-		
-		if(QuyenHan.get(4) == true) {
-			listMenuLeft.add(lblThongKe);
-		}
+//		if(QuyenHan.get(4) == true) {
+//			listMenuLeft.add(lblThongKe);
+//		}
 
 
 		for (MyLabel lbl : listMenuLeft) {
@@ -205,7 +213,7 @@ public class MainQuanlyGUI extends JFrame {
 		 */
 
 		pnCard = new MyPanel(cardMenuLeftGroup);
-		
+
 		pnBanHang = new QLyBanHangGUI();
 		pnSanpham = new SanPhamGUI();
 		pnKhachhang = new QuanLyKhachHangGUI();
@@ -226,7 +234,7 @@ public class MainQuanlyGUI extends JFrame {
 		pnCard.add(pnKhuyenMai, "khuyenmai");
 		pnCard.add(pnCongThuc, "congthuc");
 		pnMain.add(pnCard, BorderLayout.CENTER);
-		
+
 		con.add(pnMain);
 	}
 

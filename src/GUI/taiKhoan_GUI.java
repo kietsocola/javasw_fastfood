@@ -119,7 +119,7 @@ public class taiKhoan_GUI {
 		txtNameApp.setHorizontalAlignment(SwingConstants.CENTER);
 		txtNameApp.setVerticalAlignment(SwingConstants.CENTER);
 		panel.add(txtNameApp);
-		txtNameApp.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		txtNameApp.setFont(new Font("Arial", Font.BOLD, 18));
 		
 		panelTenDangNhap = new MyPanel();
 		panelTenDangNhap.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -128,7 +128,7 @@ public class taiKhoan_GUI {
 		panelTenDangNhap.setLayout(new BoxLayout(panelTenDangNhap, BoxLayout.X_AXIS));
 		panelTenDangNhap.add(Box.createHorizontalGlue());
 		
-		JLabel labelDangNhap = new JLabel("Tên đăng nhập:");
+		JLabel labelDangNhap = new JLabel("Tên đăng nhập: ");
 		labelDangNhap.setHorizontalAlignment(SwingConstants.LEFT);
 		labelDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelTenDangNhap.add(labelDangNhap);
@@ -147,7 +147,7 @@ public class taiKhoan_GUI {
 		panel.add(panelMatKhau);
 		panelMatKhau.setLayout(new BoxLayout(panelMatKhau, BoxLayout.X_AXIS));
 		
-		JLabel labelMatKhau = new JLabel("Mật Khẩu         :");
+		JLabel labelMatKhau = new JLabel("Mật Khẩu         : ");
 		labelMatKhau.setHorizontalAlignment(SwingConstants.LEFT);
 		labelMatKhau.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelMatKhau.add(labelMatKhau);
@@ -230,10 +230,10 @@ public class taiKhoan_GUI {
 		
 		panel_2 = new MyPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 		panel_2.add(panel_1);
 		panel_2.add(panel);
 		frame.getContentPane().add(panel_2);
-		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 	}
 
 }

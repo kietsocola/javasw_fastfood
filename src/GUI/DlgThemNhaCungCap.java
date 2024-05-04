@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 import BUS.NhaCungCap_BUS;
 import Custom.MyButton;
 import Custom.MyPanel;
-
+import Custom.MyPanelSecond;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -24,12 +24,9 @@ import javax.swing.JTextField;
 public class DlgThemNhaCungCap extends JDialog {
 
 
-	private JPanel contentPane;
-	private MyPanel pnTitle;
+	private MyPanelSecond pnTitle,pnTxt,pnBtn,contentPane ;
 	private MyButton btnThem, btnHuy;
-	private JTextField txtSoDT;
-	private JTextField txtTenNCC;
-	private JTextField txtDiaChi;
+	private JTextField txtSoDT,txtTenNCC,txtDiaChi;
 	private boolean checkThemNCC = false;
 
     public boolean getCheckThemNCC() {
@@ -47,16 +44,16 @@ public class DlgThemNhaCungCap extends JDialog {
 	public void addControlsNCC() {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-		contentPane = new JPanel();
+		contentPane = new MyPanelSecond();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setBounds(100, 100, 490, 325);	
 		setContentPane(contentPane);
 		
-		 pnTitle = new MyPanel();
+		 pnTitle = new MyPanelSecond();
 		
-		 JPanel pnBtn = new JPanel();
+		 pnBtn = new MyPanelSecond();
         
-        JPanel panel = new JPanel();
+		 pnTxt = new MyPanelSecond();
 
         
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -64,7 +61,7 @@ public class DlgThemNhaCungCap extends JDialog {
         	gl_contentPane.createParallelGroup(Alignment.TRAILING)
         		.addGroup(gl_contentPane.createSequentialGroup()
         			.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(panel, 0, 0, Short.MAX_VALUE)
+        				.addComponent(pnTxt, 0, 0, Short.MAX_VALUE)
         				.addComponent(pnTitle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         				.addComponent(pnBtn, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         			.addGap(50))
@@ -74,7 +71,7 @@ public class DlgThemNhaCungCap extends JDialog {
         		.addGroup(gl_contentPane.createSequentialGroup()
         			.addComponent(pnTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(panel, GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(pnTxt, GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(pnBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap(15, Short.MAX_VALUE))
@@ -110,7 +107,7 @@ public class DlgThemNhaCungCap extends JDialog {
             }
         });
         
-        GroupLayout gl_panel = new GroupLayout(panel);
+        GroupLayout gl_panel = new GroupLayout(pnTxt);
         gl_panel.setHorizontalGroup(
         	gl_panel.createParallelGroup(Alignment.LEADING)
         		.addGroup(gl_panel.createSequentialGroup()
@@ -132,11 +129,11 @@ public class DlgThemNhaCungCap extends JDialog {
         			.addComponent(txtDiaChi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(7))
         );
-        panel.setLayout(gl_panel);
+        pnTxt.setLayout(gl_panel);
 
 		
 		JLabel lblTitle = new JLabel("Thêm Mới Nhà Cung Cấp");
-		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 20));
 		pnTitle.add(lblTitle);
 		contentPane.setLayout(gl_contentPane);
 

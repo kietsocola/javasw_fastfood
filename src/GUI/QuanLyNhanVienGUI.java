@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 
@@ -40,10 +41,10 @@ public class QuanLyNhanVienGUI extends JPanel {
 	 private DefaultTableModel tableModel;
 	 private NhanVien_BUS nhanVienBUS = new NhanVien_BUS();
 	 
-	private JPanel contentPane;
-	private MyPanelSecond panel_main, panel_input, panel_dienThongTin;
-	private JTable table;
-	private MyPanel pnMaNV,pnTenNV,pnNgaySinh,pnGioiTinh,pnSoDT,pnButton,pnTimKiem, pnChuaTimKiem, pnBtnTimKiem ;
+	
+	private MyPanel  panel_main, panel_input, panel_dienThongTin;
+	private MyTable table;
+	private MyPanelSecond pnMaNV,pnTenNV,pnNgaySinh,pnGioiTinh,pnSoDT,pnButton,pnTimKiem, pnChuaTimKiem, pnBtnTimKiem ;
 	private MyLabel lblTitle;
 	private MyLabelSecond lblMaNV, lblTenNV,lblNgaySinh,lblSoDT,lblGioiTinh,lblTimKiem;
 	private MyButton btnThem, btnXoa, btnSua, btnReset, btnTimKiem;
@@ -63,31 +64,39 @@ public class QuanLyNhanVienGUI extends JPanel {
 	}
 	
 	 private void addControlsNhanVien(){
-
 			this.setLayout(new BorderLayout());
-			MyPanelSecond panel_main = new MyPanelSecond();
+			 panel_main = new MyPanel();
 			this.add(panel_main, BorderLayout.CENTER);
 			
 			panel_main.setLayout(new BorderLayout(0, 0));
+			
 	// ------------------------------------------------------------------------------------------------------
-
-			panel_input = new MyPanelSecond();
-			panel_main.add(panel_input, BorderLayout.NORTH);
+			MyPanel pnContainInput = new MyPanel();
+			pnContainInput.setLayout(new BorderLayout(10, 10));
+			MyPanel pnSpace = new MyPanel();
+			pnContainInput.add(pnSpace, BorderLayout.EAST);
+			MyPanel pnSpace1 = new MyPanel();
+			pnContainInput.add(pnSpace1, BorderLayout.WEST);
+			 
+			 
+			panel_input = new MyPanel();
+			pnContainInput.add(panel_input, BorderLayout.CENTER);
+			panel_main.add(pnContainInput, BorderLayout.NORTH);
 			panel_input.setLayout(new BorderLayout(10, 10));
 			
 			//label for tieu de
-			lblTitle = new MyLabel("NHÂN VIÊN");
+			lblTitle = new MyLabel("Quản Lý Nhân Viên");
 			lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 			lblTitle.setFont(new Font("Arial", Font.BOLD, 30));
 			panel_input.add(lblTitle, BorderLayout.NORTH);
 			
 			// Panel for dien thong tin
-			panel_dienThongTin = new MyPanelSecond();
+			panel_dienThongTin = new MyPanel();
 			panel_input.add(panel_dienThongTin,BorderLayout.CENTER);
 			panel_dienThongTin.setLayout(new BoxLayout(panel_dienThongTin, BoxLayout.Y_AXIS));
 			
 			// Panel for maNV
-			pnMaNV = new MyPanel();
+			pnMaNV = new MyPanelSecond();
 			txtMaNV = new MyTextField();
 			txtMaNV.setEditable(false); 
 			lblMaNV = new MyLabelSecond("Mã Nhân Viên");
@@ -95,43 +104,42 @@ public class QuanLyNhanVienGUI extends JPanel {
 			pnMaNV.add(txtMaNV);
 			
 			// Panel for tenNV
-			pnTenNV = new MyPanel();
+			pnTenNV = new MyPanelSecond();
 			txtTenNV = new MyTextField();
 			lblTenNV = new MyLabelSecond("Tên Nhân Viên");
 			pnTenNV.add(lblTenNV);
 			pnTenNV.add(txtTenNV);
 	 		
 			// Panel for ngaySinh
-			pnNgaySinh = new MyPanel();
+			pnNgaySinh = new MyPanelSecond();
 			lblNgaySinh = new MyLabelSecond("Ngày Sinh");
 			dateChooser = new JDateChooser();
-			dateChooser.setBackground(new Color(0, 0, 0));
 			dateChooser.setPreferredSize(new Dimension(180, 30));
 			dateChooser.setForeground(Color.BLUE); 
-			dateChooser.setFont(new Font("Arial", Font.BOLD, 14));
+			dateChooser.setFont(new Font("Arial", Font.BOLD, 15));
 			pnNgaySinh.add(lblNgaySinh);
 			pnNgaySinh.add(dateChooser);
 
 			
 			// Panel for gioiTinh
-			pnGioiTinh = new MyPanel();
+			pnGioiTinh = new MyPanelSecond();
 			lblGioiTinh = new MyLabelSecond("Giới Tính ");
 			
 		    ButtonGroup gioiTinhGroup = new ButtonGroup();
 		      
 		   // Radio button for Nam
 		    rdoBtn_Nam = new JRadioButton("Nam");
-		    rdoBtn_Nam.setFont(new Font("Arial", Font.BOLD, 16));
+		    rdoBtn_Nam.setFont(new Font("Arial", Font.BOLD, 15));
 		    rdoBtn_Nam.setForeground(MyColor.SECOND_TEXT_COLOR);
-		    rdoBtn_Nam.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		    rdoBtn_Nam.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		    rdoBtn_Nam.setPreferredSize(new Dimension(130, 30));
 		    gioiTinhGroup.add(rdoBtn_Nam); 
 		
 		    // Radio button for Nu
 		    rdoBtn_Nu = new JRadioButton("Nữ");
-		    rdoBtn_Nu.setFont(new Font("Arial", Font.BOLD, 16));
+		    rdoBtn_Nu.setFont(new Font("Arial", Font.BOLD, 15));
 		    rdoBtn_Nu.setForeground(MyColor.SECOND_TEXT_COLOR);
-		    rdoBtn_Nu.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
+		    rdoBtn_Nu.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		    rdoBtn_Nu.setPreferredSize(new Dimension(50, 30));
 		    gioiTinhGroup.add(rdoBtn_Nu); 
 		      
@@ -140,7 +148,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 		    pnGioiTinh.add(rdoBtn_Nu);
 		      
 		   // Panel for soDT
-			pnSoDT = new MyPanel();
+			pnSoDT = new MyPanelSecond();
 			txt_soDT = new MyTextField();
 			lblSoDT = new MyLabelSecond("Số Điện Thoại");
 			pnSoDT.add(lblSoDT);
@@ -153,18 +161,19 @@ public class QuanLyNhanVienGUI extends JPanel {
 			panel_dienThongTin.add(pnSoDT);
 			
 			//Panel for Tìm Kiếm
-			pnTimKiem = new MyPanel();
+			pnTimKiem = new MyPanelSecond();
 			pnTimKiem.setPreferredSize(new Dimension(300, 10));
 			panel_input.add(pnTimKiem,BorderLayout.EAST);
 				
 			//Panel for lbl vs txt tìm kiếm
-			pnChuaTimKiem = new MyPanel();
+			pnChuaTimKiem = new MyPanelSecond();
 			pnChuaTimKiem.setMaximumSize(new Dimension(120, 120));
 			pnChuaTimKiem.setPreferredSize(new Dimension(300, 90));
 			pnChuaTimKiem.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
 			
 			// Label for search
 			lblTimKiem = new MyLabelSecond("Tìm Kiếm");
+			lblTimKiem.setFont(new Font("Arial", Font.PLAIN, 15));
 			lblTimKiem.setHorizontalAlignment(SwingConstants.CENTER);
 			lblTimKiem.setPreferredSize(new Dimension(100, 30));
 			pnChuaTimKiem.add(lblTimKiem);
@@ -175,17 +184,18 @@ public class QuanLyNhanVienGUI extends JPanel {
 			pnChuaTimKiem.add(txtTimKiem);
 			pnTimKiem.add(pnChuaTimKiem);
 			
-			pnBtnTimKiem = new MyPanel();
+			pnBtnTimKiem = new MyPanelSecond();
 			pnBtnTimKiem.setPreferredSize(new Dimension(130, 40));
 	        pnTimKiem.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 	        pnTimKiem.add(pnBtnTimKiem);
 	        
 	        btnTimKiem = new  MyButton("Tìm kiếm");
+	        btnTimKiem.setFont(new Font("Arial", Font.PLAIN, 16));
 	        btnTimKiem.setIcon(new ImageIcon("images/search.png"));
 	        pnBtnTimKiem.add(btnTimKiem);
 	        
 	        //Panel for buttons
-	        pnButton = new MyPanel();
+	        pnButton = new MyPanelSecond();
 	        pnButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 	        
 	        btnThem = new MyButton("Thêm");
@@ -208,16 +218,26 @@ public class QuanLyNhanVienGUI extends JPanel {
 	// ------------------------------------------------------------------------------------------------------ 
 	     // Panel for table
 	// ------------------------------------------------------------------------------------------------------
+	        MyPanel pnContainTable = new MyPanel();
+	        pnContainTable.setLayout(new BorderLayout(10, 10));
+			MyPanel pnSpace2 = new MyPanel();
+			pnContainTable.add(pnSpace2, BorderLayout.EAST);
+			MyPanel pnSpace3 = new MyPanel();
+			pnContainTable.add(pnSpace3, BorderLayout.WEST);
+	        
 	        MyPanelSecond panel_table = new MyPanelSecond();
-	        panel_main.add(panel_table, BorderLayout.CENTER);
+	        panel_table.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+	        pnContainTable.add(panel_table, BorderLayout.CENTER);
+			panel_main.add(pnContainTable, BorderLayout.CENTER);
 
 	        tableModel = new DefaultTableModel();
 	        tableModel.setColumnIdentifiers(new String[]{"Mã Nhân Viên", "Tên Nhân Viên", "Ngày Sinh", "Giới Tính", "Số ĐT"});
-	        table = new JTable(tableModel);
+	        table = new MyTable(tableModel);
 	        JScrollPane scrollPane = new JScrollPane(table);
 	        scrollPane.setPreferredSize(new Dimension(453, 150)); 
 	        panel_table.setLayout(new BorderLayout(0, 0));
 	        panel_table.add(scrollPane, BorderLayout.NORTH);
+	        
 
 	        loadDataTblNhanVien();
 
