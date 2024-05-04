@@ -61,7 +61,7 @@ public class SanPhamDAO {
 		ArrayList <SanPham> DSSanPham = new ArrayList<>();
 		if(conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT *FROM sanpham";
+				String sql = "SELECT *FROM sanpham WHERE Isdelete=0";
 				PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 				ResultSet rs = prest.executeQuery();
 				
@@ -92,7 +92,7 @@ public class SanPhamDAO {
 		ArrayList <SanPham> DSSanPham = new ArrayList<>();
 		if(conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT *FROM sanpham where TenSP LIKE CONCAT('%', ?, '%') and idLoaiSP=?";
+				String sql = "SELECT *FROM sanpham where TenSP LIKE CONCAT('%', ?, '%') and idLoaiSP=? AND Isdelete=0";
 				PreparedStatement prest = conDB.conn.prepareStatement(sql);
 				prest.setString(1, name);
 				prest.setInt(2, maLoai);
@@ -125,7 +125,7 @@ public class SanPhamDAO {
 		ArrayList <SanPham> DSSanPham = new ArrayList<>();
 		if(conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT *FROM sanpham where TenSP LIKE CONCAT('%', ?, '%')";
+				String sql = "SELECT *FROM sanpham where TenSP LIKE CONCAT('%', ?, '%') AND Isdelete=0";
 				PreparedStatement prest = conDB.conn.prepareStatement(sql);
 				prest.setString(1, name);
 				ResultSet rs = prest.executeQuery();
@@ -157,7 +157,7 @@ public class SanPhamDAO {
 		SanPham sp = null;
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT *FROM sanpham WHERE id=?";
+				String sql = "SELECT *FROM sanpham WHERE id=? AND Isdelete=0";
 				PreparedStatement prest = conDB.conn.prepareStatement(sql);
 				prest.setInt(1, ma);
 				ResultSet rs = prest.executeQuery();
@@ -185,7 +185,7 @@ public class SanPhamDAO {
 		ArrayList <SanPham> DSSanPhamTheoLoai = new ArrayList<>();
 		if(conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT *FROM sanpham WHERE idLoaiSP=?";
+				String sql = "SELECT *FROM sanpham WHERE idLoaiSP=? AND Isdelete=0";
 				PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 				ResultSet rs = prest.executeQuery();
 				
@@ -215,7 +215,7 @@ public class SanPhamDAO {
 	}
 	public String getAnh(int ma) {
 	    try {
-	        String sql = "SELECT HinhAnh FROM sanpham WHERE id=?";
+	        String sql = "SELECT HinhAnh FROM sanpham WHERE id=? AND Isdelete=0";
 	        PreparedStatement prest = conDB.conn.prepareStatement(sql);
 	        prest.setInt(1, ma);
 	        ResultSet rs = prest.executeQuery();
@@ -273,7 +273,7 @@ public class SanPhamDAO {
 	    boolean result = false;
 	    if (conDB.openConnectDB()) {
 	    	try {
-		        String sql = "DELETE FROM sanpham WHERE id=?" + maSP;
+		        String sql = "UPDATE sanpham SET Isdelete=1 WHERE id=" + maSP;
 		        Statement st = conDB.conn.createStatement();
 		        // Thực hiện truy vấn và kiểm tra số hàng đã bị ảnh hưởng
 		        if (st.executeUpdate(sql) >= 1)

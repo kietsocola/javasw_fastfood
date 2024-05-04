@@ -112,7 +112,7 @@ public class SanPhamGUI extends JPanel {
 				xuLyThemLoai();
 			}
 		});
-		cmbLoai.setPreferredSize(new Dimension(200, 30));
+		cmbLoai.setPreferredSize(new Dimension(180, 30));
 		lblLoaiSP = new MyLabelSecond("Loại");
 		pnLoai.add(lblLoaiSP);
 		pnLoai.add(cmbLoai);
@@ -185,6 +185,12 @@ public class SanPhamGUI extends JPanel {
         });
         btnThem.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnXoa = new MyButton("Xóa");
+        btnXoa.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyXoaSanPham();
+            }
+        });
         btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnSua = new MyButton("Sửa");
         btnSua.addActionListener(new ActionListener() {
@@ -411,5 +417,14 @@ public class SanPhamGUI extends JPanel {
 	            cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoaiSP());
 	        }
 	        cmbLoai.addItem("Khác...");
+	    }
+	    private void xuLyXoaSanPham() {
+	        int confirmation = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xoá?", "Xác nhận xoá", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+	        if (confirmation == JOptionPane.YES_OPTION) {
+	            boolean flag = spBUS.xoaSanPham(txtMaSP.getText());
+	            if (flag) {
+	            	loadDataToTblSanPham();
+	            }
+	        }
 	    }
 }
