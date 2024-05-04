@@ -101,6 +101,9 @@ public class KhachHang_BUS {
         }
         return dskh;
     }
+   public KhachHang getKhachHangBySDT(String sdt) {
+	   return khdao.getKhachHangBySDT(sdt);
+   }
 
     public ArrayList<KhachHang> timKhachHang(String txtMin, String txtMax) {
         if (txtMax.trim().equals("") && txtMax.trim().equals(""))
@@ -138,5 +141,12 @@ public class KhachHang_BUS {
             JOptionPane.showMessageDialog(null, "Chưa chọn khách hàng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         return false;
+    }
+    public void updateTongChiTieuKH(int maKH, int tongtien) {
+    	try {
+			khdao.updateChiTieuKH(maKH, tongtien);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 }

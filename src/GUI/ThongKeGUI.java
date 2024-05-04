@@ -1,55 +1,54 @@
 package GUI;
 
-import java.awt.*;
-import javax.swing.border.MatteBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import org.knowm.xchart.*;
-import org.knowm.xchart.style.*;
-import org.knowm.xchart.style.Styler.LegendPosition;
-import org.knowm.xchart.style.lines.*;
-
-import java.text.DecimalFormat;
-import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-
-import com.toedter.calendar.JDateChooser;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import BUS.ThongKeBUS;
-import Custom.MyButton;
-import Custom.MyPanelSecond;
-import DTO.ChiTietHoaDon;
-import DTO.HoaDon;
-import DTO.SanPham;
-import java.sql.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import java.awt.event.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
+
+import org.knowm.xchart.*;
+import org.knowm.xchart.XChartPanel;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.style.*;
+import org.knowm.xchart.style.lines.*;
+
 import com.toedter.calendar.JDateChooser;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import BUS.ThongKeBUS;
+import Custom.MyButton;
+import DTO.ChiTietHoaDon;
+import DTO.HoaDon;
+import DTO.SanPham;
 
 public class ThongKeGUI extends JPanel {
 	private static final String Styler = null;
@@ -92,15 +91,15 @@ public class ThongKeGUI extends JPanel {
 
 	private void initialize() {
 		idQuantityMap = new HashMap<>();
-//		frame = new JFrame();
-//		frame.setBounds(100, 100, 1194, 834);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		// frame = new JFrame();
+		// frame.setBounds(100, 100, 1194, 834);
+		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		this.setLayout(new BorderLayout());
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.add(mainPanel, BorderLayout.CENTER);
 		// Tạo một JPanel chứa BorderLayout
-//		frame.getContentPane().add(mainPanel);
+		// frame.getContentPane().add(mainPanel);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 240, 228));
@@ -780,7 +779,7 @@ public class ThongKeGUI extends JPanel {
 		panel.add(panel_2_3, BorderLayout.EAST);
 
 		// Đặt JFrame ở giữa màn hình
-//		frame.setLocationRelativeTo(null);
+		// frame.setLocationRelativeTo(null);
 	}
 
 	// Hiển thị tất cả sản phẩm
@@ -937,7 +936,7 @@ public class ThongKeGUI extends JPanel {
 	public ArrayList<Object[]> displaySanPhamOnTable5(ArrayList<SanPham> listSanPham, Date startDate, Date endDate) {
 		ArrayList<Object[]> rowDataList = new ArrayList<>();
 		HashMap<Integer, Integer> idQuantityMap = new HashMap<>(); // Tạo một HashMap mới để tính tổng số lượng cho từng
-																	// ID
+		// ID
 		for (SanPham sp : listSanPham) {
 			ArrayList<ChiTietHoaDon> listChiTietHoaDon = thongKeBUS.getChiTietHoaDonBySanPham(sp.getId());
 			for (ChiTietHoaDon cthd : listChiTietHoaDon) {

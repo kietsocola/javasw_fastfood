@@ -315,8 +315,6 @@ public class PhanQuyen_GUI extends JPanel {
 				isSua = true;
 				isBtnChucNang = true;
 				tempPQ = ds.get(comboBox.getSelectedIndex());
-				
-				
 			}
 		});
 		
@@ -413,28 +411,8 @@ public class PhanQuyen_GUI extends JPanel {
 				CustomJDialog dialog = new CustomJDialog();
 				if(isThem) {
 					/// tang id tu dong
-					phanquyen.setIdPhanQuyen(ds.size() + 1);
+					phanquyen.setIdPhanQuyen(ds.get(ds.size() - 1).getIdPhanQuyen() + 1);
 					String ketqua = pqB.themPhanQuyen(phanquyen);
-					if(ketqua.equals("them thanh cong"))
-					{
-						try {
-							ds = pqB.getData();
-							if(ds.size() <= 0)
-							{
-								btnThem.setEnabled(true);
-								btnLamMoi.setEnabled(false);
-								return ;
-							}
-						} catch (SQLException e1) {
-							System.out.println("lay danh sach quyen that bai");
-						}
-						
-						comboBox.removeAllItems();
-						for(int i = 0 ; i <  ds.size() ; i++ )
-							comboBox.addItem(ds.get(i).getTenPhanQuyen());
-							
-					}
-					System.out.println("so luong trong danh sach la : " + ds.size());
 					dialog.notifi(ketqua);
 					isThem = false;
 				}
@@ -444,7 +422,6 @@ public class PhanQuyen_GUI extends JPanel {
 					String ketqua = pqB.suaPhanQuyen(phanquyen);
 					dialog.notifi(ketqua);
 					isSua=false;
-					comboBox.setSelectedIndex(tempPQ.getIdPhanQuyen() - 1);
 				}
 				
 				if(isXoa) {

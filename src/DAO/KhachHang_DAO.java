@@ -61,7 +61,30 @@ public class KhachHang_DAO {
 
 		return kh;
 	}
-	
+	public KhachHang getKhachHangBySDT(String sdt) {
+		KhachHang kh =null;
+
+		try {
+			String sql = "SELECT *FROM khachhang WHERE SoDienThoai=?";
+			PreparedStatement pre= conDB.conn.prepareStatement(sql);
+			pre.setString(1,sdt);
+			ResultSet rs=pre.executeQuery();
+			
+			while(rs.next()) {
+				kh = new KhachHang();
+				
+				kh.setMaKH(rs.getInt(1));
+				kh.setTen(rs.getString(2));
+				kh.setGioiTinh(rs.getInt(3));
+				kh.setSoDT(rs.getString(4));
+				kh.setTongChiTieu(rs.getInt(5));
+			}
+		}catch(SQLException e) {
+			return null;
+		}
+
+		return kh;
+	}
 	public boolean updateKH(int maKH,KhachHang kh) {
 		boolean result=false;
 
@@ -72,6 +95,21 @@ public class KhachHang_DAO {
 			pre.setInt(2, kh.getGioiTinh());
 			pre.setString(3, kh.getSoDT());
 			pre.setInt(4, maKH);
+			result = pre.executeUpdate() > 0;
+		}catch (SQLException ex) {
+            return false;
+        }
+
+        return result;
+	}
+	public boolean updateChiTieuKH(int maKH, int money) {
+		boolean result=false;
+
+		try {
+			String sql ="UPDATE khachhang SET TongChiTieu=TongChiTieu+? WHERE id=?";
+			PreparedStatement pre= conDB.conn.prepareStatement(sql);
+			pre.setInt(1, money);
+			pre.setInt(2, maKH);
 			result = pre.executeUpdate() > 0;
 		}catch (SQLException ex) {
             return false;

@@ -54,6 +54,7 @@ public class KhuyenMaiGUI extends JPanel {
 	private MyTextField txtMaKM, txtTenKM, txtSoLuong,txtCongThuc, txtPhanTram, txtTimKiem;
 	private JComboBox<String> cmbLoaiSP;
 	private KhuyenMaiBUS kmBUS = new KhuyenMaiBUS();
+	private MyButton btnResfresh;
 	/**
 	 * Launch the application.
 	 */
@@ -155,29 +156,29 @@ public class KhuyenMaiGUI extends JPanel {
 		pnChuaTimKiem.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
 		
 		// Label for search
-		lblTimKiem = new MyLabelSecond("Nhập mã");
-		lblTimKiem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTimKiem.setPreferredSize(new Dimension(100, 30));
-		pnChuaTimKiem.add(lblTimKiem);
+//		lblTimKiem = new MyLabelSecond("Nhập mã");
+//		lblTimKiem.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblTimKiem.setPreferredSize(new Dimension(100, 30));
+//		pnChuaTimKiem.add(lblTimKiem);
 		
 		 // Text field for search
-		 txtTimKiem = new MyTextField();
-		txtTimKiem.setPreferredSize(new Dimension(220, 30));
-		pnChuaTimKiem.add(txtTimKiem);
-		pnTimKiem.add(pnChuaTimKiem);
+//		 txtTimKiem = new MyTextField();
+//		txtTimKiem.setPreferredSize(new Dimension(220, 30));
+//		pnChuaTimKiem.add(txtTimKiem);
+//		pnTimKiem.add(pnChuaTimKiem);
 		
-		pnBtnTimKiem = new MyPanelSecond();
-		pnBtnTimKiem.setPreferredSize(new Dimension(130, 40));
-        pnTimKiem.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
-        pnTimKiem.add(pnBtnTimKiem);
-        
-        btnTimKiem = new  MyButton("Tìm kiếm");
-        ImageIcon iconTimkiem = new ImageIcon("images/loupe.png");
-		Image img0 = iconTimkiem.getImage();
-		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
-		iconTimkiem.setImage(newImg0);
-		btnTimKiem.setIcon(iconTimkiem);
-        pnBtnTimKiem.add(btnTimKiem);
+//		pnBtnTimKiem = new MyPanelSecond();
+//		pnBtnTimKiem.setPreferredSize(new Dimension(130, 40));
+//        pnTimKiem.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
+//        pnTimKiem.add(pnBtnTimKiem);
+//        
+//        btnTimKiem = new  MyButton("Tìm kiếm");
+//        ImageIcon iconTimkiem = new ImageIcon("images/loupe.png");
+//		Image img0 = iconTimkiem.getImage();
+//		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+//		iconTimkiem.setImage(newImg0);
+//		btnTimKiem.setIcon(iconTimkiem);
+//        pnBtnTimKiem.add(btnTimKiem);
         
         
         //Panel nút
@@ -206,8 +207,17 @@ public class KhuyenMaiGUI extends JPanel {
 		iconSua.setImage(newImg2);
 		btnSua.setIcon(iconSua);
         btnSua.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        
+        btnResfresh = new MyButton("Làm mới");
+        ImageIcon iconRe = new ImageIcon("images/LamMoi.png");
+		Image img4 = iconRe.getImage();
+		Image newImg4 = img4.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconRe.setImage(newImg4);
+		btnResfresh.setIcon(iconRe);
+		btnResfresh.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        
         pnButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa);
+        pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa); pnButton.add(btnResfresh);
         
         panel_input.add(pnButton,BorderLayout.SOUTH);
 // ------------------------------------------------------------------------------------------------------ 
@@ -247,6 +257,39 @@ public class KhuyenMaiGUI extends JPanel {
 	}
 	
 	private void addEventsKhuyenMai() {
+		btnResfresh.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtMaKM.setText("");
+				txtTenKM.setText("");
+				txtPhanTram.setText("");
+			}
+		});
 		btnSua.addMouseListener(new MouseListener() {
 			
 			@Override

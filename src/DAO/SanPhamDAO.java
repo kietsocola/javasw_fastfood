@@ -88,6 +88,71 @@ public class SanPhamDAO {
 		}
 		return DSSanPham;
 	}
+	public ArrayList<SanPham> getDanhSachSanPhamTheoTenVaLoai(String name, int maLoai){
+		ArrayList <SanPham> DSSanPham = new ArrayList<>();
+		if(conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT *FROM sanpham where TenSP LIKE CONCAT('%', ?, '%') and idLoaiSP=?";
+				PreparedStatement prest = conDB.conn.prepareStatement(sql);
+				prest.setString(1, name);
+				prest.setInt(2, maLoai);
+				ResultSet rs = prest.executeQuery();
+				
+				while (rs.next()){
+					SanPham sp = new SanPham();
+					
+					sp.setId(rs.getInt("id"));
+					sp.setIdLoaiSP(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setIdCongThuc(rs.getInt("idCongThuc"));
+					
+					DSSanPham.add(sp);
+						
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				conDB.closeConnectDB();
+			}
+			
+		}
+		return DSSanPham;
+	}
+	public ArrayList<SanPham> getDanhSachSanPhamTheoTen(String name){
+		ArrayList <SanPham> DSSanPham = new ArrayList<>();
+		if(conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT *FROM sanpham where TenSP LIKE CONCAT('%', ?, '%')";
+				PreparedStatement prest = conDB.conn.prepareStatement(sql);
+				prest.setString(1, name);
+				ResultSet rs = prest.executeQuery();
+				
+				while (rs.next()){
+					SanPham sp = new SanPham();
+					
+					sp.setId(rs.getInt("id"));
+					sp.setIdLoaiSP(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setIdCongThuc(rs.getInt("idCongThuc"));
+					
+					DSSanPham.add(sp);
+						
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				conDB.closeConnectDB();
+			}
+			
+		}
+		return DSSanPham;
+	}
 	public SanPham getSanPham(int ma) { // Lay san pham dua theo maSp
 		SanPham sp = null;
 		if (conDB.openConnectDB()) {

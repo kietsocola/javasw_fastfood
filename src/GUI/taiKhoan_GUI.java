@@ -107,7 +107,7 @@ public class taiKhoan_GUI {
 		JLabel lbImageApp = new JLabel("");
 		lbImageApp.setPreferredSize(new Dimension(320, 320));
 		lbImageApp.setHorizontalAlignment(SwingConstants.CENTER);
-		lbImageApp.setIcon(new ImageIcon("..\\javasw_fastfood\\images\\fd1.jpg"));
+		lbImageApp.setIcon(new ImageIcon("images\\fd1.jpg"));
 		panel_1.add(lbImageApp);
 
 		
