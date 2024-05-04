@@ -102,6 +102,21 @@ public class KhachHang_DAO {
 
         return result;
 	}
+	public boolean updateChiTieuKH(int maKH, int money) {
+		boolean result=false;
+
+		try {
+			String sql ="UPDATE khachhang SET TongChiTieu=TongChiTieu+? WHERE id=?";
+			PreparedStatement pre= conDB.conn.prepareStatement(sql);
+			pre.setInt(1, money);
+			pre.setInt(2, maKH);
+			result = pre.executeUpdate() > 0;
+		}catch (SQLException ex) {
+            return false;
+        }
+
+        return result;
+	}
 	
 	public boolean deleteKH(int maKH) {
 		boolean result=false;

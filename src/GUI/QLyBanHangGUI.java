@@ -200,6 +200,7 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableSP.addColumn("Mã SP");
 		modelTableSP.addColumn("Tên SP");
 		modelTableSP.addColumn("Đơn giá");
+		modelTableSP.addColumn("Hình ảnh");
 		tableSP = new MyTable(modelTableSP);
 		JScrollPane scrollPaneSP = new JScrollPane(tableSP);
 		panel_tableSP.add(scrollPaneSP);
@@ -681,7 +682,8 @@ public class QLyBanHangGUI extends JPanel {
 		        String input = txtsdtKH.getText();
 		    	KhachHang kh = khBUS.getKhachHangBySDT(input);
 		        if(kh == null) {
-		        	JOptionPane.showMessageDialog(null, "Khách hàng mới", "Thông báo", JOptionPane.INFORMATION_MESSAGE);			
+		        	JOptionPane.showMessageDialog(null, "Khách hàng mới", "Thông báo", JOptionPane.INFORMATION_MESSAGE);	
+		        	txtMaKH.setText("");
 		        } else {
 		        	txtMaKH.setText(kh.getMaKH()+"");
 		        }
@@ -906,6 +908,7 @@ public class QLyBanHangGUI extends JPanel {
 			vec.add(sp.getId() + "");
 			vec.add(sp.getTenSP());
 			vec.add(sp.getDonGia() + "");
+			vec.add(sp.getHinhAnh());
 			modelTableSP.addRow(vec);
 		}
 	}
@@ -920,10 +923,12 @@ public class QLyBanHangGUI extends JPanel {
 					String ma = tableSP.getValueAt(selectedRow, 0) + "";
 					String ten = tableSP.getValueAt(selectedRow, 1) + "";
 					String donGia = tableSP.getValueAt(selectedRow, 2) + "";
+					String anh = tableSP.getValueAt(selectedRow, 3) + "";
 //                    int soLuongConLai = Integer.parseInt(tableSP.getValueAt(selectedRow, 3)+"");
 					txtMaSP.setText(ma);
 					txtTenSP.setText(ten);
 					txtDonGia.setText(donGia);
+					loadAnh("images/SanPham/" + anh);
 				}
 			}
 		});
@@ -1044,6 +1049,9 @@ public class QLyBanHangGUI extends JPanel {
 		int maKhachHang=0;
 		if(!maKH.equals("")) maKhachHang = Integer.parseInt(maKH);
 		hdBUS.luuHoaDon(1, maKhachHang, total, "Đã thanh toán");
+		if(maKhachHang!=0) {
+			khBUS.updateTongChiTieuKH(maKhachHang, total);
+		}
 	}
 
 	private void xoaSPfromGioHang() {
