@@ -106,9 +106,14 @@ public class SanPhamGUI extends JPanel {
  		
 		MyPanelSecond pnLoai = new MyPanelSecond();
 		cmbLoai = new JComboBox<String>();
+		loadDataCmbLoai();
+		cmbLoai.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				xuLyThemLoai();
+			}
+		});
 		cmbLoai.setPreferredSize(new Dimension(200, 30));
 		lblLoaiSP = new MyLabelSecond("Loại");
-		loadDataCmbLoai();
 		pnLoai.add(lblLoaiSP);
 		pnLoai.add(cmbLoai);
 		
@@ -276,16 +281,7 @@ public class SanPhamGUI extends JPanel {
 			dtmSanPham.addRow(vec);
 		}
 	}
-	private void loadDataCmbLoai() {
-        cmbLoai.removeAllItems();
-        
-        ArrayList<LoaiSanPham> dsl = loaiBUS.getListLoaiSP();
-        cmbLoai.addItem("0 - Chọn loại");
-        for (LoaiSanPham loai : dsl) {
-            cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoaiSP());
-        }
-        cmbLoai.addItem("Khác...");
-    }
+	
 	private void xulyClickTblSanPham() { // khi ấn vào sẽ hiển thị trên các lbl
 		int row = tblSanPham.getSelectedRow();
 		if (row > -1) {
@@ -397,5 +393,23 @@ public class SanPhamGUI extends JPanel {
 	        spBUS.docListSanPham();
 	        loadDataToTblSanPham();
 	        luuFileAnh();
+	    }
+	    private void xuLyThemLoai() {
+	    	 int x = cmbLoai.getSelectedIndex();
+		        if (x == cmbLoai.getItemCount() - 1) {
+		        	DlgQuanLyLoai loaiGUI = new DlgQuanLyLoai();
+		            loaiGUI.setVisible(true);
+		            loadDataCmbLoai();
+		        }
+	    } 
+	    private void loadDataCmbLoai() {
+	        cmbLoai.removeAllItems();
+	        
+	        ArrayList<LoaiSanPham> dsl = loaiBUS.getListLoaiSP();
+	        cmbLoai.addItem("0 - Chọn loại");
+	        for (LoaiSanPham loai : dsl) {
+	            cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoaiSP());
+	        }
+	        cmbLoai.addItem("Khác...");
 	    }
 }
