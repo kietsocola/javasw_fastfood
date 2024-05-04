@@ -13,6 +13,7 @@ public class phanquyen_BUS {
 	public ArrayList<phanquyen_DTO> getData() throws SQLException{
 		return temp.getData();
 	}
+	
 	public int hasPhanQuyen(String name) throws SQLException {
 		
 		for(phanquyen_DTO pq : getData()) {

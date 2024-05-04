@@ -15,7 +15,7 @@ public class NhaCungCapDAO {
 		if (conDB.openConnectDB()) {
 			try {
 		           
-	            String sql = "SELECT * FROM nhacungcap";
+	            String sql = "SELECT * FROM nhacungcap WHERE isDelete=0";
 	            PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 	            ResultSet rs = prest.executeQuery(sql);
 	            while (rs.next()) {
@@ -40,7 +40,7 @@ public class NhaCungCapDAO {
         NhaCungCap ncc = null;
         if (conDB.openConnectDB()) {
             try {
-                String sql = "SELECT * FROM nhacungcap WHERE id=?";
+                String sql = "SELECT * FROM nhacungcap WHERE id=? AND isDelete=0";
                 PreparedStatement prest = conDB.conn.prepareStatement(sql);
                 prest.setInt(1, MaNCC);
                 ResultSet rs = prest.executeQuery(sql);
@@ -105,7 +105,7 @@ public class NhaCungCapDAO {
     	 boolean result = false;
     	    if (conDB.openConnectDB()) {
     	        try {
-    	            String sql = "DELETE FROM nhacungcap WHERE id=?";
+    	            String sql = "UPDATE nhacungcap SET isDelete=1 WHERE id=?";
     	            PreparedStatement prep = conDB.conn.prepareStatement(sql);
     	            prep.setInt(1, MaNCC);
     	            result = prep.executeUpdate() > 0;

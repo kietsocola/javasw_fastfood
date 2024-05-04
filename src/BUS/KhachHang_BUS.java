@@ -127,7 +127,14 @@ public class KhachHang_BUS {
     }
 
     public boolean xoaKhachHang(String ma) {
-        try {
+    	if (ma.trim().equals("")) {
+   		 JOptionPane.showMessageDialog(null, "Chưa chọn khách hàng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+   		 return false;
+   	}
+       int result = JOptionPane.showConfirmDialog(null, "Bạn chắn chắn muốn xoá?", "Xác nhận", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+       if (result != JOptionPane.YES_OPTION) {
+			return false;
+		}
             int maKH = Integer.parseInt(ma);
             boolean flag = false;
             flag = khdao.deleteKH(maKH);
@@ -137,17 +144,15 @@ public class KhachHang_BUS {
                 JOptionPane.showMessageDialog(null, "Xoá thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
             return flag;
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Chưa chọn khách hàng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-        return false;
+        
+        
     }
-    public boolean updateTongChiTieuKH(int maKH, int tongtien) {
+    
+    public void updateTongChiTieuKH(int maKH, int tongtien) {
     	try {
-			return khdao.updateChiTieuKH(maKH, tongtien);
+			khdao.updateChiTieuKH(maKH, tongtien);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
     }
 }

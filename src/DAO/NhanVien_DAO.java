@@ -4,12 +4,9 @@ import DTO.NhanVien;
 
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 
 
 public class NhanVien_DAO {
@@ -20,7 +17,7 @@ public class NhanVien_DAO {
 		 
 		    ArrayList<NhanVien> dsnv = new ArrayList<>();
 		    if (conDB.openConnectDB()) {
-		        try (PreparedStatement pre = conDB.conn.prepareStatement("SELECT * FROM nhanvien")) {
+		        try (PreparedStatement pre = conDB.conn.prepareStatement("SELECT * FROM nhanvien WHERE isDelete=0")) {
 		            ResultSet rs = pre.executeQuery();
 		            while (rs.next()) {
 		                NhanVien nv = new NhanVien();
@@ -30,6 +27,7 @@ public class NhanVien_DAO {
 		                nv.setGioiTinh(rs.getInt(5));
 		                nv.setSoDT(rs.getString(2));
 		                nv.setIdTaiKhoan(rs.getInt(3));
+		                nv.setChucVu(rs.getString(7));
 		                dsnv.add(nv);
 		            }
 		        } catch (SQLException e) {
@@ -42,7 +40,7 @@ public class NhanVien_DAO {
 
 	public NhanVien getNhanVien(int maNV) {
 	    NhanVien nv = null;
-	    try (PreparedStatement pre = conDB.conn.prepareStatement("SELECT * FROM nhanvien WHERE id=?")) {
+	    try (PreparedStatement pre = conDB.conn.prepareStatement("SELECT * FROM nhanvien WHERE id=? AND isDelete=0")) {
 	        pre.setInt(1, maNV);
 	        ResultSet rs = pre.executeQuery();
 	        while (rs.next()) {
@@ -52,6 +50,7 @@ public class NhanVien_DAO {
 	            nv.setNgaySinh(rs.getString(6));
 	            nv.setGioiTinh(rs.getInt(5));
 	            nv.setSoDT(rs.getString(2));
+	            nv.setChucVu(rs.getString(7));
 	        }
 	    } catch (SQLException e) {
 
@@ -61,18 +60,39 @@ public class NhanVien_DAO {
 	}
 
 	
-
-	
-	public boolean updateNV(NhanVien nv) {
+	public boolean themNV(NhanVien nv) {
 		boolean result = false;
-	    try {
-	    	String sql = "UPDATE nhanvien SET Ten=?,NgaySinh=?, GioiTinh=?, SoDienThoai=? WHERE id=?";
+	    try  {
+	    	String sql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai,ChucVu )" 
+	    + "VALUES(?, ?, ?, ?,?)";
 	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
 	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
-	        pre.setInt(5, nv.getMaNV());
+	        pre.setString(5, nv.getChucVu());
+	        result = pre.executeUpdate() > 0;
+	        
+	    } catch (SQLException e) {
+	    	
+	        e.printStackTrace();
+
+	        return false;
+	    }
+	    return result;
+	}
+	
+	public boolean updateNV(NhanVien nv) {
+		boolean result = false;
+	    try {
+	    	String sql = "UPDATE nhanvien SET Ten=?,NgaySinh=?, GioiTinh=?, SoDienThoai=?, ChucVu=? WHERE id=? ";
+	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
+	        pre.setString(1, nv.getTen());
+	        pre.setString(2, nv.getNgaySinh());
+	        pre.setInt(3, nv.getGioiTinh());
+	        pre.setString(4, nv.getSoDT());
+	        pre.setString(5, nv.getChucVu());
+	        pre.setInt(6, nv.getMaNV());
 	        
 	        result = pre.executeUpdate() > 0;
 	    } catch (SQLException e) {  
@@ -83,10 +103,10 @@ public class NhanVien_DAO {
 	}
 
 	public boolean deleteNV(int maNV) {
-	    String sql = "DELETE FROM nhanvien WHERE id=?";
+	    String sql = "UPDATE nhanvien SET isDelete=1 WHERE id=?" ;
 	    try (PreparedStatement pre = conDB.conn.prepareStatement(sql)) {
 	        pre.setInt(1, maNV);
-	        
+
 	        int rowsAffected = pre.executeUpdate();
 	        return rowsAffected > 0;
 	    } catch (SQLException e) {
@@ -96,26 +116,23 @@ public class NhanVien_DAO {
 	    }
 	}
 
-	public boolean themNV(NhanVien nv) {
-		boolean result = false;
+	public boolean nhapExcel(NhanVien nv) {
 	    try  {
-	    	String sql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai)" 
-	    + "VALUES(?, ?, ?, ?)";
+	    	String sql = "DELETE * FROM nhanvien;"+
+	    "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai, ChucVu)" +
+	    "VALUES(?, ?, ?, ?,?)";
 	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
 	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
+	        pre.setString(5, nv.getChucVu());
 	        
-	        result = pre.executeUpdate() > 0;
-	        
-	    } catch (SQLException e) {
-	    	
-	        e.printStackTrace();
-
-	        return false;
+	        return true;
+	    } catch (SQLException e) {	
+	    	 e.printStackTrace();
 	    }
-	    return result;
+	    return false;
 	}
 
 

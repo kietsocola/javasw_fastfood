@@ -41,7 +41,7 @@ public class NhanVien_BUS {
     	return "";
     }
 
-    public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT) {
+    public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu ) {
         ten = ten.trim();
         soDT = soDT.trim();
         if (ten.equals("")) {
@@ -57,11 +57,16 @@ public class NhanVien_BUS {
         	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         	 return false;
         }
+        if (chucVu.equals("")) {
+            JOptionPane.showMessageDialog(null, "Chức vụ không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         NhanVien nv = new NhanVien();
         nv.setTen(ten);
         nv.setNgaySinh(ngaySinh);
         nv.setGioiTinh(gioiTinh);
         nv.setSoDT(soDT);
+        nv.setChucVu(chucVu);
         boolean flag = nvdao.themNV(nv);
         if (!flag) {
             JOptionPane.showMessageDialog(null, "Thêm thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -71,7 +76,7 @@ public class NhanVien_BUS {
         return flag;
     }
 
-    public boolean suaNhanVien(String ma, String ten, String ngaySinh, int gioiTinh, String soDT) {
+    public boolean suaNhanVien(String ma, String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu) {
         try {
     	int maNV = Integer.parseInt(ma);
         ten = ten.trim();
@@ -95,12 +100,17 @@ public class NhanVien_BUS {
         	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         	 return false;
         }
+        if (chucVu.equals("")) {
+            JOptionPane.showMessageDialog(null, "Chức vụ không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         NhanVien nv = new NhanVien();
         nv.setMaNV(maNV);
         nv.setTen(ten);
         nv.setNgaySinh(ngaySinh);
         nv.setGioiTinh(gioiTinh);
         nv.setSoDT(soDT);
+        nv.setChucVu(chucVu);
         boolean flag = nvdao.updateNV(nv);
         if (!flag) {
             JOptionPane.showMessageDialog(null, "Sửa thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -118,8 +128,8 @@ public class NhanVien_BUS {
         tuKhoa = tuKhoa.toLowerCase();
         ArrayList<NhanVien> dsnv = new ArrayList<>();
         for (NhanVien nv : listNV) {
-        	String ma = String.valueOf(nv.getMaNV());
-            if (nv.getTen().toLowerCase().contains(tuKhoa) || nv.getSoDT().toLowerCase().contains(tuKhoa)|| ma.contains(tuKhoa)) {
+        	
+            if (nv.getTen().toLowerCase().contains(tuKhoa) || nv.getSoDT().toLowerCase().contains(tuKhoa)|| nv.getChucVu().toLowerCase().contains(tuKhoa)) {
                 dsnv.add(nv);
             }
         }
@@ -127,19 +137,37 @@ public class NhanVien_BUS {
     }
 
     public boolean xoaNhanVien(String ma) {
-        try {
-            int maNV = Integer.parseInt(ma);
-            boolean flag = nvdao.deleteNV(maNV);
-            if (flag) {
+    	if (ma.trim().equals("")) {
+    		 JOptionPane.showMessageDialog(null, "Chưa chọn nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+    		 return false;
+    	}
+        int result = JOptionPane.showConfirmDialog(null, "Bạn chắn chắn muốn xoá?", "Xác nhận", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+        if (result != JOptionPane.YES_OPTION) {
+			return false;
+		}
+        
+        int maNV = Integer.parseInt(ma);
+        boolean flag = nvdao.deleteNV(maNV);
+        if (flag) {
                 JOptionPane.showMessageDialog(null, "Xoá thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            } else {
+        } else {
                 JOptionPane.showMessageDialog(null, "Xoá thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-            return flag;
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Chưa chọn nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
         }
+            return flag;
+        
+    }
+    
+
+    public boolean nhapExcel(String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu ) {
+        NhanVien nv = new NhanVien();
+        nv.setTen(ten);
+        nv.setNgaySinh(ngaySinh);
+        nv.setGioiTinh(gioiTinh);
+        nv.setSoDT(soDT);
+        nv.setChucVu(chucVu);
+        boolean flag = nvdao.nhapExcel(nv);
+        
+        return flag;
     }
 
 }

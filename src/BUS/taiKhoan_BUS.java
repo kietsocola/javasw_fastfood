@@ -24,4 +24,9 @@ public class taiKhoan_BUS {
 		taiKhoan_DAO check = new taiKhoan_DAO();
 		return check.getId(account);	
 	}
+	
+	public int getTrangThai(String id) {
+		taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
+		return taikhoandao.getTrangThai(Integer.parseInt(id));
+	}
 }
