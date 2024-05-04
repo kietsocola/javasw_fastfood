@@ -1,12 +1,11 @@
 package BUS;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
-
 import javax.swing.JOptionPane;
 
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCap;
+
 
 
 public class NhaCungCap_BUS {
@@ -64,7 +63,7 @@ public class NhaCungCap_BUS {
 	
 	public boolean suaNCC(String maNCC,String tenNCC,String soDT, String diaChi ) {
 		if(tenNCC.trim().equals("")) {
-			 JOptionPane.showMessageDialog(null, "Hãy nhập tên Nhà cung cấp này!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			 JOptionPane.showMessageDialog(null, "Hãy chọn nhà cung cấp này!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 			 return false;
 		}
 		if(diaChi.trim().equals("")) {
@@ -98,4 +97,36 @@ public class NhaCungCap_BUS {
         }
        return flag; 
 	}
+	
+    public boolean xoaNCC(String ma) {
+    	if (ma.trim().equals("")) {
+   		 JOptionPane.showMessageDialog(null, "Chưa chọn nhà cung cấp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+   		 return false;
+   	}
+       int result = JOptionPane.showConfirmDialog(null, "Bạn chắn chắn muốn xoá?", "Xác nhận", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+       if (result != JOptionPane.YES_OPTION) {
+			return false;
+		}
+            boolean flag = nccdao.deleteNCC(Integer.parseInt(ma));
+            if (flag) {
+                JOptionPane.showMessageDialog(null, "Xoá thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Xoá thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+            return flag;
+       
+    }
+    
+    
+    public ArrayList<NhaCungCap> timNCC(String tuKhoa) {
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<NhaCungCap> dsncc = new ArrayList<>();
+        for (NhaCungCap ncc : listncc) {
+        	String ma = String.valueOf(ncc.getMaNCC());
+            if (ncc.getTenNCC().toLowerCase().contains(tuKhoa) || ncc.getSoDT().toLowerCase().contains(tuKhoa)|| ma.contains(tuKhoa)) {
+                dsncc.add(ncc);
+            }
+        }
+        return dsncc;
+    }
 }

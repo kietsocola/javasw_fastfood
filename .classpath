@@ -88,12 +88,45 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
+	<classpathentry kind="lib" path="MyLib/commons-codec-1.11.jar">
+=======
 	<classpathentry kind="lib" path="D:/netbean/mysql connect/pdfbox-2.0.31.jar">
+>>>>>>> 1ee4ec3a0912980270ed8df8e0bfdff3c365ca90
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
+	<classpathentry kind="lib" path="MyLib/commons-collections4-4.2.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="MyLib/commons-compress-1.18.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="MyLib/poi-4.0.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="MyLib/poi-ooxml-4.0.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="MyLib/poi-ooxml-schemas-4.0.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="MyLib/xmlbeans-3.0.2.jar">
+=======
 	<classpathentry kind="lib" path="D:/netbean/mysql connect/fontbox-2.0.31.jar">
+>>>>>>> 1ee4ec3a0912980270ed8df8e0bfdff3c365ca90
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
