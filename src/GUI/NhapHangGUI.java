@@ -61,7 +61,7 @@ public class NhapHangGUI extends JPanel {
 	private JPanel contentPane;
 	private DefaultTableModel modelTableNL,modelTableXN,modelTablePN,modelTableCTPN;
 	private MyTextField txtMaNL,txtMaNL2, txtTenNL, txtSoLuongNL,txtDonGiaNL,txtTongTien, 
-	txtMaPN,txtNL,txtSL,txtDG, txtMaNCC,txtMaNV,txtThanhTien;
+	txtMaPN,txtSL,txtDG, txtMaNCC,txtMaNV,txtThanhTien;
 	private MyTable tableNL,tableXN, tablePN, tableCTPN;
 	private JTextField txtTimTheoTen;
 	private JComboBox<String>  cmbNCC;
@@ -420,8 +420,9 @@ public class NhapHangGUI extends JPanel {
 		lblCTPhieuNhap.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_tableCTPN.add(lblCTPhieuNhap, BorderLayout.NORTH);
 		modelTableCTPN = new DefaultTableModel();
-		modelTableCTPN.addColumn("Mã PN");
 		modelTableCTPN.addColumn("Mã NL");
+		modelTableCTPN.addColumn("Mã PN");
+		
 		modelTableCTPN.addColumn("Số lượng");
 		modelTableCTPN.addColumn("Đơn giá");
 		modelTableCTPN.addColumn("Thành tiền");
@@ -448,40 +449,35 @@ public class NhapHangGUI extends JPanel {
 		MyLabelSecond lblMaPN = new MyLabelSecond("Mã PN: ");
 		lblMaPN.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DetailPN.add(pnMaPN);
-		pnMaPN.setLayout(new BoxLayout(pnMaPN, BoxLayout.X_AXIS));
 		pnMaPN.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		pnMaPN.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		pnMaPN.add(lblMaPN);
 		txtMaPN = new MyTextField();
+		txtMaPN.setMaximumSize(new Dimension(180, 30));
 		pnMaPN.add(txtMaPN);
 		
-		MyPanelSecond pnMaNL2 = new MyPanelSecond();
-		MyLabelSecond lblMaNL2 = new MyLabelSecond("Mã NL: ");
-		lblMaNL2.setHorizontalAlignment(SwingConstants.CENTER);
-		pnMaNL2.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-		panel_DetailPN.add(pnMaNL2);
-		pnMaNL2.setLayout(new BoxLayout(pnMaNL2, BoxLayout.X_AXIS));
-		pnMaNL2.add(lblMaNL2);
-		txtMaNL2 = new MyTextField();
-		pnMaNL2.add(txtMaNL2);
+		
 		
 		MyPanelSecond pnMaNCC = new MyPanelSecond();
 		MyLabelSecond lblMaNCC = new MyLabelSecond("Mã NCC: ");
 		lblMaNCC.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DetailPN.add(pnMaNCC);
-		pnMaNCC.setLayout(new BoxLayout(pnMaNCC, BoxLayout.X_AXIS));
 		pnMaNCC.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		pnMaNCC.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		pnMaNCC.add(lblMaNCC);
 		txtMaNCC = new MyTextField();
+		txtMaNCC.setMaximumSize(new Dimension(180, 30));
 		pnMaNCC.add(txtMaNCC);
 		
 		MyPanelSecond pnTongTien = new MyPanelSecond();
 		MyLabelSecond lblTongTien = new MyLabelSecond("Tổng tiền: ");
 		lblTongTien.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DetailPN.add(pnTongTien);
-		pnTongTien.setLayout(new BoxLayout(pnTongTien, BoxLayout.X_AXIS));
 		pnTongTien.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		pnTongTien.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		pnTongTien.add(lblTongTien);
 		txtTongTien = new MyTextField();
+		txtTongTien.setMaximumSize(new Dimension(180, 30));
 		pnTongTien.add(txtTongTien);
 		//Phần hiển thị chi tiết phiếu
 		MyPanelSecond panel_DetailCTPN = new MyPanelSecond();
@@ -489,64 +485,77 @@ public class NhapHangGUI extends JPanel {
 		panel_Detail.add(panel_DetailCTPN);
 		
 		MyLabelSecond lblThongTinCTPN = new MyLabelSecond("Chi tiết phiếu nhập");
-		lblThongTinCTPN.setMaximumSize(new Dimension(400, 40));
+		lblThongTinCTPN.setMaximumSize(new Dimension(300, 40));
 		lblThongTinCTPN.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblThongTinCTPN.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DetailCTPN.add(lblThongTinCTPN);
 		
-		MyPanelSecond pnNL = new MyPanelSecond();
-		MyLabelSecond lblNL = new MyLabelSecond("Nguyên liệu: ");
-		lblNL.setHorizontalAlignment(SwingConstants.CENTER);
-		pnNL.add(lblNL);
-		txtNL = new MyTextField();
-		pnNL.add(txtNL);
-		pnNL.setLayout(new BoxLayout(pnNL, BoxLayout.X_AXIS));
-		pnNL.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-		panel_DetailCTPN.add(pnNL);
+		MyPanelSecond pnMaNL2 = new MyPanelSecond();
+		MyLabelSecond lblMaNL2 = new MyLabelSecond("Mã NL: ");
+		lblMaNL2.setHorizontalAlignment(SwingConstants.CENTER);
+		pnMaNL2.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		panel_DetailCTPN.add(pnMaNL2);
+		pnMaNL2.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		pnMaNL2.add(lblMaNL2);
+		txtMaNL2 = new MyTextField();
+		txtMaNL2.setMaximumSize(new Dimension(180, 30));
+		pnMaNL2.add(txtMaNL2);
 		
 		MyPanelSecond pnSL = new MyPanelSecond();
+		pnSL.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		MyLabelSecond lblSL = new MyLabelSecond("Số lượng: ");
+		lblSL.setPreferredSize(new Dimension(100, 30));
 		lblSL.setHorizontalAlignment(SwingConstants.CENTER);
 		pnSL.add(lblSL);
 		txtSL = new MyTextField();
+		txtSL.setMaximumSize(new Dimension(180, 30));
 		pnSL.add(txtSL);
-		pnSL.setLayout(new BoxLayout(pnSL, BoxLayout.X_AXIS));
 		pnSL.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_DetailCTPN.add(pnSL);
 		
 		MyPanelSecond pnDG = new MyPanelSecond();
+		pnDG.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		MyLabelSecond lblDG = new MyLabelSecond("Đơn giá: ");
+		lblDG.setPreferredSize(new Dimension(100, 30));
 		lblDG.setHorizontalAlignment(SwingConstants.CENTER);
 		pnDG.add(lblDG);
 		txtDG = new MyTextField();
+		txtDG.setMaximumSize(new Dimension(180, 30));
 		pnDG.add(txtDG);
-		pnDG.setLayout(new BoxLayout(pnDG, BoxLayout.X_AXIS));
-		pnNL.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_DetailCTPN.add(pnDG);
 		
 		MyPanelSecond pnTT = new MyPanelSecond();
+		pnTT.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		MyLabelSecond lblTT = new MyLabelSecond("Thành tiền: ");
+		lblTT.setPreferredSize(new Dimension(100, 30));
 		lblTT.setHorizontalAlignment(SwingConstants.CENTER);
 		pnTT.add(lblTT);
 		txtThanhTien = new MyTextField();
+		txtThanhTien.setMaximumSize(new Dimension(180, 30));
 		pnTT.add(txtThanhTien);
-		pnTT.setLayout(new BoxLayout(pnTT, BoxLayout.X_AXIS));
 		pnTT.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_DetailCTPN.add(pnTT);
 		
 		// tìm theo ngày của Kiệt add dô
 		MyPanelSecond panel_FindHD = new MyPanelSecond();
-		panel_DetailCTPN.add(panel_FindHD, BorderLayout.NORTH);
-		panel_FindHD.setLayout(new GridLayout(2, 1, 0, 0));
+		panel_Detail.add(panel_FindHD, BorderLayout.NORTH);
+		panel_FindHD.setLayout(new BoxLayout(panel_FindHD, BoxLayout.Y_AXIS));
+		
+		MyLabelSecond lblTimKiem = new MyLabelSecond("Tìm kiếm phiếu nhập");
+		lblTimKiem.setMaximumSize(new Dimension(150, 40));
+		panel_FindHD.add(lblTimKiem);
 
 		MyPanelSecond panel_3 = new MyPanelSecond();
+		panel_3.setMinimumSize(new Dimension(300, 10));
 		panel_3.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_FindHD.add(panel_3);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 
 		MyLabelSecond lblNewLabel_2 = new MyLabelSecond("Từ ngày");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_3.add(lblNewLabel_2);
 		startDateChooser = new JDateChooser();
+		startDateChooser.setMaximumSize(new Dimension(120, 30));
 		startDateChooser.setBackground(new Color(0, 0, 0));
 		startDateChooser.setPreferredSize(new Dimension(120, 30));
 		startDateChooser.setForeground(Color.BLUE); // Thiết lập màu chữ
@@ -558,13 +567,16 @@ public class NhapHangGUI extends JPanel {
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 //
 		MyLabelSecond lblNewLabel_3 = new MyLabelSecond("Tới ngày");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_2.add(lblNewLabel_3);
 		endDateChooser = new JDateChooser();
+		endDateChooser.setMaximumSize(new Dimension(120, 30));
 		endDateChooser.setBackground(new Color(0, 0, 0));
 		endDateChooser.setPreferredSize(new Dimension(120, 30));
 		panel_2.add(endDateChooser);
 
 		MyPanelSecond panel_btnTimkiem = new MyPanelSecond();
+		FlowLayout flowLayout = (FlowLayout) panel_btnTimkiem.getLayout();
 		panel_FindHD.add(panel_btnTimkiem);
 
 		btnTimKiemHD = new MyButton("Tìm kiếm");
@@ -886,6 +898,44 @@ public class NhapHangGUI extends JPanel {
 							startDateChooser.setDate(null);
 							endDateChooser.setDate(null);
 						}
+					});
+					tablePN.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+					    @Override
+					    public void valueChanged(ListSelectionEvent event) {
+					        if (!event.getValueIsAdjusting()) {
+					            int selectedRow = tablePN.getSelectedRow();
+					            if (selectedRow != -1) {
+					                String maPN = tablePN.getValueAt(selectedRow, 0).toString();
+					                String maNCC = tablePN.getValueAt(selectedRow, 1).toString();
+					                String tongTien = tablePN.getValueAt(selectedRow, 4).toString();
+					                
+					                txtMaPN.setText(maPN);
+					                txtMaNCC.setText(maNCC);
+					                txtTongTien.setText(tongTien);
+					            }
+					        }
+					    }
+					});
+
+					// Đăng ký sự kiện cho bảng tableCTPN
+					tableCTPN.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+					    @Override
+					    public void valueChanged(ListSelectionEvent event) {
+					        if (!event.getValueIsAdjusting()) {
+					            int selectedRow = tableCTPN.getSelectedRow();
+					            if (selectedRow != -1) {
+					                String maNL = tableCTPN.getValueAt(selectedRow, 1).toString();
+					                String soLuong = tableCTPN.getValueAt(selectedRow, 2).toString();
+					                String donGia = tableCTPN.getValueAt(selectedRow, 3).toString();
+					                String thanhTien = tableCTPN.getValueAt(selectedRow, 4).toString();
+					                
+					                txtMaNL2.setText(maNL);
+					                txtSL.setText(soLuong);
+					                txtDG.setText(donGia);
+					                txtThanhTien.setText(thanhTien);
+					            }
+					        }
+					    }
 					});
 				}
 				
