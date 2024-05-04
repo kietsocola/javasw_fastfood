@@ -9,4 +9,5 @@ module javasw_fastfood {
 	requires java.sql;
 	requires jcalendar;
 	requires org.knowm.xchart;
+	requires org.apache.pdfbox;
 }

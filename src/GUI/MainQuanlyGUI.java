@@ -51,6 +51,13 @@ public class MainQuanlyGUI extends JFrame {
 		addControls();
 		addEvents();
 	}
+	
+	public MainQuanlyGUI() {
+		this.setTitle("Phần mềm quản lý cửa hàng đồ ăn nhanh");
+		this.setSize(1280, 800);
+		addControls();
+		addEvents();
+	}
 
 	public void showWindow() {
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -159,30 +166,27 @@ public class MainQuanlyGUI extends JFrame {
 		iconCongThuc.setImage(newImg9);
 		lblCongThuc.setIcon(iconCongThuc);
 		
-		for(boolean x : QuyenHan)
-		System.out.print(x + " la quyen cua tai khoan \n");
+//		for(boolean x : QuyenHan)
+//		System.out.print(x + " la quyen cua tai khoan \n");
 		
-		
-//		listMenuLeft = new ArrayList<>();
-//		listMenuLeft.add(panel_logo);
-//		listMenuLeft.add(lblBanHang);
-//		listMenuLeft.add(lblSanPham);
-//		listMenuLeft.add(lblKhuyenMai);
-//		listMenuLeft.add(lblNhanvien);
-//		listMenuLeft.add(lblKhachhang);
-//		listMenuLeft.add(lblNhapHang);
-//		listMenuLeft.add(lblThongKe);
-//		listMenuLeft.add(lblCongThuc);
-//		listMenuLeft.add(lblPhanQuyen);
 		
 		listMenuLeft = new ArrayList<>();
-
-		if(QuyenHan.get(3) == true) {
-			listMenuLeft.add(lblBanHang);
-			listMenuLeft.add(lblKhuyenMai);
-			listMenuLeft.add(lblKhachhang);
-		}
+		listMenuLeft.add(panel_logo);
+		listMenuLeft.add(lblBanHang);
+		listMenuLeft.add(lblSanPham);
+		listMenuLeft.add(lblKhuyenMai);
+		listMenuLeft.add(lblNhanvien);
+		listMenuLeft.add(lblKhachhang);
+		listMenuLeft.add(lblNhapHang);
+		listMenuLeft.add(lblThongKe);
+		listMenuLeft.add(lblCongThuc);
+		listMenuLeft.add(lblPhanQuyen);
 		
+		listMenuLeft = new ArrayList<>();
+		listMenuLeft.add(panel_logo);
+		if(QuyenHan.get(0) == true) {
+			listMenuLeft.add(lblNhapHang);
+		}
 		
 		if(QuyenHan.get(1) == true) {
 			listMenuLeft.add(lblSanPham);
@@ -194,14 +198,16 @@ public class MainQuanlyGUI extends JFrame {
 			listMenuLeft.add(lblPhanQuyen);
 		}
 		
+		if(QuyenHan.get(3) == true) {
+			listMenuLeft.add(lblBanHang);
+			listMenuLeft.add(lblKhuyenMai);
+			listMenuLeft.add(lblKhachhang);
+		}
 		
 		if(QuyenHan.get(4) == true) {
 			listMenuLeft.add(lblThongKe);
 		}
 
-		if(QuyenHan.get(0) == true) {
-			listMenuLeft.add(lblNhapHang);
-		}
 
 		for (MyLabel lbl : listMenuLeft) {
 			lbl.addMouseListener(new LabelMouseListener());

@@ -52,8 +52,13 @@ public class taiKhoan_GUI {
 	private JFrame frame;
 	private JTextField tenDangNhap;
 	private JTextField matKhau;
-	private MyPanel panel ,panel_1 ,panel_2 ,panelTenDangNhap,panelMatKhau,panelBtnDangNhap;
+	private MyPanel panel ,panel_2 ,panelTenDangNhap,panelMatKhau,panelBtnDangNhap;
+	JPanel panel_1;
 	private MyButton btnDangNhap ,btnThoat;
+	private taiKhoan_BUS tk_BUS = new taiKhoan_BUS();
+	private NhanVien_BUS nv_BUS = new NhanVien_BUS();
+	private phanquyen_BUS pq_BUS = new phanquyen_BUS();
+	public static int idTaiKhoan ;
 
 	/**
 	 * Launch the application.
@@ -97,7 +102,7 @@ public class taiKhoan_GUI {
 		EmptyBorder border = new EmptyBorder(20, 20, 20, 20);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
-		panel_1 = new MyPanel();
+		panel_1 = new JPanel();
 		panel_1.setBorder(new EmptyBorder(0, 10, 0, 0));
 		panel_1.setPreferredSize(new Dimension(320, 400));
 //		frame.getContentPane().add(panel_1);
@@ -118,7 +123,7 @@ public class taiKhoan_GUI {
 		txtNameApp.setHorizontalAlignment(SwingConstants.CENTER);
 		txtNameApp.setVerticalAlignment(SwingConstants.CENTER);
 		panel.add(txtNameApp);
-		txtNameApp.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		txtNameApp.setFont(new Font("Arial", Font.BOLD, 18));
 		
 		panelTenDangNhap = new MyPanel();
 		panelTenDangNhap.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -127,7 +132,7 @@ public class taiKhoan_GUI {
 		panelTenDangNhap.setLayout(new BoxLayout(panelTenDangNhap, BoxLayout.X_AXIS));
 		panelTenDangNhap.add(Box.createHorizontalGlue());
 		
-		JLabel labelDangNhap = new JLabel("Tên đăng nhập:");
+		JLabel labelDangNhap = new JLabel("Tên đăng nhập: ");
 		labelDangNhap.setHorizontalAlignment(SwingConstants.LEFT);
 		labelDangNhap.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelTenDangNhap.add(labelDangNhap);
@@ -146,7 +151,7 @@ public class taiKhoan_GUI {
 		panel.add(panelMatKhau);
 		panelMatKhau.setLayout(new BoxLayout(panelMatKhau, BoxLayout.X_AXIS));
 		
-		JLabel labelMatKhau = new JLabel("Mật Khẩu         :");
+		JLabel labelMatKhau = new JLabel("Mật Khẩu         : ");
 		labelMatKhau.setHorizontalAlignment(SwingConstants.LEFT);
 		labelMatKhau.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelMatKhau.add(labelMatKhau);
@@ -168,9 +173,6 @@ public class taiKhoan_GUI {
 				taiKhoan_DTO account = new taiKhoan_DTO();
 				account.setTenTaiKhoan(tenDangNhap.getText());
 				account.setMatKhau(matKhau.getText());
-				taiKhoan_BUS tk_BUS = new taiKhoan_BUS();
-				NhanVien_BUS nv_BUS = new NhanVien_BUS();
-				phanquyen_BUS pq_BUS = new phanquyen_BUS();
 					// TODO Auto-generated catch block\
 				try {
 					if(tk_BUS.checkDangNhap(account) == 0)
@@ -181,8 +183,8 @@ public class taiKhoan_GUI {
 						ArrayList<Boolean> PhanQuyen = pq_BUS.loaiPhanQuyen(idPhanQuyen);
 //						for(boolean x : PhanQuyen)
 //							System.out.print(x + " la quyen cua tai khoan \n");
-						String TenNhanVien = nv_BUS.getTenNhanVien(tk_BUS.idTaiKhoan(account));
-						System.out.print(tk_BUS.idTaiKhoan(account) + " la id cua tai khoan \n");
+						idTaiKhoan = tk_BUS.idTaiKhoan(account);
+						String TenNhanVien = nv_BUS.getTenNhanVien(idTaiKhoan);
 						JOptionPane.showMessageDialog(null, "Xin Chào " + TenNhanVien,"Thong bao",JOptionPane.INFORMATION_MESSAGE);
 
 						MainQuanlyGUI main = new MainQuanlyGUI(PhanQuyen);
@@ -229,10 +231,10 @@ public class taiKhoan_GUI {
 		
 		panel_2 = new MyPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 		panel_2.add(panel_1);
 		panel_2.add(panel);
 		frame.getContentPane().add(panel_2);
-		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 	}
 
 }
