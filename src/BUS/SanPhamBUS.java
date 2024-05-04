@@ -154,4 +154,20 @@ public class SanPhamBUS {
 	 return false;
  }
 
+ public boolean xoaSanPham (String MaSP) {
+	 if (MaSP.trim().equals("")) {
+         	JOptionPane.showMessageDialog(null, "Chưa chọn sản phẩm để xóa", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+         return false;
+     }
+
+     int maSP = Integer.parseInt(MaSP);
+     if (spDAO.xoaSanPham(maSP)) {
+    	 	JOptionPane.showMessageDialog(null, "Xóa thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+    	 return true;
+     }
+
+     JOptionPane.showMessageDialog(null, "Xóa thất bại","Thông báo",JOptionPane.INFORMATION_MESSAGE);     
+     return false;
+ }
 }
+

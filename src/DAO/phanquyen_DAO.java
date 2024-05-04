@@ -135,7 +135,7 @@ public class phanquyen_DAO {
 		con.connect();
 		try {
 			int index;
-			String sql = "delete from phanquyen where id = ?";
+			String sql = "update phanquyen set isDelete = 1 where id = ?";
 			PreparedStatement pstmt = con.getCon().prepareStatement(sql);
 			pstmt.setInt(1,item.getIdPhanQuyen());
 			index = pstmt.executeUpdate();

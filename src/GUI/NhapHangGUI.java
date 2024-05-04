@@ -23,7 +23,9 @@ import javax.swing.table.DefaultTableModel;
 import BUS.ChiTietPhieuNhapBUS;
 import BUS.NguyenLieuBUS;
 import BUS.NhaCungCap_BUS;
+import BUS.NhanVien_BUS;
 import BUS.PhieuNhapBUS;
+import BUS.taiKhoan_BUS;
 import Custom.*;
 import DTO.ChiTietPhieuNhap;
 import DTO.NguyenLieu;
@@ -42,7 +44,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Vector;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -66,6 +71,8 @@ public class NhapHangGUI extends JPanel {
 	private ChiTietPhieuNhapBUS ctpnBUS = new ChiTietPhieuNhapBUS();
 	private PhieuNhapBUS pnBUS = new PhieuNhapBUS();
 	private MyButton btnChonNhap;
+	private int[] maNL ,donGia,soLuong;
+	private String[] tenNL ;
 	/**
 	 * Launch the application.
 	 */
@@ -673,11 +680,15 @@ public class NhapHangGUI extends JPanel {
 				}
 			//Phần xử lý xuất phiếu nhập và thêm các dữ kiện vào Tab phiếu nhập
 				
-				private void xuatPN() {
+				private int xuatPN() {
 					if(modelTableXN.getRowCount()==0) {
 						JOptionPane.showMessageDialog(null, "Không có nguyên liệu nào trong hàng chờ", "Thông báo", JOptionPane.INFORMATION_MESSAGE );
-						return;
+						return 0;
 					}
+					maNL = new int[0];
+					tenNL = new String[0];
+					donGia = new int[0];
+					soLuong = new int[0];
 					int total = 0;
 					for (int i = 0; i < modelTableXN.getRowCount(); i++) {
 						total += Integer.parseInt(modelTableXN.getValueAt(i, 4)+ "");
@@ -686,13 +697,22 @@ public class NhapHangGUI extends JPanel {
 						String SL = modelTableXN.getValueAt(i, 2) + "";
 						String DG = modelTableXN.getValueAt(i, 3) + "";
 						String thanhTien = modelTableXN.getValueAt(i, 4) + "";
+						maNL = Arrays.copyOf(maNL, i + 1) ;
+						maNL[i] = Integer.parseInt(MaNL);
+						tenNL = Arrays.copyOf(tenNL, i + 1) ;
+						tenNL[i] = TenNL ;
+						donGia = Arrays.copyOf(donGia, i + 1) ;
+						donGia[i] = Integer.parseInt(DG);
+						soLuong = Arrays.copyOf(soLuong, i + 1) ;
+						soLuong[i] = Integer.parseInt(SL);
+						System.out.println(MaNL + TenNL + SL + DG + thanhTien + "\n");
 						
 						ctpnBUS.addChiTietPhieuNhap(MaNL, SL, DG, thanhTien);
 					}
 					pnBUS.luuPhieuNhap(1, Integer.parseInt(cmbNCC.getSelectedItem().toString().split(" - ")[0]), total);
 					
 					modelTableXN.setRowCount(0);
-
+					return 1;
 				}
 				private void loadDataTablePhieuNhap() {
 					ArrayList<PhieuNhap> listPN = pnBUS.getListPhieuNhap();
@@ -707,7 +727,6 @@ public class NhapHangGUI extends JPanel {
 						vec.add(pn.getMaNV()+"");
 						vec.add(pn.getNgayLap()+"");
 						vec.add(pn.getTongTien()+"");
-						
 						modelTablePN.addRow(vec);
 					}
 				}
@@ -789,9 +808,19 @@ public class NhapHangGUI extends JPanel {
 					btnXuatPN.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
-							xuatPN();
+							if(xuatPN() == 0)
+							 return ;
 							loadDataTablePhieuNhap();
 							addDataToTblNL();
+							PDFExport item = new PDFExport();
+							Date currentDate = new Date();
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							String dateFormat = sdf.format(currentDate);
+							String tenNhaCungCap = cmbNCC.getSelectedItem().toString();
+							NhanVien_BUS nv_BUS = new NhanVien_BUS();
+							String ketqua = item.exportToPDF(maNL ,tenNL ,soLuong , donGia , dateFormat ,tenNhaCungCap , nv_BUS.getTenNhanVien(taiKhoan_GUI.idTaiKhoan) );
+							
+							JOptionPane.showMessageDialog(null, ketqua , "thongbao" , 1);
 						}
 					});
 					btnXoa.addMouseListener(new MouseAdapter() {

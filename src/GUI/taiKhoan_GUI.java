@@ -55,6 +55,10 @@ public class taiKhoan_GUI {
 	private MyPanel panel ,panel_2 ,panelTenDangNhap,panelMatKhau,panelBtnDangNhap;
 	JPanel panel_1;
 	private MyButton btnDangNhap ,btnThoat;
+	private taiKhoan_BUS tk_BUS = new taiKhoan_BUS();
+	private NhanVien_BUS nv_BUS = new NhanVien_BUS();
+	private phanquyen_BUS pq_BUS = new phanquyen_BUS();
+	public static int idTaiKhoan ;
 
 	/**
 	 * Launch the application.
@@ -169,9 +173,6 @@ public class taiKhoan_GUI {
 				taiKhoan_DTO account = new taiKhoan_DTO();
 				account.setTenTaiKhoan(tenDangNhap.getText());
 				account.setMatKhau(matKhau.getText());
-				taiKhoan_BUS tk_BUS = new taiKhoan_BUS();
-				NhanVien_BUS nv_BUS = new NhanVien_BUS();
-				phanquyen_BUS pq_BUS = new phanquyen_BUS();
 					// TODO Auto-generated catch block\
 				try {
 					if(tk_BUS.checkDangNhap(account) == 0)
@@ -182,8 +183,8 @@ public class taiKhoan_GUI {
 						ArrayList<Boolean> PhanQuyen = pq_BUS.loaiPhanQuyen(idPhanQuyen);
 //						for(boolean x : PhanQuyen)
 //							System.out.print(x + " la quyen cua tai khoan \n");
-						String TenNhanVien = nv_BUS.getTenNhanVien(tk_BUS.idTaiKhoan(account));
-						System.out.print(tk_BUS.idTaiKhoan(account) + " la id cua tai khoan \n");
+						idTaiKhoan = tk_BUS.idTaiKhoan(account);
+						String TenNhanVien = nv_BUS.getTenNhanVien(idTaiKhoan);
 						JOptionPane.showMessageDialog(null, "Xin Chào " + TenNhanVien,"Thong bao",JOptionPane.INFORMATION_MESSAGE);
 
 						MainQuanlyGUI main = new MainQuanlyGUI(PhanQuyen);

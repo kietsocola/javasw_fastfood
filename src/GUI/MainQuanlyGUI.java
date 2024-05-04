@@ -53,7 +53,6 @@ public class MainQuanlyGUI extends JFrame {
 	}
 	
 	public MainQuanlyGUI() {
-		this.QuyenHan = QuyenHan;
 		this.setTitle("Phần mềm quản lý cửa hàng đồ ăn nhanh");
 		this.setSize(1280, 800);
 		addControls();
@@ -183,31 +182,31 @@ public class MainQuanlyGUI extends JFrame {
 		listMenuLeft.add(lblCongThuc);
 		listMenuLeft.add(lblPhanQuyen);
 		
-//		listMenuLeft = new ArrayList<>();
-//		listMenuLeft.add(panel_logo);
-//		if(QuyenHan.get(0) == true) {
-//			listMenuLeft.add(lblNhapHang);
-//		}
-//		
-//		if(QuyenHan.get(1) == true) {
-//			listMenuLeft.add(lblSanPham);
-//			listMenuLeft.add(lblCongThuc);
-//		}
-//		
-//		if(QuyenHan.get(2) == true) {
-//			listMenuLeft.add(lblNhanvien);
-//			listMenuLeft.add(lblPhanQuyen);
-//		}
-//		
-//		if(QuyenHan.get(3) == true) {
-//			listMenuLeft.add(lblBanHang);
-//			listMenuLeft.add(lblKhuyenMai);
-//			listMenuLeft.add(lblKhachhang);
-//		}
+		listMenuLeft = new ArrayList<>();
+		listMenuLeft.add(panel_logo);
+		if(QuyenHan.get(0) == true) {
+			listMenuLeft.add(lblNhapHang);
+		}
 		
-//		if(QuyenHan.get(4) == true) {
-//			listMenuLeft.add(lblThongKe);
-//		}
+		if(QuyenHan.get(1) == true) {
+			listMenuLeft.add(lblSanPham);
+			listMenuLeft.add(lblCongThuc);
+		}
+		
+		if(QuyenHan.get(2) == true) {
+			listMenuLeft.add(lblNhanvien);
+			listMenuLeft.add(lblPhanQuyen);
+		}
+		
+		if(QuyenHan.get(3) == true) {
+			listMenuLeft.add(lblBanHang);
+			listMenuLeft.add(lblKhuyenMai);
+			listMenuLeft.add(lblKhachhang);
+		}
+		
+		if(QuyenHan.get(4) == true) {
+			listMenuLeft.add(lblThongKe);
+		}
 
 
 		for (MyLabel lbl : listMenuLeft) {
