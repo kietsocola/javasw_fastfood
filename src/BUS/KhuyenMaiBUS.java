@@ -52,4 +52,13 @@ public class KhuyenMaiBUS {
 		}
 		return km;
 	}
+	public boolean xoaKhuyenMai(int id) {
+		try {
+			return kmDAO.deleteKhuyenMai(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

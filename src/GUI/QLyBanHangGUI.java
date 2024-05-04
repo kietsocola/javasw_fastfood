@@ -124,6 +124,7 @@ public class QLyBanHangGUI extends JPanel {
 	private File fileAnhSP;
 	private MyTextField txtMaKH;
 	private MyTextField txtsdtKH;
+	private MyButton btnLamMoi;
 
 	/**
 	 * Create the application.
@@ -553,13 +554,13 @@ public class QLyBanHangGUI extends JPanel {
 
 		MyPanelSecond panel_xemHD = new MyPanelSecond();
 		panel_xemHD.setLayout(new BorderLayout());
-		MyPanelSecond panel_MaHD = new MyPanelSecond();
-		panel_xemHD.add(panel_MaHD, BorderLayout.NORTH);
-		panel_MaHD.setLayout(new GridLayout(2, 1, 0, 0));
+		MyPanelSecond panel_FindHD = new MyPanelSecond();
+		panel_xemHD.add(panel_FindHD, BorderLayout.NORTH);
+		panel_FindHD.setLayout(new GridLayout(2, 1, 0, 0));
 
 		MyPanelSecond panel_3 = new MyPanelSecond();
 		panel_3.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-		panel_MaHD.add(panel_3);
+		panel_FindHD.add(panel_3);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 
 		MyLabelSecond lblNewLabel_2 = new MyLabelSecond("Từ ngày");
@@ -570,18 +571,9 @@ public class QLyBanHangGUI extends JPanel {
 		startDateChooser.setForeground(Color.BLUE); // Thiết lập màu chữ
 		startDateChooser.setFont(new Font("Arial", Font.BOLD, 14)); // Thiết lập font chữ
 		panel_3.add(startDateChooser);
-		
-//		ngayBD = new JComboBox();
-//		panel_3.add(ngayBD);
-//
-//		thangBD = new JComboBox();
-//		panel_3.add(thangBD);
-//
-//		namBD = new JComboBox();
-//		panel_3.add(namBD);
 //
 		MyPanelSecond panel_2 = new MyPanelSecond();
-		panel_MaHD.add(panel_2);
+		panel_FindHD.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 //
 		MyLabelSecond lblNewLabel_3 = new MyLabelSecond("Tới ngày");
@@ -590,39 +582,22 @@ public class QLyBanHangGUI extends JPanel {
 		endDateChooser.setBackground(new Color(0, 0, 0));
 		endDateChooser.setPreferredSize(new Dimension(120, 30));
 		panel_2.add(endDateChooser);
-//
-//		ngayKT = new JComboBox();
-//		panel_2.add(ngayKT);
-//
-//		thangKT = new JComboBox();
-//		panel_2.add(thangKT);
-//
-//		namKT = new JComboBox();
-//		panel_2.add(namKT);
-//
-//		for (int i = 1; i <= 31; i++) {
-//			ngayBD.addItem(i);
-//			ngayKT.addItem(i);
-//		}
-//
-//		// Thêm số lựa chọn cho các JComboBox tháng (ví dụ: từ 1 đến 12)
-//		for (int i = 1; i <= 12; i++) {
-//			thangBD.addItem(i);
-//			thangKT.addItem(i);
-//		}
-//
-//		// Thêm số lựa chọn cho các JComboBox năm (ví dụ: từ 2000 đến 2025)
-//		for (int i = 2000; i <= 2025; i++) {
-//			namBD.addItem(i);
-//			namKT.addItem(i);
-//		}
-		MyPanelSecond panel_NgayTaoHD = new MyPanelSecond();
-		panel_xemHD.add(panel_NgayTaoHD, BorderLayout.SOUTH);
+
+		MyPanelSecond panel_btnTimkiem = new MyPanelSecond();
+		panel_xemHD.add(panel_btnTimkiem, BorderLayout.SOUTH);
 
 		btnTimKiemHD = new MyButton("Tìm kiếm");
 		btnTimKiemHD.setIcon(iconTimkiem);
 		
-		panel_NgayTaoHD.add(btnTimKiemHD);
+		btnLamMoi = new MyButton("Làm mới");
+		ImageIcon icon0 = new ImageIcon("images/LamMoi.png");
+		Image img01 = icon0.getImage();
+		Image newImg01 = img01.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		icon0.setImage(newImg01);
+		btnLamMoi.setIcon(icon0);
+		
+		panel_btnTimkiem.add(btnTimKiemHD);
+		panel_btnTimkiem.add(btnLamMoi);
 
 		panel_HD_CTHD.add(panel_xemHD);
 
@@ -675,11 +650,24 @@ public class QLyBanHangGUI extends JPanel {
 	}
 
 	private void addEventsBanHang() {
+		btnLamMoi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loadDataTableHoaDon();
+				startDateChooser.setDate(null);
+				endDateChooser.setDate(null);
+			}
+		});
 		txtsdtKH.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
 		        // Xử lý sự kiện ở đây khi nhấn Enter
 		        String input = txtsdtKH.getText();
+		        if (!input.matches("^\\d{10}$")) {
+		            JOptionPane.showMessageDialog(null, "Số điện thoại không hợp lệ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		            return;
+		        }
 		    	KhachHang kh = khBUS.getKhachHangBySDT(input);
 		        if(kh == null) {
 		        	JOptionPane.showMessageDialog(null, "Khách hàng mới", "Thông báo", JOptionPane.INFORMATION_MESSAGE);	
@@ -987,6 +975,10 @@ public class QLyBanHangGUI extends JPanel {
 			return;
 		}
 		String soLuong = txtSoLuong.getText();
+		if (!soLuong.matches("\\d+")) {
+			JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 		if (soLuong.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			return;
@@ -1041,7 +1033,7 @@ public class QLyBanHangGUI extends JPanel {
 			String soLuong = modelTableGH.getValueAt(i, 3) + "";
 			String thanhTien = modelTableGH.getValueAt(i, 4) + "";
 
-			cthdBUS.addChiTietHoaDon(maSP, soLuong, donGia, thanhTien);
+			rs = cthdBUS.addChiTietHoaDon(maSP, soLuong, donGia, thanhTien);
 			rs = ctBUS.giamSoLuongNguyenLieuKhiCheBien(Integer.parseInt(maSP), Integer.parseInt(soLuong));
 		}
 		total = total - total/100*giamgia;
@@ -1051,6 +1043,12 @@ public class QLyBanHangGUI extends JPanel {
 		hdBUS.luuHoaDon(1, maKhachHang, total, "Đã thanh toán");
 		if(maKhachHang!=0) {
 			khBUS.updateTongChiTieuKH(maKhachHang, total);
+		}
+		if(rs==true) {
+			JOptionPane.showMessageDialog(null, "Xuất hóa đơn thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			modelTableGH.setRowCount(0);
+		} else {
+			JOptionPane.showMessageDialog(null, "Có lỗi xảy ra", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -1096,14 +1094,6 @@ public class QLyBanHangGUI extends JPanel {
 		ArrayList<HoaDon> dshd = hdBUS.getListHoaDonTheoNgay(utilStartDate, utilEndDate);
 		addDataToTableHoaDon(dshd);
 	}
-
-	
-
-	
-
-	
-
-	
 
 	private void xulyCheBien() {
 		if (txtSoLuongCB.getText() == "") {

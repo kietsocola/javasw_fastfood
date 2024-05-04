@@ -1,17 +1,19 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.awt.*;
+import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import org.knowm.xchart.*;
+import org.knowm.xchart.style.*;
+import org.knowm.xchart.style.Styler.LegendPosition;
+import org.knowm.xchart.style.lines.*;
+
+import java.text.DecimalFormat;
+
+import com.toedter.calendar.JDateChooser;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -21,18 +23,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.border.MatteBorder;
+import BUS.ThongKeBUS;
+import Custom.MyButton;
+import Custom.MyTable;
+import Custom.MyPanelSecond;
+import DTO.ChiTietHoaDon;
+import DTO.HoaDon;
+import DTO.SanPham;
+import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+
+import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import java.awt.event.*;
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import org.knowm.xchart.*;
@@ -132,19 +143,13 @@ public class ThongKeGUI extends JPanel {
 		panel_11.setBackground(new Color(255, 255, 255));
 		panel_11.setPreferredSize(new Dimension(646, 60));
 		panel_8.add(panel_11, BorderLayout.NORTH);
-		panel_11.setLayout(new BorderLayout(0, 0));
+		panel_11.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		JLabel lblNewLabel_1 = new JLabel("Dashboard");
+		JLabel lblNewLabel_1 = new JLabel("Thống kê");
 		lblNewLabel_1.setBackground(new Color(0, 0, 0));
-		panel_11.add(lblNewLabel_1, BorderLayout.NORTH);
+		panel_11.add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 28));
-
-		JLabel lblNewLabel_2_1 = new JLabel("Tuesday 2 Feb, 2021");
-		panel_11.add(lblNewLabel_2_1, BorderLayout.SOUTH);
-		lblNewLabel_2_1.setPreferredSize(new Dimension(300, 30));
-		lblNewLabel_2_1.setForeground(new Color(0, 0, 0));
-		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 28));
 
 		JPanel panel_12 = new JPanel();
 		panel_12.setBackground(new Color(255, 240, 228));
@@ -268,7 +273,7 @@ public class ThongKeGUI extends JPanel {
 
 					ArrayList<SanPham> filteredSanPhamList = thongKeBUS.getSanPhamByDate(startDate, endDate);
 					displaySanPham(filteredSanPhamList, startDate, endDate);
-
+					displaySanPham5(filteredSanPhamList, startDate, endDate);
 				} else {
 
 					ArrayList<SanPham> filteredSanPhamList = thongKeBUS.getSanPhamByDateAndCategory(selectedCategory,
@@ -328,6 +333,18 @@ public class ThongKeGUI extends JPanel {
 				}
 			}
 		});
+
+		// Tạo nút reset
+		JButton resetButton = new MyButton("Reset ngày");
+		resetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Xóa dữ liệu của ngày bắt đầu và ngày kết thúc
+				startDateChooser.setDate(null);
+				endDateChooser.setDate(null);
+			}
+		});
+		// Thêm nút reset vào panel
+		panel_46.add(resetButton);
 
 		panel_46.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -821,7 +838,7 @@ public class ThongKeGUI extends JPanel {
 		for (Object[] rowData : rowDataList) {
 			model.addRow(rowData);
 		}
-		jTable = new JTable(model);
+		jTable = new MyTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 
 		panel_47.removeAll();
@@ -860,7 +877,7 @@ public class ThongKeGUI extends JPanel {
 		for (Object[] rowData : rowDataList) {
 			model.addRow(rowData);
 		}
-		jTable = new JTable(model);
+		jTable = new MyTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 
 		panel_47.removeAll();
@@ -921,7 +938,7 @@ public class ThongKeGUI extends JPanel {
 			model.addRow(rowData);
 		}
 
-		jTable = new JTable(model);
+		jTable = new MyTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 		scrollPane.setPreferredSize(new Dimension(300, 200));
 
@@ -975,7 +992,7 @@ public class ThongKeGUI extends JPanel {
 			model.addRow(rowData);
 		}
 
-		jTable = new JTable(model);
+		jTable = new MyTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 		scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, 200));
 
@@ -1012,12 +1029,18 @@ public class ThongKeGUI extends JPanel {
 			months.add(String.valueOf(i));
 		}
 
-		// Tạo biểu đồ
+		// Tạo biểu đồ đường
 		XYChart chart = new XYChartBuilder().width(1020).height(400).title("Doanh thu theo tháng").xAxisTitle("Tháng")
 				.yAxisTitle("Doanh thu (VNĐ)").build();
 
 		// Thiết lập định dạng số thập phân cho trục y (doanh thu)
 		chart.getStyler().setDecimalPattern("#,##0");
+		// Thiết lập màu nền của biểu đồ
+		chart.getStyler().setChartBackgroundColor(Color.WHITE);
+
+		// Chuyển đổi mã màu hex thành đối tượng Color
+		Color customColor = Color.decode("#FF720D");
+		chart.getStyler().setSeriesColors(new Color[] { customColor });
 
 		// Tạo mảng double[] chứa số tháng tương ứng
 		double[] monthsDouble = new double[months.size()];
@@ -1027,6 +1050,9 @@ public class ThongKeGUI extends JPanel {
 
 		// Thêm dữ liệu vào biểu đồ
 		chart.addSeries("Doanh thu", monthsDouble, totalRevenue);
+
+		// Thiết lập loại biểu đồ là đường
+		chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
 
 		// Thêm biểu đồ vào JPanel
 		panel_cyan.add(new XChartPanel<>(chart));
@@ -1057,13 +1083,25 @@ public class ThongKeGUI extends JPanel {
 			months.add(String.valueOf(i));
 		}
 
+		// Tạo DecimalFormat để định dạng số
+		DecimalFormat df = new DecimalFormat("#,###");
+
 		// Vẽ biểu đồ cột
 		CategoryChart chart = new CategoryChartBuilder().width(1020).height(400)
 				.title("Số lượng sản phẩm đã bán theo tháng").xAxisTitle("Tháng").yAxisTitle("Số lượng sản phẩm đã bán")
 				.build();
 
+		// Thiết lập màu nền của biểu đồ
+		chart.getStyler().setChartBackgroundColor(Color.WHITE);
+
+		// Chuyển đổi mã màu hex thành đối tượng Color
+		Color customColor = Color.decode("#FF720D");
+		chart.getStyler().setSeriesColors(new Color[] { customColor });
+
 		// Chuyển đổi IntStream sang List<Integer>
 		List<Integer> productSoldList = Arrays.stream(productSoldByMonth).boxed().collect(Collectors.toList());
+		// Thiết lập định dạng số cho trục Y
+		chart.getStyler().setYAxisDecimalPattern("#");
 
 		// Thêm dữ liệu vào biểu đồ
 		chart.addSeries("Số lượng sản phẩm đã bán", months, productSoldList);
@@ -1121,16 +1159,36 @@ public class ThongKeGUI extends JPanel {
 			productQuantities.add(productIdToTotalQuantityMap.get(product.getId()));
 		}
 
+		// Tạo DecimalFormat để định dạng số
+		DecimalFormat df = new DecimalFormat("#,###");
+
 		// Vẽ biểu đồ cột
 		CategoryChart chart = new CategoryChartBuilder().width(1020).height(400)
-				.title("Top 10 sản phẩm được bán nhiều nhất").xAxisTitle("Sản phẩm").yAxisTitle("Số lượng đã bán")
+				.title("Top 10 sản phẩm được bán nhiều nhất").xAxisTitle("Sản phẩm").yAxisTitle("Số lượng đã bán (VND)")
 				.build();
 
+		// Thiết lập màu nền của biểu đồ
+		chart.getStyler().setChartBackgroundColor(Color.WHITE);
+
+		// Chuyển đổi mã màu hex thành đối tượng Color
+		Color customColor = Color.decode("#FF720D");
+		chart.getStyler().setSeriesColors(new Color[] { customColor });
+
+		// Thiết lập định dạng số cho trục Y
+		chart.getStyler().setYAxisDecimalPattern("#,###");
+
+		// Tạo danh sách số lượng đã bán kèm đơn vị VND
+		List<Integer> productQuantitiesInteger = new ArrayList<>();
+		for (int quantity : productQuantities) {
+			productQuantitiesInteger.add(quantity);
+		}
+
 		// Thêm dữ liệu vào biểu đồ
-		chart.addSeries("Số lượng đã bán", productNames, productQuantities);
+		chart.addSeries("Số lượng đã bán", productNames, productQuantitiesInteger);
 
 		// Thêm biểu đồ vào panel
 		panel_green.add(new XChartPanel<>(chart));
+
 	}
 
 }

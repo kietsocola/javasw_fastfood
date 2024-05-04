@@ -15,7 +15,7 @@ public class CongThucDAO {
 		ArrayList<CongThuc> arrCongThuc = new ArrayList<CongThuc>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "Select * from CongThuc";
+				String sql = "Select * from CongThuc where isDelete=0";
 				Statement stmt = conDB.conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				while (rs.next()) {
@@ -40,7 +40,7 @@ public class CongThucDAO {
 		ArrayList<CongThuc> arrCongThuc = new ArrayList<CongThuc>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "Select * from CongThuc where idSanPham = " + idSP;
+				String sql = "Select * from CongThuc where isDelete=0 and idSanPham = " + idSP;
 				Statement stmt = conDB.conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				while (rs.next()) {
@@ -82,7 +82,7 @@ public class CongThucDAO {
 	    boolean result = false;
 	    if (conDB.openConnectDB()) {
 	        try {
-	            String sql = "SELECT COUNT(*) FROM CongThuc WHERE idNguyenLieu = ? AND idSanPham = ?";
+	            String sql = "SELECT COUNT(*) FROM CongThuc WHERE isDelete=0 and idNguyenLieu = ? AND idSanPham = ?";
 	            PreparedStatement prep = conDB.conn.prepareStatement(sql);
 	            prep.setInt(1, congThuc.getIdNguyenLieu());
 	            prep.setInt(2, congThuc.getIdSanPham());
@@ -142,7 +142,7 @@ public class CongThucDAO {
 	    boolean result = false;
 	    if (conDB.openConnectDB()) {
 	        try {
-	            String sql = "DELETE FROM CongThuc WHERE idNguyenLieu = ? and idSanPham = ?";
+	            String sql = "UPDATE congthuc SET isDelete=1 WHERE idNguyenLieu = ? and idSanPham=?";
 	            PreparedStatement prep = conDB.conn.prepareStatement(sql);
 	            prep.setInt(1, maNL);
 	            prep.setInt(2, maSP);

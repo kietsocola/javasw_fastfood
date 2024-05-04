@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import DTO.HoaDon;
 import DTO.PhieuNhap;
 
 
@@ -148,4 +149,34 @@ public class PhieuNhapDAO {
 		}
 		return -1;
 	}
+	public ArrayList<PhieuNhap> getListPhieuNhapTheoNgay(Date dateMin, Date dateMax) {
+		if (conDB.openConnectDB()) {
+        try {
+            String sql = "SELECT * FROM phieunhap WHERE NgayLap BETWEEN CAST(? AS DATE) AND CAST(? AS DATE)";
+            PreparedStatement pre = conDB.conn.prepareStatement(sql);
+            pre.setDate(1, dateMin);
+            pre.setDate(2, dateMax);
+            ResultSet rs = pre.executeQuery();
+
+            ArrayList<PhieuNhap> dshd = new ArrayList<>();
+
+            while (rs.next()) {
+            	PhieuNhap hd = new PhieuNhap();
+                hd.setMaNCC(rs.getInt("idNhaCC"));
+                hd.setMaPN(rs.getInt("id"));
+                hd.setMaNV(rs.getInt("idNhanVien"));
+                hd.setNgayLap(rs.getTimestamp("NgayLap"));
+                hd.setTongTien(rs.getInt("TongTien"));
+                dshd.add(hd);
+            }
+            return dshd;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        	 conDB.closeConnectDB();
+        }
+		}
+        return null;
+		
+    }
 }
