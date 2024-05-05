@@ -57,7 +57,7 @@ public class phanquyen_DAO {
 	public int idPhanQuyenMax() {
 		
 		con.connect();
-		String sql = "select MAX(id) as id where phanquyen";
+		String sql = "select MAX(id) as id from phanquyen";
 		try {
 			Statement stmt = con.getCon().createStatement()	;
 			ResultSet rs = stmt.executeQuery(sql);

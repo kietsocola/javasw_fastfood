@@ -41,7 +41,7 @@ public class NhanVien_BUS {
     	return "";
     }
 
-    public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu ) {
+    public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu, int idTaiKhoan ) {
         ten = ten.trim();
         soDT = soDT.trim();
         if (ten.equals("")) {
@@ -67,11 +67,12 @@ public class NhanVien_BUS {
         nv.setGioiTinh(gioiTinh);
         nv.setSoDT(soDT);
         nv.setChucVu(chucVu);
+        nv.setIdTaiKhoan(idTaiKhoan);
         boolean flag = nvdao.themNV(nv);
         if (!flag) {
-            JOptionPane.showMessageDialog(null, "Thêm thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Thêm nhân viên thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "Thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         return flag;
     }

@@ -4,7 +4,7 @@
 /**
  * 
  */
-module javasw_fastfood {
+module JAVA_DOAN {
 	requires java.desktop;
 	requires java.sql;
 	requires jcalendar;

@@ -1,16 +1,20 @@
 package DTO;
 
+import java.util.Date;
+
 public class taiKhoan_DTO {
-		private int maNV;
+		private int ma;
 		private String tenTaiKhoan;
 		private String matKhau;
 		private int trangThai;
 		private String tenQuyen;
-		public int getMaNV() {
-			return maNV;
+		private String ngayTao;
+		private int quyen;
+		public int getMa() {
+			return ma;
 		}
-		public void setMaNV(int maNV) {
-			this.maNV = maNV;
+		public void setMa(int ma) {
+			this.ma = ma;
 		}
 		public String getTenTaiKhoan() {
 			return tenTaiKhoan;
@@ -35,5 +39,17 @@ public class taiKhoan_DTO {
 		}
 		public void setTenQuyen(String tenQuyen) {
 			this.tenQuyen = tenQuyen;
+		}
+		public String getNgayTao() {
+			return ngayTao;
+		}
+		public void setNgayTao(String ngayTao) {
+			this.ngayTao = ngayTao;
+		}
+		public int getQuyen() {
+			return quyen;
+		}
+		public void setQuyen(int quyen) {
+			this.quyen = quyen;
 		}
 }
