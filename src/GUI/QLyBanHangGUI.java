@@ -1074,7 +1074,8 @@ public class QLyBanHangGUI extends JPanel {
 		String maKH = txtMaKH.getText();
 		int maKhachHang=0;
 		if(!maKH.equals("")) maKhachHang = Integer.parseInt(maKH);
-		hdBUS.luuHoaDon(1, maKhachHang, total, "Đã thanh toán");
+		int idNhanvien = taiKhoan_GUI.idTaiKhoan;
+		hdBUS.luuHoaDon(idNhanvien, maKhachHang, total, "Đã thanh toán");
 		if(maKhachHang!=0) {
 			khBUS.updateTongChiTieuKH(maKhachHang, total);
 		}
