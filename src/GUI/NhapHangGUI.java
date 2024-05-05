@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -63,11 +65,11 @@ public class NhapHangGUI extends JPanel {
 	private JPanel contentPane;
 	private DefaultTableModel modelTableNL, modelTableXN, modelTablePN, modelTableCTPN;
 	private MyTextField txtMaNL, txtMaNL2, txtTenNL, txtSoLuongNL, txtDonGiaNL, txtTongTien,
-			txtMaPN, txtSL, txtDG, txtMaNCC, txtMaNV, txtThanhTien;
+			txtMaPN, txtSL, txtDG, txtMaNCC, txtThanhTien;
 	private MyTable tableNL, tableXN, tablePN, tableCTPN;
 	private JTextField txtTimTheoTen;
 	private JComboBox<String> cmbNCC;
-	private MyButton btnXoa, btnXuatPN, btnTimKiem;
+	private MyButton btnXoa, btnXuatPN, btnTimKiem,btnReset;
 	private NguyenLieuBUS nlBUS = new NguyenLieuBUS();
 	private NhaCungCap_BUS nccBUS = new NhaCungCap_BUS();
 	private ChiTietPhieuNhapBUS ctpnBUS = new ChiTietPhieuNhapBUS();
@@ -124,6 +126,7 @@ public class NhapHangGUI extends JPanel {
 
 		tabNhapHang.setText("  Nhập hàng");
 		tabNhapHang.setPreferredSize(new Dimension(200, 30));
+		tabNhapHang.setMaximumSize(new Dimension(100,30));
 		panel_tab.add(tabNhapHang);
 
 		MyLabelSecond tabPhieuNhap = new MyLabelSecond("Phiếu Nhập");
@@ -184,6 +187,7 @@ public class NhapHangGUI extends JPanel {
 		modelTableXN = new DefaultTableModel();
 		modelTableXN.addColumn("Mã nguyên liệu");
 		modelTableXN.addColumn("Tên nguyên liệu");
+		modelTableXN.addColumn("NCC");
 		modelTableXN.addColumn("Số Lượng");
 		modelTableXN.addColumn("Đơn giá");
 		modelTableXN.addColumn("Thành tiền");
@@ -201,25 +205,31 @@ public class NhapHangGUI extends JPanel {
 		panel_ContainDetailNL.add(panel_DetailNL, BorderLayout.CENTER);
 		paneltabNhapHang.add(panel_ContainDetailNL, BorderLayout.EAST);
 		panel_DetailNL.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-		panel_DetailNL.setLayout(new BorderLayout());
+		BorderLayout bl_panel_DetailNL = new BorderLayout();
+		bl_panel_DetailNL.setVgap(5);
+		bl_panel_DetailNL.setHgap(5);
+		panel_DetailNL.setLayout(bl_panel_DetailNL);
 		MyPanel pnSpace1 = new MyPanel();
 		panel_ContainDetailNL.add(pnSpace1, BorderLayout.EAST);
 		MyPanel pnSpace2 = new MyPanel();
 		panel_ContainDetailNL.add(pnSpace2, BorderLayout.SOUTH);
 
 		MyPanelSecond panel_TimNL = new MyPanelSecond();
+		panel_TimNL.setPreferredSize(new Dimension(300, 50));
+		panel_TimNL.setMaximumSize(new Dimension(300, 50));
 		panel_DetailNL.add(panel_TimNL, BorderLayout.NORTH);
 		panel_TimNL.setLayout(new BoxLayout(panel_TimNL, BoxLayout.Y_AXIS));
 
-		MyPanelSecond panel_1 = new MyPanelSecond();
-		panel_TimNL.add(panel_1);
-
 		JPanel panel_TimTheoTen = new JPanel();
+		panel_TimTheoTen.setMaximumSize(new Dimension(300, 50));
 		// panel_TimTheoTen.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_TimNL.add(panel_TimTheoTen);
 		panel_TimTheoTen.setLayout(new BorderLayout(0, 0));
 
 		txtTimTheoTen = new JTextField();
+		txtTimTheoTen.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtTimTheoTen.setPreferredSize(new Dimension(200, 30));
+		txtTimTheoTen.setMaximumSize(new Dimension(200, 30));
 		txtTimTheoTen.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -252,15 +262,16 @@ public class NhapHangGUI extends JPanel {
 		panel_TimTheoTen.add(btnTimKiem, BorderLayout.EAST);
 
 		MyPanelSecond pnInput = new MyPanelSecond();
+		panel_DetailNL.add(pnInput, BorderLayout.EAST);
 		pnInput.setLayout(new BoxLayout(pnInput, BoxLayout.Y_AXIS));
-		panel_DetailNL.add(pnInput, BorderLayout.CENTER);
 		// MyPanel panel = new MyPanel();
 		// pnInput.add(panel);
 		// panel.setLayout(new BorderLayout(0, 0));
 
 		// Phần chi tiết của xác nhận
 		MyLabelSecond lblChiTiet = new MyLabelSecond("Thông tin nguyên liệu");
-		lblChiTiet.setMaximumSize(new Dimension(150, 40));
+		lblChiTiet.setPreferredSize(new Dimension(200, 40));
+		lblChiTiet.setMaximumSize(new Dimension(200, 40));
 		lblChiTiet.setHorizontalAlignment(SwingConstants.CENTER);
 		lblChiTiet.setText("Thông tin nguyên liệu");
 		pnInput.add(lblChiTiet);
@@ -269,10 +280,12 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_MaNL);
 		panel_MaNL.setLayout(new BoxLayout(panel_MaNL, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblMaNL = new MyLabelSecond("Mã nguyên liệu: ");
+		MyLabelSecond lblMaNL = new MyLabelSecond("Mã NL: ");
 		panel_MaNL.add(lblMaNL);
 
 		txtMaNL = new MyTextField();
+		txtMaNL.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtMaNL.setMaximumSize(new Dimension(400, 30));
 		txtMaNL.setHorizontalAlignment(SwingConstants.CENTER);
 		txtMaNL.setEnabled(false);
 		txtMaNL.setDisabledTextColor(new Color(0, 0, 0));
@@ -284,10 +297,12 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_TenNL);
 		panel_TenNL.setLayout(new BoxLayout(panel_TenNL, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblTenNL = new MyLabelSecond("Tên nguyên liệu: ");
+		MyLabelSecond lblTenNL = new MyLabelSecond("Tên NL: ");
 		panel_TenNL.add(lblTenNL);
 
 		txtTenNL = new MyTextField();
+		txtTenNL.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtTenNL.setMaximumSize(new Dimension(400, 30));
 		txtTenNL.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTenNL.setEnabled(false);
 		txtTenNL.setDisabledTextColor(new Color(0, 0, 0));
@@ -299,10 +314,12 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_SoLuong);
 		panel_SoLuong.setLayout(new BoxLayout(panel_SoLuong, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblSoLuong = new MyLabelSecond("Số lượng nhập: ");
+		MyLabelSecond lblSoLuong = new MyLabelSecond("Số lượng: ");
 		panel_SoLuong.add(lblSoLuong);
 
 		txtSoLuongNL = new MyTextField();
+		txtSoLuongNL.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtSoLuongNL.setMaximumSize(new Dimension(400, 30));
 		txtSoLuongNL.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_SoLuong.add(txtSoLuongNL);
 		txtSoLuongNL.setColumns(10);
@@ -316,12 +333,15 @@ public class NhapHangGUI extends JPanel {
 		panel_DonGiaNL.add(lblDonGiaNL);
 
 		txtDonGiaNL = new MyTextField();
+		txtDonGiaNL.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtDonGiaNL.setMaximumSize(new Dimension(400, 30));
 		txtDonGiaNL.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_DonGiaNL.add(txtDonGiaNL);
 		txtDonGiaNL.setColumns(10);
 
 		MyLabelSecond lblTTPN = new MyLabelSecond("Thông tin phiếu nhập");
-		lblTTPN.setMaximumSize(new Dimension(150, 40));
+		lblTTPN.setPreferredSize(new Dimension(200, 40));
+		lblTTPN.setMaximumSize(new Dimension(200, 40));
 		lblTTPN.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTTPN.setText("Thông tin phiếu nhập");
 		pnInput.add(lblTTPN);
@@ -331,25 +351,25 @@ public class NhapHangGUI extends JPanel {
 		pnInput.add(panel_NCC);
 		panel_NCC.setLayout(new BoxLayout(panel_NCC, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblNCC = new MyLabelSecond("Nhà cung cấp: ");
+		MyLabelSecond lblNCC = new MyLabelSecond("NCC: ");
 		panel_NCC.add(lblNCC);
 
 		cmbNCC = new JComboBox<String>();
-		cmbNCC.setMaximumSize(new Dimension(300, 30));
+		cmbNCC.setMaximumSize(new Dimension(400, 30));
 		cmbNCC.setPreferredSize(new Dimension(200, 30));
 		panel_NCC.add(cmbNCC);
 		loadDataCmbNCC();
 		MyPanelSecond pnBTN = new MyPanelSecond();
 		pnInput.add(pnBTN);
-		btnChonNhap = new MyButton("Chọn nhập");
-		btnChonNhap.setMaximumSize(new Dimension(80, 40));
-		btnChonNhap.setPreferredSize(new Dimension(80, 40));
-		// ImageIcon icon = new ImageIcon("images/cart.png");
-		// Image img = icon.getImage();
-		// Image newImg = img.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
-		// icon.setImage(newImg);
 		pnBTN.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		// btnChonNhap.setIcon(icon);
+		btnChonNhap = new MyButton("Chọn");
+		btnChonNhap.setMaximumSize(new Dimension(90, 40));
+		btnChonNhap.setPreferredSize(new Dimension(90, 40));
+		ImageIcon iconChon = new ImageIcon("images/plus.png");
+		Image img1 = iconChon.getImage();
+		Image newImg1 = img1.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconChon.setImage(newImg1);
+		btnChonNhap.setIcon(iconChon);
 		pnBTN.add(btnChonNhap);
 
 		btnXoa = new MyButton("Xóa");
@@ -362,18 +382,46 @@ public class NhapHangGUI extends JPanel {
 		iconXoa.setImage(newImg2);
 		btnXoa.setIcon(iconXoa);
 		clickTableXN();
+		
 		pnBTN.add(btnXoa);
 
-		btnXuatPN = new MyButton("Xuất phiếu nhập");
+		btnXuatPN = new MyButton("Xuất PN");
+		btnXuatPN.setActionCommand("Xuất PN");
 
-		btnXuatPN.setMaximumSize(new Dimension(80, 40));
-		btnXuatPN.setPreferredSize(new Dimension(120, 40));
-		// ImageIcon iconXuatPN = new ImageIcon("images/.png");
-		// Image img3 = iconXuatPN.getImage();
-		// Image newImg3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
-		// iconXuatPN.setImage(newImg3);
-		// btnXuatPN.setIcon(icon);
+		btnXuatPN.setMaximumSize(new Dimension(90, 40));
+		btnXuatPN.setPreferredSize(new Dimension(90, 40));
 		pnBTN.add(btnXuatPN);
+		 ImageIcon iconXuatPN = new ImageIcon("images/invoice.png");
+		 Image img3 = iconXuatPN.getImage();
+		 Image newImg3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		 iconXuatPN.setImage(newImg3);
+		 btnXuatPN.setIcon(iconXuatPN);
+		
+		btnReset = new MyButton("Reset");
+		ImageIcon iconReset = new ImageIcon("images/LamMoi.png");
+		Image img4 = iconReset.getImage();
+		Image newImg4 = img4.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconReset.setImage(newImg4);
+		btnReset.setIcon(iconReset);
+		btnReset.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtMaNL.setText("");
+				txtTenNL.setText("");
+				txtDonGiaNL.setText("");
+				txtSoLuongNL.setText("");
+				txtTimTheoTen.setText("");
+				nhaCungCapTruoc = "";
+				modelTableXN.setRowCount(0);
+				addDataToTblNL();
+			}
+		});
+		btnReset.setMaximumSize(new Dimension(80, 40));
+		btnReset.setPreferredSize(new Dimension(80, 40));
+		
+		
+		pnBTN.add(btnReset);
+		
 		/*
 		 * ==========================TAB PHIẾU
 		 * NHẬP=======================================
@@ -428,9 +476,8 @@ public class NhapHangGUI extends JPanel {
 		lblCTPhieuNhap.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_tableCTPN.add(lblCTPhieuNhap, BorderLayout.NORTH);
 		modelTableCTPN = new DefaultTableModel();
-		modelTableCTPN.addColumn("Mã NL");
 		modelTableCTPN.addColumn("Mã PN");
-
+		modelTableCTPN.addColumn("Mã NL");
 		modelTableCTPN.addColumn("Số lượng");
 		modelTableCTPN.addColumn("Đơn giá");
 		modelTableCTPN.addColumn("Thành tiền");
@@ -439,9 +486,17 @@ public class NhapHangGUI extends JPanel {
 		scrollPaneCTPN.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		panel_tableCTPN.add(scrollPaneCTPN);
 
+		MyPanel Panel_Detail_Container = new MyPanel();
+		Panel_Detail_Container.setLayout(new BorderLayout(0, 0));
+		Panel_Detail_Container.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+		panelTabPhieuNhap.add(Panel_Detail_Container, BorderLayout.EAST);
+		
+		
 		MyPanelSecond panel_Detail = new MyPanelSecond();
-		panelTabPhieuNhap.add(panel_Detail, BorderLayout.EAST);
+		
 		panel_Detail.setLayout(new BoxLayout(panel_Detail, BoxLayout.Y_AXIS));
+		
+		Panel_Detail_Container.add(panel_Detail,BorderLayout.CENTER);
 		// phần hiển thị của phiếu nhập
 		MyPanelSecond panel_DetailPN = new MyPanelSecond();
 		panel_DetailPN.setLayout(new BoxLayout(panel_DetailPN, BoxLayout.Y_AXIS));
@@ -461,6 +516,10 @@ public class NhapHangGUI extends JPanel {
 		pnMaPN.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		pnMaPN.add(lblMaPN);
 		txtMaPN = new MyTextField();
+		txtMaPN.setHorizontalAlignment(SwingConstants.CENTER);
+		txtMaPN.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtMaPN.setDisabledTextColor(new Color(0, 0, 0));
+		txtMaPN.setEnabled(false);
 		txtMaPN.setMaximumSize(new Dimension(180, 30));
 		pnMaPN.add(txtMaPN);
 
@@ -472,6 +531,10 @@ public class NhapHangGUI extends JPanel {
 		pnMaNCC.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		pnMaNCC.add(lblMaNCC);
 		txtMaNCC = new MyTextField();
+		txtMaNCC.setHorizontalAlignment(SwingConstants.CENTER);
+		txtMaNCC.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtMaNCC.setDisabledTextColor(new Color(0, 0, 0));
+		txtMaNCC.setEnabled(false);
 		txtMaNCC.setMaximumSize(new Dimension(180, 30));
 		pnMaNCC.add(txtMaNCC);
 
@@ -483,6 +546,10 @@ public class NhapHangGUI extends JPanel {
 		pnTongTien.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		pnTongTien.add(lblTongTien);
 		txtTongTien = new MyTextField();
+		txtTongTien.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTongTien.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtTongTien.setDisabledTextColor(new Color(0, 0, 0));
+		txtTongTien.setEnabled(false);
 		txtTongTien.setMaximumSize(new Dimension(180, 30));
 		pnTongTien.add(txtTongTien);
 		// Phần hiển thị chi tiết phiếu
@@ -498,12 +565,17 @@ public class NhapHangGUI extends JPanel {
 
 		MyPanelSecond pnMaNL2 = new MyPanelSecond();
 		MyLabelSecond lblMaNL2 = new MyLabelSecond("Mã NL: ");
+		lblMaNL2.setPreferredSize(new Dimension(100, 30));
 		lblMaNL2.setHorizontalAlignment(SwingConstants.CENTER);
 		pnMaNL2.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		panel_DetailCTPN.add(pnMaNL2);
 		pnMaNL2.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		pnMaNL2.add(lblMaNL2);
 		txtMaNL2 = new MyTextField();
+		txtMaNL2.setHorizontalAlignment(SwingConstants.CENTER);
+		txtMaNL2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtMaNL2.setDisabledTextColor(new Color(0, 0, 0));
+		txtMaNL2.setEnabled(false);
 		txtMaNL2.setMaximumSize(new Dimension(180, 30));
 		pnMaNL2.add(txtMaNL2);
 
@@ -514,6 +586,10 @@ public class NhapHangGUI extends JPanel {
 		lblSL.setHorizontalAlignment(SwingConstants.CENTER);
 		pnSL.add(lblSL);
 		txtSL = new MyTextField();
+		txtSL.setHorizontalAlignment(SwingConstants.CENTER);
+		txtSL.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtSL.setDisabledTextColor(new Color(0, 0, 0));
+		txtSL.setEnabled(false);
 		txtSL.setMaximumSize(new Dimension(180, 30));
 		pnSL.add(txtSL);
 		pnSL.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
@@ -526,6 +602,10 @@ public class NhapHangGUI extends JPanel {
 		lblDG.setHorizontalAlignment(SwingConstants.CENTER);
 		pnDG.add(lblDG);
 		txtDG = new MyTextField();
+		txtDG.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDG.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtDG.setDisabledTextColor(new Color(0, 0, 0));
+		txtDG.setEnabled(false);
 		txtDG.setMaximumSize(new Dimension(180, 30));
 		pnDG.add(txtDG);
 		panel_DetailCTPN.add(pnDG);
@@ -537,6 +617,10 @@ public class NhapHangGUI extends JPanel {
 		lblTT.setHorizontalAlignment(SwingConstants.CENTER);
 		pnTT.add(lblTT);
 		txtThanhTien = new MyTextField();
+		txtThanhTien.setHorizontalAlignment(SwingConstants.CENTER);
+		txtThanhTien.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtThanhTien.setDisabledTextColor(new Color(0, 0, 0));
+		txtThanhTien.setEnabled(false);
 		txtThanhTien.setMaximumSize(new Dimension(180, 30));
 		pnTT.add(txtThanhTien);
 		pnTT.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
@@ -548,7 +632,9 @@ public class NhapHangGUI extends JPanel {
 		panel_FindHD.setLayout(new BoxLayout(panel_FindHD, BoxLayout.Y_AXIS));
 
 		MyLabelSecond lblTimKiem = new MyLabelSecond("Tìm kiếm phiếu nhập");
-		lblTimKiem.setMaximumSize(new Dimension(150, 40));
+		lblTimKiem.setMaximumSize(new Dimension(300, 40));
+		lblTimKiem.setHorizontalTextPosition(SwingConstants.LEFT);
+		lblTimKiem.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_FindHD.add(lblTimKiem);
 
 		MyPanelSecond panel_3 = new MyPanelSecond();
@@ -708,43 +794,67 @@ public class NhapHangGUI extends JPanel {
 	}
 
 	// Xử lý btn chọn nhập\
+	String nhaCungCapTruoc = ""; // Biến lưu trữ nhà cung cấp đã chọn trước đó
+
+	// Trong phương thức chọn nguyên liệu
 	private void ChonNhap() {
-		int row = tableNL.getSelectedRow();
-		if (row < 0) {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn nguyên liệu", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-			;
-			return;
-		}
-		String soLuong = txtSoLuongNL.getText();
-		if (soLuong.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-			;
-			return;
-		}
-		String dongia = txtDonGiaNL.getText();
-		if (dongia.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn đơn giá cho nguyên liệu", "Thông báo",
-					JOptionPane.INFORMATION_MESSAGE);
-			;
-			return;
-		}
-		if (cmbNCC.getSelectedIndex() == 0) {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn nhà cung cấp", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-			return;
-		}
-		// Lấy thông tin nguyên liệu
-		String maNL = txtMaNL.getText();
-		String tenNL = txtTenNL.getText();
-		String maNCC = cmbNCC.getSelectedItem().toString().split(" - ")[0];
-		// Thêm dữ liệu vào bảng chờ xác nhận
-		Vector<String> rowData = new Vector<>();
-		rowData.add(maNL);
-		rowData.add(tenNL);
-		rowData.add(soLuong);
-		rowData.add(dongia);
-		int thanhTien = Integer.parseInt(soLuong) * Integer.parseInt(dongia);
-		rowData.add(String.valueOf(thanhTien));
-		modelTableXN.addRow(rowData);
+	    int row = tableNL.getSelectedRow();
+	    if (row < 0) {
+	        // Hiển thị thông báo khi không có nguyên liệu được chọn
+	        JOptionPane.showMessageDialog(null, "Vui lòng chọn nguyên liệu", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	        return;
+	    }
+
+	    String soLuong = txtSoLuongNL.getText();
+	    if (soLuong.isEmpty()) {
+	        // Hiển thị thông báo khi số lượng không được nhập
+	        JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	        return;
+	    }
+
+	    String dongia = txtDonGiaNL.getText();
+	    if (dongia.isEmpty()) {
+	        // Hiển thị thông báo khi đơn giá không được nhập
+	        JOptionPane.showMessageDialog(null, "Vui lòng chọn đơn giá cho nguyên liệu", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	        return;
+	    }
+	    String regex = "\\d+";
+	    Pattern pattern = Pattern.compile(regex);
+	    Matcher matcher = pattern.matcher(soLuong);
+	    if (!matcher.matches()) {
+	    	JOptionPane.showMessageDialog(null, "Số lượng phải là số", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    	return;
+	    }
+	    matcher = pattern.matcher(dongia);
+	    if (!matcher.matches()) {
+	    	JOptionPane.showMessageDialog(null, "Đơn giá phải là số", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    	return;
+	    }
+	    // Lấy thông tin nguyên liệu
+	    String maNL = txtMaNL.getText();
+	    String tenNL = txtTenNL.getText();
+	    String maNCC = cmbNCC.getSelectedItem().toString().split(" - ")[0];
+
+	    // Kiểm tra xem nhà cung cấp đã chọn trước đó có khác với nhà cung cấp hiện tại hay không
+	    if (!nhaCungCapTruoc.isEmpty() && !nhaCungCapTruoc.equals(maNCC)) {
+	        // Hiển thị thông báo yêu cầu chọn lại nhà cung cấp
+	        JOptionPane.showMessageDialog(null, "Vui lòng chọn một nhà cung cấp trong 1 phiếu", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+	        return;
+	    }
+
+	    // Thêm dữ liệu vào bảng chờ xác nhận
+	    Vector<String> rowData = new Vector<>();
+	    rowData.add(maNL);
+	    rowData.add(tenNL);
+	    rowData.add(maNCC);
+	    rowData.add(soLuong);
+	    rowData.add(dongia);
+	    int thanhTien = Integer.parseInt(soLuong) * Integer.parseInt(dongia);
+	    rowData.add(String.valueOf(thanhTien));
+	    modelTableXN.addRow(rowData);
+
+	    // Cập nhật nhà cung cấp đã chọn trước đó
+	    nhaCungCapTruoc = maNCC;
 	}
 
 	private void xoaNLformXacNhan() {
@@ -772,9 +882,9 @@ public class NhapHangGUI extends JPanel {
 			total += Integer.parseInt(modelTableXN.getValueAt(i, 4) + "");
 			String MaNL = modelTableXN.getValueAt(i, 0) + "";
 			String TenNL = modelTableXN.getValueAt(i, 1) + "";
-			String SL = modelTableXN.getValueAt(i, 2) + "";
-			String DG = modelTableXN.getValueAt(i, 3) + "";
-			String thanhTien = modelTableXN.getValueAt(i, 4) + "";
+			String SL = modelTableXN.getValueAt(i, 3) + "";
+			String DG = modelTableXN.getValueAt(i, 4) + "";
+			String thanhTien = modelTableXN.getValueAt(i, 5) + "";
 			maNL = Arrays.copyOf(maNL, i + 1 );
 			maNL[i] = Integer.parseInt(MaNL);
 			tenNL = Arrays.copyOf(tenNL, i + 1);

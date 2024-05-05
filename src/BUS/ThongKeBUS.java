@@ -35,26 +35,13 @@ public class ThongKeBUS {
 		return thongKeDAO.getAllHoaDon();
 	}
 
-	public ArrayList<HoaDon> getHoaDonByMonth(int month) {
-		return thongKeDAO.getHoaDonByMonth(month);
-	}
-
 	public ArrayList<HoaDon> getHoaDon() {
 		return thongKeDAO.getHoaDon();
-	}
-
-	public ArrayList<SanPham> getSanPhamDaBan() {
-		return thongKeDAO.getSanPhamDaBan();
 	}
 
 	// Phương thức lấy danh sách sản phẩm theo loại sản phẩm
 	public ArrayList<SanPham> getSanPhamByLoaiSP(String loaiSP) {
 		return thongKeDAO.getSanPhamByLoaiSP(loaiSP);
-	}
-
-	// Phương thức lấy danh sách sản phẩm theo loại sản phẩm
-	public ArrayList<SanPham> getTop10BestSellingProducts() {
-		return thongKeDAO.getTop10BestSellingProducts();
 	}
 
 	public ArrayList<ChiTietHoaDon> getChiTietHoaDonByHoaDonId(int hoaDonId) {

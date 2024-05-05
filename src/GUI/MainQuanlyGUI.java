@@ -172,18 +172,6 @@ public class MainQuanlyGUI extends JFrame {
 		
 		listMenuLeft = new ArrayList<>();
 		listMenuLeft.add(panel_logo);
-		listMenuLeft.add(lblBanHang);
-		listMenuLeft.add(lblSanPham);
-		listMenuLeft.add(lblKhuyenMai);
-		listMenuLeft.add(lblNhanvien);
-		listMenuLeft.add(lblKhachhang);
-		listMenuLeft.add(lblNhapHang);
-		listMenuLeft.add(lblThongKe);
-		listMenuLeft.add(lblCongThuc);
-		listMenuLeft.add(lblPhanQuyen);
-		
-		listMenuLeft = new ArrayList<>();
-		listMenuLeft.add(panel_logo);
 		if(QuyenHan.get(0) == true) {
 			listMenuLeft.add(lblNhapHang);
 		}
