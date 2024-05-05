@@ -18,7 +18,7 @@ public class KhachHang_DAO {
 		 
 		ArrayList<KhachHang> dskh = new ArrayList<>();
 	    if (conDB.openConnectDB()) {
-	        try (PreparedStatement pre = conDB.conn.prepareStatement("SELECT *FROM khachhang")) {
+	        try (PreparedStatement pre = conDB.conn.prepareStatement("SELECT *FROM khachhang WHERE isDelete=0")) {
 	            ResultSet rs = pre.executeQuery();
 	            while (rs.next()) {
 	            	KhachHang kh = new KhachHang();
@@ -41,7 +41,7 @@ public class KhachHang_DAO {
 		KhachHang kh =null;
 
 		try {
-			String sql = "SELECT *FROM khachhang WHERE id=?";
+			String sql = "SELECT *FROM khachhang WHERE id=? AND isDelete=0";
 			PreparedStatement pre= conDB.conn.prepareStatement(sql);
 			pre.setInt(1,maKH);
 			ResultSet rs=pre.executeQuery();
@@ -61,11 +61,12 @@ public class KhachHang_DAO {
 
 		return kh;
 	}
+	
 	public KhachHang getKhachHangBySDT(String sdt) {
 		KhachHang kh =null;
 
 		try {
-			String sql = "SELECT *FROM khachhang WHERE SoDienThoai=?";
+			String sql = "SELECT *FROM khachhang WHERE SoDienThoai=? AND isDelete=0";
 			PreparedStatement pre= conDB.conn.prepareStatement(sql);
 			pre.setString(1,sdt);
 			ResultSet rs=pre.executeQuery();
@@ -89,7 +90,7 @@ public class KhachHang_DAO {
 		boolean result=false;
 
 		try {
-			String sql ="UPDATE khachhang SET Ten=?, GioiTinh=?, SoDienThoai=? WHERE id=?";
+			String sql ="UPDATE khachhang SET Ten=?, GioiTinh=?, SoDienThoai=? WHERE id=? ";
 			PreparedStatement pre= conDB.conn.prepareStatement(sql);
 			pre.setString(1, kh.getTen());
 			pre.setInt(2, kh.getGioiTinh());
@@ -122,7 +123,7 @@ public class KhachHang_DAO {
 		boolean result=false;
 		
 		try {
-			String sql ="DELETE FROM khachhang WHERE id=?";
+			String sql ="UPDATE khachhang SET isDelete=1 WHERE id=?";
 			PreparedStatement pre= conDB.conn.prepareStatement(sql);
 			pre.setInt(1,maKH);
 			result=pre.executeUpdate()>0;

@@ -13,7 +13,14 @@ import org.knowm.xchart.style.lines.*;
 import java.text.DecimalFormat;
 
 import com.toedter.calendar.JDateChooser;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import BUS.ThongKeBUS;
@@ -38,10 +45,21 @@ import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import org.knowm.xchart.*;
+import org.knowm.xchart.XChartPanel;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.style.*;
+import org.knowm.xchart.style.lines.*;
+
 import com.toedter.calendar.JDateChooser;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import BUS.ThongKeBUS;
+import Custom.MyButton;
+import DTO.ChiTietHoaDon;
+import DTO.HoaDon;
+import DTO.SanPham;
 
 public class ThongKeGUI extends JPanel {
 	private static final String Styler = null;
@@ -84,15 +102,15 @@ public class ThongKeGUI extends JPanel {
 
 	private void initialize() {
 		idQuantityMap = new HashMap<>();
-//		frame = new JFrame();
-//		frame.setBounds(100, 100, 1194, 834);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		// frame = new JFrame();
+		// frame.setBounds(100, 100, 1194, 834);
+		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		this.setLayout(new BorderLayout());
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.add(mainPanel, BorderLayout.CENTER);
 		// Tạo một JPanel chứa BorderLayout
-//		frame.getContentPane().add(mainPanel);
+		// frame.getContentPane().add(mainPanel);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 240, 228));
@@ -315,22 +333,20 @@ public class ThongKeGUI extends JPanel {
 				}
 			}
 		});
-		
+
 		// Tạo nút reset
 		JButton resetButton = new MyButton("Reset ngày");
 		resetButton.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        // Xóa dữ liệu của ngày bắt đầu và ngày kết thúc
-		        startDateChooser.setDate(null);
-		        endDateChooser.setDate(null);
-		    }	
+			public void actionPerformed(ActionEvent e) {
+				// Xóa dữ liệu của ngày bắt đầu và ngày kết thúc
+				startDateChooser.setDate(null);
+				endDateChooser.setDate(null);
+			}
 		});
 		// Thêm nút reset vào panel
 		panel_46.add(resetButton);
 
 		panel_46.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		
 
 		panel_48 = new JPanel();
 		panel_48.setPreferredSize(new Dimension(324, 200));
@@ -780,7 +796,7 @@ public class ThongKeGUI extends JPanel {
 		panel.add(panel_2_3, BorderLayout.EAST);
 
 		// Đặt JFrame ở giữa màn hình
-//		frame.setLocationRelativeTo(null);
+		// frame.setLocationRelativeTo(null);
 	}
 
 	// Hiển thị tất cả sản phẩm
@@ -937,7 +953,7 @@ public class ThongKeGUI extends JPanel {
 	public ArrayList<Object[]> displaySanPhamOnTable5(ArrayList<SanPham> listSanPham, Date startDate, Date endDate) {
 		ArrayList<Object[]> rowDataList = new ArrayList<>();
 		HashMap<Integer, Integer> idQuantityMap = new HashMap<>(); // Tạo một HashMap mới để tính tổng số lượng cho từng
-																	// ID
+		// ID
 		for (SanPham sp : listSanPham) {
 			ArrayList<ChiTietHoaDon> listChiTietHoaDon = thongKeBUS.getChiTietHoaDonBySanPham(sp.getId());
 			for (ChiTietHoaDon cthd : listChiTietHoaDon) {
@@ -987,7 +1003,7 @@ public class ThongKeGUI extends JPanel {
 		panel_48.repaint();
 	}
 
-		private void drawRevenueChartByMonth() {
+	private void drawRevenueChartByMonth() {
 		ArrayList<HoaDon> hoaDonList = thongKeBUS.getHoaDon();
 
 		// Tạo một mảng để lưu tổng doanh thu của các sản phẩm theo từng tháng
