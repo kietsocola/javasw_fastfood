@@ -241,7 +241,12 @@ public class ThongKeGUI extends JPanel {
 		endDateChooser.setPreferredSize(new Dimension(120, 30));
 		panel_46.add(endDateChooser);
 
-		btnLoc = new MyButton("Lọc");
+		btnLoc = new MyButton("  Lọc");
+		ImageIcon iconXuatHD = new ImageIcon("images/search.png");
+		Image img3 = iconXuatHD.getImage();
+		Image newImg3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconXuatHD.setImage(newImg3);
+		btnLoc.setIcon(iconXuatHD);
 		panel_46.add(btnLoc);
 		btnLoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -334,8 +339,23 @@ public class ThongKeGUI extends JPanel {
 			}
 		});
 
-		// Tạo nút reset
 		JButton resetButton = new MyButton("Reset ngày");
+		ImageIcon iconReset = new ImageIcon("images/reset.png");
+		Image iconResetImg = iconReset.getImage();
+		Image iconResetImgA = iconResetImg.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconReset.setImage(iconResetImgA);
+		resetButton.setIcon(iconReset);
+		// Tạo nút reset
+		resetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Xóa dữ liệu của ngày bắt đầu và ngày kết thúc
+				startDateChooser.setDate(null);
+				endDateChooser.setDate(null);
+			}
+		});
+		// Thêm nút reset vào panel
+		panel_46.add(resetButton);
+		// Tạo nút reset
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Xóa dữ liệu của ngày bắt đầu và ngày kết thúc
@@ -820,7 +840,7 @@ public class ThongKeGUI extends JPanel {
 			for (ChiTietHoaDon cthd : listChiTietHoaDon) {
 				HoaDon hd = thongKeBUS.getHoaDonById(cthd.getIdHoaDon());
 				Object[] rowData = { sp.getId(), sp.getTenSP(), sp.getDonGia(), cthd.getSoLuong(), cthd.getThanhTien(),
-						sp.getHinhAnh(), hd.getNgayLap() };
+						hd.getNgayLap() };
 				rowDataList.add(rowData);
 			}
 		}
@@ -833,17 +853,24 @@ public class ThongKeGUI extends JPanel {
 
 		// Tạo lại model cho JTable với dữ liệu mới
 		String[] columnNames = { "ID", "Tên sản phẩm", "Đơn giá", "Số lượng sản phẩm", "Thành tiền sản phẩm",
-				"Hình ảnh", "Ngày hóa đơn" };
+				"Ngày hóa đơn" };
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 		for (Object[] rowData : rowDataList) {
 			model.addRow(rowData);
 		}
-		jTable = new MyTable(model);
+		jTable = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 
 		panel_47.removeAll();
 		panel_47.setLayout(new BorderLayout());
 		panel_47.add(scrollPane, BorderLayout.CENTER);
+
+		JPanel panel = new JPanel();
+		panel_47.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblNewLabel = new JLabel("Bảng sản phẩm theo ngày");
+		panel.add(lblNewLabel);
 
 		panel_47.revalidate();
 		panel_47.repaint();
@@ -858,7 +885,7 @@ public class ThongKeGUI extends JPanel {
 				// Kiểm tra xem ngày hóa đơn có nằm trong khoảng thời gian được chọn không
 				if (hd.getNgayLap().compareTo(startDate) >= 0 && hd.getNgayLap().compareTo(endDate) <= 0) {
 					Object[] rowData = { sp.getId(), sp.getTenSP(), sp.getDonGia(), cthd.getSoLuong(),
-							cthd.getThanhTien(), sp.getHinhAnh(), hd.getNgayLap() };
+							cthd.getThanhTien(), hd.getNgayLap() };
 					rowDataList.add(rowData);
 				}
 			}
@@ -872,17 +899,24 @@ public class ThongKeGUI extends JPanel {
 
 		// Tạo lại model cho JTable với dữ liệu mới
 		String[] columnNames = { "ID", "Tên sản phẩm", "Đơn giá", "Số lượng sản phẩm", "Thành tiền sản phẩm",
-				"Hình ảnh", "Ngày hóa đơn" };
+				"Ngày hóa đơn" };
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 		for (Object[] rowData : rowDataList) {
 			model.addRow(rowData);
 		}
-		jTable = new MyTable(model);
+		jTable = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 
 		panel_47.removeAll();
 		panel_47.setLayout(new BorderLayout());
 		panel_47.add(scrollPane, BorderLayout.CENTER);
+
+		JPanel panel = new JPanel();
+		panel_47.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblNewLabel = new JLabel("Bảng sản phẩm theo ngày");
+		panel.add(lblNewLabel);
 
 		panel_47.revalidate();
 		panel_47.repaint();
@@ -938,13 +972,20 @@ public class ThongKeGUI extends JPanel {
 			model.addRow(rowData);
 		}
 
-		jTable = new MyTable(model);
+		jTable = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 		scrollPane.setPreferredSize(new Dimension(300, 200));
 
 		panel_48.removeAll();
 		panel_48.setLayout(new BorderLayout());
 		panel_48.add(scrollPane, BorderLayout.CENTER);
+
+		JPanel panel = new JPanel();
+		panel_48.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblNewLabel = new JLabel("Bảng tổng sản phẩm");
+		panel.add(lblNewLabel);
 
 		panel_48.revalidate();
 		panel_48.repaint();
@@ -953,7 +994,7 @@ public class ThongKeGUI extends JPanel {
 	public ArrayList<Object[]> displaySanPhamOnTable5(ArrayList<SanPham> listSanPham, Date startDate, Date endDate) {
 		ArrayList<Object[]> rowDataList = new ArrayList<>();
 		HashMap<Integer, Integer> idQuantityMap = new HashMap<>(); // Tạo một HashMap mới để tính tổng số lượng cho từng
-		// ID
+																	// ID
 		for (SanPham sp : listSanPham) {
 			ArrayList<ChiTietHoaDon> listChiTietHoaDon = thongKeBUS.getChiTietHoaDonBySanPham(sp.getId());
 			for (ChiTietHoaDon cthd : listChiTietHoaDon) {
@@ -992,13 +1033,21 @@ public class ThongKeGUI extends JPanel {
 			model.addRow(rowData);
 		}
 
-		jTable = new MyTable(model);
+		jTable = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 		scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, 200));
 
 		panel_48.removeAll();
 		panel_48.setLayout(new BorderLayout());
 		panel_48.add(scrollPane, BorderLayout.CENTER);
+
+		JPanel panel = new JPanel();
+		panel_48.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblNewLabel = new JLabel("Bảng tổng sản phẩm");
+		panel.add(lblNewLabel);
+
 		panel_48.revalidate();
 		panel_48.repaint();
 	}
@@ -1164,7 +1213,7 @@ public class ThongKeGUI extends JPanel {
 
 		// Vẽ biểu đồ cột
 		CategoryChart chart = new CategoryChartBuilder().width(1020).height(400)
-				.title("Top 10 sản phẩm được bán nhiều nhất").xAxisTitle("Sản phẩm").yAxisTitle("Số lượng đã bán (VND)")
+				.title("Top 10 sản phẩm được bán nhiều nhất").xAxisTitle("Sản phẩm").yAxisTitle("Số lượng đã bán")
 				.build();
 
 		// Thiết lập màu nền của biểu đồ
