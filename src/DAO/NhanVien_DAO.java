@@ -63,14 +63,15 @@ public class NhanVien_DAO {
 	public boolean themNV(NhanVien nv) {
 		boolean result = false;
 	    try  {
-	    	String sql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai,ChucVu )" 
-	    + "VALUES(?, ?, ?, ?,?)";
+	    	String sql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai,ChucVu,idTaiKhoan )" 
+	    + "VALUES(?, ?, ?, ?,?,?)";
 	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
 	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
 	        pre.setString(5, nv.getChucVu());
+	        pre.setInt(6, nv.getIdTaiKhoan());
 	        result = pre.executeUpdate() > 0;
 	        
 	    } catch (SQLException e) {
@@ -117,23 +118,32 @@ public class NhanVien_DAO {
 	}
 
 	public boolean nhapExcel(NhanVien nv) {
-	    try  {
-	    	String sql = "DELETE * FROM nhanvien;"+
-	    "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai, ChucVu)" +
-	    "VALUES(?, ?, ?, ?,?)";
-	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
+	    try {
+	        // Cập nhật trường isDelete để đánh dấu là tất cả các dữ liệu hiện tại được xem như đã xóa
+	        String updateSql = "UPDATE nhanvien SET isDelete = 1";
+	        PreparedStatement updatePre = conDB.conn.prepareStatement(updateSql);
+	        updatePre.executeUpdate();
+
+	        // Chèn dữ liệu mới từ đối tượng NhanVien vào bảng nhanvien
+	        String insertSql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai, ChucVu) " +
+	                           "VALUES (?, ?, ?, ?, ?)";
+	        PreparedStatement pre = conDB.conn.prepareStatement(insertSql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
 	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
 	        pre.setString(5, nv.getChucVu());
 	        
-	        return true;
-	    } catch (SQLException e) {	
-	    	 e.printStackTrace();
+	        // Thực hiện chèn dữ liệu mới
+	        boolean inserted = pre.executeUpdate() > 0;
+	        
+	        return inserted;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
 	    }
-	    return false;
 	}
+
 
 
 }

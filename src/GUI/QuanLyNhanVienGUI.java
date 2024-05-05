@@ -34,6 +34,7 @@ import BUS.taiKhoan_BUS;
 import Custom.*;
 import DTO.NhanVien;
 import DTO.phanquyen_DTO;
+import DTO.taiKhoan_DTO;
 import BUS.XuLyFileExcel;
 import BUS.phanquyen_BUS;
 
@@ -50,11 +51,11 @@ public class QuanLyNhanVienGUI extends JPanel {
 	
 	private MyPanel  panel_main, panel_input, panel_dienThongTin;
 	private MyTable table;
-	private MyPanelSecond pnMaNV,pnTenNV,pnNgaySinh,pnGioiTinh,pnSoDT,pnChucVu,pnButton,pnTimKiem, pnChuaTimKiem, pnBtnTimKiem ;
+	private MyPanelSecond pnMaNV,pnTenDN,pnMatKhau,pnTenNV,pnNgaySinh,pnGioiTinh,pnSoDT,pnChucVu,pnButton,pnTimKiem, pnChuaTimKiem, pnBtnTimKiem ;
 	private MyLabel lblTitle;
-	private MyLabelSecond lblMaNV, lblTenNV,lblNgaySinh,lblSoDT,lblGioiTinh,lblChucVu,lblTimKiem;
+	private MyLabelSecond lblMaNV,lblTenDN,lblMatKhau, lblTenNV,lblNgaySinh,lblSoDT,lblGioiTinh,lblChucVu,lblTimKiem;
 	private MyButton btnThem, btnXoa, btnSua, btnReset, btnNhap,btnXuat, btnTimKiem;
-	private MyTextField txtMaNV, txtTenNV, txt_soDT, txtTimKiem;
+	private MyTextField txtMaNV,txtTenDN,txtMatKhau, txtTenNV, txt_soDT, txtTimKiem;
 	private JRadioButton rdoBtn_Nam, rdoBtn_Nu;
 	private JDateChooser dateChooser;
 	private JComboBox<String> cmbChucVu;
@@ -109,6 +110,21 @@ public class QuanLyNhanVienGUI extends JPanel {
 			lblMaNV = new MyLabelSecond("Mã Nhân Viên");
 			pnMaNV.add(lblMaNV);
 			pnMaNV.add(txtMaNV);
+
+			
+			// Panel for tenDN
+			pnTenDN = new MyPanelSecond();
+			txtTenDN = new MyTextField();
+			lblTenDN = new MyLabelSecond("Tên Đăng nhập");
+			pnTenDN.add(lblTenDN);
+			pnTenDN.add(txtTenDN);
+			
+			// Panel for matKhau
+			pnMatKhau = new MyPanelSecond();
+			txtMatKhau = new MyTextField();
+			lblMatKhau = new MyLabelSecond("Mật khẩu");
+			pnMatKhau.add(lblMatKhau);
+			pnMatKhau.add(txtMatKhau);
 			
 			// Panel for tenNV
 			pnTenNV = new MyPanelSecond();
@@ -171,6 +187,8 @@ public class QuanLyNhanVienGUI extends JPanel {
 			pnChucVu.add(cmbChucVu);
 			
 			panel_dienThongTin.add(pnMaNV);
+			panel_dienThongTin.add(pnTenDN);
+			panel_dienThongTin.add(pnMatKhau);
 			panel_dienThongTin.add(pnTenNV);
 			panel_dienThongTin.add(pnNgaySinh);
 			panel_dienThongTin.add(pnGioiTinh);
@@ -273,7 +291,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 			panel_main.add(pnContainTable, BorderLayout.CENTER);
 
 	        tableModel = new DefaultTableModel();
-	        tableModel.setColumnIdentifiers(new String[]{"Mã Nhân Viên", "Tên Nhân Viên", "Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ", "Trạng Thái"});
+	        tableModel.setColumnIdentifiers(new String[]{"Mã Nhân Viên","Tên Đăng Nhập","Mật khẩu", "Tên Nhân Viên", "Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ", "Trạng Thái"});
 	        table = new MyTable(tableModel);
 	        JScrollPane scrollPane = new JScrollPane(table);
 	        scrollPane.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
@@ -386,11 +404,12 @@ public class QuanLyNhanVienGUI extends JPanel {
 		  }
 		  
 		  private void xuLyReset(){
-		    	
 	         loadDataTblNhanVien();
 	         txtMaNV.setText("");
 	         txtTenNV.setText("");
 	         txt_soDT.setText("");
+	         txtTenDN.setText("");
+	         txtMatKhau.setText("");
 	         dateChooser.setDate(null);
 	         rdoBtn_Nam.setSelected(true);
 	         cmbChucVu.setSelectedIndex(0);
@@ -407,7 +426,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 			}
 			
 			private void xuLySuaNhanVien() {
-
+				ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
+			    ArrayList<taiKhoan_DTO> dstk = taiKhoanBUS.getDanhSachTaiKhoan();
+			    
 			    String ngaySinh = "";
 			    // Lấy ngày sinh từ dateChooser
 			    if (dateChooser.getDate() != null) {
@@ -418,12 +439,48 @@ public class QuanLyNhanVienGUI extends JPanel {
 			
 			    int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 			    
-			    int selectedItem=cmbChucVu.getSelectedIndex();
-			    
-			    if (nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem))) {
-			        nhanVienBUS.docDanhSach();
-			    	btnReset.doClick();
+				 int selectedItem=cmbChucVu.getSelectedIndex();
+				 int so;
+				 switch (selectedItem) {
+				     case 0:
+				         so = 2;
+				         break;
+				     case 1:
+				         so = 3;
+				         break;
+				     case 2:
+				         so = 4;
+				         break;
+				     case 3:
+				         so = 5;
+				         break;
+				     default:
+				         so = 2;
+				         break;
+				 }
+			   boolean fad=false;
+			   int id=0;
+			    for (NhanVien nv : dsnv) {
+			    	for(taiKhoan_DTO tk: dstk) {
+			    		if (tk.getMa() == nv.getIdTaiKhoan()) {
+			    			fad=true;
+			    			id=tk.getMa();
+			    		}
+			    	}
 			    }
+			    if(fad) {
+			    	nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem));
+	    			taiKhoanBUS.suaTaiKhoan(id,txtTenDN.getText(), txtMatKhau.getText(), so);
+	    			taiKhoanBUS.docDanhSach();
+	    			nhanVienBUS.docDanhSach();
+				     
+				     loadDataTblNhanVien();
+			    }
+//			     btnReset.doClick();
+//			    if (nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem))) {
+//			        nhanVienBUS.docDanhSach();
+//			    	btnReset.doClick();
+//			    }
 			}
 			
 			
@@ -442,11 +499,36 @@ public class QuanLyNhanVienGUI extends JPanel {
 			 int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 			 
 			 int selectedItem=cmbChucVu.getSelectedIndex();
-			
-			 if(nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem))) {
-			     nhanVienBUS.docDanhSach();
-			     btnReset.doClick();
+			 int so;
+			 switch (selectedItem) {
+			     case 0:
+			         so = 2;
+			         break;
+			     case 1:
+			         so = 3;
+			         break;
+			     case 2:
+			         so = 4;
+			         break;
+			     case 3:
+			         so = 5;
+			         break;
+			     default:
+			         so = 2;
+			         break;
 			 }
+			 int idTaiKhoan=taiKhoanBUS.idTaiKhoanMax()+1;
+			 
+			 if(taiKhoanBUS.themTaiKhoan(txtTenDN.getText(), txtMatKhau.getText(),so) ) {
+				 if(nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem),idTaiKhoan)) {
+				     nhanVienBUS.docDanhSach();
+				     taiKhoanBUS.docDanhSach();
+				     loadDataTblNhanVien();
+				     btnReset.doClick();
+				 }
+			 }
+			 
+			
 			}
 			
 			
@@ -489,15 +571,19 @@ public class QuanLyNhanVienGUI extends JPanel {
 		        int row = table.getSelectedRow();
 		        if (row > -1) {
 		            String maNV = table.getValueAt(row, 0).toString();
-		            String tenNV = table.getValueAt(row, 1).toString();
-		            String ngaySinh = table.getValueAt(row, 2).toString();
-		            String gioiTinh = table.getValueAt(row, 3).toString();
-		            String soDT = table.getValueAt(row, 4).toString();
-		            String chucVu = table.getValueAt(row, 5).toString();
+		            String tenDN = table.getValueAt(row, 1).toString();
+		            String matKhau = table.getValueAt(row, 2).toString();
+		            String tenNV = table.getValueAt(row, 3).toString();
+		            String ngaySinh = table.getValueAt(row, 4).toString();
+		            String gioiTinh = table.getValueAt(row, 5).toString();
+		            String soDT = table.getValueAt(row, 6).toString();
+		            String chucVu = table.getValueAt(row, 7).toString();
 
 		            txtMaNV.setText(maNV);
 		            txtTenNV.setText(tenNV);
 		            txt_soDT.setText(soDT);
+		            txtTenDN.setText(tenDN);
+		            txtMatKhau.setText(matKhau);
 		            
 		            int index=-1;
 		            for(int i=0; i< cmbChucVu.getItemCount();i++) {
@@ -528,36 +614,38 @@ public class QuanLyNhanVienGUI extends JPanel {
 		        }
 		    }
 		 
-		 private void loadDataTblNhanVien() {	    
+		  private void loadDataTblNhanVien() {	    
+			    tableModel.setRowCount(0);
 			    
-			    	tableModel.setRowCount(0);
+			    ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
+			    ArrayList<taiKhoan_DTO> dstk = taiKhoanBUS.getDanhSachTaiKhoan();
 			    
-		        ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
+			    for (NhanVien nv : dsnv) {
+			        Object[] rowData = new Object[9];
 
-		        for (NhanVien nv : dsnv) {
-		            Object[] rowData = new Object[7];
+			        rowData[0] = nv.getMaNV();
+			        rowData[3] = nv.getTen();
+			        rowData[4] = nv.getNgaySinh();
+			        rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
+			        rowData[6] = nv.getSoDT();		            
+			        rowData[7] = nv.getChucVu();
+			        
+			      
+			        for (taiKhoan_DTO tk : dstk) {
+			            if (tk.getMa() == nv.getIdTaiKhoan()) {
+			                rowData[1] = tk.getTenTaiKhoan();
+			                rowData[2] = tk.getMatKhau();
+			                break; 
+			            }
+			        }
+			        
+			        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan() + "");
+			        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
+			        
+			        tableModel.addRow(rowData);
+			    }
+			}
 
-		            rowData[0] = nv.getMaNV();
-		            rowData[1] = nv.getTen();
-		            rowData[2] = nv.getNgaySinh();
-		            rowData[3] = nv.getGioiTinh()==1?"Nam":"Nữ";
-		            rowData[4] = nv.getSoDT();		            
-		            rowData[5] = nv.getChucVu();
-		            int trangThai=taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan()+"");
-		            rowData[6] =trangThai;
-		            if(trangThai == 0) {
-		            	rowData[6] = "Khoá";
-		            }
-		            else if(trangThai == 1) {
-		            	rowData[6] = "Hiệu lực";
-		            }
-		            else {
-		            	rowData[6] = "Chưa có";
-		            }
-		            tableModel.addRow(rowData);
-		        }
-		        
-		    }
 		 
 		 private void xuLyXuatExcel() {
 		        XuLyFileExcel xuatExcel = new XuLyFileExcel();
