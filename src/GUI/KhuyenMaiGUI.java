@@ -389,7 +389,7 @@ public class KhuyenMaiGUI extends JPanel {
 		String tenKM = txtTenKM.getText();
 		String phantram = txtPhanTram.getText();
 		if(!tenKM.trim().equals("") && !phantram.trim().equals("")) {
-			if(phantram.matches("^[1-9]\\d*$")) {
+			if(!phantram.matches("\\b(0*(?:[1-9][0-9]?|100))\\b")) {
 				JOptionPane.showMessageDialog(null, "Phần trăm không hợp lệ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
