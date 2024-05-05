@@ -76,7 +76,7 @@ public class SanPhamBUS {
  public boolean themSanPham(String ten,
             int loai,
             int soLuong,
-            int idCongThuc,
+            //int idCongThuc,
             String anh,
             int donGia) {
 
@@ -95,7 +95,7 @@ public class SanPhamBUS {
             sp.setTenSP(ten);
             sp.setIdLoaiSP(loai);
             sp.setSoLuong(soLuong);
-            sp.setIdCongThuc(idCongThuc);
+            //sp.setIdCongThuc(idCongThuc);
             sp.setHinhAnh(anh);
             sp.setDonGia(donGia);
 
@@ -107,7 +107,7 @@ public class SanPhamBUS {
                 return false;
             }
         } catch (Exception e) {
-        	JOptionPane.showMessageDialog(null, "Thêm thất bại vãi", "Thông báo", JOptionPane.INFORMATION_MESSAGE);;
+        	JOptionPane.showMessageDialog(null, "Thêm thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);;
         }
         return false;
     }
@@ -115,7 +115,7 @@ public class SanPhamBUS {
 		 	String ten,
             int loai,
             int soLuong,
-            int idCongThuc,
+            //int idCongThuc,
             String anh,
             int donGia) {
 	 try {
@@ -137,7 +137,7 @@ public class SanPhamBUS {
          sp.setTenSP(ten);
          sp.setIdLoaiSP(loai);
          sp.setSoLuong(soLuong);
-         sp.setIdCongThuc(idCongThuc);
+        // sp.setIdCongThuc(idCongThuc);
          sp.setHinhAnh(anh);
          sp.setDonGia(donGia);
 		 sp.setId(id);
