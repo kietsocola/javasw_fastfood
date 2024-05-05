@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -51,7 +52,7 @@ public class taiKhoan_GUI {
 
 	private JFrame frame;
 	private JTextField tenDangNhap;
-	private JTextField matKhau;
+	private JPasswordField matKhau;
 	private MyPanel panel ,panel_2 ,panelTenDangNhap,panelMatKhau,panelBtnDangNhap;
 	JPanel panel_1;
 	private MyButton btnDangNhap ,btnThoat;
@@ -156,7 +157,7 @@ public class taiKhoan_GUI {
 		labelMatKhau.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelMatKhau.add(labelMatKhau);
 		
-		matKhau = new JTextField();
+		matKhau = new JPasswordField();
 		matKhau.setBorder(new LineBorder(new Color(171, 173, 179), 1, true));
 		matKhau.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelMatKhau.add(matKhau);

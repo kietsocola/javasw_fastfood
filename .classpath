@@ -88,12 +88,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/netbean/mysql connect/pdfbox-2.0.31.jar">
+	<classpathentry kind="lib" path="MyLib/pdfbox-2.0.31.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/netbean/mysql connect/fontbox-2.0.31.jar">
+	<classpathentry kind="lib" path="MyLib/fontbox-2.0.31.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

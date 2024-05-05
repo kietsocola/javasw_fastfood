@@ -152,15 +152,15 @@ public class MainQuanlyGUI extends JFrame {
 		lblThongKe.setIcon(iconThongKe);
 		lblThongKe.addMouseListener(new LabelMouseListener());
 		
-		lblPhanQuyen = new MyLabel("Phân quyền");
-		ImageIcon iconPhanQuyen = new ImageIcon("images/analytics.png");
+		lblPhanQuyen = new MyLabel("  Phân quyền");
+		ImageIcon iconPhanQuyen = new ImageIcon("images/project-manager.png");
 		Image img8 = iconPhanQuyen.getImage();
 		Image newImg8 = img8.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconPhanQuyen.setImage(newImg8);
 		lblPhanQuyen.setIcon(iconPhanQuyen);
 		
 		lblCongThuc = new MyLabel("  Công thức");
-		ImageIcon iconCongThuc = new ImageIcon("images/vegetable.png");
+		ImageIcon iconCongThuc = new ImageIcon("images/cook-book.png");
 		Image img9 = iconNhapHang.getImage();
 		Image newImg9 = img9.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconCongThuc.setImage(newImg9);

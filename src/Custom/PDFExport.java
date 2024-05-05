@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -23,17 +25,23 @@ public class PDFExport {
         return formatter.format(number);
     }	
 	
+	public static String formatNumber(float number) {
+        // Sử dụng DecimalFormat để định dạng số với dấu phẩy
+        DecimalFormat formatter = new DecimalFormat("#,###");
+
+        // Định dạng số và trả về chuỗi
+        return formatter.format(number);
+    }	
 	
-	
-	public String exportToPDF(int[] maNL , String[] tenNL , int[] soLuongNL , int[] donGiaNL , String currentDate,String nhaCungCap,String tenNhanVien) {
+	public String exportToPDF(String type ,int[] maNL , String[] tenNL , int[] soLuongNL , int[] donGiaNL , String currentDate,String nhaCungCap,String tenNhanVien,int percent) {
 		int[] maSP = Arrays.copyOf(maNL, maNL.length);
     	String[] tenSP = Arrays.copyOf(tenNL, tenNL.length);
     	int[] soLuong = Arrays.copyOf(soLuongNL, soLuongNL.length);
     	int[] donGia = Arrays.copyOf(donGiaNL, donGiaNL.length);
         try {
         	PDDocument document = new PDDocument();
-        	PDFont font = PDType0Font.load(document, new File("../javasw_fastfood/Unicode/UVNVietSach_R.TTF"));
-        	PDFont fontB = PDType0Font.load(document, new File("../javasw_fastfood/Unicode/UVNVietSach_B.TTF"));
+        	PDFont font = PDType0Font.load(document, new File("Unicode/UVNVietSach_R.TTF"));
+        	PDFont fontB = PDType0Font.load(document, new File("Unicode/UVNVietSach_B.TTF"));
             PDPage[] page = new PDPage[100];
             int soPage = 0;
             float distanceRow = 30 ;
@@ -44,6 +52,7 @@ public class PDFExport {
             float indexRow = 580;
             int tongTien = 0;
             int indexMaSP = 0;
+            int thuTu = 1 ;
             for(;soPage < 100 ; soPage++)
             {
                 page[soPage] = new PDPage();
@@ -58,14 +67,20 @@ public class PDFExport {
                     	contentStream.beginText();
                         contentStream.setFont(fontB, 16);
                         contentStream.newLineAtOffset(230, 700);
-                        contentStream.showText("CHI TIẾT PHIẾU NHẬP");
+                        if(type.equals("pn"))
+                        	contentStream.showText("CHI TIẾT PHIẾU NHẬP");
+                        else 
+                        	contentStream.showText("CHI TIẾT HÓA ĐƠN");
                         contentStream.setFont(font, 14);
                         contentStream.newLineAtOffset(-130, -20);
                         contentStream.showText("Nhân viên : " + tenNhanVien);
                         contentStream.newLineAtOffset(0, -20);
                         contentStream.showText("Ngày lập : " + currentDate);
                         contentStream.newLineAtOffset(0, -20);
-                        contentStream.showText("Nhà cung cấp :" + nhaCungCap);
+                        if(type.equals("pn"))
+                        	contentStream.showText("Nhà cung cấp :" + nhaCungCap);
+                        else
+                        	contentStream.showText("Tên khách hàng :" + nhaCungCap);
                         contentStream.newLineAtOffset(50, -20);
                         contentStream.showText("==============================");
                         contentStream.newLineAtOffset(-50, -20);
@@ -120,31 +135,76 @@ public class PDFExport {
                     }
                     if(indexMaSP == maSP.length)
                     {
-                    	y1 = y1 - distanceRow;
-                        y2 = y2 - distanceRow;
-                        indexRow = indexRow - distanceRow;
-                        //line dung ben phai
-                        contentStream.drawLine(30, y1, 30, y2);
-                        //len dung ben trai
-                        contentStream.drawLine(580,y1, 580, y2);
-                        // line ngang 1
-                        contentStream.drawLine(30,y2 , 580  ,y2);
-                        contentStream.beginText();
-                        contentStream.setFont(font ,  14);
-                        contentStream.newLineAtOffset(410,indexRow);
-                        contentStream.showText("Tổng Tiền : " + formatNumber(tongTien) + "VNĐ");
-                        contentStream.endText();
-                        break;
+                    		if(y2-distanceRow <= 100) continue;
+                    		y1 = y1 - distanceRow;
+                            y2 = y2 - distanceRow;
+                            indexRow = indexRow - distanceRow;
+                            //line dung ben phai
+                            contentStream.drawLine(30, y1, 30, y2);
+                            //len dung ben trai
+                            contentStream.drawLine(580,y1, 580, y2);
+                            // line ngang 1
+                            contentStream.drawLine(30,y2 , 580  ,y2);
+                            contentStream.beginText();
+                            contentStream.setFont(font ,  14);
+                            contentStream.newLineAtOffset(410,indexRow);
+                            contentStream.showText("Tổng Tiền : " + formatNumber(tongTien) + "VNĐ");
+                            contentStream.endText();
+                            ++thuTu;
+                        	if(type.equals("pn"))
+                        		break;
+                    		if(y2-distanceRow <= 100) continue;
+                    		y1 = y1 - distanceRow;
+                            y2 = y2 - distanceRow;
+                            indexRow = indexRow - distanceRow;
+                            //line dung ben phai
+                            contentStream.drawLine(30, y1, 30, y2);
+                            //len dung ben trai
+                            contentStream.drawLine(580,y1, 580, y2);
+                            // line ngang 1
+                            contentStream.drawLine(30,y2 , 580  ,y2);
+                            contentStream.beginText();
+                            contentStream.setFont(font ,  14);
+                            contentStream.newLineAtOffset(410,indexRow);
+                            contentStream.showText("Khuyến mãi :  " + percent +"%");
+                            contentStream.endText();
+                            if(y2-distanceRow <= 100) continue;
+                    		y1 = y1 - distanceRow;
+                            y2 = y2 - distanceRow;
+                            indexRow = indexRow - distanceRow;
+                            //line dung ben phai
+                            contentStream.drawLine(30, y1, 30, y2);
+                            //len dung ben trai
+                            contentStream.drawLine(580,y1, 580, y2);
+                            // line ngang 1
+                            contentStream.drawLine(30,y2 , 580  ,y2);
+                            contentStream.beginText();
+                            contentStream.setFont(font ,  14);
+                            contentStream.newLineAtOffset(410,indexRow);
+                            contentStream.showText("Thành tiền : " +formatNumber(tongTien * (100-percent) / 100)+ "VNĐ");
+                            contentStream.endText();
+                            break;
                     }
                     
                 }
-            }
-            	File fileToSave = new File("../javasw_fastfood/export/xuatphieu.pdf");
-                System.out.println(fileToSave.getPath());
-                document.save(fileToSave);
+            }	
+            	JFileChooser fileChooser = new JFileChooser();
+            	fileChooser.setDialogTitle("Chọn vị trí lưu file PDF");
+                
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF files (*.pdf)", "pdf");
+                fileChooser.setFileFilter(filter);
+                
+                int userSelection = fileChooser.showSaveDialog(null);
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File fileToSave = fileChooser.getSelectedFile();
+                    document.save(fileToSave);
+                    
+                    System.out.println("PDF đã được lưu thành công.");
+                }
+                else return "Hủy xuất pdf";
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Xuất phiếu nhập thành công";
+        return "Xuất pdf thành công";
     }
 }

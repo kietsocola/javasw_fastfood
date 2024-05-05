@@ -15,7 +15,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -39,6 +42,7 @@ import com.toedter.calendar.JDateChooser;
 import BUS.ChiTietPhieuNhapBUS;
 import BUS.NguyenLieuBUS;
 import BUS.NhaCungCap_BUS;
+import BUS.NhanVien_BUS;
 import BUS.PhieuNhapBUS;
 import Custom.MyButton;
 import Custom.MyColor;
@@ -47,6 +51,7 @@ import Custom.MyPanel;
 import Custom.MyPanelSecond;
 import Custom.MyTable;
 import Custom.MyTextField;
+import Custom.PDFExport;
 import DTO.ChiTietPhieuNhap;
 import DTO.NguyenLieu;
 import DTO.NhaCungCap;
@@ -69,6 +74,8 @@ public class NhapHangGUI extends JPanel {
 	private PhieuNhapBUS pnBUS = new PhieuNhapBUS();
 	private MyButton btnChonNhap;
 	private MyButton btnTimKiemHD;
+	private int[] maNL , soLuongNL , donGiaNL;
+	private String[] tenNL;
 	/**
 	 * Launch the application.
 	 */
@@ -749,12 +756,17 @@ public class NhapHangGUI extends JPanel {
 	}
 	// Phần xử lý xuất phiếu nhập và thêm các dữ kiện vào Tab phiếu nhập
 
-	private void xuatPN() {
+	private int xuatPN() {
 		if (modelTableXN.getRowCount() == 0) {
 			JOptionPane.showMessageDialog(null, "Không có nguyên liệu nào trong hàng chờ", "Thông báo",
 					JOptionPane.INFORMATION_MESSAGE);
-			return;
+			return 0;
 		}
+		JOptionPane.showMessageDialog(null, "Xuất phiếu nhập thành công" ,"Thông báo" , 1);
+		maNL = new int[0];
+		tenNL = new String[0];
+		soLuongNL = new int[0];
+		donGiaNL = new int[0];
 		int total = 0;
 		for (int i = 0; i < modelTableXN.getRowCount(); i++) {
 			total += Integer.parseInt(modelTableXN.getValueAt(i, 4) + "");
@@ -763,13 +775,21 @@ public class NhapHangGUI extends JPanel {
 			String SL = modelTableXN.getValueAt(i, 2) + "";
 			String DG = modelTableXN.getValueAt(i, 3) + "";
 			String thanhTien = modelTableXN.getValueAt(i, 4) + "";
-
+			maNL = Arrays.copyOf(maNL, i + 1 );
+			maNL[i] = Integer.parseInt(MaNL);
+			tenNL = Arrays.copyOf(tenNL, i + 1);
+			tenNL[i] = TenNL;
+			soLuongNL = Arrays.copyOf(soLuongNL, i + 1);
+			soLuongNL[i] = Integer.parseInt(SL);
+			donGiaNL = Arrays.copyOf(donGiaNL, i + 1);
+			donGiaNL[i] = Integer.parseInt(DG);
+			
 			ctpnBUS.addChiTietPhieuNhap(MaNL, SL, DG, thanhTien);
 		}
-		pnBUS.luuPhieuNhap(1, Integer.parseInt(cmbNCC.getSelectedItem().toString().split(" - ")[0]), total);
+		pnBUS.luuPhieuNhap(taiKhoan_GUI.idTaiKhoan, Integer.parseInt(cmbNCC.getSelectedItem().toString().split(" - ")[0]), total);
 
 		modelTableXN.setRowCount(0);
-
+		return 1;
 	}
 
 	private void loadDataTablePhieuNhap() {
@@ -878,9 +898,19 @@ public class NhapHangGUI extends JPanel {
 		btnXuatPN.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				xuatPN();
+				if(xuatPN() == 0) return;
 				loadDataTablePhieuNhap();
 				addDataToTblNL();
+				int optionSelect = JOptionPane.showConfirmDialog(null, "Bạn có muốn xuất phiếu pdf không ?","Thông báo",JOptionPane.OK_CANCEL_OPTION);
+				if(optionSelect == JOptionPane.CANCEL_OPTION)
+					return;
+				Date date = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+				String currentDate = sdf.format(date);
+				NhanVien_BUS nv_BUS = new NhanVien_BUS();
+				PDFExport item = new PDFExport();
+				String ketqua = item.exportToPDF("pn",maNL, tenNL, soLuongNL, donGiaNL, currentDate , cmbNCC.getSelectedItem().toString(),nv_BUS.getTenNhanVien(taiKhoan_GUI.idTaiKhoan) ,0);
+				JOptionPane.showMessageDialog(null, ketqua , "Thông báo" , 1);
 			}
 		});
 		btnXoa.addMouseListener(new MouseAdapter() {

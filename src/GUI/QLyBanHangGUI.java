@@ -6,7 +6,8 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.Date;
 import java.awt.EventQueue;
 import java.awt.CardLayout;
 
@@ -32,11 +33,13 @@ import BUS.CongThucBUS;
 import BUS.HoaDonBUS;
 import BUS.KhachHang_BUS;
 import BUS.NguyenLieuBUS;
+import BUS.NhanVien_BUS;
 import BUS.SanPhamBUS;
 import BUS.KhuyenMaiBUS;
 import BUS.LoaiBUS;
 import Custom.MyPanel;
 import Custom.MyTextField;
+import Custom.PDFExport;
 import DTO.ChiTietHoaDon;
 import DTO.CongThuc;
 import DTO.HoaDon;
@@ -61,6 +64,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import Custom.MyTable;
 import javax.swing.ListSelectionModel;
@@ -94,6 +98,8 @@ public class QLyBanHangGUI extends JPanel {
 	LoaiBUS loaiBUS = new LoaiBUS();
 	CongThucBUS ctBUS = new CongThucBUS();
 	KhachHang_BUS khBUS = new KhachHang_BUS();
+	private int[] maNL , soLuongNL , donGiaNL;
+	private String[] tenNL;
 
 	private JTextField txtTimTheoTen;
 	private JComboBox ngayBD, thangBD, namBD, ngayKT, thangKT, namKT;
@@ -381,12 +387,12 @@ public class QLyBanHangGUI extends JPanel {
 
         // Tạo một JComboBox và thiết lập dữ liệu từ Map
         comboBoxKM = new JComboBox<>(optionMapKM.values().toArray(new String[0]));
-        comboBoxKM.setPreferredSize(new Dimension(200, 10));
+        comboBoxKM.setPreferredSize(new Dimension(180, 10));
         panel_KhuyenMai.add(comboBoxKM);
         
 
 		// thông tin KH
-		MyLabelSecond lblKH = new MyLabelSecond("Khách hàng");
+		MyLabelSecond lblKH = new MyLabelSecond("Khách");
 		pnInput.add(lblKH);
 		//tên kh
 		MyPanelSecond panel_TenKH = new MyPanelSecond();
@@ -394,7 +400,7 @@ public class QLyBanHangGUI extends JPanel {
 		pnInput.add(panel_TenKH);
 		panel_TenKH.setLayout(new BoxLayout(panel_TenKH, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblTenKH = new MyLabelSecond("Tên KH");
+		MyLabelSecond lblTenKH = new MyLabelSecond("Mã KH");
 		panel_TenKH.add(lblTenKH);
 
 		txtMaKH = new MyTextField();
@@ -800,8 +806,25 @@ public class QLyBanHangGUI extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				luuHoaDon();
+				if(luuHoaDon() == 0) return;
 				loadDataTableHoaDon();
+				int optionSelect = JOptionPane.showConfirmDialog(null, "Bạn có muốn xuất phiếu pdf không ?","Thông báo",JOptionPane.OK_CANCEL_OPTION);
+				if(optionSelect == JOptionPane.CANCEL_OPTION)
+					return;
+				Date date = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String currentDate = sdf.format(date);
+				NhanVien_BUS nv_BUS = new NhanVien_BUS();
+				PDFExport item = new PDFExport();
+				KhachHang kh = khBUS.getKhachHangBySDT(txtsdtKH.getText());
+				ArrayList<KhuyenMai> arrKM = kmBUS.getListKhuyenMai();
+				int percent  = 0;
+				for(KhuyenMai x : arrKM) {
+					if(x.getTenKM().equals(comboBoxKM.getSelectedItem()))
+						percent = x.getPhanTramKM();
+				}
+				String ketqua = item.exportToPDF("hd",maNL, tenNL, soLuongNL, donGiaNL, currentDate , kh != null ? kh.getTen() : "" ,nv_BUS.getTenNhanVien(taiKhoan_GUI.idTaiKhoan),percent);
+				JOptionPane.showMessageDialog(null, ketqua , "Thông báo" , 1);
 
 			}
 		});
@@ -1011,7 +1034,7 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableGH.addRow(vec);
 	}
 
-	private void luuHoaDon() {
+	private int luuHoaDon() {
 		boolean rs = false;
 		int giamgia=1;
 		String selectedOption = (String) comboBoxKM.getSelectedItem();
@@ -1023,8 +1046,12 @@ public class QLyBanHangGUI extends JPanel {
         }
 		if(modelTableGH.getRowCount()==0) {
 			JOptionPane.showMessageDialog(null, "Không có sản phẩm nào trong giỏ hàng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-			return;
+			return 0;
 		}
+		maNL = new int[0];
+		tenNL = new String[0];
+		soLuongNL = new int[0];
+		donGiaNL = new int[0];
 		int total = 0;
 		for (int i = 0; i < modelTableGH.getRowCount(); i++) {
 			total += Integer.parseInt(modelTableGH.getValueAt(i, 4) + "");
@@ -1032,9 +1059,16 @@ public class QLyBanHangGUI extends JPanel {
 			String donGia = modelTableGH.getValueAt(i, 2) + "";
 			String soLuong = modelTableGH.getValueAt(i, 3) + "";
 			String thanhTien = modelTableGH.getValueAt(i, 4) + "";
-
+			maNL = Arrays.copyOf(maNL, i + 1 );
+			maNL[i] = Integer.parseInt(maSP);
+			tenNL = Arrays.copyOf(tenNL, i + 1);
+			tenNL[i] = modelTableGH.getValueAt(i, 1) + "";;
+			soLuongNL = Arrays.copyOf(soLuongNL, i + 1);
+			soLuongNL[i] = Integer.parseInt(soLuong);
+			donGiaNL = Arrays.copyOf(donGiaNL, i + 1);
+			donGiaNL[i] = Integer.parseInt(donGia);
 			rs = cthdBUS.addChiTietHoaDon(maSP, soLuong, donGia, thanhTien);
-			rs = ctBUS.giamSoLuongNguyenLieuKhiCheBien(Integer.parseInt(maSP), Integer.parseInt(soLuong));
+			ctBUS.giamSoLuongNguyenLieuKhiCheBien(Integer.parseInt(maSP), Integer.parseInt(soLuong));
 		}
 		total = total - total/100*giamgia;
 		String maKH = txtMaKH.getText();
@@ -1050,6 +1084,7 @@ public class QLyBanHangGUI extends JPanel {
 		} else {
 			JOptionPane.showMessageDialog(null, "Có lỗi xảy ra", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		}
+		return 1;
 	}
 
 	private void xoaSPfromGioHang() {
