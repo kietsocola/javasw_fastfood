@@ -252,7 +252,8 @@ public class QuanLyNhanVienGUI extends JPanel {
 	        btnReset.setFont(new Font("Arial", Font.PLAIN, 16));
 	        pnButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	        pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa);
-	        pnButton.add(btnReset);pnButton.add(btnNhap);pnButton.add(btnXuat);
+	        pnButton.add(btnReset);
+//	        pnButton.add(btnNhap);pnButton.add(btnXuat);
 	        
 	        panel_input.add(pnButton,BorderLayout.SOUTH);
 	        
@@ -369,19 +370,19 @@ public class QuanLyNhanVienGUI extends JPanel {
 		            	xuLyReset();
 		            }
 		        });
-		        btnXuat.addActionListener(new ActionListener() {
-		            @Override
-		            public void actionPerformed(ActionEvent e) {
-		            	xuLyXuatExcel();
-		            }
-		        });
-		        
-		        btnNhap.addActionListener(new ActionListener() {
-		            @Override
-		            public void actionPerformed(ActionEvent e) {
-		            	xuLyNhapExcel();
-		            }
-		        });
+//		        btnXuat.addActionListener(new ActionListener() {
+//		            @Override
+//		            public void actionPerformed(ActionEvent e) {
+//		            	xuLyXuatExcel();
+//		            }
+//		        });
+//		        
+//		        btnNhap.addActionListener(new ActionListener() {
+//		            @Override
+//		            public void actionPerformed(ActionEvent e) {
+//		            	xuLyNhapExcel();
+//		            }
+//		        });
 		  }
 		  
 		  private void xuLyReset(){
