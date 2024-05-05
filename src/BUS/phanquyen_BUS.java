@@ -23,6 +23,10 @@ public class phanquyen_BUS {
 		return 0;
 	}
 	
+	public int idPhanQuyenMax() {
+		return temp.idPhanQuyenMax();
+	}
+	
 	public String themPhanQuyen(phanquyen_DTO item) {
 		
 		if(temp.hasNamePhanQuyen(item))
