@@ -152,7 +152,10 @@ public class PDFExport {
                             contentStream.endText();
                             ++thuTu;
                         	if(type.equals("pn"))
+                        	{
+                        		contentStream.close();
                         		break;
+                        	}
                     		if(y2-distanceRow <= 100) continue;
                     		y1 = y1 - distanceRow;
                             y2 = y2 - distanceRow;
@@ -183,6 +186,7 @@ public class PDFExport {
                             contentStream.newLineAtOffset(410,indexRow);
                             contentStream.showText("Thành tiền : " +formatNumber(tongTien * (100-percent) / 100)+ "VNĐ");
                             contentStream.endText();
+                            contentStream.close();
                             break;
                     }
                     

@@ -19,6 +19,8 @@ import javax.swing.SwingConstants;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -42,7 +44,7 @@ public class SanPhamGUI extends JPanel {
 	private MyTable tblSanPham;
 	private DefaultTableModel dtmSanPham;
 	private MyLabelSecond lblMaSP, lblTenSP, lblLoaiSP, lblSoLuong,lblCongThuc, lblDonGia, lblHinhAnh;
-	private MyButton btnThem,btnXoa,btnSua,btnChonAnh;
+	private MyButton btnThem,btnXoa,btnSua,btnChonAnh,btnReset;
 	private MyTextField txtMaSP, txtTenSP, txtSoLuong,txtCongThuc, txtDonGia;
 	private JComboBox<String> cmbLoai;
 	private SanPhamBUS spBUS = new SanPhamBUS();
@@ -94,12 +96,15 @@ public class SanPhamGUI extends JPanel {
 		
 		MyPanelSecond pnMaSP = new MyPanelSecond();
 		txtMaSP = new MyTextField();
+		txtMaSP.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtMaSP.setEnabled(false);
 		lblMaSP = new MyLabelSecond("Mã SP");
 		pnMaSP.add(lblMaSP);
 		pnMaSP.add(txtMaSP);
 		
 		MyPanelSecond pnTenSP = new MyPanelSecond();
 		txtTenSP = new MyTextField();
+		txtTenSP.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblTenSP = new MyLabelSecond("Tên SP");
 		pnTenSP.add(lblTenSP);
 		pnTenSP.add(txtTenSP);
@@ -119,18 +124,20 @@ public class SanPhamGUI extends JPanel {
 		
 		MyPanelSecond pnSoLuong = new MyPanelSecond();
 		txtSoLuong = new MyTextField();
+		txtSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblSoLuong = new MyLabelSecond("Số lượng");
 		pnSoLuong.add(lblSoLuong);
 		pnSoLuong.add(txtSoLuong);
 		
-		MyPanelSecond pnCongThuc = new MyPanelSecond();
-		txtCongThuc = new MyTextField();
-		lblCongThuc = new MyLabelSecond("Công Thức");
-		pnCongThuc.add(lblCongThuc);
-		pnCongThuc.add(txtCongThuc);
+//		MyPanelSecond pnCongThuc = new MyPanelSecond();
+//		txtCongThuc = new MyTextField();
+//		lblCongThuc = new MyLabelSecond("Công Thức");
+//		pnCongThuc.add(lblCongThuc);
+//		pnCongThuc.add(txtCongThuc);
 		
 		MyPanelSecond pnDonGia = new MyPanelSecond();
 		txtDonGia = new MyTextField();
+		txtDonGia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDonGia = new MyLabelSecond("Đơn giá");
 		pnDonGia.add(lblDonGia);
 		pnDonGia.add(txtDonGia);
@@ -139,12 +146,11 @@ public class SanPhamGUI extends JPanel {
 		pnInputOptions.add(pnTenSP);
 		pnInputOptions.add(pnLoai);
 		pnInputOptions.add(pnSoLuong);
-		pnInputOptions.add(pnCongThuc);
+		//pnInputOptions.add(pnCongThuc);
 		pnInputOptions.add(pnDonGia);
 		
 		//Panel Ảnh
 		MyPanelSecond pnAnh = new MyPanelSecond();
-		pnAnh.setPreferredSize(new Dimension(300, 10));
 		MyPanel panel_containAnh = new MyPanel();
 		panel_input.add(panel_containAnh,BorderLayout.EAST);
 		panel_containAnh.setLayout(new BorderLayout(0, 0));
@@ -155,11 +161,16 @@ public class SanPhamGUI extends JPanel {
         lblAnhSP.setPreferredSize(new Dimension(120, 120));
         lblAnhSP.setIcon(getAnhSP(""));
 		FlowLayout flowLayout = (FlowLayout) pnChuaAnh.getLayout();
+		flowLayout.setVgap(0);
+		flowLayout.setHgap(0);
 		pnChuaAnh.add(lblAnhSP);
 		pnChuaAnh.setMaximumSize(new Dimension(120, 120));
 		pnChuaAnh.setPreferredSize(new Dimension(120, 120));
         
 		MyPanelSecond pnButtonAnh = new MyPanelSecond();
+		FlowLayout flowLayout_2 = (FlowLayout) pnButtonAnh.getLayout();
+		flowLayout_2.setHgap(0);
+		flowLayout_2.setVgap(0);
 		pnButtonAnh.setPreferredSize(new Dimension(
                 (int) pnChuaAnh.getPreferredSize().getHeight(), 40));
 		pnAnh.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
@@ -178,6 +189,11 @@ public class SanPhamGUI extends JPanel {
         MyPanelSecond pnButton = new MyPanelSecond();
         pnButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnThem = new MyButton("Thêm");
+        ImageIcon iconThem = new ImageIcon("images/plus.png");
+		Image img1 = iconThem.getImage();
+		Image newImg1 = img1.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconThem.setImage(newImg1);
+		btnThem.setIcon(iconThem);
         btnThem.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		xuLyThemSanPham();
@@ -185,6 +201,11 @@ public class SanPhamGUI extends JPanel {
         });
         btnThem.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnXoa = new MyButton("Xóa");
+        ImageIcon iconXoa = new ImageIcon("images/remove.png");
+		Image img2 = iconXoa.getImage();
+		Image newImg2 = img2.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconXoa.setImage(newImg2);
+		btnXoa.setIcon(iconXoa);
         btnXoa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -192,6 +213,7 @@ public class SanPhamGUI extends JPanel {
             }
         });
         btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        
         btnSua = new MyButton("Sửa");
         btnSua.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -199,8 +221,34 @@ public class SanPhamGUI extends JPanel {
         	}
         });
         btnSua.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        ImageIcon iconEdit = new ImageIcon("images/edit.png");
+        Image img3 = iconEdit.getImage();
+        Image newImge3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+        iconEdit.setImage(newImge3);
+        btnSua.setIcon(iconEdit);
+        btnReset=new MyButton("Reset");
+        btnReset.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		txtMaSP.setText("");
+        		txtTenSP.setText("");
+        		txtDonGia.setText("");
+        		txtSoLuong.setText("");
+        		cmbLoai.setSelectedIndex(0);
+        		loadAnh("");
+        		loadDataToTblSanPham();
+        	}
+        });
+        btnReset.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        ImageIcon iconReset = new ImageIcon("images/LamMoi.png");
+		Image img4 = iconReset.getImage();
+		Image newImg4 = img4.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconReset.setImage(newImg4);
+		btnReset.setIcon(iconReset);
+
+        
         pnButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa);
+        pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa); pnButton.add(btnReset);
         
         MyPanel panel_containBTN = new MyPanel();
 		panel_input.add(panel_containBTN, BorderLayout.SOUTH); 
@@ -236,7 +284,7 @@ public class SanPhamGUI extends JPanel {
 		dtmSanPham.addColumn("Tên sản phẩm");
 		dtmSanPham.addColumn("Loại");
 		dtmSanPham.addColumn("Số lượng");
-		dtmSanPham.addColumn("Công thức");
+		//dtmSanPham.addColumn("Công thức");
 		dtmSanPham.addColumn("Đơn giá");
 		dtmSanPham.addColumn("Ảnh");
 		
@@ -280,7 +328,7 @@ public class SanPhamGUI extends JPanel {
 			vec.add(sp.getTenSP());
 			vec.add(sp.getIdLoaiSP());
 			vec.add(sp.getSoLuong());
-			vec.add(sp.getIdCongThuc());
+			//vec.add(sp.getIdCongThuc());
 			vec.add(sp.getDonGia());
 			vec.add(sp.getHinhAnh());
 			
@@ -295,15 +343,15 @@ public class SanPhamGUI extends JPanel {
 			String ten = tblSanPham.getValueAt(row, 1) + "";
 			String loai = tblSanPham.getValueAt(row, 2) + "";
 			String soLuong = tblSanPham.getValueAt(row, 3) + "";
-			String congThuc = tblSanPham.getValueAt(row, 4) + "";
-			String donGia = tblSanPham.getValueAt(row, 5) + "";
-			String anh = tblSanPham.getValueAt(row, 6) + "";
+			//String congThuc = tblSanPham.getValueAt(row, 4) + "";
+			String donGia = tblSanPham.getValueAt(row, 4) + "";
+			String anh = tblSanPham.getValueAt(row, 5) + "";
 			
 			 txtMaSP.setText(ma);
              txtTenSP.setText(ten);
              cmbLoai.setSelectedItem(loai);
              txtSoLuong.setText(soLuong);
-             txtCongThuc.setText(congThuc);
+             //txtCongThuc.setText(congThuc);
              txtDonGia.setText(donGia);
              
              int flag = 0;
@@ -372,30 +420,69 @@ public class SanPhamGUI extends JPanel {
 	            System.out.println("Exception occured :" + e.getMessage());
 	        }
 	    }
+	 public int isNumber(String text,String name) {
+		 String regex = "\\d+";
+	 	    Pattern pattern = Pattern.compile(regex);
+	 	    Matcher matcher = pattern.matcher(text);
+	 	    if (!matcher.matches()) {
+	 	    	JOptionPane.showMessageDialog(null, name+ " phải là số", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	 	    	return 0;
+	 	    }
+	 	    return 1;
+	 }
+	 public int isString(String text,String name) {
+		 String regex = "^[\\p{L}\\d]+(?: [\\p{L}\\d]+)*$";
+     	Pattern pattern = Pattern.compile(regex);
+     	Matcher matcher = pattern.matcher(text);
+     	if (!matcher.matches()) {
+ 	    	JOptionPane.showMessageDialog(null, name+ " có thể chứa chữ,số,1 khoảng trắng giữa các từ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+ 	    	return 0;
+ 	    }
+     	return 1;
+	 }
 	    private void xuLyThemSanPham() {
+	    	if (isString(txtTenSP.getText(),"Tên")==0) {
+	    		return;
+	    	}
+	    	if (isNumber(txtSoLuong.getText(),"Số lượng")==0){
+	    		return;
+	    	}
+	    	if (isNumber(txtDonGia.getText(),"Đơn giá")==0) {
+	    		return;
+	    	}
 	    	
 	        String ten = txtTenSP.getText();
 	        int loai = cmbLoai.getSelectedIndex();
 	        int soLuong = Integer.parseInt(txtSoLuong.getText());
-	        int idCongThuc = Integer.parseInt(txtCongThuc.getText());
+	        //int idCongThuc = Integer.parseInt(txtCongThuc.getText());
 	        String anh = fileAnhSP.getName();
 	        int donGia = Integer.parseInt(txtDonGia.getText());
 	        // Kiểm tra và xử lý dữ liệu trước khi thêm
-	        boolean flag = spBUS.themSanPham(ten, loai, soLuong, idCongThuc, anh, donGia);
+	        boolean flag = spBUS.themSanPham(ten, loai, soLuong, anh, donGia);
 	        spBUS.docListSanPham();
 	        loadDataToTblSanPham();
 	        luuFileAnh();
 	    }
 	    private void xuLySuaSanPham() {
+	    	if (isString(txtTenSP.getText(),"Tên")==0) {
+	    		return;
+	    	}
+	    	if (isNumber(txtSoLuong.getText(),"Số lượng")==0){
+	    		return;
+	    	}
+	    	if (isNumber(txtDonGia.getText(),"Đơn giá")==0) {
+	    		return;
+	    	}
+	    	
 	    	int id = Integer.parseInt(txtMaSP.getText());
 	        String ten = txtTenSP.getText();
 	        int loai = cmbLoai.getSelectedIndex();
 	        int soLuong = Integer.parseInt(txtSoLuong.getText());
-	        int idCongThuc = Integer.parseInt(txtCongThuc.getText());
+	        //int idCongThuc = Integer.parseInt(txtCongThuc.getText());
 	        String anh = fileAnhSP.getName();
 	        int donGia = Integer.parseInt(txtDonGia.getText());
 	        // Kiểm tra và xử lý dữ liệu trước khi thêm
-	        boolean flag = spBUS.suaSanPham(id,ten, loai, soLuong, idCongThuc, anh, donGia);
+	        boolean flag = spBUS.suaSanPham(id,ten, loai, soLuong, anh, donGia);
 	        spBUS.docListSanPham();
 	        loadDataToTblSanPham();
 	        luuFileAnh();

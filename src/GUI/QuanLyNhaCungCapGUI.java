@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
@@ -29,7 +30,7 @@ import javax.swing.ImageIcon;
 
 
 
-public class QuanLyNhaCungCapGUI extends JFrame {
+public class QuanLyNhaCungCapGUI extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private DefaultTableModel tableModel;

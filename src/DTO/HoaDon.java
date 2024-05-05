@@ -10,7 +10,14 @@ public class HoaDon {
     private int tongTien;
     private String ghiChu;
     private int trangThai;
-    public HoaDon() {
+    private int idKhuyenMai;
+    public int getIdKhuyenMai() {
+		return idKhuyenMai;
+	}
+	public void setIdKhuyenMai(int idKhuyenMai) {
+		this.idKhuyenMai = idKhuyenMai;
+	}
+	public HoaDon() {
     	
     }
 	public HoaDon(int idHD, int idKH, int idNV, Date ngayLap, int tongTien, String ghiChu, int trangThai) {

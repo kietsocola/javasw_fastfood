@@ -257,10 +257,11 @@ public class PhanQuyen_GUI extends JPanel {
             	int ketqua  =0;
             	String regex = "^[\\p{L}\\d]+(?: [\\p{L}\\d]+)*$";
             	Pattern pattern = Pattern.compile(regex);
-            	Matcher matcher = pattern.matcher(newItem);
             	
                 	if (newItem != null && !newItem.isEmpty()) {
                     	try {
+                        	Matcher matcher = pattern.matcher(newItem);
+
                     		if(!matcher.matches())
                     		{
                     			dialog.notifi("Tên phân quyền có thể chứa chữ,sô,1 khoảng trắng giữa các từ");
