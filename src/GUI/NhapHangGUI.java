@@ -406,9 +406,13 @@ public class NhapHangGUI extends JPanel {
 		btnReset.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				txtMaNL.setText("");
+				txtTenNL.setText("");
 				txtDonGiaNL.setText("");
 				txtSoLuongNL.setText("");
 				txtTimTheoTen.setText("");
+				nhaCungCapTruoc = "";
+				modelTableXN.setRowCount(0);
 				addDataToTblNL();
 			}
 		});
@@ -879,9 +883,9 @@ public class NhapHangGUI extends JPanel {
 			total += Integer.parseInt(modelTableXN.getValueAt(i, 4) + "");
 			String MaNL = modelTableXN.getValueAt(i, 0) + "";
 			String TenNL = modelTableXN.getValueAt(i, 1) + "";
-			String SL = modelTableXN.getValueAt(i, 2) + "";
-			String DG = modelTableXN.getValueAt(i, 3) + "";
-			String thanhTien = modelTableXN.getValueAt(i, 4) + "";
+			String SL = modelTableXN.getValueAt(i, 3) + "";
+			String DG = modelTableXN.getValueAt(i, 4) + "";
+			String thanhTien = modelTableXN.getValueAt(i, 5) + "";
 			maNL = Arrays.copyOf(maNL, i + 1 );
 			maNL[i] = Integer.parseInt(MaNL);
 			tenNL = Arrays.copyOf(tenNL, i + 1);
