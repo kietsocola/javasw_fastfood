@@ -255,13 +255,13 @@ public class PhanQuyen_GUI extends JPanel {
             	CustomJDialog dialog = new CustomJDialog();
             	String newItem = JOptionPane.showInputDialog("nhap ten quyen : ");
             	int ketqua  =0;
-            	String regex = "[\\p{L}\\p{N}]+(\\s[\\p{L}\\p{N}]+)*";
+            	String regex = "^[\\p{L}\\d]+(?: [\\p{L}\\d]+)*$";
             	Pattern pattern = Pattern.compile(regex);
             	Matcher matcher = pattern.matcher(newItem);
             	
                 	if (newItem != null && !newItem.isEmpty()) {
                     	try {
-                    		if(matcher.matches())
+                    		if(!matcher.matches())
                     		{
                     			dialog.notifi("Tên phân quyền có thể chứa chữ,sô,1 khoảng trắng giữa các từ");
                                 btnHuy.setEnabled(false);
@@ -350,10 +350,10 @@ public class PhanQuyen_GUI extends JPanel {
 		// Tạo một biểu tượng
         ImageIcon icon = new ImageIcon("..\\javasw_fastfood\\images\\plus.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
-//        Image img = icon.getImage();
-//        Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
-//        ImageIcon resizedIcon = new ImageIcon(resizedImg);
-        btnThem.setIcon(icon);
+        Image img = icon.getImage();
+        Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        ImageIcon resizedIcon = new ImageIcon(resizedImg);
+        btnThem.setIcon(resizedIcon);
         
         ImageIcon icon1 = new ImageIcon("images/edit2.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         Image img1 = icon1.getImage();
@@ -384,7 +384,10 @@ public class PhanQuyen_GUI extends JPanel {
         
         ImageIcon icon5 = new ImageIcon("..\\javasw_fastfood\\images\\LamMoi.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
-        btnLamMoi.setIcon(icon5);
+        Image img5 = icon5.getImage();
+        Image resizedImg5 = img5.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon5 = new ImageIcon(resizedImg5);
+        btnLamMoi.setIcon(resizedIcon5);
         
         
 		btnHuy.addActionListener(new ActionListener() {
@@ -436,13 +439,21 @@ public class PhanQuyen_GUI extends JPanel {
 				CustomJDialog dialog = new CustomJDialog();
 				if(isThem) {
 					/// tang id tu dong
-					phanquyen.setIdPhanQuyen(ds.get(ds.size() - 1).getIdPhanQuyen() + 1);
+					phanquyen.setIdPhanQuyen(pqB.idPhanQuyenMax() + 1);
 					String ketqua = pqB.themPhanQuyen(phanquyen);
 					dialog.notifi(ketqua);
 					isThem = false;
 				}
 				
 				if(isSua) {
+	            	String regex = "^[\\p{L}\\d]+(?: [\\p{L}\\d]+)*$";
+	            	Pattern pattern = Pattern.compile(regex);
+	            	Matcher matcher = pattern.matcher(nameQuyen);
+	            	if(!matcher.matches())
+	            	{
+	            		JOptionPane.showMessageDialog(null,"Tên quyền có thể chứa chữ, số, 1 khoảng trắng giữ các từ","Thông báo" , 1);
+	            		return;
+	            	}
 					phanquyen.setIdPhanQuyen(tempPQ.getIdPhanQuyen());
 					String ketqua = pqB.suaPhanQuyen(phanquyen);
 					dialog.notifi(ketqua);

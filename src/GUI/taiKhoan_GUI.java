@@ -40,6 +40,8 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.ComponentOrientation;
@@ -172,12 +174,19 @@ public class taiKhoan_GUI {
 			public void actionPerformed(ActionEvent e) {
 
 				taiKhoan_DTO account = new taiKhoan_DTO();
+				String regex = "^[a-zA-Z0-9\\+]*$";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(tenDangNhap.getText());
+				if(!matcher.matches()) {
+					JOptionPane.showMessageDialog(null,"tên đăng nhập chỉ chứa chữ cái,số");
+					return;
+				}
 				account.setTenTaiKhoan(tenDangNhap.getText());
 				account.setMatKhau(matKhau.getText());
 					// TODO Auto-generated catch block\
 				try {
 					if(tk_BUS.checkDangNhap(account) == 0)
-						JOptionPane.showMessageDialog(null, "vui long nhap day du thong tin","Thong bao",0);
+						JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin","Thong bao",0);
 					else if(tk_BUS.checkDangNhap(account) == 1)
 					{	
 						int idPhanQuyen = tk_BUS.IdPhanQuyen(account);
@@ -193,7 +202,7 @@ public class taiKhoan_GUI {
 						frame.setVisible(false);
 					}
 					else if(tk_BUS.checkDangNhap(account) == 2)
-						JOptionPane.showMessageDialog(null, "ten tai khoan hoac mat khau cua ban bi sai","Thong bao",1);
+						JOptionPane.showMessageDialog(null, "Tên tài khoản hoặc mật khẩu bị sai","Thong bao",1);
 				} catch (HeadlessException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

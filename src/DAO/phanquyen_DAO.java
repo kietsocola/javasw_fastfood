@@ -56,6 +56,16 @@ public class phanquyen_DAO {
 	
 	public int idPhanQuyenMax() {
 		
+		con.connect();
+		String sql = "select MAX(id) as id where phanquyen";
+		try {
+			Statement stmt = con.getCon().createStatement()	;
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			return rs.getInt("id");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 		return-1;
 	}
 	
