@@ -476,9 +476,8 @@ public class NhapHangGUI extends JPanel {
 		lblCTPhieuNhap.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_tableCTPN.add(lblCTPhieuNhap, BorderLayout.NORTH);
 		modelTableCTPN = new DefaultTableModel();
-		modelTableCTPN.addColumn("Mã NL");
 		modelTableCTPN.addColumn("Mã PN");
-
+		modelTableCTPN.addColumn("Mã NL");
 		modelTableCTPN.addColumn("Số lượng");
 		modelTableCTPN.addColumn("Đơn giá");
 		modelTableCTPN.addColumn("Thành tiền");
