@@ -50,7 +50,7 @@ public class QuanLyKhachHangGUI extends JPanel {
 		 */
 		private MyPanel panel_main, panel_input, panel_dienThongTin;
 		private MyTable table;
-		private MyPanelSecond pnMaNV,pnTenNV,pnGioiTinh,pnSoDT,pnSoChiTieu,pnButton,pnTimKiem, pnChuaTimKiem, pnBtnTimKiem,pnTimMin,pnTimMax ;
+		private MyPanelSecond pnMaKH,pnTenKH,pnGioiTinh,pnSoDT,pnSoChiTieu,pnButton,pnTimKiem, pnChuaTimKiem, pnBtnTimKiem,pnTimMin,pnTimMax ;
 		private MyLabel lblTitle;
 		private MyLabelSecond lblMaKH, lblTenKH,lblSoDT,lblGioiTinh,lblSoChiTieu,lblTimKiem,lblTimMin,lblTimMax;
 		private MyButton btnThem, btnXoa, btnSua, btnReset, btnTimKiem;
@@ -97,19 +97,19 @@ public class QuanLyKhachHangGUI extends JPanel {
 		panel_dienThongTin.setLayout(new BoxLayout(panel_dienThongTin, BoxLayout.Y_AXIS));
 		
 		// Panel for maKH
-		pnMaNV = new MyPanelSecond();
+		pnMaKH = new MyPanelSecond();
 		txtMaKH = new MyTextField();
-		txtMaKH.setEditable(false); 
+		txtMaKH.setFocusable(false);
 		lblMaKH = new MyLabelSecond("Mã Khách Hàng");
-		pnMaNV.add(lblMaKH);
-		pnMaNV.add(txtMaKH);
+		pnMaKH.add(lblMaKH);
+		pnMaKH.add(txtMaKH);
 		
 		// Panel for tenKH
-		pnTenNV = new MyPanelSecond();
+		pnTenKH = new MyPanelSecond();
 		txtTenKH = new MyTextField();
 		lblTenKH = new MyLabelSecond("Tên Khách Hàng");
-		pnTenNV.add(lblTenKH);
-		pnTenNV.add(txtTenKH);
+		pnTenKH.add(lblTenKH);
+		pnTenKH.add(txtTenKH);
 
 		
 		// Panel for gioiTinh
@@ -123,7 +123,7 @@ public class QuanLyKhachHangGUI extends JPanel {
 	    rdoBtn_Nam.setFont(new Font("Arial", Font.BOLD, 15));
 	    rdoBtn_Nam.setForeground(MyColor.SECOND_TEXT_COLOR);
 	    rdoBtn_Nam.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
-	    rdoBtn_Nam.setPreferredSize(new Dimension(130, 30));
+	    rdoBtn_Nam.setPreferredSize(new Dimension(125, 30));
 	    gioiTinhGroup.add(rdoBtn_Nam); 
 	
 	    // Radio button for Nu
@@ -148,13 +148,13 @@ public class QuanLyKhachHangGUI extends JPanel {
 		// Panel for số chi tiêu
 		pnSoChiTieu = new MyPanelSecond();
 		txtSoChiTieu = new MyTextField();
-		txtSoChiTieu.setEditable(false);
+		txtSoChiTieu.setFocusable(false);
 		lblSoChiTieu = new MyLabelSecond("Số Chi Tiêu");
 		pnSoChiTieu.add(lblSoChiTieu);
 		pnSoChiTieu.add(txtSoChiTieu);
 				
-		panel_dienThongTin.add(pnMaNV);
-		panel_dienThongTin.add(pnTenNV);
+		panel_dienThongTin.add(pnMaKH);
+		panel_dienThongTin.add(pnTenKH);
 		panel_dienThongTin.add(pnGioiTinh);
 		panel_dienThongTin.add(pnSoDT);
 		panel_dienThongTin.add(pnSoChiTieu);
@@ -226,6 +226,7 @@ public class QuanLyKhachHangGUI extends JPanel {
         ImageIcon resizedIcon = new ImageIcon(resizedImg);
         btnThem.setIcon(resizedIcon);
         btnThem.setFont(new Font("Arial", Font.PLAIN, 16));
+        
         btnXoa = new MyButton("Xóa");
         ImageIcon icon2 = new ImageIcon("images/remove.png");
         Image img2 = icon2.getImage();
@@ -233,6 +234,7 @@ public class QuanLyKhachHangGUI extends JPanel {
         ImageIcon resizedIcon2 = new ImageIcon(resizedImg2);
         btnXoa.setIcon(resizedIcon2);
         btnXoa.setFont(new Font("Arial", Font.PLAIN, 16));
+        
         btnSua = new MyButton("Sửa");
         ImageIcon icon1 = new ImageIcon("images/edit2.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         Image img1 = icon1.getImage();
@@ -240,6 +242,7 @@ public class QuanLyKhachHangGUI extends JPanel {
         ImageIcon resizedIcon1 = new ImageIcon(resizedImg1);
         btnSua.setIcon(resizedIcon1);
         btnSua.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        
         btnReset = new MyButton("Reset");
         ImageIcon icon5 = new ImageIcon("images/LamMoi.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         Image img5 = icon5.getImage();
@@ -247,6 +250,7 @@ public class QuanLyKhachHangGUI extends JPanel {
         ImageIcon resizedIcon5 = new ImageIcon(resizedImg5);
         btnReset.setIcon(resizedIcon5);
         btnReset.setFont(new Font("Arial", Font.PLAIN, 16));
+        
         pnButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa);pnButton.add(btnReset);
         
@@ -268,10 +272,10 @@ public class QuanLyKhachHangGUI extends JPanel {
 		panel_main.add(pnContainTable, BorderLayout.CENTER);
 
         tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"Mã Nhân Viên", "Tên Nhân Viên", "Ngày Sinh", "Giới Tính", "Số ĐT"});
+        tableModel.setColumnIdentifiers(new String[]{"Mã Khách Hàng", "Tên Khách Hàng","Giới Tính", "Số ĐT", "Tổng Chi Tiêu"});
         table = new MyTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(453, 150)); // Đặt kích thước ở đây nếu cần
+        scrollPane.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
         panel_table.setLayout(new BorderLayout(0, 0));
         panel_table.add(scrollPane, BorderLayout.NORTH);
 

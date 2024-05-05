@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class taiKhoan_DAO  {
@@ -67,6 +68,21 @@ public class taiKhoan_DAO  {
 			return result.getInt("id");
 		con.close();
 		return 0;
+	}
+	
+	public int getTrangThai(int id) {	
+		try {
+			con.connect();
+			String sql="SELECT TrangThai FROM taikhoan where id="+id;
+			Statement st = con.getCon().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+		}catch(Exception e) {
+			 e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	public static void main(String[] args) {

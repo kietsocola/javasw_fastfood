@@ -42,6 +42,8 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import DTO.phanquyen_DTO;
 import java.awt.event.MouseAdapter;
@@ -253,11 +255,24 @@ public class PhanQuyen_GUI extends JPanel {
             	CustomJDialog dialog = new CustomJDialog();
             	String newItem = JOptionPane.showInputDialog("nhap ten quyen : ");
             	int ketqua  =0;
-
-            	
+            	String regex = "[\\p{L}\\p{N}]+(\\s[\\p{L}\\p{N}]+)*";
+            	Pattern pattern = Pattern.compile(regex);
+            	Matcher matcher = pattern.matcher(newItem);
             	
                 	if (newItem != null && !newItem.isEmpty()) {
                     	try {
+                    		if(matcher.matches())
+                    		{
+                    			dialog.notifi("Tên phân quyền có thể chứa chữ,sô,1 khoảng trắng giữa các từ");
+                                btnHuy.setEnabled(false);
+                        	   	btnLuu.setEnabled(false);
+                        	   	btnThem.setEnabled(true);
+                        	   	btnSua.setEnabled(true);
+                        	   	btnXoa.setEnabled(true);
+                        	   	btnLamMoi.setEnabled(true);
+                        		return;
+                    			
+                    		}
         					ketqua = pqB.hasPhanQuyen(newItem);
                         	if(ketqua == 1)
                         	{
@@ -333,12 +348,12 @@ public class PhanQuyen_GUI extends JPanel {
 			}
 		});
 		// Tạo một biểu tượng
-        ImageIcon icon = new ImageIcon("images/plus.png");
+        ImageIcon icon = new ImageIcon("..\\javasw_fastfood\\images\\plus.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
-        Image img = icon.getImage();
-        Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
-        ImageIcon resizedIcon = new ImageIcon(resizedImg);
-        btnThem.setIcon(resizedIcon);
+//        Image img = icon.getImage();
+//        Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+//        ImageIcon resizedIcon = new ImageIcon(resizedImg);
+        btnThem.setIcon(icon);
         
         ImageIcon icon1 = new ImageIcon("images/edit2.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         Image img1 = icon1.getImage();
@@ -367,10 +382,9 @@ public class PhanQuyen_GUI extends JPanel {
         ImageIcon resizedIcon4 = new ImageIcon(resizedImg4);
         btnLuu.setIcon(resizedIcon4);
         
-        ImageIcon icon5 = new ImageIcon("images/LamMoi.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
-        Image img5 = icon5.getImage();
-        Image resizedImg5 = img5.getScaledInstance(16, 16, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
-        ImageIcon resizedIcon5 = new ImageIcon(resizedImg5);
+        ImageIcon icon5 = new ImageIcon("..\\javasw_fastfood\\images\\LamMoi.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        // Thiết lập kích thước mới cho biểu tượng
+        btnLamMoi.setIcon(icon5);
         
         
 		btnHuy.addActionListener(new ActionListener() {
