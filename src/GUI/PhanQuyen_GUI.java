@@ -334,44 +334,40 @@ public class PhanQuyen_GUI extends JPanel {
 			}
 		});
 		// Tạo một biểu tượng
-        ImageIcon icon = new ImageIcon("..\\javasw_fastfood\\images\\plus.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
-        // Thiết lập kích thước mới cho biểu tượng
+        ImageIcon icon = new ImageIcon("images/plus.png");
         Image img = icon.getImage();
-        Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImg);
         btnThem.setIcon(resizedIcon);
         
-        ImageIcon icon1 = new ImageIcon("..\\javasw_fastfood\\images\\edit.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
-        // Thiết lập kích thước mới cho biểu tượng
+        ImageIcon icon1 = new ImageIcon("images/edit2.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         Image img1 = icon1.getImage();
-        Image resizedImg1 = img1.getScaledInstance(18, 18, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        Image resizedImg1 = img1.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon1 = new ImageIcon(resizedImg1);
         btnSua.setIcon(resizedIcon1);
         
-        ImageIcon icon2 = new ImageIcon("..\\javasw_fastfood\\images\\delete.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
-        // Thiết lập kích thước mới cho biểu tượng
+        ImageIcon icon2 = new ImageIcon("images/remove.png");
         Image img2 = icon2.getImage();
-        Image resizedImg2 = img2.getScaledInstance(18, 18, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        Image resizedImg2 = img2.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon2 = new ImageIcon(resizedImg2);
         btnXoa.setIcon(resizedIcon2);
         
         
-        ImageIcon icon3 = new ImageIcon("..\\javasw_fastfood\\images\\Huy.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        ImageIcon icon3 = new ImageIcon("images/Huy.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
         Image img3 = icon3.getImage();
         Image resizedImg3 = img3.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon3 = new ImageIcon(resizedImg3);
         btnHuy.setIcon(resizedIcon3);
         
-        ImageIcon icon4 = new ImageIcon("..\\javasw_fastfood\\images\\Luu.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        ImageIcon icon4 = new ImageIcon("images/Luu.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
         Image img4 = icon4.getImage();
         Image resizedImg4 = img4.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon4 = new ImageIcon(resizedImg4);
         btnLuu.setIcon(resizedIcon4);
         
-        ImageIcon icon5 = new ImageIcon("..\\javasw_fastfood\\images\\LamMoi.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
-        // Thiết lập kích thước mới cho biểu tượng
+        ImageIcon icon5 = new ImageIcon("images/LamMoi.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         Image img5 = icon5.getImage();
         Image resizedImg5 = img5.getScaledInstance(16, 16, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon5 = new ImageIcon(resizedImg5);

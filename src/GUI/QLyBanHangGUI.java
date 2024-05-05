@@ -381,12 +381,12 @@ public class QLyBanHangGUI extends JPanel {
 
         // Tạo một JComboBox và thiết lập dữ liệu từ Map
         comboBoxKM = new JComboBox<>(optionMapKM.values().toArray(new String[0]));
-        comboBoxKM.setPreferredSize(new Dimension(200, 10));
+        comboBoxKM.setPreferredSize(new Dimension(180, 10));
         panel_KhuyenMai.add(comboBoxKM);
         
 
 		// thông tin KH
-		MyLabelSecond lblKH = new MyLabelSecond("Khách hàng");
+		MyLabelSecond lblKH = new MyLabelSecond("Khách");
 		pnInput.add(lblKH);
 		//tên kh
 		MyPanelSecond panel_TenKH = new MyPanelSecond();
@@ -394,7 +394,7 @@ public class QLyBanHangGUI extends JPanel {
 		pnInput.add(panel_TenKH);
 		panel_TenKH.setLayout(new BoxLayout(panel_TenKH, BoxLayout.X_AXIS));
 
-		MyLabelSecond lblTenKH = new MyLabelSecond("Tên KH");
+		MyLabelSecond lblTenKH = new MyLabelSecond("Mã KH");
 		panel_TenKH.add(lblTenKH);
 
 		txtMaKH = new MyTextField();
@@ -1034,7 +1034,7 @@ public class QLyBanHangGUI extends JPanel {
 			String thanhTien = modelTableGH.getValueAt(i, 4) + "";
 
 			rs = cthdBUS.addChiTietHoaDon(maSP, soLuong, donGia, thanhTien);
-			rs = ctBUS.giamSoLuongNguyenLieuKhiCheBien(Integer.parseInt(maSP), Integer.parseInt(soLuong));
+			ctBUS.giamSoLuongNguyenLieuKhiCheBien(Integer.parseInt(maSP), Integer.parseInt(soLuong));
 		}
 		total = total - total/100*giamgia;
 		String maKH = txtMaKH.getText();

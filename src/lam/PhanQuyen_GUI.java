@@ -320,21 +320,21 @@ public class PhanQuyen_GUI extends JFrame {
 			}
 		});
 		// Tạo một biểu tượng
-        ImageIcon icon = new ImageIcon("..\\javasw_fastfood\\images\\plus.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        ImageIcon icon = new ImageIcon("images/plus.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
         Image img = icon.getImage();
         Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon = new ImageIcon(resizedImg);
         btnThem.setIcon(resizedIcon);
         
-        ImageIcon icon1 = new ImageIcon("..\\javasw_fastfood\\images\\edit.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        ImageIcon icon1 = new ImageIcon("images/edit.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
         Image img1 = icon1.getImage();
         Image resizedImg1 = img1.getScaledInstance(18, 18, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
         ImageIcon resizedIcon1 = new ImageIcon(resizedImg1);
         btnSua.setIcon(resizedIcon1);
         
-        ImageIcon icon2 = new ImageIcon("..\\javasw_fastfood\\images\\delete.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        ImageIcon icon2 = new ImageIcon("images/delete.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
         // Thiết lập kích thước mới cho biểu tượng
         Image img2 = icon2.getImage();
         Image resizedImg2 = img2.getScaledInstance(18, 18, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -205,7 +206,11 @@ public class QuanLyKhachHangGUI extends JPanel {
         
         btnTimKiem = new  MyButton("Tìm kiếm");
         btnTimKiem.setFont(new Font("Arial", Font.PLAIN, 16));
-        btnTimKiem.setIcon(new ImageIcon("images/search.png"));
+        ImageIcon iconTimkiem = new ImageIcon("images/loupe.png");
+		Image img0 = iconTimkiem.getImage();
+		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconTimkiem.setImage(newImg0);
+		btnTimKiem.setIcon(iconTimkiem);
         pnBtnTimKiem.add(pnTimMin);
         pnBtnTimKiem.add( pnTimMax);
         pnBtnTimKiem.add(btnTimKiem);
@@ -215,17 +220,37 @@ public class QuanLyKhachHangGUI extends JPanel {
         pnButton.setFont(new Font("Arial", Font.PLAIN, 16));
         
         btnThem = new MyButton("Thêm");
-        btnThem.setIcon(new ImageIcon("images/add-user.png"));
+        ImageIcon icon = new ImageIcon("images/plus.png");
+        Image img = icon.getImage();
+        Image resizedImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImg);
+        btnThem.setIcon(resizedIcon);
         btnThem.setFont(new Font("Arial", Font.PLAIN, 16));
+        
         btnXoa = new MyButton("Xóa");
-        btnXoa.setIcon(new ImageIcon("images/trash.png"));
+        ImageIcon icon2 = new ImageIcon("images/remove.png");
+        Image img2 = icon2.getImage();
+        Image resizedImg2 = img2.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        ImageIcon resizedIcon2 = new ImageIcon(resizedImg2);
+        btnXoa.setIcon(resizedIcon2);
         btnXoa.setFont(new Font("Arial", Font.PLAIN, 16));
+        
         btnSua = new MyButton("Sửa");
-        btnSua.setIcon(new ImageIcon("images/fix.png"));
+        ImageIcon icon1 = new ImageIcon("images/edit2.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        Image img1 = icon1.getImage();
+        Image resizedImg1 = img1.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        ImageIcon resizedIcon1 = new ImageIcon(resizedImg1);
+        btnSua.setIcon(resizedIcon1);
         btnSua.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        
         btnReset = new MyButton("Reset");
-        btnReset.setIcon(new ImageIcon("images/reset.png"));
+        ImageIcon icon5 = new ImageIcon("images/LamMoi.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của bạn
+        Image img5 = icon5.getImage();
+        Image resizedImg5 = img5.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và chiều rộng mong muốn
+        ImageIcon resizedIcon5 = new ImageIcon(resizedImg5);
+        btnReset.setIcon(resizedIcon5);
         btnReset.setFont(new Font("Arial", Font.PLAIN, 16));
+        
         pnButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         pnButton.add(btnThem); pnButton.add(btnSua); pnButton.add(btnXoa);pnButton.add(btnReset);
         
