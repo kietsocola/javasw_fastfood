@@ -275,6 +275,7 @@ public class QuanLyKhachHangGUI extends JPanel {
         tableModel.setColumnIdentifiers(new String[]{"Mã Khách Hàng", "Tên Khách Hàng","Giới Tính", "Số ĐT", "Tổng Chi Tiêu"});
         table = new MyTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(453, 260));
         scrollPane.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
         panel_table.setLayout(new BorderLayout(0, 0));
         panel_table.add(scrollPane, BorderLayout.NORTH);

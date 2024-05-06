@@ -290,13 +290,15 @@ public class QuanLyNhanVienGUI extends JPanel {
 	        pnContainTable.add(panel_table, BorderLayout.CENTER);
 			panel_main.add(pnContainTable, BorderLayout.CENTER);
 
-	        tableModel = new DefaultTableModel();
+			tableModel = new DefaultTableModel();
 	        tableModel.setColumnIdentifiers(new String[]{"Mã Nhân Viên","Tên Đăng Nhập","Mật khẩu", "Tên Nhân Viên", "Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ", "Trạng Thái"});
 	        table = new MyTable(tableModel);
 	        JScrollPane scrollPane = new JScrollPane(table);
-	        scrollPane.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+	        scrollPane.setPreferredSize(new Dimension(453, 120)); 
 	        panel_table.setLayout(new BorderLayout(0, 0));
 	        panel_table.add(scrollPane, BorderLayout.NORTH);
+			
+	       
 	        
 
 	        loadDataTblNhanVien();

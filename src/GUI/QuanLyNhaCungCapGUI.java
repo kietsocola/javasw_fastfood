@@ -209,7 +209,7 @@ public class QuanLyNhaCungCapGUI extends JPanel {
 	        tableModel.setColumnIdentifiers(new String[]{"Mã Nhà Cung Cấp", "Tên Nhà Cung Cấp", "Số ĐT", "Địa Chỉ"});
 	        table = new MyTable(tableModel);
 	        JScrollPane scrollPane = new JScrollPane(table);
-	        scrollPane.setPreferredSize(new Dimension(453, 150)); 
+	        scrollPane.setPreferredSize(new Dimension(453, 310)); 
 	        panel_table.setLayout(new BorderLayout(0, 0));
 	        panel_table.add(scrollPane, BorderLayout.NORTH);
 	        

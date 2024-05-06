@@ -162,7 +162,7 @@ public class NhanVien_DAO {
 
 	public boolean kiemTraTrungSDT(String sdt) {
 		try {
-			String sql="SELECT * FROM nhanvien where SoDienThoai='"+sdt+"'";
+			String sql="SELECT * FROM nhanvien where SoDienThoai='"+sdt+"' AND isDelete = 0";
 			Statement st = conDB.conn.createStatement();
 			ResultSet rs=st.executeQuery(sql);
 			return rs.next();
