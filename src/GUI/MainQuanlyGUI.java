@@ -38,12 +38,14 @@ public class MainQuanlyGUI extends JFrame {
 	private NhapHangGUI pnNhapHang;
 	private KhuyenMaiGUI pnKhuyenMai;
 	private CongThucGUI pnCongThuc;
+	private QuanLyNhaCungCapGUI pnNCC;
 	
 	private MyLabel panel_logo, lblBanHang, lblKhuyenMai, lblSanPham, lblNhanvien, lblKhachhang, lblNhapHang,
 			lblThongKe, lblPhanQuyen;
 
 	private MyLabel lastClickedLabel;
 	private MyLabel lblCongThuc;
+	private MyLabel lblNhaCC;
 	public MainQuanlyGUI(ArrayList<Boolean> QuyenHan) {
 		this.QuyenHan = QuyenHan;
 		this.setTitle("Phần mềm quản lý cửa hàng đồ ăn nhanh");
@@ -143,6 +145,9 @@ public class MainQuanlyGUI extends JFrame {
 		Image newImg6 = img6.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconNhapHang.setImage(newImg6);
 		lblNhapHang.setIcon(iconNhapHang);
+		
+		lblNhaCC = new MyLabel("  Nhà CC");
+		lblNhaCC.setIcon(iconKhachHang);
 
 		lblThongKe = new MyLabel("  Thống kê");
 		ImageIcon iconThongKe = new ImageIcon("images/analytics.png");
@@ -174,6 +179,7 @@ public class MainQuanlyGUI extends JFrame {
 		listMenuLeft.add(panel_logo);
 		if(QuyenHan.get(0) == true) {
 			listMenuLeft.add(lblNhapHang);
+			listMenuLeft.add(lblNhaCC);
 		}
 		
 		if(QuyenHan.get(1) == true) {
@@ -219,6 +225,7 @@ public class MainQuanlyGUI extends JFrame {
 		pnPhanQuyen =  new PhanQuyen_GUI();
 		pnKhuyenMai = new KhuyenMaiGUI();
 		pnCongThuc = new CongThucGUI();
+		pnNCC = new QuanLyNhaCungCapGUI();
 		
 		pnCard.add(pnBanHang, "banhang");
 		pnCard.add(pnSanpham, "sanpham");
@@ -229,6 +236,7 @@ public class MainQuanlyGUI extends JFrame {
 		pnCard.add(pnPhanQuyen,"phanquyen");
 		pnCard.add(pnKhuyenMai, "khuyenmai");
 		pnCard.add(pnCongThuc, "congthuc");
+		pnCard.add(pnNCC, "nhacc");
 		pnMain.add(pnCard, BorderLayout.CENTER);
 
 		con.add(pnMain);
@@ -287,6 +295,8 @@ public class MainQuanlyGUI extends JFrame {
 						cardName = "khuyenmai";
 					} else if (lbl == lblCongThuc) {
 						cardName = "congthuc";
+					} else if (lbl == lblNhaCC) {
+						cardName = "nhacc";
 					}
 					lbl.setBackground(MyColor.BACKGROUND_CLICK_COLOR);
 					lbl.setForeground(new Color(255, 255, 255));

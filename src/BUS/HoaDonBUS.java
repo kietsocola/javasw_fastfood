@@ -17,17 +17,17 @@ public class HoaDonBUS {
 		listHD = hoaDonDAO.getListHoaDon();
 		return listHD;
 	}
-	public void luuHoaDon(int maKH, int nhanVien, int tongTien, String ghiChu) {
+	public void luuHoaDon(int nhanVien, int maKH, int tongTien, String ghiChu) {
         HoaDon hd = new HoaDon();
 //        String[] arrNV = nhanVien.split(" - ");
 //        int maNV = Integer.parseInt(arrNV[0]);
 //        hd.setidNV(maNV);
-        hd.setidKH(maKH);
+        if(maKH!=0) hd.setidKH(maKH);
         hd.setGhiChu(ghiChu);
         hd.setTongTien(tongTien);
         Date currentDate = new Date();
         hd.setNgayLap(currentDate);
-        hd.setidNV(1);
+        hd.setidNV(nhanVien);
         hoaDonDAO.addHoaDon(hd);
     }
 	public ArrayList<HoaDon> getListHoaDonTheoNgay(Date minDate, Date maxDate) {
