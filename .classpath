@@ -143,6 +143,16 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="MyLib/pdfbox-2.0.31.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="MyLib/pdfbox-3.0.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="MyLib/poi-4.0.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -184,16 +194,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="MyLib/xmlbeans-5.0.3.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="MyLib/pdfbox-2.0.31.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="MyLib/pdfbox-3.0.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

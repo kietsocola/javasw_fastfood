@@ -96,8 +96,14 @@ public class PDFExport {
                         contentStream.beginText();
                         contentStream.setFont(fontB ,  14);
                         contentStream.newLineAtOffset(35, 580);
+                        if(type.equals("pn"))
+                        	contentStream.showText("Mã NL");
+                        else
                         contentStream.showText("Mã SP");
                         contentStream.newLineAtOffset(115, 0);
+                        if(type.equals("pn"))
+                        	contentStream.showText("Tên NL");
+                        else
                         contentStream.showText("Tên SP");
                         contentStream.newLineAtOffset(175, 0);
                         contentStream.showText("Số Lượng");
