@@ -36,7 +36,7 @@ public class TableExample extends JFrame {
     private void pushDataToTable() {
         // Dữ liệu mẫu
         Vector<Object> row1 = new Vector<>();
-        row1.add("Data 1");
+        row1.add(1);
         row1.add("Data 2");
         row1.add("Data 3");
         row1.add("Data 4");
