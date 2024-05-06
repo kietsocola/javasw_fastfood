@@ -40,27 +40,13 @@ public class NhanVien_BUS {
     	}
     	return "";
     }
+    
+    public boolean kiemTraTrungSDT(String sdt) {
+    	return nvdao.kiemTraTrungSDT(sdt);
+    }
 
     public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu, int idTaiKhoan ) {
-        ten = ten.trim();
-        soDT = soDT.trim();
-        if (ten.equals("")) {
-            JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (soDT.equals("")) {
-            JOptionPane.showMessageDialog(null, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        String regex = "^0\\d{9,10}$";
-        if (!soDT.matches(regex)) {
-        	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        	 return false;
-        }
-        if (chucVu.equals("")) {
-            JOptionPane.showMessageDialog(null, "Chức vụ không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+    	 
         NhanVien nv = new NhanVien();
         nv.setTen(ten);
         nv.setNgaySinh(ngaySinh);
@@ -76,19 +62,55 @@ public class NhanVien_BUS {
         }
         return flag;
     }
-
-    public boolean suaNhanVien(String ma, String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu) {
-        try {
-    	int maNV = Integer.parseInt(ma);
-        ten = ten.trim();
-        ngaySinh = ngaySinh.trim();
+    
+    public boolean kiemTraNhanVien(String ten,int gioiTinh, String soDT) {
+    	   ten = ten.trim();
+           soDT = soDT.trim();
+           if (ten.equals("")) {
+               JOptionPane.showMessageDialog(null, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+               return false;
+           }
+           if (ten.equals("")) {
+               JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+               return false;
+           }
+           if (gioiTinh != 0 && gioiTinh != 1) {
+               JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+               return false;
+           }
+           if (soDT.equals("")) {
+               JOptionPane.showMessageDialog(null, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+               return false;
+           }
+           
+           String regex = "^0\\d{9,10}$";
+           if (!soDT.matches(regex)) {
+           	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+           	 return false;
+           }
+           
+           if (kiemTraTrungSDT(soDT)) {
+             	 JOptionPane.showMessageDialog(null, "Số điện thoại bị trùng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+             	 return false;
+             }
+           
+           
+           return true;
+    }
+    
+    public boolean kiemTraNhanVien2(String ten,int gioiTinh, String soDT) {
+ 	   ten = ten.trim();
         soDT = soDT.trim();
         if (ten.equals("")) {
-            JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (ten.equals("")) {
             JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (gioiTinh != 0 && gioiTinh != 1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (soDT.equals("")) {
@@ -101,10 +123,18 @@ public class NhanVien_BUS {
         	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         	 return false;
         }
-        if (chucVu.equals("")) {
-            JOptionPane.showMessageDialog(null, "Chức vụ không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+        
+        
+        
+        return true;
+ }
+    
+    
+
+    public boolean suaNhanVien(String ma, String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu) {
+        try {
+        	
+    	int maNV = Integer.parseInt(ma);
         NhanVien nv = new NhanVien();
         nv.setMaNV(maNV);
         nv.setTen(ten);
@@ -157,6 +187,10 @@ public class NhanVien_BUS {
             return flag;
         
     }
+    
+    public int getIdTaiKhoan(String id) {
+		return nvdao.getIdTaiKhoan(Integer.parseInt(id));
+	}
     
 
     public boolean nhapExcel(String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu ) {

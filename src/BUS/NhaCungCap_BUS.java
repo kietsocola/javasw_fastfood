@@ -27,25 +27,34 @@ public class NhaCungCap_BUS {
 		return this.listncc;
 	}
 	
-	public boolean themNCC(String tenNCC,String soDT, String diaChi ) {
+	public boolean kiemTraNCC(String tenNCC,String soDT, String diaChi ){
 		if(tenNCC.trim().equals("")) {
 			 JOptionPane.showMessageDialog(null, "Hãy nhập tên nhà cung cấp này!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 			 return false;
 		}
-		if(diaChi.trim().equals("")) {
-			 JOptionPane.showMessageDialog(null, "Hãy nhập địa chỉ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			 return false;
-		}
+		
 		if(soDT.trim().equals("")) {
 			 JOptionPane.showMessageDialog(null, "Hãy nhập số điện thoại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 			 return false;
 		}
 		
 		 String regex = "^0\\d{9,10}$";
-	        if (!soDT.matches(regex)) {
+	     if (!soDT.matches(regex)) {
 	        	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 	        	 return false;
-	        }
+	     }
+	     
+	     if(diaChi.trim().equals("")) {
+			 JOptionPane.showMessageDialog(null, "Hãy nhập địa chỉ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			 return false;
+		}
+	     return true;
+	}
+	
+	public boolean themNCC(String tenNCC,String soDT, String diaChi ) {
+		if(!kiemTraNCC(tenNCC,soDT, diaChi )) {
+			return false;
+		}
 
         NhaCungCap ncc =new NhaCungCap();
         ncc.setTenNCC(tenNCC);
@@ -62,25 +71,9 @@ public class NhaCungCap_BUS {
 	}
 	
 	public boolean suaNCC(String maNCC,String tenNCC,String soDT, String diaChi ) {
-		if(tenNCC.trim().equals("")) {
-			 JOptionPane.showMessageDialog(null, "Hãy chọn nhà cung cấp này!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			 return false;
+		if(!kiemTraNCC(tenNCC,soDT, diaChi )) {
+			return false;
 		}
-		if(diaChi.trim().equals("")) {
-			 JOptionPane.showMessageDialog(null, "Hãy nhập địa chỉ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			 return false;
-		}
-		if(soDT.trim().equals("")) {
-			 JOptionPane.showMessageDialog(null, "Hãy nhập số điện thoại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			 return false;
-		}
-		
-		String regex = "^0\\d{9,10}$";
-        if (!soDT.matches(regex)) {
-        	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        	 return false;
-        }
-        
         int ma=Integer.parseInt(maNCC);
         
         NhaCungCap ncc =new NhaCungCap();

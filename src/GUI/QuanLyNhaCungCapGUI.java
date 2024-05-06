@@ -331,6 +331,11 @@ public class QuanLyNhaCungCapGUI extends JPanel {
 			}
 		
 		private void xuLyThemNCC() {
+			if (txtTenNCC.getText().isEmpty() && txt_soDT.getText().isEmpty() && txtDiaChi.getText().isEmpty() ) {
+			    JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			    return;
+			}
+
 		 if(nccbus.themNCC(txtTenNCC.getText(), txt_soDT.getText(),txtDiaChi.getText())) {
 			 nccbus.docDS();
 		     btnReset.doClick();

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class NhanVien_DAO {
@@ -116,6 +117,21 @@ public class NhanVien_DAO {
 	        return false;
 	    }
 	}
+	
+	public int getIdTaiKhoan(int id) {	
+		try {
+			String sql="SELECT idTaiKhoan FROM nhanvien where id="+id;
+			Statement st = conDB.conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+		}catch(Exception e) {
+			 e.printStackTrace();
+		}
+		return -1;
+	}
+	
 
 	public boolean nhapExcel(NhanVien nv) {
 	    try {
@@ -144,6 +160,16 @@ public class NhanVien_DAO {
 	    }
 	}
 
-
+	public boolean kiemTraTrungSDT(String sdt) {
+		try {
+			String sql="SELECT * FROM nhanvien where SoDienThoai='"+sdt+"'";
+			Statement st = conDB.conn.createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			return rs.next();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 }

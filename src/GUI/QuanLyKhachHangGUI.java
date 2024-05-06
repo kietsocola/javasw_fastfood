@@ -468,10 +468,11 @@ public class QuanLyKhachHangGUI extends JPanel {
 	}
 	
 	 private void xuLyThemKhachHang() {
-		  if (!rdoBtn_Nam.isSelected() && !rdoBtn_Nu.isSelected()) {
-		      JOptionPane.showMessageDialog(this, "Vui lòng chọn giới tính", "Lỗi", JOptionPane.ERROR_MESSAGE);
-		      return;
-		  }
+		 if (txtTenKH.getText().isEmpty() && txtTenKH.getText().isEmpty() && txt_soDT.getText().isEmpty() ) {
+			 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			 return;
+		 }
+		 
 		  int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 		 if(khachHangBUS.themKhachHang(txtTenKH.getText(),gioiTinh,txt_soDT.getText()))
 			 btnReset.doClick();

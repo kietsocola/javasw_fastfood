@@ -3,6 +3,7 @@ import java.sql.Connection;
 
 
 import DTO.taiKhoan_DTO;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class taiKhoan_DAO  {
 		 
 	    ArrayList<taiKhoan_DTO> dstk = new ArrayList<>();
 	    con.connect();
-	        try (PreparedStatement pre = con.getCon().prepareStatement("SELECT * FROM taiKhoan")) {
+	        try (PreparedStatement pre = con.getCon().prepareStatement("SELECT * FROM taiKhoan WHERE isDelete=0")) {
 	            ResultSet rs = pre.executeQuery();
 	            while (rs.next()) {
 	            	taiKhoan_DTO tk = new taiKhoan_DTO();
@@ -39,7 +40,7 @@ public class taiKhoan_DAO  {
 public int idTaiKhoanMax() {
 		
 		con.connect();
-		String sql = "select MAX(id) as id from taikhoan";
+		String sql = "select MAX(id) as id from taikhoan where isDelete=0";
 		try {
 			Statement stmt = con.getCon().createStatement()	;
 			ResultSet rs = stmt.executeQuery(sql);
@@ -54,7 +55,7 @@ public int idTaiKhoanMax() {
 	public ResultSet getAccount(taiKhoan_DTO account) throws SQLException  {
 		boolean result = false;
 		con.connect();
-		String sql = "select * from taikhoan where TenDangNhap = ? and MatKhau =?";
+		String sql = "select * from taikhoan where TenDangNhap = ? and MatKhau =? AND isDelete=0";
 		PreparedStatement preparedStatement =con.getCon().prepareStatement(sql);
 		
 		preparedStatement.setString(1,account.getTenTaiKhoan());
@@ -123,18 +124,51 @@ public int idTaiKhoanMax() {
 		return -1;
 	}
 	
+	public String getTenDangNhap(int id) {	
+		try {
+			con.connect();
+			String sql="SELECT TenDangNhap FROM taikhoan where id="+id;
+			Statement st = con.getCon().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+		}catch(Exception e) {
+			 e.printStackTrace();
+		}
+		return "";
+	}
+	
+	
+
+	public int getMatKhau(int id) {	
+		try {
+			con.connect();
+			String sql="SELECT MatKhau FROM taikhoan where id="+id;
+			Statement st = con.getCon().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+		}catch(Exception e) {
+			 e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	
 	public boolean suaTaiKhoan(taiKhoan_DTO tk) {
 		boolean result = false;
         try {
         	con.connect();
-            String sql = "UPDATE taikhoan SET NgayTao=?, TenDangNhap=?, MatKhau=?, TrangThai=?, Quyen=? WHERE id=? ";
+            String sql = "UPDATE taikhoan SET TenDangNhap=?, MatKhau=?, TrangThai=?, Quyen=? WHERE id=? ";
             PreparedStatement pre = con.getCon().prepareStatement(sql);
-            pre.setString(1, tk.getNgayTao());
-            pre.setString(2, tk.getTenTaiKhoan());
-            pre.setString(3, tk.getMatKhau());
-            pre.setInt(4, tk.getTrangThai());
-            pre.setInt(5, tk.getQuyen());
-            pre.setInt(6, tk.getMa());
+            
+            pre.setString(1, tk.getTenTaiKhoan());
+            pre.setString(2, tk.getMatKhau());
+            pre.setInt(3, tk.getTrangThai());
+            pre.setInt(4, tk.getQuyen());
+            pre.setInt(5, tk.getMa());
             result= pre.executeUpdate() > 0;
         } catch (Exception e) {
         	e.printStackTrace();
@@ -142,6 +176,19 @@ public int idTaiKhoanMax() {
         }
         return result;
     }
+	
+	 public boolean deleteTaiKhoan(int ma) {
+	        boolean result = false;
+	        try {
+	            String sql = "UPDATE taikhoan SET isDelete=1 where id=?";
+	            PreparedStatement pre = con.getCon().prepareStatement(sql);
+	            pre.setInt(1, ma);
+	            result = pre.executeUpdate() > 0;
+	        } catch (SQLException ex) {
+	            return false;
+	        }
+	        return result;
+	    }
 	
 	public boolean themTaiKhoan(taiKhoan_DTO tk) {
 		boolean result = false;
@@ -166,7 +213,7 @@ public int idTaiKhoanMax() {
 	public boolean kiemTraTrungTenDangNhap(String tenDangNhap) {
         try {
         	con.connect();
-            String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = '" + tenDangNhap + "'";
+            String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = '" + tenDangNhap + "' AND isDelete = 0";
             Statement st = con.getCon().createStatement();
             ResultSet rs = st.executeQuery(sql);
             return rs.next();

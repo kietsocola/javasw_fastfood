@@ -404,7 +404,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 		  }
 		  
 		  private void xuLyReset(){
-	         loadDataTblNhanVien();
+			  loadDataTblNhanVien();
 	         txtMaNV.setText("");
 	         txtTenNV.setText("");
 	         txt_soDT.setText("");
@@ -413,16 +413,21 @@ public class QuanLyNhanVienGUI extends JPanel {
 	         dateChooser.setDate(null);
 	         rdoBtn_Nam.setSelected(true);
 	         cmbChucVu.setSelectedIndex(0);
+	         
 		  }
 
 			private void xuLyXoaNhanVien() {
 				String ma=txtMaNV.getText();
-				boolean flag =nhanVienBUS.xoaNhanVien(ma);
-				if(flag) {
-					nhanVienBUS.docDanhSach();
-					loadDataTblNhanVien();
-					 btnReset.doClick();
-				}
+
+					   nhanVienBUS.xoaNhanVien(ma) ;
+					   taiKhoanBUS.xoaTaiKhoan(nhanVienBUS.getIdTaiKhoan(ma));
+					
+						nhanVienBUS.docDanhSach();
+						taiKhoanBUS.docDanhSach();
+					
+						 btnReset.doClick();
+    
+
 			}
 			
 			private void xuLySuaNhanVien() {
@@ -459,7 +464,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 				         break;
 				 }
 			   boolean fad=false;
-			   int id=0;
+			   int id=1;
 			    for (NhanVien nv : dsnv) {
 			    	for(taiKhoan_DTO tk: dstk) {
 			    		if (tk.getMa() == nv.getIdTaiKhoan()) {
@@ -469,27 +474,28 @@ public class QuanLyNhanVienGUI extends JPanel {
 			    	}
 			    }
 			    if(fad) {
-			    	nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem));
-	    			taiKhoanBUS.suaTaiKhoan(id,txtTenDN.getText(), txtMatKhau.getText(), so);
-	    			taiKhoanBUS.docDanhSach();
-	    			nhanVienBUS.docDanhSach();
-				     
-				     loadDataTblNhanVien();
+			    	
+			    	if(!taiKhoanBUS.kiemTraTaiKhoan2(txtTenDN.getText(), txtMatKhau.getText())){
+			    		return;
+			    	}
+			    	
+			    	if(!nhanVienBUS.kiemTraNhanVien2(txtMaNV.getText(),gioiTinh, txt_soDT.getText())){
+			    		return;
+			    	}
+			    	
+				    	nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem));
+		    			taiKhoanBUS.suaTaiKhoan(id,txtTenDN.getText(), txtMatKhau.getText(), so);
+		    			taiKhoanBUS.docDanhSach();
+		    			nhanVienBUS.docDanhSach();
+		    			btnReset.doClick();
+			    	
 			    }
-//			     btnReset.doClick();
-//			    if (nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem))) {
-//			        nhanVienBUS.docDanhSach();
-//			    	btnReset.doClick();
-//			    }
+			    
+
 			}
 			
 			
 			private void xuLyThemNhanVien() {
-			 if (!rdoBtn_Nam.isSelected() && !rdoBtn_Nu.isSelected()) {
-			     JOptionPane.showMessageDialog(this, "Vui lòng chọn giới tính", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			     return;
-			 }
-			
 			 String ngaySinh = "";
 			 if (dateChooser.getDate() != null) {
 			     // Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
@@ -517,13 +523,27 @@ public class QuanLyNhanVienGUI extends JPanel {
 			         so = 2;
 			         break;
 			 }
-			 int idTaiKhoan=taiKhoanBUS.idTaiKhoanMax()+1;
 			 
+			 if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty() && txt_soDT.getText().isEmpty()) {
+				 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+				 return;
+			 }
+			 
+			 if(!taiKhoanBUS.kiemTraTaiKhoan(txtTenDN.getText(), txtMatKhau.getText()) ) {
+				 return;
+			 }
+			 if(!nhanVienBUS.kiemTraNhanVien(txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
+				 return;
+			 }
+	 
+			
 			 if(taiKhoanBUS.themTaiKhoan(txtTenDN.getText(), txtMatKhau.getText(),so) ) {
+				 taiKhoanBUS.docDanhSach();
+				 int idTaiKhoan=taiKhoanBUS.idTaiKhoanMax();
+				 
 				 if(nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem),idTaiKhoan)) {
 				     nhanVienBUS.docDanhSach();
-				     taiKhoanBUS.docDanhSach();
-				     loadDataTblNhanVien();
+
 				     btnReset.doClick();
 				 }
 			 }
@@ -538,13 +558,18 @@ public class QuanLyNhanVienGUI extends JPanel {
 			   
 			   ArrayList<NhanVien> dsnv = nhanVienBUS.timNhanVien(txtTimKiem.getText());
 			   for (NhanVien nv : dsnv) {
-			       Object[] rowData = new Object[6];
-			       rowData[0] = nv.getMaNV();
-			       rowData[1] = nv.getTen();
-			       rowData[2] = nv.getNgaySinh();
-			       rowData[3] = nv.getGioiTinh()==1?"Nam":"Nữ";
-			       rowData[4] = nv.getSoDT();
-			       rowData[5] = nv.getChucVu();
+				   Object[] rowData = new Object[9];
+
+			        rowData[0] = nv.getMaNV();
+			        rowData[1]=taiKhoanBUS.getTenDangNhap(nv.getIdTaiKhoan());
+			        rowData[2]=taiKhoanBUS.getMatKhau(nv.getIdTaiKhoan());
+			        rowData[3] = nv.getTen();
+			        rowData[4] = nv.getNgaySinh();
+			        rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
+			        rowData[6] = nv.getSoDT();		            
+			        rowData[7] = nv.getChucVu();
+			        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
+			        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
 			       tableModel.addRow(rowData);
 			   }
 			}
@@ -618,28 +643,20 @@ public class QuanLyNhanVienGUI extends JPanel {
 			    tableModel.setRowCount(0);
 			    
 			    ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
-			    ArrayList<taiKhoan_DTO> dstk = taiKhoanBUS.getDanhSachTaiKhoan();
+			    
 			    
 			    for (NhanVien nv : dsnv) {
 			        Object[] rowData = new Object[9];
 
 			        rowData[0] = nv.getMaNV();
+			        rowData[1]=taiKhoanBUS.getTenDangNhap(nv.getIdTaiKhoan());
+			        rowData[2]=taiKhoanBUS.getMatKhau(nv.getIdTaiKhoan());
 			        rowData[3] = nv.getTen();
 			        rowData[4] = nv.getNgaySinh();
 			        rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
 			        rowData[6] = nv.getSoDT();		            
 			        rowData[7] = nv.getChucVu();
-			        
-			      
-			        for (taiKhoan_DTO tk : dstk) {
-			            if (tk.getMa() == nv.getIdTaiKhoan()) {
-			                rowData[1] = tk.getTenTaiKhoan();
-			                rowData[2] = tk.getMatKhau();
-			                break; 
-			            }
-			        }
-			        
-			        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan() + "");
+			        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
 			        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
 			        
 			        tableModel.addRow(rowData);

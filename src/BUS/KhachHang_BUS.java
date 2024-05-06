@@ -24,23 +24,32 @@ public class KhachHang_BUS {
             this.docDanhSach();
         return this.listKH;
     }
+    
+    public boolean kiemTraKhachHang(String ten, String soDT){
+    	 ten = ten.trim();
+         soDT = soDT.trim();
+         if (ten.equals("")) {
+             JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+             return false;
+         }
+         if (soDT.equals("")) {
+             JOptionPane.showMessageDialog(null, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+             return false;
+         }
+         
+         String regex = "^0\\d{9,10}$";
+         if (!soDT.matches(regex)) {
+         	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+         	 return false;
+         }
+         return true;
+    }
 
     public boolean themKhachHang(String ten, int gioiTinh, String soDT) {
-        ten = ten.trim();
-        soDT = soDT.trim();
-        if (ten.equals("")) {
-            JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (soDT.equals("")) {
-            JOptionPane.showMessageDialog(null, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        String regex = "^0\\d{9,10}$";
-        if (!soDT.matches(regex)) {
-        	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        	 return false;
-        }
+    	if(!kiemTraKhachHang(ten, soDT)) {
+    		return false;
+    	}
+    	
         KhachHang kh = new KhachHang();
         kh.setTen(ten);
         kh.setGioiTinh(gioiTinh);
@@ -58,19 +67,10 @@ public class KhachHang_BUS {
     public boolean suaKhachHang(String ma, String ten, int gioiTinh, String soDT) {
     	try {
         int maKH = Integer.parseInt(ma);
-        if (ten.equals("")) {
-            JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (soDT.equals("")) {
-            JOptionPane.showMessageDialog(null, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        String regex = "^0\\d{9,10}$";
-        if (!soDT.matches(regex)) {
-        	 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        	 return false;
-        }
+        if(!kiemTraKhachHang(ten, soDT)) {
+    		return false;
+    	}
+        
         KhachHang kh = new KhachHang();
         kh.setTen(ten);
         kh.setGioiTinh(gioiTinh);

@@ -14,12 +14,11 @@ import DAO.taiKhoan_DAO;
 import DTO.taiKhoan_DTO;
 
 public class taiKhoan_BUS {
-		
+	private taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
 	
 	 private ArrayList<taiKhoan_DTO> listTK = null;
 	 
 	 public void docDanhSach() {
-		 taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
 	        this.listTK = taikhoandao.getDSTaiKhoan();
 	    }
 	 
@@ -30,7 +29,6 @@ public class taiKhoan_BUS {
 	    }
 	    
 		public int idTaiKhoanMax() {
-			taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
 			return taikhoandao.idTaiKhoanMax();
 		}
 	 
@@ -55,49 +53,27 @@ public class taiKhoan_BUS {
 	
 	
 	
-	public int getTrangThai(String id) {
-		taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
-		return taikhoandao.getTrangThai(Integer.parseInt(id));
+	public int getTrangThai(int id) {
+		return taikhoandao.getTrangThai(id);
 	}
 	
+	public String getTenDangNhap(int id) {
+		return taikhoandao.getTenDangNhap(id);
+	}
+	
+	public int getMatKhau(int id) {
+		return taikhoandao.getMatKhau(id);
+	}
+	
+	
+	
 	public boolean kiemTraTrungTenDangNhap(String tenDangNhap) {
-		taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
         return taikhoandao.kiemTraTrungTenDangNhap(tenDangNhap);
     }
 	
-	public boolean suaTaiKhoan(int id,String tenDangNhap,String matKhau, int quyen) {
-		taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
-        if (tenDangNhap.trim().equals("")) {
-        	JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
-            return false;
-        }
-        
-        if (matKhau.trim().equals("")) {
-        	JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
-            return false;
-        }
-        
-
-        taiKhoan_DTO tk= new taiKhoan_DTO();
-        
-        Date ngayHienTai = new Date();
-        
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String ngayTao = dateFormat.format(ngayHienTai);
-        tk.setMa(id);
-        tk.setNgayTao(ngayTao);
-        tk.setTenTaiKhoan(tenDangNhap);
-        tk.setMatKhau(matKhau);
-        tk.setQuyen(quyen);
-        boolean flag = taikhoandao.suaTaiKhoan(tk);
-
-        return flag;
-    }
 	
-	
-	public boolean themTaiKhoan( String tenDangNhap,String matKhau, int quyen) {
-		taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
-        if (tenDangNhap.trim().equals("")) {
+	public boolean kiemTraTaiKhoan(String tenDangNhap,String matKhau) {
+		if (tenDangNhap.trim().equals("")) {
         	JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
@@ -111,7 +87,51 @@ public class taiKhoan_BUS {
         	JOptionPane.showMessageDialog(null, "Tên đăng nhập bị trùng!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
+
+        String regex = "^[a-zA-Z0-9]{8,}$";
+        if (!matKhau.trim().matches(regex)) {
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và không chứa kí tự đặc biệt(!@#$%^&*)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean kiemTraTaiKhoan2(String tenDangNhap,String matKhau) {
+		if (tenDangNhap.trim().equals("")) {
+        	JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            return false;
+        }
         
+        if (matKhau.trim().equals("")) {
+        	JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            return false;
+        }
+        
+
+        String regex = "^[a-zA-Z0-9]{8,}$";
+        if (!matKhau.trim().matches(regex)) {
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và không chứa kí tự đặc biệt(!@#$%^&*)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean suaTaiKhoan(int id,String tenDangNhap,String matKhau, int quyen) {
+        taiKhoan_DTO tk= new taiKhoan_DTO();
+        
+        tk.setMa(id);
+        tk.setTenTaiKhoan(tenDangNhap);
+        tk.setMatKhau(matKhau);
+        tk.setQuyen(quyen);
+        boolean flag = taikhoandao.suaTaiKhoan(tk);
+
+        return flag;
+    }
+	
+	
+	public boolean themTaiKhoan( String tenDangNhap,String matKhau, int quyen) {
+
+		
         taiKhoan_DTO tk= new taiKhoan_DTO();
         
         Date ngayHienTai = new Date();
@@ -125,12 +145,12 @@ public class taiKhoan_BUS {
         tk.setTrangThai(1);
         tk.setQuyen(quyen);
         boolean flag = taikhoandao.themTaiKhoan(tk);
-//        if (flag) {
-//        	JOptionPane.showMessageDialog(null, "Cấp tài khoản thành công! Mật khẩu là " + tenDangNhap, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//           
-//        } else {
-//        	JOptionPane.showMessageDialog(null, "Cấp tài khoản thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//        }
+
         return flag;
+    }
+	
+    public boolean xoaTaiKhoan(int ma) {
+        boolean flag = taikhoandao.deleteTaiKhoan(ma);
+            return flag;  
     }
 }
