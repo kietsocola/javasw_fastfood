@@ -8,10 +8,8 @@ import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.awt.EventQueue;
 import java.awt.CardLayout;
 
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,14 +39,11 @@ import Custom.MyPanel;
 import Custom.MyTextField;
 import Custom.PDFExport;
 import DTO.ChiTietHoaDon;
-import DTO.CongThuc;
 import DTO.HoaDon;
 import DTO.KhachHang;
 import DTO.KhuyenMai;
 import DTO.LoaiSanPham;
-import DTO.NguyenLieu;
 import DTO.SanPham;
-import Custom.MyLabel;
 import Custom.MyButton;
 import Custom.MyColor;
 import Custom.MyLabelSecond;
@@ -68,7 +63,6 @@ import java.text.SimpleDateFormat;
 
 import Custom.MyTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -76,7 +70,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.FlowLayout;
 import java.awt.Font;
 
 public class QLyBanHangGUI extends JPanel {
@@ -84,11 +77,10 @@ public class QLyBanHangGUI extends JPanel {
 	private MyTextField txtMaSP;
 	private MyTextField txtTenSP;
 	private MyTextField txtDonGia;
-	private MyTextField txtSoLuong, txtSoLuongCB;
-	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD, modelTableNguyenLieuCB,
-			modelTableSPCheBien;
+	private MyTextField txtSoLuong;
+	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD;
 	private MyTable tableSP, tableGH, tableHD, tableCTHD;
-	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD, btnTimKiem, btnTimKiemHD, btnCheBien;
+	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD, btnTimKiem, btnTimKiemHD;
 	HoaDonBUS hdBUS = new HoaDonBUS();
 	SanPhamBUS spBUS = new SanPhamBUS();
 	CheBienBUS chebienBUS = new CheBienBUS();
@@ -102,11 +94,7 @@ public class QLyBanHangGUI extends JPanel {
 	private String[] tenNL;
 
 	private JTextField txtTimTheoTen;
-	private JComboBox ngayBD, thangBD, namBD, ngayKT, thangKT, namKT;
-	private MyTable tableSanPhamCheBien;
-	private MyTable tableNguyenLieuCheBien;
 	private JDateChooser startDateChooser, endDateChooser;
-	private JTextField textField;
 	private ArrayList<LoaiSanPham> arrLoaiSP;
 	private ArrayList<KhuyenMai> arrKhuyenMai;
 	private Map<Integer, String> optionMap, optionMapKM;
@@ -200,8 +188,6 @@ public class QLyBanHangGUI extends JPanel {
 		MyLabelSecond lblDSSP = new MyLabelSecond("Danh sách sản phẩm");
 		panel_tableSP.add(lblDSSP, BorderLayout.NORTH);
 		
-		Color primaryColor = new Color(Integer.parseInt("39", 16), Integer.parseInt("3c", 16),
-				Integer.parseInt("49", 16));
 		// tạo table sản phẩm
 		modelTableSP = new DefaultTableModel();
 		modelTableSP.addColumn("Mã SP");
@@ -278,7 +264,7 @@ public class QLyBanHangGUI extends JPanel {
 		}
 
         // Tạo một mảng các ID để sử dụng trong JComboBox
-        Integer[] ids = optionMap.keySet().toArray(new Integer[0]);
+//        Integer[] ids = optionMap.keySet().toArray(new Integer[0]);
 
         // Tạo một JComboBox và thiết lập dữ liệu từ Map
         comboBox = new JComboBox<>(optionMap.values().toArray(new String[0]));
@@ -383,7 +369,7 @@ public class QLyBanHangGUI extends JPanel {
 		}
 
         // Tạo một mảng các ID để sử dụng trong JComboBox
-        Integer[] idsKM = optionMapKM.keySet().toArray(new Integer[0]);
+//        Integer[] idsKM = optionMapKM.keySet().toArray(new Integer[0]);
 
         // Tạo một JComboBox và thiết lập dữ liệu từ Map
         comboBoxKM = new JComboBox<>(optionMapKM.values().toArray(new String[0]));
@@ -622,19 +608,16 @@ public class QLyBanHangGUI extends JPanel {
 		panelCard.add(panelTabHoaDon, "HoaDon");
 		panel_main.add(panelCard);
 
-		// ================================Menu chế biến=============================================
+		
 		
 
-		// =============================================================================
+		
+		// ==========================chuyển tab============================================
 
-		// chuyển tab
 		tabBanHang.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(panelCard, "BanHang");
-//				tabBanHang.setForeground(MyColor.PRIMARY_TEXT_COLOR);
-//				tabHoaDon.setForeground(Color.WHITE);
-//				tabCheBien.setForeground(Color.WHITE);
 				tabBanHang.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 				tabHoaDon.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 				tabBanHang.setOpaque(true);
@@ -644,9 +627,6 @@ public class QLyBanHangGUI extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardLayout.show(panelCard, "HoaDon");
-//				tabBanHang.setForeground(Color.WHITE);
-//				tabHoaDon.setForeground(Color.BLUE);
-//				tabCheBien.setForeground(Color.WHITE);
 				tabHoaDon.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 				tabBanHang.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 				tabHoaDon.setOpaque(true);
@@ -665,6 +645,7 @@ public class QLyBanHangGUI extends JPanel {
 				endDateChooser.setDate(null);
 			}
 		});
+		// ================================check số điện thoại khách=============================================
 		txtsdtKH.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -683,6 +664,8 @@ public class QLyBanHangGUI extends JPanel {
 		        }
 		    }
 		});
+		// ================================Tìm hóa đơn theo khoảng ngày=============================================
+		
 		btnTimKiemHD.addMouseListener(new MouseListener() {
 
 			@Override
@@ -715,6 +698,7 @@ public class QLyBanHangGUI extends JPanel {
 
 			}
 		});
+		// ================================Tìm sản phẩm theo tên và loại=============================================
 		btnTimKiem.addMouseListener(new MouseListener() {
 
 			@Override
@@ -746,6 +730,7 @@ public class QLyBanHangGUI extends JPanel {
 				timSPTheoTenvaLoai();
 			}
 		});
+		// ================================xóa sp khỏi giỏ hàng=============================================
 		btnXoaSP.addMouseListener(new MouseListener() {
 
 			@Override
@@ -778,6 +763,7 @@ public class QLyBanHangGUI extends JPanel {
 				btnXoaSP.setEnabled(false);
 			}
 		});
+		// ================================xuất hóa đơn=============================================
 		btnXuatHD.addMouseListener(new MouseListener() {
 
 			@Override
@@ -828,6 +814,7 @@ public class QLyBanHangGUI extends JPanel {
 
 			}
 		});
+		// ================================thêm giỏ hàng=============================================
 		btnThemGioHang.addMouseListener(new MouseListener() {
 
 			@Override
@@ -935,7 +922,6 @@ public class QLyBanHangGUI extends JPanel {
 					String ten = tableSP.getValueAt(selectedRow, 1) + "";
 					String donGia = tableSP.getValueAt(selectedRow, 2) + "";
 					String anh = tableSP.getValueAt(selectedRow, 3) + "";
-//                    int soLuongConLai = Integer.parseInt(tableSP.getValueAt(selectedRow, 3)+"");
 					txtMaSP.setText(ma);
 					txtTenSP.setText(ten);
 					txtDonGia.setText(donGia);
@@ -1119,7 +1105,7 @@ public class QLyBanHangGUI extends JPanel {
 			vec.add(sp.getId() + "");
 			vec.add(sp.getTenSP() + "");
 			vec.add(sp.getDonGia() + "");
-			vec.add(sp.getSoLuong() + "");
+			vec.add(sp.getHinhAnh() + "");
 			modelTableSP.addRow(vec);
 		}
 	}
@@ -1131,46 +1117,46 @@ public class QLyBanHangGUI extends JPanel {
 		addDataToTableHoaDon(dshd);
 	}
 
-	private void xulyCheBien() {
-		if (txtSoLuongCB.getText() == "") {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-			return;
-		}
-		int soLuong=0;
-		try {			
-			soLuong = Integer.parseInt(txtSoLuongCB.getText().trim() + "");
-		} catch (Exception e) {
-			// TODO: handle exception
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-			return;
-		}
-		if (soLuong == 0) {
-			JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-			return;
-		}
-
-		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
-			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3) + "");
-			int soLuongCan = soLuong0 * soLuong;
-			int soLuongConLai = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 4) + "");
-			if (soLuongCan > soLuongConLai) {
-				return;
-			}
-
-		}
-		boolean rs = true;
-		int maSP = -1;
-		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
-			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3) + "");
-			int soLuongCan = soLuong0 * soLuong;
-			int idNL = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 1) + "");
-			rs = chebienBUS.giamSoLuongNLkhiCheBien(idNL, soLuongCan);
-			maSP = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 0) + "");
-		}
-		if (rs == true) {
-			spBUS.tangSoLuongSP(maSP, soLuong);
-		}
-	}
+//	private void xulyCheBien() {
+//		if (txtSoLuongCB.getText() == "") {
+//			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//			return;
+//		}
+//		int soLuong=0;
+//		try {			
+//			soLuong = Integer.parseInt(txtSoLuongCB.getText().trim() + "");
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			JOptionPane.showMessageDialog(null, "Vui lòng chọn số lượng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//			return;
+//		}
+//		if (soLuong == 0) {
+//			JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//			return;
+//		}
+//
+//		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
+//			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3) + "");
+//			int soLuongCan = soLuong0 * soLuong;
+//			int soLuongConLai = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 4) + "");
+//			if (soLuongCan > soLuongConLai) {
+//				return;
+//			}
+//
+//		}
+//		boolean rs = true;
+//		int maSP = -1;
+//		for (int row = 0; row < modelTableNguyenLieuCB.getRowCount(); row++) {
+//			int soLuong0 = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 3) + "");
+//			int soLuongCan = soLuong0 * soLuong;
+//			int idNL = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 1) + "");
+//			rs = chebienBUS.giamSoLuongNLkhiCheBien(idNL, soLuongCan);
+//			maSP = Integer.parseInt(modelTableNguyenLieuCB.getValueAt(row, 0) + "");
+//		}
+//		if (rs == true) {
+//			spBUS.tangSoLuongSP(maSP, soLuong);
+//		}
+//	}
 	
 	private ArrayList<LoaiSanPham> getListLoaiSP(){
 		ArrayList<LoaiSanPham> arr = new ArrayList<>();
