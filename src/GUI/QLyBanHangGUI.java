@@ -212,8 +212,8 @@ public class QLyBanHangGUI extends JPanel {
 		modelTableGH = new DefaultTableModel();
 		modelTableGH.addColumn("Mã SP");
 		modelTableGH.addColumn("Tên SP");
-		modelTableGH.addColumn("Số lượng");
 		modelTableGH.addColumn("Đơn giá");
+		modelTableGH.addColumn("Số lượng");
 		modelTableGH.addColumn("Thành tiền");
 		tableGH = new MyTable(modelTableGH);
 		JScrollPane scrollPaneGH = new JScrollPane(tableGH);
@@ -641,6 +641,7 @@ public class QLyBanHangGUI extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				loadDataTableHoaDon();
+				modelTableCTHD.setRowCount(0);
 				startDateChooser.setDate(null);
 				endDateChooser.setDate(null);
 			}
@@ -660,6 +661,7 @@ public class QLyBanHangGUI extends JPanel {
 		        	JOptionPane.showMessageDialog(null, "Khách hàng mới", "Thông báo", JOptionPane.INFORMATION_MESSAGE);	
 		        	txtMaKH.setText("");
 		        } else {
+		        	JOptionPane.showMessageDialog(null, kh.getTen(), "Thông báo", JOptionPane.INFORMATION_MESSAGE);	
 		        	txtMaKH.setText(kh.getMaKH()+"");
 		        }
 		    }
@@ -1164,5 +1166,7 @@ public class QLyBanHangGUI extends JPanel {
 		if(arr != null) return arr;
 		return null;
 	}
+	
+	
 
 }
