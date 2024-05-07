@@ -64,7 +64,7 @@ public class NhanVien_DAO {
 	public boolean themNV(NhanVien nv) {
 		boolean result = false;
 	    try  {
-	    	String sql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai,ChucVu,idTaiKhoan )" 
+	    	String sql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai,ChucVu,idTaiKhoan ) " 
 	    + "VALUES(?, ?, ?, ?,?,?)";
 	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
 	        pre.setString(1, nv.getTen());

@@ -124,36 +124,54 @@ public int idTaiKhoanMax() {
 		return -1;
 	}
 	
-	public String getTenDangNhap(int id) {	
-		try {
-			con.connect();
-			String sql="SELECT TenDangNhap FROM taikhoan where id="+id;
-			Statement st = con.getCon().createStatement();
-			ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                return rs.getString(1);
-            }
-		}catch(Exception e) {
-			 e.printStackTrace();
-		}
-		return "";
+	public boolean setTrangThai(int id, int trangThai) {	
+		boolean result=false;
+	    try {
+	        con.connect();
+	        String sql = "UPDATE taikhoan SET TrangThai=?  WHERE id=?";
+	        PreparedStatement ps = con.getCon().prepareStatement(sql);
+	        ps.setInt(1, trangThai);
+	        ps.setInt(2,id);
+	        result = ps.executeUpdate() > 0;
+	    } catch (SQLException ex) {
+            return false;
+        }
+        return result;
 	}
+	
+	public String getTenDangNhap(int id) {	
+	    try {
+	        con.connect();
+	        String sql = "SELECT TenDangNhap FROM taikhoan WHERE id=? AND isDelete=0";
+	        PreparedStatement ps = con.getCon().prepareStatement(sql);
+	        ps.setInt(1, id);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getString("TenDangNhap");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } 
+	    return "";
+	}
+
 	
 	
 
-	public int getMatKhau(int id) {	
-		try {
-			con.connect();
-			String sql="SELECT MatKhau FROM taikhoan where id="+id;
-			Statement st = con.getCon().createStatement();
-			ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                return rs.getInt(1);
-            }
-		}catch(Exception e) {
-			 e.printStackTrace();
-		}
-		return -1;
+	public String getMatKhau(int id) {	
+	    try {
+	        con.connect();
+	        String sql = "SELECT MatKhau FROM taikhoan WHERE id=? AND isDelete=0";
+	        PreparedStatement ps = con.getCon().prepareStatement(sql);
+	        ps.setInt(1, id);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getString("MatKhau");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } 
+	    return "";
 	}
 	
 	

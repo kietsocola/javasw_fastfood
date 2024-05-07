@@ -61,11 +61,19 @@ public class taiKhoan_BUS {
 		return taikhoandao.getTenDangNhap(id);
 	}
 	
-	public int getMatKhau(int id) {
+	public String getMatKhau(int id) {
 		return taikhoandao.getMatKhau(id);
 	}
 	
-	
+	 public boolean setTrangThai(int ma, int trangThai) {
+	        
+	        if (taikhoandao.setTrangThai(ma,trangThai)) {
+	            JOptionPane.showMessageDialog(null, "Sửa trạng thái thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Sửa trạng thái thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	        }
+	        return taikhoandao.setTrangThai(ma, trangThai);
+	    }
 	
 	public boolean kiemTraTrungTenDangNhap(String tenDangNhap) {
         return taikhoandao.kiemTraTrungTenDangNhap(tenDangNhap);
