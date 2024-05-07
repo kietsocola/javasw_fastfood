@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import Custom.MyColor;
@@ -41,7 +42,7 @@ public class MainQuanlyGUI extends JFrame {
 	private QuanLyNhaCungCapGUI pnNCC;
 	
 	private MyLabel panel_logo, lblBanHang, lblKhuyenMai, lblSanPham, lblNhanvien, lblKhachhang, lblNhapHang,
-			lblThongKe, lblPhanQuyen;
+			lblThongKe, lblPhanQuyen , lblDangXuat;
 
 	private MyLabel lastClickedLabel;
 	private MyLabel lblCongThuc;
@@ -171,12 +172,20 @@ public class MainQuanlyGUI extends JFrame {
 		iconCongThuc.setImage(newImg9);
 		lblCongThuc.setIcon(iconCongThuc);
 		
+		lblDangXuat = new MyLabel("  Đăng xuất");
+		ImageIcon iconDangXuat = new ImageIcon("Images/dangxuat.png");
+		Image img10 = iconDangXuat.getImage();
+		Image newImg10 = img10.getScaledInstance(26, 26, Image.SCALE_SMOOTH);
+		iconDangXuat.setImage(newImg10);
+		lblDangXuat.setIcon(iconDangXuat);
+		
 //		for(boolean x : QuyenHan)
 //		System.out.print(x + " la quyen cua tai khoan \n");
 		
 		
 		listMenuLeft = new ArrayList<>();
 		listMenuLeft.add(panel_logo);
+		
 		if(QuyenHan.get(0) == true) {
 			listMenuLeft.add(lblNhapHang);
 			listMenuLeft.add(lblNhaCC);
@@ -202,7 +211,7 @@ public class MainQuanlyGUI extends JFrame {
 			listMenuLeft.add(lblThongKe);
 		}
 
-
+		listMenuLeft.add(lblDangXuat);
 		for (MyLabel lbl : listMenuLeft) {
 			lbl.addMouseListener(new LabelMouseListener());
 			lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -255,6 +264,22 @@ public class MainQuanlyGUI extends JFrame {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					// TODO Auto-generated method stub
+					if(lbl == lblDangXuat) {
+						System.out.print("Dang xuat");
+						int optionSelect = JOptionPane.showConfirmDialog(null, "bạn có muốn đăng xuất không" , "Thông báo", JOptionPane.YES_NO_OPTION);
+						switch(optionSelect) {
+						case JOptionPane.YES_OPTION:
+							dispose();
+
+							taiKhoan_GUI taiKhoan = new taiKhoan_GUI();
+							taiKhoan.run(taiKhoan);
+							break;						
+						default :
+								System.out.printf("Thong bao");
+								break;
+							
+						}
+					}
 
 				}
 
