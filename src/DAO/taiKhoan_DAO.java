@@ -241,7 +241,19 @@ public int idTaiKhoanMax() {
         return false;
     }
 	
-	public static void main(String[] args) {
-		
+	public String getTenQuyen(int id) {
+		try {
+			con.connect();
+			String sql="SELECT TenQuyen FROM phanquyen pq JOIN taikhoan tk ON tk.Quyen=pq.id WHERE tk.id=? AND tk.isDelete=0";
+			PreparedStatement pre =con.getCon().prepareStatement(sql);
+			pre.setInt(1, id);
+			ResultSet rs = pre.executeQuery();
+			if(rs.next()) {
+				return rs.getString("TenQuyen");
+			}
+		}catch(Exception e) {
+			
+		}
+		return "";
 	}
 }

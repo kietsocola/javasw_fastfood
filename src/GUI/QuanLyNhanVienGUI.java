@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -122,7 +123,13 @@ public class QuanLyNhanVienGUI extends JPanel {
 		// Panel for dien thong tin
 		panel_dienThongTin = new MyPanel();
 		panel_input.add(panel_dienThongTin, BorderLayout.CENTER);
-		panel_dienThongTin.setLayout(new BoxLayout(panel_dienThongTin, BoxLayout.Y_AXIS));
+		panel_dienThongTin.setLayout(new GridLayout(1, 2));
+		
+		MyPanel panel_leftRow = new MyPanel();
+		panel_leftRow.setLayout(new GridLayout(4, 1)); 
+		
+		MyPanel panel_rightRow = new MyPanel();
+		panel_rightRow.setLayout(new GridLayout(4, 1));
 
 		// Panel for maNV
 		pnMaNV = new MyPanelSecond();
@@ -205,14 +212,20 @@ public class QuanLyNhanVienGUI extends JPanel {
 		pnChucVu.add(lblChucVu);
 		pnChucVu.add(cmbChucVu);
 
-		panel_dienThongTin.add(pnMaNV);
-		panel_dienThongTin.add(pnTenDN);
-		panel_dienThongTin.add(pnMatKhau);
-		panel_dienThongTin.add(pnTenNV);
-		panel_dienThongTin.add(pnNgaySinh);
-		panel_dienThongTin.add(pnGioiTinh);
-		panel_dienThongTin.add(pnSoDT);
-		panel_dienThongTin.add(pnChucVu);
+		panel_leftRow.add(pnMaNV);
+		panel_leftRow.add(pnTenDN);
+		panel_leftRow.add(pnMatKhau);
+		panel_leftRow.add(pnTenNV);
+	
+		
+		panel_rightRow.add(pnNgaySinh);
+		panel_rightRow.add(pnGioiTinh);
+		panel_rightRow.add(pnSoDT);
+		panel_rightRow.add(pnChucVu);
+
+		// Thêm các panel con vào panel chính
+		panel_dienThongTin.add(panel_leftRow);
+		panel_dienThongTin.add(panel_rightRow);
 
 		// Panel for Tìm Kiếm
 		pnTimKiem = new MyPanelSecond();
@@ -311,7 +324,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 		ImageIcon resizedIconNhap = new ImageIcon(resizedImgNhap);
 		btnNhap.setIcon(resizedIconNhap);
 		btnNhap.setFont(new Font("Arial", Font.PLAIN, 16));
-//		pnButton.add(btnNhap);
 		btnNhap.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -327,7 +339,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 		ImageIcon resizedIconXuat = new ImageIcon(resizedImgXuat);
 		btnXuat.setIcon(resizedIconXuat);
 		btnXuat.setFont(new Font("Arial", Font.PLAIN, 16));
-//		pnButton.add(btnXuat);
 		btnXuat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -359,15 +370,16 @@ public class QuanLyNhanVienGUI extends JPanel {
 		pnContainTable.add(panel_table, BorderLayout.CENTER);
 		panel_main.add(pnContainTable, BorderLayout.CENTER);
 
-		tableModel = new DefaultTableModel();
-		tableModel.setColumnIdentifiers(new String[] { "Mã Nhân Viên", "Tên Đăng Nhập", "Mật khẩu", "Tên Nhân Viên",
-				"Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ", "Trạng Thái" });
-		table = new MyTable(tableModel);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(453, 120)); 
-		scrollPane.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
-		panel_table.setLayout(new BorderLayout(0, 0));
-		panel_table.add(scrollPane, BorderLayout.NORTH);
+		
+		
+		  tableModel = new DefaultTableModel();
+	        tableModel.setColumnIdentifiers(new String[]{"Mã Nhân Viên", "Tên Đăng Nhập", "Mật khẩu", "Tên Nhân Viên",
+					"Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ", "Trạng Thái"});
+	        table = new MyTable(tableModel);
+	        JScrollPane scrollPane = new JScrollPane(table);
+	        scrollPane.setPreferredSize(new Dimension(453, 310)); 
+	        panel_table.setLayout(new BorderLayout(0, 0));
+	        panel_table.add(scrollPane, BorderLayout.NORTH);
 
 		loadDataTblNhanVien();
 
@@ -536,6 +548,10 @@ public class QuanLyNhanVienGUI extends JPanel {
 	    	}
 	    }
 	    if(fad) {
+	    	 if (txtMaNV.getText().isEmpty()) {
+				 JOptionPane.showMessageDialog(null, "Vui lòng nhập chọn nhân viên cần sửa!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+				 return;
+			 }
 	    	
 	    	if(!taiKhoanBUS.kiemTraTaiKhoan2(txtTenDN.getText(), txtMatKhau.getText())){
 	    		return;
@@ -545,7 +561,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 	    		return;
 	    	}
 	    	
-		    	nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem));
+		    	nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
     			taiKhoanBUS.suaTaiKhoan(id,txtTenDN.getText(), txtMatKhau.getText(), so);
     			taiKhoanBUS.docDanhSach();
     			nhanVienBUS.docDanhSach();
@@ -602,7 +618,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 			 taiKhoanBUS.docDanhSach();
 			 int idTaiKhoan=taiKhoanBUS.idTaiKhoanMax();
 			 
-			 if(nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem),idTaiKhoan,1)) {
+			 if(nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(),idTaiKhoan,1)) {
 			     nhanVienBUS.docDanhSach();
 
 			     btnReset.doClick();
@@ -628,7 +644,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 	        rowData[4] = nv.getNgaySinh();
 	        rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
 	        rowData[6] = nv.getSoDT();		            
-	        rowData[7] = nv.getChucVu();
+	        rowData[7] = taiKhoanBUS.getTenQuyen(nv.getIdTaiKhoan());
 	        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
 	        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
 	       tableModel.addRow(rowData);
@@ -716,7 +732,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 	        rowData[4] = nv.getNgaySinh();
 	        rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
 	        rowData[6] = nv.getSoDT();		            
-	        rowData[7] = nv.getChucVu();
+	        rowData[7] = taiKhoanBUS.getTenQuyen(nv.getIdTaiKhoan());
 	        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
 	        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
 	        
@@ -865,7 +881,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 					if (taiKhoanBUS.themTaiKhoan(rowData[1].toString(), rowData[2].toString(), idQuyen)) {
 						if (nhanVienBUS.themNhanVien(rowData[3].toString(), rowData[4].toString(),
 								rowData[5].toString().equals("Nam") ? 0 : 1, rowData[6].toString(),
-								rowData[7].toString(),
 								taiKhoanBUS.idTaiKhoanMax(), 0))
 							tableModel.addRow(rowData);
 					}

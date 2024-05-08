@@ -65,6 +65,10 @@ public class taiKhoan_BUS {
 		return taikhoandao.getMatKhau(id);
 	}
 	
+	public String getTenQuyen(int id) {
+		return taikhoandao.getTenQuyen(id);
+	}
+	
 	 public boolean setTrangThai(int ma, int trangThai) {
 	        
 	        if (taikhoandao.setTrangThai(ma,trangThai)) {
@@ -85,20 +89,26 @@ public class taiKhoan_BUS {
         	JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
+		
+		 if (kiemTraTrungTenDangNhap(tenDangNhap)) {
+	        	JOptionPane.showMessageDialog(null, "Tên đăng nhập đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+	            return false;
+	        }
         
         if (matKhau.trim().equals("")) {
         	JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
         
-        if (kiemTraTrungTenDangNhap(tenDangNhap)) {
-        	JOptionPane.showMessageDialog(null, "Tên đăng nhập bị trùng!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+        String regex2 = ".*\\d.*";
+        if (!matKhau.trim().matches(regex2)) {
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 1 kí tự chữ và số", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
 
-        String regex = "^[a-zA-Z0-9]{8,}$";
+        String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và không chứa kí tự đặc biệt(!@#$%^&*)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và chỉ chứa kí tự đặc biệt(!@#$%^&*-_)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
         return true;
@@ -115,12 +125,19 @@ public class taiKhoan_BUS {
             return false;
         }
         
-
-        String regex = "^[a-zA-Z0-9]{8,}$";
-        if (!matKhau.trim().matches(regex)) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và không chứa kí tự đặc biệt(!@#$%^&*)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+        String regex2 = ".*\\d.*";
+        if (!matKhau.trim().matches(regex2)) {
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 1 kí tự số", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
+
+        String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
+        if (!matKhau.trim().matches(regex)) {
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và chỉ chứa kí tự đặc biệt(!@#$%^&*-_)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            return false;
+        }
+        
+       
         return true;
 	}
 	

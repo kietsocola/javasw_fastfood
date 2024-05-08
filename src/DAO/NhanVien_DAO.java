@@ -28,7 +28,7 @@ public class NhanVien_DAO {
 		                nv.setGioiTinh(rs.getInt(5));
 		                nv.setSoDT(rs.getString(2));
 		                nv.setIdTaiKhoan(rs.getInt(3));
-		                nv.setChucVu(rs.getString(7));
+		               
 		                dsnv.add(nv);
 		            }
 		        } catch (SQLException e) {
@@ -51,7 +51,7 @@ public class NhanVien_DAO {
 	            nv.setNgaySinh(rs.getString(6));
 	            nv.setGioiTinh(rs.getInt(5));
 	            nv.setSoDT(rs.getString(2));
-	            nv.setChucVu(rs.getString(7));
+	           
 	        }
 	    } catch (SQLException e) {
 
@@ -64,15 +64,14 @@ public class NhanVien_DAO {
 	public boolean themNV(NhanVien nv) {
 		boolean result = false;
 	    try  {
-	    	String sql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai,ChucVu,idTaiKhoan ) " 
-	    + "VALUES(?, ?, ?, ?,?,?)";
+	    	String sql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai,idTaiKhoan ) " 
+	    + "VALUES(?, ?, ?,?,?)";
 	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
 	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
-	        pre.setString(5, nv.getChucVu());
-	        pre.setInt(6, nv.getIdTaiKhoan());
+	        pre.setInt(5, nv.getIdTaiKhoan());
 	        result = pre.executeUpdate() > 0;
 	        
 	    } catch (SQLException e) {
@@ -87,14 +86,13 @@ public class NhanVien_DAO {
 	public boolean updateNV(NhanVien nv) {
 		boolean result = false;
 	    try {
-	    	String sql = "UPDATE nhanvien SET Ten=?,NgaySinh=?, GioiTinh=?, SoDienThoai=?, ChucVu=? WHERE id=? ";
+	    	String sql = "UPDATE nhanvien SET Ten=?,NgaySinh=?, GioiTinh=?, SoDienThoai=? WHERE id=? ";
 	    	PreparedStatement pre = conDB.conn.prepareStatement(sql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
 	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
-	        pre.setString(5, nv.getChucVu());
-	        pre.setInt(6, nv.getMaNV());
+	        pre.setInt(5, nv.getMaNV());
 	        
 	        result = pre.executeUpdate() > 0;
 	    } catch (SQLException e) {  
@@ -141,14 +139,14 @@ public class NhanVien_DAO {
 	        updatePre.executeUpdate();
 
 	        // Chèn dữ liệu mới từ đối tượng NhanVien vào bảng nhanvien
-	        String insertSql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai, ChucVu) " +
-	                           "VALUES (?, ?, ?, ?, ?)";
+	        String insertSql = "INSERT INTO nhanvien(Ten, NgaySinh, GioiTinh, SoDienThoai) " +
+	                           "VALUES (?, ?, ?, ?)";
 	        PreparedStatement pre = conDB.conn.prepareStatement(insertSql);
 	        pre.setString(1, nv.getTen());
 	        pre.setString(2, nv.getNgaySinh());
 	        pre.setInt(3, nv.getGioiTinh());
 	        pre.setString(4, nv.getSoDT());
-	        pre.setString(5, nv.getChucVu());
+	        
 	        
 	        // Thực hiện chèn dữ liệu mới
 	        boolean inserted = pre.executeUpdate() > 0;
