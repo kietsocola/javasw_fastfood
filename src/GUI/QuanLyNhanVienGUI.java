@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -63,6 +62,8 @@ import Custom.MyTextField;
 import DTO.NhanVien;
 import DTO.phanquyen_DTO;
 import DTO.taiKhoan_DTO;
+import GUI.taiKhoan_GUI;
+import org.apache.logging.log4j.Logger;
 
 public class QuanLyNhanVienGUI extends JPanel {
 
@@ -84,7 +85,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 	private JRadioButton rdoBtn_Nam, rdoBtn_Nu;
 	private JDateChooser dateChooser;
 	private JComboBox<String> cmbChucVu;
-
+	
 	/**
 	 * Create the frame.
 	 */
@@ -630,10 +631,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 
 	private void xuLyTimKiemNhanVien() {
-		  
 	   	tableModel.setRowCount(0);
-	   
 	   ArrayList<NhanVien> dsnv = nhanVienBUS.timNhanVien(txtTimKiem.getText());
+	   
 	   for (NhanVien nv : dsnv) {
 		   Object[] rowData = new Object[9];
 
@@ -647,6 +647,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 	        rowData[7] = taiKhoanBUS.getTenQuyen(nv.getIdTaiKhoan());
 	        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
 	        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
+	        if (nv.getIdTaiKhoan() == taiKhoan_GUI.idTaiKhoan) {            
+	            continue;
+	        }
 	       tableModel.addRow(rowData);
 	   }
 	}
@@ -718,16 +721,15 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 	private void loadDataTblNhanVien() {	    
 	    tableModel.setRowCount(0);
-	    
 	    ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
-	    
+	   
 	    
 	    for (NhanVien nv : dsnv) {
 	        Object[] rowData = new Object[9];
 
 	        rowData[0] = nv.getMaNV();
-	        rowData[1]=taiKhoanBUS.getTenDangNhap(nv.getIdTaiKhoan());
-	        rowData[2]=taiKhoanBUS.getMatKhau(nv.getIdTaiKhoan());
+	        rowData[1] = taiKhoanBUS.getTenDangNhap(nv.getIdTaiKhoan());
+	        rowData[2] = taiKhoanBUS.getMatKhau(nv.getIdTaiKhoan());
 	        rowData[3] = nv.getTen();
 	        rowData[4] = nv.getNgaySinh();
 	        rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
@@ -736,9 +738,16 @@ public class QuanLyNhanVienGUI extends JPanel {
 	        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
 	        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
 	        
+	        
+	        if (nv.getIdTaiKhoan() == taiKhoan_GUI.idTaiKhoan) {            
+	            continue;
+	        }
+	        
 	        tableModel.addRow(rowData);
 	    }
 	}
+
+
 	
 	private void xuLyKhoaNhanVien() {
 		String ma=txtMaNV.getText();
