@@ -647,6 +647,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 	        rowData[7] = taiKhoanBUS.getTenQuyen(nv.getIdTaiKhoan());
 	        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
 	        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
+		    if (nv.getIdTaiKhoan() == taiKhoan_GUI.idTaiKhoan) {            
+	            continue;
+	        }
 	       tableModel.addRow(rowData);
 	   }
 	}
@@ -718,10 +721,8 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 	private void loadDataTblNhanVien() {	    
 	    tableModel.setRowCount(0);
-	    
 	    ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
-	    
-	    
+		
 	    for (NhanVien nv : dsnv) {
 	        Object[] rowData = new Object[9];
 
@@ -735,7 +736,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 	        rowData[7] = taiKhoanBUS.getTenQuyen(nv.getIdTaiKhoan());
 	        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
 	        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
-	        
+	         if (nv.getIdTaiKhoan() == taiKhoan_GUI.idTaiKhoan) {            
+	            continue;
+	        }
 	        tableModel.addRow(rowData);
 	    }
 	}
