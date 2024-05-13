@@ -69,7 +69,7 @@ public class NhapHangGUI extends JPanel {
 	private MyTable tableNL, tableXN, tablePN, tableCTPN;
 	private JTextField txtTimTheoTen;
 	private JComboBox<String> cmbNCC;
-	private MyButton btnXoa, btnXuatPN, btnTimKiem,btnReset;
+	private MyButton btnXoa, btnXuatPN, btnTimKiem,btnReset,btnThemNL;
 	private NguyenLieuBUS nlBUS = new NguyenLieuBUS();
 	private NhaCungCap_BUS nccBUS = new NhaCungCap_BUS();
 	private ChiTietPhieuNhapBUS ctpnBUS = new ChiTietPhieuNhapBUS();
@@ -304,7 +304,6 @@ public class NhapHangGUI extends JPanel {
 		txtTenNL.setFont(new Font("Tahoma", Font.BOLD, 14));
 		txtTenNL.setMaximumSize(new Dimension(400, 30));
 		txtTenNL.setHorizontalAlignment(SwingConstants.CENTER);
-		txtTenNL.setEnabled(false);
 		txtTenNL.setDisabledTextColor(new Color(0, 0, 0));
 		panel_TenNL.add(txtTenNL);
 		txtTenNL.setColumns(10);
@@ -360,8 +359,8 @@ public class NhapHangGUI extends JPanel {
 		panel_NCC.add(cmbNCC);
 		loadDataCmbNCC();
 		MyPanelSecond pnBTN = new MyPanelSecond();
+		pnBTN.setMaximumSize(new Dimension(400, 100));
 		pnInput.add(pnBTN);
-		pnBTN.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		btnChonNhap = new MyButton("Chọn");
 		btnChonNhap.setMaximumSize(new Dimension(90, 40));
 		btnChonNhap.setPreferredSize(new Dimension(90, 40));
@@ -369,9 +368,21 @@ public class NhapHangGUI extends JPanel {
 		Image img1 = iconChon.getImage();
 		Image newImg1 = img1.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconChon.setImage(newImg1);
+		pnBTN.setLayout(new GridLayout(0, 3, 20, 10));
 		btnChonNhap.setIcon(iconChon);
 		pnBTN.add(btnChonNhap);
 
+		btnThemNL = new MyButton("ThêmNL");
+		
+		btnThemNL.setMaximumSize(new Dimension(90, 40));
+		btnThemNL.setPreferredSize(new Dimension(90, 40));
+		ImageIcon iconthem = new ImageIcon("images/plus.png");
+		Image img5 = iconthem.getImage();
+		Image newImg5 = img5.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
+		iconthem.setImage(newImg5);
+		btnThemNL.setIcon(iconthem);
+		pnBTN.add(btnThemNL);
+		
 		btnXoa = new MyButton("Xóa");
 
 		btnXoa.setMaximumSize(new Dimension(80, 40));
@@ -732,7 +743,7 @@ public class NhapHangGUI extends JPanel {
 
 		});
 	}
-
+	
 	// Xử lý load dữ liệu
 	private void addDataToTblNL() {
 		nlBUS.getDSachNguyenLieu();
@@ -781,7 +792,7 @@ public class NhapHangGUI extends JPanel {
 			}
 		});
 	}
-
+	
 	// xử lý load cmbncc
 	private void loadDataCmbNCC() {
 		cmbNCC.removeAllItems();
@@ -896,7 +907,6 @@ public class NhapHangGUI extends JPanel {
 			soLuongNL[i] = Integer.parseInt(SL);
 			donGiaNL = Arrays.copyOf(donGiaNL, i + 1);
 			donGiaNL[i] = Integer.parseInt(DG);
-			
 			ctpnBUS.addChiTietPhieuNhap(MaNL, SL, DG, thanhTien);
 		}
 		pnBUS.luuPhieuNhap(taiKhoan_GUI.idTaiKhoan, Integer.parseInt(cmbNCC.getSelectedItem().toString().split(" - ")[0]), total);
@@ -1012,6 +1022,7 @@ public class NhapHangGUI extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(xuatPN() == 0) return;
+				
 				loadDataTablePhieuNhap();
 				addDataToTblNL();
 				int optionSelect = JOptionPane.showConfirmDialog(null, "Bạn có muốn xuất phiếu pdf không ?","Thông báo",JOptionPane.OK_CANCEL_OPTION);
@@ -1103,6 +1114,31 @@ public class NhapHangGUI extends JPanel {
 				}
 			}
 		});
+		btnThemNL.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				xulyThemNL();
+			}
+		});
 	}
-
+	// xử lý thêm nguyên liệu
+	 public int isString(String text,String name) {
+		 String regex = "^[\\p{L}\\d]+(?: [\\p{L}\\d]+)*$";
+     	Pattern pattern = Pattern.compile(regex);
+     	Matcher matcher = pattern.matcher(text);
+     	if (!matcher.matches()) {
+ 	    	JOptionPane.showMessageDialog(null, name+ " có thể chứa chữ,số,1 khoảng trắng giữa các từ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+ 	    	return 0;
+ 	    }
+     	return 1;
+	 }
+	private void xulyThemNL() {
+		if (isString (txtTenNL.getText(),"Tên")==0) {
+			return;
+		}
+		String ten = txtTenNL.getText();
+		int dongia = Integer.parseInt(txtDonGiaNL.getText());
+		boolean flag = nlBUS.themNguyenLieu(ten,0, dongia);
+		nlBUS.getDSachNguyenLieu();
+		addDataToTblNL();
+	}
 }

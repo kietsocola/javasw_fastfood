@@ -68,10 +68,11 @@ public class NguyenLieuDAO {
 		 boolean result = false;
 		    if (conDB.openConnectDB()) {
 		        try {
-		            String sql = "INSERT INTO nguyenlieu(Ten, SoLuong) VALUES (?, ?)";
+		            String sql = "INSERT INTO nguyenlieu(Ten, SoLuong, DonGiaNL) VALUES (?, ?, ?)";
 		            PreparedStatement prest = conDB.conn.prepareStatement(sql);
 		            prest.setString(1, nl.getTenNL());
 		            prest.setInt(2, nl.getsoLuongNL());
+		            prest.setInt(3, nl.getDonGiaNL());
 		            if(prest.executeUpdate() >=1)
 						result = true;
 		        } catch (SQLException e) {
@@ -103,11 +104,12 @@ public class NguyenLieuDAO {
 		boolean result = false;
 	    if (conDB.openConnectDB()) {
 	        try {
-	            String sql = "UPDATE nguyenlieu SET Ten=?, SoLuong=? WHERE id=?";
+	            String sql = "UPDATE nguyenlieu SET Ten=?, SoLuong=?,DonGiaNL, WHERE id=?";
 	            PreparedStatement prest = conDB.conn.prepareStatement(sql);
 	            prest.setString(1, nl.getTenNL());
 	            prest.setInt(2, nl.getsoLuongNL());
-	            prest.setInt(3, nl.getMaNguyenLieu());
+	            prest.setInt(3, nl.getDonGiaNL());
+	            prest.setInt(4, nl.getMaNguyenLieu());
 	            result = prest.executeUpdate()>0;
 	            
 	        } catch (SQLException e) {

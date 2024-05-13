@@ -46,4 +46,19 @@ public class NguyenLieuBUS {
 			return false;
 		}
 	}
+	public boolean themNguyenLieu(String tenNL,int soluong,int donGiaNL) {
+	    // Tạo một đối tượng NguyenLieu từ các thông tin đầu vào
+	    NguyenLieu nl = new NguyenLieu();
+	    nl.setTenNL(tenNL);
+	    //nl.setSoLuongNL(soLuongNL);
+	    nl.setDonGiaNL(donGiaNL);
+
+	    try {
+	        // Gọi phương thức themNguyenLieu từ lớp DAO để thêm nguyên liệu vào cơ sở dữ liệu
+	        return nlDAO.themNguyenLieu(nl);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 }
