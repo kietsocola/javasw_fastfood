@@ -108,7 +108,7 @@ public class taiKhoan_BUS {
 
         String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và chỉ chứa kí tự đặc biệt(!@#$%^&*-_)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
         return true;
@@ -133,7 +133,7 @@ public class taiKhoan_BUS {
 
         String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và chỉ chứa kí tự đặc biệt(!@#$%^&*-_)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
         
