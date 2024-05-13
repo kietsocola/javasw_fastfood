@@ -834,11 +834,14 @@ public class NhapHangGUI extends JPanel {
 	    String maNL = txtMaNL.getText();
 	    String tenNL = txtTenNL.getText();
 	    String maNCC = cmbNCC.getSelectedItem().toString().split(" - ")[0];
-
+	    if (maNCC.equals("0")) {
+	        JOptionPane.showMessageDialog(null, "Vui lòng chọn nhà cung cấp", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+	        return;
+	    }
 	    // Kiểm tra xem nhà cung cấp đã chọn trước đó có khác với nhà cung cấp hiện tại hay không
 	    if (!nhaCungCapTruoc.isEmpty() && !nhaCungCapTruoc.equals(maNCC)) {
 	        // Hiển thị thông báo yêu cầu chọn lại nhà cung cấp
-	        JOptionPane.showMessageDialog(null, "Vui lòng chọn một nhà cung cấp trong 1 phiếu", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+	        JOptionPane.showMessageDialog(null, "Vui lòng chỉ chọn 1 nhà cung cấp trong 1 phiếu", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
 	        return;
 	    }
 
@@ -1050,6 +1053,14 @@ public class NhapHangGUI extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				loadDataTablePhieuNhap();
+				txtMaPN.setText("");
+				txtMaNCC.setText("");
+				txtTongTien.setText("");
+				txtMaNL2.setText("");
+				txtSL.setText("");
+				txtDG.setText("");
+				txtThanhTien.setText("");
+				modelTableCTPN.setRowCount(0);
 				startDateChooser.setDate(null);
 				endDateChooser.setDate(null);
 			}

@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -72,6 +73,7 @@ public class SanPhamGUI extends JPanel {
 	public SanPhamGUI() {
 		addControlsSanPham();
 //		addEventsBanHang();
+		addevents();
 	}
 	public void addControlsSanPham() {
 		
@@ -111,23 +113,18 @@ public class SanPhamGUI extends JPanel {
  		
 		MyPanelSecond pnLoai = new MyPanelSecond();
 		cmbLoai = new JComboBox<String>();
-		loadDataCmbLoai();
-		cmbLoai.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				xuLyThemLoai();
-			}
-		});
+		
 		cmbLoai.setPreferredSize(new Dimension(180, 30));
 		lblLoaiSP = new MyLabelSecond("Loại");
 		pnLoai.add(lblLoaiSP);
 		pnLoai.add(cmbLoai);
 		
-		MyPanelSecond pnSoLuong = new MyPanelSecond();
-		txtSoLuong = new MyTextField();
-		txtSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSoLuong = new MyLabelSecond("Số lượng");
-		pnSoLuong.add(lblSoLuong);
-		pnSoLuong.add(txtSoLuong);
+//		MyPanelSecond pnSoLuong = new MyPanelSecond();
+//		txtSoLuong = new MyTextField();
+//		txtSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
+//		lblSoLuong = new MyLabelSecond("Số lượng");
+//		pnSoLuong.add(lblSoLuong);
+//		pnSoLuong.add(txtSoLuong);
 		
 //		MyPanelSecond pnCongThuc = new MyPanelSecond();
 //		txtCongThuc = new MyTextField();
@@ -145,7 +142,7 @@ public class SanPhamGUI extends JPanel {
 		pnInputOptions.add(pnMaSP);
 		pnInputOptions.add(pnTenSP);
 		pnInputOptions.add(pnLoai);
-		pnInputOptions.add(pnSoLuong);
+		//pnInputOptions.add(pnSoLuong);
 		//pnInputOptions.add(pnCongThuc);
 		pnInputOptions.add(pnDonGia);
 		
@@ -177,11 +174,7 @@ public class SanPhamGUI extends JPanel {
         pnAnh.add(pnChuaAnh);
         pnAnh.add(pnButtonAnh);
         btnChonAnh = new  MyButton("Chọn Ảnh");
-        btnChonAnh.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		xuLyChonAnh();
-        	}
-        });
+       
         pnButtonAnh.add(btnChonAnh);
         MyPanel space1_1 = new MyPanel();
         panel_containAnh.add(space1_1, BorderLayout.EAST);
@@ -194,11 +187,7 @@ public class SanPhamGUI extends JPanel {
 		Image newImg1 = img1.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconThem.setImage(newImg1);
 		btnThem.setIcon(iconThem);
-        btnThem.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		xuLyThemSanPham();
-        	}
-        });
+       
         btnThem.setFont(new Font("Tahoma", Font.PLAIN, 16));
         btnXoa = new MyButton("Xóa");
         ImageIcon iconXoa = new ImageIcon("images/remove.png");
@@ -206,20 +195,11 @@ public class SanPhamGUI extends JPanel {
 		Image newImg2 = img2.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconXoa.setImage(newImg2);
 		btnXoa.setIcon(iconXoa);
-        btnXoa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                xuLyXoaSanPham();
-            }
-        });
+        
         btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 16));
         
         btnSua = new MyButton("Sửa");
-        btnSua.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		xuLySuaSanPham();
-        	}
-        });
+        
         btnSua.setFont(new Font("Tahoma", Font.PLAIN, 16));
         ImageIcon iconEdit = new ImageIcon("images/edit.png");
         Image img3 = iconEdit.getImage();
@@ -227,18 +207,7 @@ public class SanPhamGUI extends JPanel {
         iconEdit.setImage(newImge3);
         btnSua.setIcon(iconEdit);
         btnReset=new MyButton("Reset");
-        btnReset.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		txtMaSP.setText("");
-        		txtTenSP.setText("");
-        		txtDonGia.setText("");
-        		txtSoLuong.setText("");
-        		cmbLoai.setSelectedIndex(0);
-        		loadAnh("");
-        		loadDataToTblSanPham();
-        	}
-        });
+        
         btnReset.setFont(new Font("Tahoma", Font.PLAIN, 16));
         ImageIcon iconReset = new ImageIcon("images/LamMoi.png");
 		Image img4 = iconReset.getImage();
@@ -283,27 +252,24 @@ public class SanPhamGUI extends JPanel {
 		dtmSanPham.addColumn("Mã sản phẩm");
 		dtmSanPham.addColumn("Tên sản phẩm");
 		dtmSanPham.addColumn("Loại");
-		dtmSanPham.addColumn("Số lượng");
+		//dtmSanPham.addColumn("Số lượng");
 		//dtmSanPham.addColumn("Công thức");
 		dtmSanPham.addColumn("Đơn giá");
 		dtmSanPham.addColumn("Ảnh");
 		
 		tblSanPham = new MyTable();
-		tblSanPham.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				xulyClickTblSanPham();
-			}
-		});
+		
 		tblSanPham.setModel(dtmSanPham);
 		loadDataToTblSanPham();
-		JScrollPane  scrTableSanPham= new JScrollPane(tblSanPham);
-		scrTableSanPham.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+		//JScrollPane  scrTableSanPham= new JScrollPane(tblSanPham);
+		JScrollPane scrollpaneSP =new JScrollPane(tblSanPham);
+		scrollpaneSP.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		panel_table.setLayout(new BorderLayout(0, 0));
-		panel_table.add(scrTableSanPham, BorderLayout.NORTH);
+		panel_table.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		panel_table.add(scrollpaneSP, BorderLayout.NORTH);
 
-		MyPanel space2 = new MyPanel();
-		panel_table.add(space2, BorderLayout.SOUTH);
+//		MyPanel space2 = new MyPanel();
+//		panel_table.add(space2, BorderLayout.SOUTH);
 		
 		MyPanel space3_1 = new MyPanel();
 		panel_main.add(space3_1, BorderLayout.SOUTH);
@@ -313,8 +279,61 @@ public class SanPhamGUI extends JPanel {
 		
 		MyPanel space3_2 = new MyPanel();
 		panel_main.add(space3_2, BorderLayout.EAST);
-//---------------------------------------------------------------------------------------------		
+	
+		
+		loadDataCmbLoai();
 
+	}
+	//---------------------------------------------------------------------------------------------		
+	
+	
+	private void addevents() {
+		cmbLoai.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				xuLyThemLoai();
+			}
+		});
+		 btnChonAnh.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	        		xuLyChonAnh();
+	        	}
+	        });
+		 btnThem.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	        		xuLyThemSanPham();
+	        	}
+	        });
+		 btnXoa.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                xuLyXoaSanPham();
+	            }
+	        });
+		 btnSua.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	        		xuLySuaSanPham();
+	        	}
+	        });
+		 btnReset.addMouseListener(new MouseAdapter() {
+	        	@Override
+	        	public void mouseClicked(MouseEvent e) {
+	        		txtMaSP.setText("");
+	        		txtTenSP.setText("");
+	        		txtDonGia.setText("");
+	        		//txtSoLuong.setText("");
+	        		cmbLoai.setSelectedIndex(0);
+	        		loadAnh("");
+	        		loadDataToTblSanPham();
+	        		
+	        	}
+	        });
+		 tblSanPham.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					xulyClickTblSanPham();
+				}
+			});
 	}
 	private void loadDataToTblSanPham() {
 		spBUS.docListSanPham();
@@ -323,14 +342,14 @@ public class SanPhamGUI extends JPanel {
 		ArrayList <SanPham> dssp = spBUS.getDSSanPham();
 		
 		for (SanPham sp : dssp) {
-			Vector vec = new Vector();
-			vec.add(sp.getId());
-			vec.add(sp.getTenSP());
-			vec.add(sp.getIdLoaiSP());
-			vec.add(sp.getSoLuong());
+			Vector <String> vec = new Vector<>();
+			vec.add(sp.getId()+"");
+			vec.add(sp.getTenSP()+"");
+			vec.add(sp.getIdLoaiSP()+"");
+			//vec.add(sp.getSoLuong());
 			//vec.add(sp.getIdCongThuc());
-			vec.add(sp.getDonGia());
-			vec.add(sp.getHinhAnh());
+			vec.add(sp.getDonGia()+"");
+			vec.add(sp.getHinhAnh()+"");
 			
 			dtmSanPham.addRow(vec);
 		}
@@ -342,15 +361,15 @@ public class SanPhamGUI extends JPanel {
 			String ma = tblSanPham.getValueAt(row, 0) + "";
 			String ten = tblSanPham.getValueAt(row, 1) + "";
 			String loai = tblSanPham.getValueAt(row, 2) + "";
-			String soLuong = tblSanPham.getValueAt(row, 3) + "";
+			//String soLuong = tblSanPham.getValueAt(row, 3) + "";
 			//String congThuc = tblSanPham.getValueAt(row, 4) + "";
-			String donGia = tblSanPham.getValueAt(row, 4) + "";
-			String anh = tblSanPham.getValueAt(row, 5) + "";
+			String donGia = tblSanPham.getValueAt(row, 3) + "";
+			String anh = tblSanPham.getValueAt(row, 4) + "";
 			
 			 txtMaSP.setText(ma);
              txtTenSP.setText(ten);
              cmbLoai.setSelectedItem(loai);
-             txtSoLuong.setText(soLuong);
+            // txtSoLuong.setText(soLuong);
              //txtCongThuc.setText(congThuc);
              txtDonGia.setText(donGia);
              
@@ -444,21 +463,21 @@ public class SanPhamGUI extends JPanel {
 	    	if (isString(txtTenSP.getText(),"Tên")==0) {
 	    		return;
 	    	}
-	    	if (isNumber(txtSoLuong.getText(),"Số lượng")==0){
-	    		return;
-	    	}
+//	    	if (isNumber(txtSoLuong.getText(),"Số lượng")==0){
+//	    		return;
+//	    	}
 	    	if (isNumber(txtDonGia.getText(),"Đơn giá")==0) {
 	    		return;
 	    	}
 	    	
 	        String ten = txtTenSP.getText();
 	        int loai = cmbLoai.getSelectedIndex();
-	        int soLuong = Integer.parseInt(txtSoLuong.getText());
+	       //int soLuong = Integer.parseInt(txtSoLuong.getText());
 	        //int idCongThuc = Integer.parseInt(txtCongThuc.getText());
 	        String anh = fileAnhSP.getName();
 	        int donGia = Integer.parseInt(txtDonGia.getText());
 	        // Kiểm tra và xử lý dữ liệu trước khi thêm
-	        boolean flag = spBUS.themSanPham(ten, loai, soLuong, anh, donGia);
+	        boolean flag = spBUS.themSanPham(ten, loai, anh, donGia);
 	        spBUS.docListSanPham();
 	        loadDataToTblSanPham();
 	        luuFileAnh();
@@ -467,9 +486,9 @@ public class SanPhamGUI extends JPanel {
 	    	if (isString(txtTenSP.getText(),"Tên")==0) {
 	    		return;
 	    	}
-	    	if (isNumber(txtSoLuong.getText(),"Số lượng")==0){
-	    		return;
-	    	}
+//	    	if (isNumber(txtSoLuong.getText(),"Số lượng")==0){
+//	    		return;
+//	    	}
 	    	if (isNumber(txtDonGia.getText(),"Đơn giá")==0) {
 	    		return;
 	    	}
@@ -477,15 +496,25 @@ public class SanPhamGUI extends JPanel {
 	    	int id = Integer.parseInt(txtMaSP.getText());
 	        String ten = txtTenSP.getText();
 	        int loai = cmbLoai.getSelectedIndex();
-	        int soLuong = Integer.parseInt(txtSoLuong.getText());
+	        //int soLuong = Integer.parseInt(txtSoLuong.getText());
 	        //int idCongThuc = Integer.parseInt(txtCongThuc.getText());
 	        String anh = fileAnhSP.getName();
 	        int donGia = Integer.parseInt(txtDonGia.getText());
 	        // Kiểm tra và xử lý dữ liệu trước khi thêm
-	        boolean flag = spBUS.suaSanPham(id,ten, loai, soLuong, anh, donGia);
+	        boolean flag = spBUS.suaSanPham(id,ten, loai,  anh, donGia);
 	        spBUS.docListSanPham();
 	        loadDataToTblSanPham();
 	        luuFileAnh();
+	    }
+	    private void loadDataCmbLoai() {
+	        cmbLoai.removeAllItems();
+	        loaiBUS.docListLoaiSP();
+	        ArrayList<LoaiSanPham> dsl = loaiBUS.getListLoaiSP();
+	        cmbLoai.addItem("0 - Chọn loại");
+	        for (LoaiSanPham loai : dsl) {
+	            cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoaiSP());
+	        }
+	        cmbLoai.addItem("Khác...");
 	    }
 	    private void xuLyThemLoai() {
 	    	 int x = cmbLoai.getSelectedIndex();
@@ -494,17 +523,9 @@ public class SanPhamGUI extends JPanel {
 		            loaiGUI.setVisible(true);
 		            loadDataCmbLoai();
 		        }
+		        
 	    } 
-	    private void loadDataCmbLoai() {
-	        cmbLoai.removeAllItems();
-	        
-	        ArrayList<LoaiSanPham> dsl = loaiBUS.getListLoaiSP();
-	        cmbLoai.addItem("0 - Chọn loại");
-	        for (LoaiSanPham loai : dsl) {
-	            cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoaiSP());
-	        }
-	        cmbLoai.addItem("Khác...");
-	    }
+	   
 	    private void xuLyXoaSanPham() {
 	        int confirmation = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xoá?", "Xác nhận xoá", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 	        if (confirmation == JOptionPane.YES_OPTION) {

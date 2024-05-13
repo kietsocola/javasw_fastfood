@@ -13,7 +13,7 @@ public class LoaiSpDAO {
 		ArrayList <LoaiSanPham> DSLoaiSanPham = new ArrayList<>();
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT *FROM loaisanpham";
+				String sql = "SELECT * FROM loaisanpham";
 				PreparedStatement prest =conDB.conn.prepareStatement(sql);	
 				ResultSet rs = prest.executeQuery();
 				

@@ -8,19 +8,20 @@ import DTO.LoaiSanPham;
 public class LoaiBUS {
 	private ArrayList<LoaiSanPham> ListLoaiSP = null;
 	private LoaiSpDAO loaiDAO = new LoaiSpDAO();
+	public LoaiBUS() {
+		docListLoaiSP();
+	}
+	public void docListLoaiSP() {
+		this.ListLoaiSP = loaiDAO.getDanhSachLoai();
+	}
 	
 	public ArrayList<LoaiSanPham> getListLoaiSP(){
 		if (ListLoaiSP == null) {
 			docListLoaiSP();
 		}
-		return ListLoaiSP;
+		return this.ListLoaiSP;
 	}
-	public void docListLoaiSP() {
-		ListLoaiSP = loaiDAO.getDanhSachLoai();
-	}
-	public LoaiBUS() {
-		docListLoaiSP();
-	}
+	
 	public String getTenLoai(int ma) {
         for (LoaiSanPham loai : ListLoaiSP) {
             if (loai.getMaLoai() == ma) {

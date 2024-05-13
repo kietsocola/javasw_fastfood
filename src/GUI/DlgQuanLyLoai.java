@@ -27,17 +27,16 @@ public class DlgQuanLyLoai extends javax.swing.JDialog {
     LoaiBUS loaiBUS = new LoaiBUS();
 
     private void loadDataLenTblLoai() {
+    	loaiBUS.docListLoaiSP();
         dtmLoai.setRowCount(0);
         ArrayList<LoaiSanPham> dsl = loaiBUS.getListLoaiSP();
-        if (dsl != null) {
             for (LoaiSanPham loai : dsl) {
-                Vector vec = new Vector();
-                vec.add(loai.getMaLoai());
-                vec.add(loai.getTenLoaiSP());
+                Vector <String> vec = new Vector();
+                vec.add(loai.getMaLoai()+"");
+                vec.add(loai.getTenLoaiSP()+"");
                 dtmLoai.addRow(vec);
             }
         }
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

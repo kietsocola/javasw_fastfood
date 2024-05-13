@@ -74,7 +74,7 @@ public class SanPhamDAO {
 					sp.setDonGia(rs.getInt("DonGia"));
 					sp.setSoLuong(rs.getInt("SoLuong"));
 					sp.setHinhAnh(rs.getString("HinhAnh"));
-					//sp.setIdCongThuc(rs.getInt("idCongThuc"));
+					sp.setIdCongThuc(rs.getInt("idCongThuc"));
 					
 					DSSanPham.add(sp);
 						
@@ -291,17 +291,16 @@ public class SanPhamDAO {
 	    if(conDB.openConnectDB()) {
 		    try {
 		        String sql = "UPDATE sanpham SET "
-		        		+ "TenSP=?, idLoaiSp=?, SoLuong=?, "
-		        		+ "idCongThuc=?, HinhAnh=?, DonGia=? WHERE id=?";
+		        		+ "TenSP=?, idLoaiSp=? , HinhAnh=?, DonGia=? WHERE id=?";
 		        PreparedStatement prest = conDB.conn.prepareStatement(sql);
 
 		        prest.setString(1, sp.getTenSP());
 		        prest.setInt(2, sp.getIdLoaiSP());
-		        prest.setInt(3, sp.getSoLuong());
-		       prest.setInt(4, sp.getIdCongThuc());
-		        prest.setString(5, sp.getHinhAnh());
-		        prest.setInt(6, sp.getDonGia());
-		        prest.setInt(7, sp.getId());
+		        //prest.setInt(3, sp.getSoLuong());
+		       //prest.setInt(4, sp.getIdCongThuc());
+		        prest.setString(3, sp.getHinhAnh());
+		        prest.setInt(4, sp.getDonGia());
+		        prest.setInt(5, sp.getId());
 
 		        // Thực hiện truy vấn và kiểm tra số hàng đã bị ảnh hưởng
 		        if (prest.executeUpdate() >= 1)

@@ -75,7 +75,7 @@ public class SanPhamBUS {
     }
  public boolean themSanPham(String ten,
             int loai,
-            int soLuong,
+            //int soLuong,
             //int idCongThuc,
             String anh,
             int donGia) {
@@ -94,7 +94,7 @@ public class SanPhamBUS {
             SanPham sp = new SanPham();
             sp.setTenSP(ten);
             sp.setIdLoaiSP(loai);
-            sp.setSoLuong(soLuong);
+            //sp.setSoLuong(soLuong);
             //sp.setIdCongThuc(idCongThuc);
             sp.setHinhAnh(anh);
             sp.setDonGia(donGia);
@@ -114,7 +114,7 @@ public class SanPhamBUS {
  public boolean suaSanPham(int id,
 		 	String ten,
             int loai,
-            int soLuong,
+            //int soLuong,
             //int idCongThuc,
             String anh,
             int donGia) {
@@ -136,7 +136,7 @@ public class SanPhamBUS {
 		 SanPham sp = new SanPham();
          sp.setTenSP(ten);
          sp.setIdLoaiSP(loai);
-         sp.setSoLuong(soLuong);
+         //sp.setSoLuong(soLuong);
         // sp.setIdCongThuc(idCongThuc);
          sp.setHinhAnh(anh);
          sp.setDonGia(donGia);
