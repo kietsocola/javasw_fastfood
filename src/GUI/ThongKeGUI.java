@@ -858,7 +858,7 @@ public class ThongKeGUI extends JPanel {
 		for (Object[] rowData : rowDataList) {
 			model.addRow(rowData);
 		}
-		jTable = new JTable(model);
+		jTable = new MyTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 
 		panel_47.removeAll();
@@ -904,7 +904,7 @@ public class ThongKeGUI extends JPanel {
 		for (Object[] rowData : rowDataList) {
 			model.addRow(rowData);
 		}
-		jTable = new JTable(model);
+		jTable = new MyTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 
 		panel_47.removeAll();
@@ -972,7 +972,7 @@ public class ThongKeGUI extends JPanel {
 			model.addRow(rowData);
 		}
 
-		jTable = new JTable(model);
+		jTable = new MyTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 		scrollPane.setPreferredSize(new Dimension(300, 200));
 
@@ -1033,7 +1033,7 @@ public class ThongKeGUI extends JPanel {
 			model.addRow(rowData);
 		}
 
-		jTable = new JTable(model);
+		jTable = new MyTable(model);
 		JScrollPane scrollPane = new JScrollPane(jTable);
 		scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, 200));
 

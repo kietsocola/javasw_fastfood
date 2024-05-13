@@ -423,8 +423,8 @@ public class KhuyenMaiGUI extends JPanel {
 		String phantram = txtPhanTram.getText();
 		if(!tenKM.trim().equals("") && !phantram.trim().equals("")) {
 			int pt = Integer.parseInt(phantram);
-			if(pt<=0) {
-				JOptionPane.showMessageDialog(null, "Phần trăm phải lớn hơn 0", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			if(!phantram.matches("\\b(0*(?:[1-9][0-9]?|100))\\b")) {
+				JOptionPane.showMessageDialog(null, "Phần trăm không hợp lệ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 			int maKM = Integer.parseInt(txtMaKM.getText());

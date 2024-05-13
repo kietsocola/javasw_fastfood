@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /BUS/
 /Custom/
 /DAO/
@@ -7,6 +8,9 @@
 /Icon.png
 /LamMoi.png
 /Luu.png
+=======
+/GUI/
+>>>>>>> b9b504af4be4873467f38e6f468f2e8ce3216696
 /Main/
 /SanPham/
 /SparseBitSet-1.2.jar

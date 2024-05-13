@@ -253,15 +253,16 @@ public class QLyBanHangGUI extends JPanel {
 
 		// @SuppressWarnings("rawtypes")
 //		JComboBox comboBox = new JComboBox();
-		optionMap = new HashMap<>();
-		arrLoaiSP = new ArrayList<>();
-		arrLoaiSP = getListLoaiSP();
-		optionMap.put(0, "--Chọn loại--");
-		if(arrLoaiSP != null) {
-			for(LoaiSanPham x : arrLoaiSP) {
-				optionMap.put(x.getMaLoai(), x.getTenLoaiSP());
-			}
-		}
+//		optionMap = new HashMap<>();
+//		arrLoaiSP = new ArrayList<>();
+		loadDataLoaiSP();
+//		arrLoaiSP = getListLoaiSP();
+//		optionMap.put(0, "--Chọn loại--");
+//		if(arrLoaiSP != null) {
+//			for(LoaiSanPham x : arrLoaiSP) {
+//				optionMap.put(x.getMaLoai(), x.getTenLoaiSP());
+//			}
+//		}
 
         // Tạo một mảng các ID để sử dụng trong JComboBox
 //        Integer[] ids = optionMap.keySet().toArray(new Integer[0]);
@@ -358,15 +359,16 @@ public class QLyBanHangGUI extends JPanel {
 		MyLabelSecond lblKhuyenMai = new MyLabelSecond("Khuyến mãi");
 		panel_KhuyenMai.add(lblKhuyenMai);
 
-		optionMapKM = new HashMap<>();
-		arrKhuyenMai = new ArrayList<>();
-		arrKhuyenMai = kmBUS.getListKhuyenMai();
-		optionMapKM.put(0, "--Chọn--");
-		if(arrKhuyenMai != null) {
-			for(KhuyenMai x : arrKhuyenMai) {
-				optionMapKM.put(x.getPhanTramKM(), x.getTenKM());
-			}
-		}
+//		optionMapKM = new HashMap<>();
+//		arrKhuyenMai = new ArrayList<>();
+		loadDataKM();
+//		arrKhuyenMai = kmBUS.getListKhuyenMai();
+//		optionMapKM.put(0, "--Chọn--");
+//		if(arrKhuyenMai != null) {
+//			for(KhuyenMai x : arrKhuyenMai) {
+//				optionMapKM.put(x.getPhanTramKM(), x.getTenKM());
+//			}
+//		}
 
         // Tạo một mảng các ID để sử dụng trong JComboBox
 //        Integer[] idsKM = optionMapKM.keySet().toArray(new Integer[0]);
@@ -621,6 +623,9 @@ public class QLyBanHangGUI extends JPanel {
 				tabBanHang.setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 				tabHoaDon.setBackground(MyColor.PRIMARY_BAKCGROUND_COLOR);
 				tabBanHang.setOpaque(true);
+				loadDataTableSanPham();
+				loadDataKM();
+				loadDataLoaiSP();
 			}
 		});
 		tabHoaDon.addMouseListener(new MouseAdapter() {
@@ -1024,7 +1029,7 @@ public class QLyBanHangGUI extends JPanel {
 
 	private int luuHoaDon() {
 		boolean rs = false;
-		int giamgia=1;
+		int giamgia=0;
 		String selectedOption = (String) comboBoxKM.getSelectedItem();
         for (Map.Entry<Integer, String> entry : optionMapKM.entrySet()) {
             if (entry.getValue().equals(selectedOption)) {
@@ -1165,6 +1170,38 @@ public class QLyBanHangGUI extends JPanel {
 		arr = loaiBUS.getListLoaiSP();
 		if(arr != null) return arr;
 		return null;
+	}
+	private void loadDataLoaiSP() {
+		System.out.println("yes Loại");
+		optionMap = new HashMap<>();
+		arrLoaiSP = new ArrayList<>();
+		optionMap.clear();
+		arrLoaiSP = getListLoaiSP();
+		for(LoaiSanPham x : arrLoaiSP) {
+			System.out.println(x.getTenLoaiSP());
+		}
+		optionMap.put(0, "--Chọn loại--");
+		if(arrLoaiSP != null) {
+			for(LoaiSanPham x : arrLoaiSP) {
+				optionMap.put(x.getMaLoai(), x.getTenLoaiSP());
+			}
+		}
+	}
+	private void loadDataKM() {
+		System.out.println("yes KM");
+		optionMapKM = new HashMap<>();
+		arrKhuyenMai = new ArrayList<>();
+		optionMapKM.clear();
+		arrKhuyenMai = kmBUS.getListKhuyenMai();
+		for(KhuyenMai x : arrKhuyenMai) {
+			System.out.println(x.getTenKM());
+		}
+		optionMapKM.put(0, "--Chọn--");
+		if(arrKhuyenMai != null) {
+			for(KhuyenMai x : arrKhuyenMai) {
+				optionMapKM.put(x.getPhanTramKM(), x.getTenKM());
+			}
+		}
 	}
 	
 	
