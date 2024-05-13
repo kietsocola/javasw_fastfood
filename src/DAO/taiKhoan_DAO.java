@@ -241,7 +241,34 @@ public int idTaiKhoanMax() {
         return false;
     }
 	
-	public static void main(String[] args) {
-		
+	public boolean kiemTraTrungTenDangNhap2(String tenDangNhap, int id) {
+        try {
+            con.connect();
+            String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = ? AND id != ? AND isDelete = 0";
+            PreparedStatement pre = con.getCon().prepareStatement(sql);
+            pre.setString(1, tenDangNhap);
+            pre.setInt(2, id);
+            ResultSet rs = pre.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+	
+	public String getTenQuyen(int id) {
+		try {
+			con.connect();
+			String sql="SELECT TenQuyen FROM phanquyen pq JOIN taikhoan tk ON tk.Quyen=pq.id WHERE tk.id=? AND tk.isDelete=0";
+			PreparedStatement pre =con.getCon().prepareStatement(sql);
+			pre.setInt(1, id);
+			ResultSet rs = pre.executeQuery();
+			if(rs.next()) {
+				return rs.getString("TenQuyen");
+			}
+		}catch(Exception e) {
+			
+		}
+		return "";
 	}
 }

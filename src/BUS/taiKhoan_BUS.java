@@ -65,6 +65,10 @@ public class taiKhoan_BUS {
 		return taikhoandao.getMatKhau(id);
 	}
 	
+	public String getTenQuyen(int id) {
+		return taikhoandao.getTenQuyen(id);
+	}
+	
 	 public boolean setTrangThai(int ma, int trangThai) {
 	        
 	        if (taikhoandao.setTrangThai(ma,trangThai)) {
@@ -79,36 +83,47 @@ public class taiKhoan_BUS {
         return taikhoandao.kiemTraTrungTenDangNhap(tenDangNhap);
     }
 	
+	public boolean kiemTraTrungTenDangNhap2(String tenDangNhap, int id) {
+		
+        return taikhoandao.kiemTraTrungTenDangNhap2(tenDangNhap, id);
+    }
+	
 	
 	public boolean kiemTraTaiKhoan(String tenDangNhap,String matKhau) {
 		if (tenDangNhap.trim().equals("")) {
         	JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
+		
+		 if (kiemTraTrungTenDangNhap(tenDangNhap)) {
+	        	JOptionPane.showMessageDialog(null, "Tên đăng nhập đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+	            return false;
+	        }
         
         if (matKhau.trim().equals("")) {
         	JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
         
-        if (kiemTraTrungTenDangNhap(tenDangNhap)) {
-        	JOptionPane.showMessageDialog(null, "Tên đăng nhập đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
-            return false;
-        }
 
-        String regex = "^[a-zA-Z0-9]{8,}$";
+        String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và không chứa kí tự đặc biệt(!@#$%^&*)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và chỉ chứa kí tự đặc biệt(!@#$%^&*-_)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
         return true;
 	}
 	
-	public boolean kiemTraTaiKhoan2(String tenDangNhap,String matKhau) {
+	public boolean kiemTraTaiKhoan2(int id, String tenDangNhap,String matKhau) {
 		if (tenDangNhap.trim().equals("")) {
         	JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
+		
+		 if (kiemTraTrungTenDangNhap2(tenDangNhap, id)) {
+	        	JOptionPane.showMessageDialog(null, "Tên đăng nhập đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+	            return false;
+	        }
         
         if (matKhau.trim().equals("")) {
         	JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
@@ -116,11 +131,13 @@ public class taiKhoan_BUS {
         }
         
 
-        String regex = "^[a-zA-Z0-9]{8,}$";
+        String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và không chứa kí tự đặc biệt(!@#$%^&*)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự và chỉ chứa kí tự đặc biệt(!@#$%^&*-_)!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
+        
+       
         return true;
 	}
 	

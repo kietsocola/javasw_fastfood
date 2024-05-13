@@ -128,11 +128,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="MyLib/mysql-connector-j-8.3.0.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="MyLib/newrelic-api-7.6.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -194,6 +189,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="MyLib/xmlbeans-5.0.3.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="MyLib/mysql-connector-j-8.3.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -62,6 +62,8 @@ import Custom.MyTextField;
 import DTO.NhanVien;
 import DTO.phanquyen_DTO;
 import DTO.taiKhoan_DTO;
+import GUI.taiKhoan_GUI;
+import org.apache.logging.log4j.Logger;
 
 public class QuanLyNhanVienGUI extends JPanel {
 
@@ -122,7 +124,13 @@ public class QuanLyNhanVienGUI extends JPanel {
 		// Panel for dien thong tin
 		panel_dienThongTin = new MyPanel();
 		panel_input.add(panel_dienThongTin, BorderLayout.CENTER);
-		panel_dienThongTin.setLayout(new BoxLayout(panel_dienThongTin, BoxLayout.Y_AXIS));
+		panel_dienThongTin.setLayout(new GridLayout(1, 2));
+
+		MyPanel panel_leftRow = new MyPanel();
+		panel_leftRow.setLayout(new GridLayout(4, 1));
+
+		MyPanel panel_rightRow = new MyPanel();
+		panel_rightRow.setLayout(new GridLayout(4, 1));
 
 		// Panel for maNV
 		pnMaNV = new MyPanelSecond();
@@ -205,14 +213,19 @@ public class QuanLyNhanVienGUI extends JPanel {
 		pnChucVu.add(lblChucVu);
 		pnChucVu.add(cmbChucVu);
 
-		panel_dienThongTin.add(pnMaNV);
-		panel_dienThongTin.add(pnTenDN);
-		panel_dienThongTin.add(pnMatKhau);
-		panel_dienThongTin.add(pnTenNV);
-		panel_dienThongTin.add(pnNgaySinh);
-		panel_dienThongTin.add(pnGioiTinh);
-		panel_dienThongTin.add(pnSoDT);
-		panel_dienThongTin.add(pnChucVu);
+		panel_leftRow.add(pnMaNV);
+		panel_leftRow.add(pnTenDN);
+		panel_leftRow.add(pnMatKhau);
+		panel_leftRow.add(pnTenNV);
+
+		panel_rightRow.add(pnNgaySinh);
+		panel_rightRow.add(pnGioiTinh);
+		panel_rightRow.add(pnSoDT);
+		panel_rightRow.add(pnChucVu);
+
+		// Thêm các panel con vào panel chính
+		panel_dienThongTin.add(panel_leftRow);
+		panel_dienThongTin.add(panel_rightRow);
 
 		// Panel for Tìm Kiếm
 		pnTimKiem = new MyPanelSecond();
@@ -272,7 +285,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 		ImageIcon resizedIcon2 = new ImageIcon(resizedImg2);
 		btnXoa.setIcon(resizedIcon2);
 		btnXoa.setFont(new Font("Arial", Font.PLAIN, 16));
-		
+
 		btnSua = new MyButton("Sửa");
 		ImageIcon icon1 = new ImageIcon("images/edit2.png"); // Thay đổi "icon.png" bằng đường dẫn đến biểu tượng của
 		// bạn
@@ -289,20 +302,18 @@ public class QuanLyNhanVienGUI extends JPanel {
 		Image img5 = icon5.getImage();
 		Image resizedImg5 = img5.getScaledInstance(25, 25, Image.SCALE_SMOOTH); // Thay đổi 50, 50 thành chiều cao và
 		// chiều rộng mong muốn
-				ImageIcon resizedIcon5 = new ImageIcon(resizedImg5);
-				btnReset.setIcon(resizedIcon5);
-				btnReset.setFont(new Font("Arial", Font.PLAIN, 16));
-				
-		
-				btnKhoa = new MyButton("Khoá");
-				ImageIcon icon9 = new ImageIcon("images/denied.png");
-				Image img9 = icon9.getImage();
-				Image resizedImg9 = img9.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-				ImageIcon resizedIcon9 = new ImageIcon(resizedImg9);
-				btnKhoa.setIcon(resizedIcon9);
-				btnKhoa.setFont(new Font("Arial", Font.PLAIN, 16));
-				
-		
+		ImageIcon resizedIcon5 = new ImageIcon(resizedImg5);
+		btnReset.setIcon(resizedIcon5);
+		btnReset.setFont(new Font("Arial", Font.PLAIN, 16));
+
+		btnKhoa = new MyButton("Khoá");
+		ImageIcon icon9 = new ImageIcon("images/denied.png");
+		Image img9 = icon9.getImage();
+		Image resizedImg9 = img9.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon9 = new ImageIcon(resizedImg9);
+		btnKhoa.setIcon(resizedIcon9);
+		btnKhoa.setFont(new Font("Arial", Font.PLAIN, 16));
+
 		// nut nhap excel
 		btnNhap = new MyButton("Nhập Excel");
 		ImageIcon iconNhap = new ImageIcon("images/excel.png");
@@ -311,7 +322,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 		ImageIcon resizedIconNhap = new ImageIcon(resizedImgNhap);
 		btnNhap.setIcon(resizedIconNhap);
 		btnNhap.setFont(new Font("Arial", Font.PLAIN, 16));
-//		pnButton.add(btnNhap);
 		btnNhap.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -327,7 +337,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 		ImageIcon resizedIconXuat = new ImageIcon(resizedImgXuat);
 		btnXuat.setIcon(resizedIconXuat);
 		btnXuat.setFont(new Font("Arial", Font.PLAIN, 16));
-//		pnButton.add(btnXuat);
 		btnXuat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -335,12 +344,13 @@ public class QuanLyNhanVienGUI extends JPanel {
 			}
 		});
 
-		
 		pnButton.add(btnThem);
 		pnButton.add(btnSua);
 		pnButton.add(btnXoa);
 		pnButton.add(btnReset);
-		pnButton.add(btnNhap);pnButton.add(btnXuat);pnButton.add(btnKhoa);
+		pnButton.add(btnNhap);
+		pnButton.add(btnXuat);
+		pnButton.add(btnKhoa);
 
 		panel_input.add(pnButton, BorderLayout.SOUTH);
 
@@ -364,8 +374,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 				"Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ", "Trạng Thái" });
 		table = new MyTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(453, 200)); 
-		scrollPane.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
+		scrollPane.setPreferredSize(new Dimension(453, 310));
 		panel_table.setLayout(new BorderLayout(0, 0));
 		panel_table.add(scrollPane, BorderLayout.NORTH);
 
@@ -479,162 +488,156 @@ public class QuanLyNhanVienGUI extends JPanel {
 	}
 
 	private void xuLyXoaNhanVien() {
-		String ma=txtMaNV.getText();
+		String ma = txtMaNV.getText();
 
-			   nhanVienBUS.xoaNhanVien(ma) ;
-			   taiKhoanBUS.xoaTaiKhoan(nhanVienBUS.getIdTaiKhoan(ma));
-			
-				nhanVienBUS.docDanhSach();
-				taiKhoanBUS.docDanhSach();
-			
-				 btnReset.doClick();
+		nhanVienBUS.xoaNhanVien(ma);
+		taiKhoanBUS.xoaTaiKhoan(nhanVienBUS.getIdTaiKhoan(ma));
 
+		nhanVienBUS.docDanhSach();
+		taiKhoanBUS.docDanhSach();
+
+		btnReset.doClick();
 
 	}
 
 	private void xuLySuaNhanVien() {
 		ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
-	    ArrayList<taiKhoan_DTO> dstk = taiKhoanBUS.getDanhSachTaiKhoan();
-	    
-	    String ngaySinh = "";
-	    // Lấy ngày sinh từ dateChooser
-	    if (dateChooser.getDate() != null) {
-	        // Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
-	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	        ngaySinh = dateFormat.format(dateChooser.getDate());
-	    }
-	
-	    int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
-	    
-		 int selectedItem=cmbChucVu.getSelectedIndex();
-		 int so;
-		 switch (selectedItem) {
-		     case 0:
-		         so = 2;
-		         break;
-		     case 1:
-		         so = 3;
-		         break;
-		     case 2:
-		         so = 4;
-		         break;
-		     case 3:
-		         so = 5;
-		         break;
-		     default:
-		         so = 2;
-		         break;
-		 }
-	   boolean fad=false;
-	   int id=1;
-	    for (NhanVien nv : dsnv) {
-	    	for(taiKhoan_DTO tk: dstk) {
-	    		if (tk.getMa() == nv.getIdTaiKhoan()) {
-	    			fad=true;
-	    			id=tk.getMa();
-	    		}
-	    	}
-	    }
-	    if(fad) {
-	    	
-	    	if(!taiKhoanBUS.kiemTraTaiKhoan2(txtTenDN.getText(), txtMatKhau.getText())){
-	    		return;
-	    	}
-	    	
-	    	if(!nhanVienBUS.kiemTraNhanVien2(txtMaNV.getText(),gioiTinh, txt_soDT.getText())){
-	    		return;
-	    	}
-	    	
-		    	nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem));
-    			taiKhoanBUS.suaTaiKhoan(id,txtTenDN.getText(), txtMatKhau.getText(), so);
-    			taiKhoanBUS.docDanhSach();
-    			nhanVienBUS.docDanhSach();
-    			btnReset.doClick();
-	    	
-	    }
-	    
+		ArrayList<taiKhoan_DTO> dstk = taiKhoanBUS.getDanhSachTaiKhoan();
+
+		String ngaySinh = "";
+		// Lấy ngày sinh từ dateChooser
+		if (dateChooser.getDate() != null) {
+			// Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			ngaySinh = dateFormat.format(dateChooser.getDate());
+		}
+
+		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
+
+		int selectedItem = cmbChucVu.getSelectedIndex();
+		int so;
+		switch (selectedItem) {
+			case 0:
+				so = 2;
+				break;
+			case 1:
+				so = 3;
+				break;
+			case 2:
+				so = 4;
+				break;
+			case 3:
+				so = 5;
+				break;
+			default:
+				so = 2;
+				break;
+		}
+
+		if (txtMaNV.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Vui lòng nhập chọn nhân viên cần sửa!", "Lỗi",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (!taiKhoanBUS.kiemTraTaiKhoan2(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(),
+				txtMatKhau.getText())) {
+			return;
+		}
+
+		if (!nhanVienBUS.kiemTraNhanVien2(txtMaNV.getText(), txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
+			return;
+		}
+
+		nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
+
+		taiKhoanBUS.suaTaiKhoan(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(), txtMatKhau.getText(),
+				so);
+
+		taiKhoanBUS.docDanhSach();
+		nhanVienBUS.docDanhSach();
+		btnReset.doClick();
 
 	}
 
 	private void xuLyThemNhanVien() {
-		 String ngaySinh = "";
-		 if (dateChooser.getDate() != null) {
-		     // Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
-		     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		     ngaySinh = dateFormat.format(dateChooser.getDate());
-		 }
-		 int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
-		 
-		 int selectedItem=cmbChucVu.getSelectedIndex();
-		 int so;
-		 switch (selectedItem) {
-		     case 0:
-		         so = 2;
-		         break;
-		     case 1:
-		         so = 3;
-		         break;
-		     case 2:
-		         so = 4;
-		         break;
-		     case 3:
-		         so = 5;
-		         break;
-		     default:
-		         so = 2;
-		         break;
-		 }
-		 
-		 if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty() && txt_soDT.getText().isEmpty()) {
-			 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			 return;
-		 }
-		 
-		 if(!taiKhoanBUS.kiemTraTaiKhoan(txtTenDN.getText(), txtMatKhau.getText()) ) {
-			 return;
-		 }
-		 if(!nhanVienBUS.kiemTraNhanVien(txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
-			 return;
-		 }
+		String ngaySinh = "";
+		if (dateChooser.getDate() != null) {
+			// Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			ngaySinh = dateFormat.format(dateChooser.getDate());
+		}
+		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 
-		
-		 if(taiKhoanBUS.themTaiKhoan(txtTenDN.getText(), txtMatKhau.getText(),so) ) {
-			 taiKhoanBUS.docDanhSach();
-			 int idTaiKhoan=taiKhoanBUS.idTaiKhoanMax();
-			 
-			 if(nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), cmbChucVu.getItemAt(selectedItem),idTaiKhoan,1)) {
-			     nhanVienBUS.docDanhSach();
-
-			     btnReset.doClick();
-			 }
-		 }
-		 
-		
+		int selectedItem = cmbChucVu.getSelectedIndex();
+		int so;
+		switch (selectedItem) {
+			case 0:
+				so = 2;
+				break;
+			case 1:
+				so = 3;
+				break;
+			case 2:
+				so = 4;
+				break;
+			case 3:
+				so = 5;
+				break;
+			default:
+				so = 2;
+				break;
 		}
 
+		if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty()
+				&& txt_soDT.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
-	private void xuLyTimKiemNhanVien() {
-		  
-	   	tableModel.setRowCount(0);
-	   
-	   ArrayList<NhanVien> dsnv = nhanVienBUS.timNhanVien(txtTimKiem.getText());
-	   for (NhanVien nv : dsnv) {
-		   Object[] rowData = new Object[9];
+		if (!taiKhoanBUS.kiemTraTaiKhoan(txtTenDN.getText(), txtMatKhau.getText())) {
+			return;
+		}
+		if (!nhanVienBUS.kiemTraNhanVien(txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
+			return;
+		}
 
-	        rowData[0] = nv.getMaNV();
-	        rowData[1]=taiKhoanBUS.getTenDangNhap(nv.getIdTaiKhoan());
-	        rowData[2]=taiKhoanBUS.getMatKhau(nv.getIdTaiKhoan());
-	        rowData[3] = nv.getTen();
-	        rowData[4] = nv.getNgaySinh();
-	        rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
-	        rowData[6] = nv.getSoDT();		            
-	        rowData[7] = nv.getChucVu();
-	        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
-	        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
-	       tableModel.addRow(rowData);
-	   }
+		if (taiKhoanBUS.themTaiKhoan(txtTenDN.getText(), txtMatKhau.getText(), so)) {
+			taiKhoanBUS.docDanhSach();
+			int idTaiKhoan = taiKhoanBUS.idTaiKhoanMax();
+
+			if (nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), idTaiKhoan, 1)) {
+				nhanVienBUS.docDanhSach();
+
+				btnReset.doClick();
+			}
+		}
+
 	}
 
+	private void xuLyTimKiemNhanVien() {
+		tableModel.setRowCount(0);
+		ArrayList<NhanVien> dsnv = nhanVienBUS.timNhanVien(txtTimKiem.getText());
+
+		for (NhanVien nv : dsnv) {
+			Object[] rowData = new Object[9];
+
+			rowData[0] = nv.getMaNV();
+			rowData[1] = taiKhoanBUS.getTenDangNhap(nv.getIdTaiKhoan());
+			rowData[2] = taiKhoanBUS.getMatKhau(nv.getIdTaiKhoan());
+			rowData[3] = nv.getTen();
+			rowData[4] = nv.getNgaySinh();
+			rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
+			rowData[6] = nv.getSoDT();
+			rowData[7] = taiKhoanBUS.getTenQuyen(nv.getIdTaiKhoan());
+			int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
+			rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
+			if (nv.getIdTaiKhoan() == taiKhoan_GUI.idTaiKhoan) {
+				continue;
+			}
+			tableModel.addRow(rowData);
+		}
+	}
 
 	private void loadDataCmbChucVu() {
 		cmbChucVu.removeAllItems();
@@ -653,98 +656,97 @@ public class QuanLyNhanVienGUI extends JPanel {
 	}
 
 	private void xuLyClickTblNhanVien() {
-        int row = table.getSelectedRow();
-        if (row > -1) {
-            String maNV = table.getValueAt(row, 0).toString();
-            String tenDN = table.getValueAt(row, 1).toString();
-            String matKhau = table.getValueAt(row, 2).toString();
-            String tenNV = table.getValueAt(row, 3).toString();
-            String ngaySinh = table.getValueAt(row, 4).toString();
-            String gioiTinh = table.getValueAt(row, 5).toString();
-            String soDT = table.getValueAt(row, 6).toString();
-            String chucVu = table.getValueAt(row, 7).toString();
+		int row = table.getSelectedRow();
+		if (row > -1) {
+			String maNV = table.getValueAt(row, 0).toString();
+			String tenDN = table.getValueAt(row, 1).toString();
+			String matKhau = table.getValueAt(row, 2).toString();
+			String tenNV = table.getValueAt(row, 3).toString();
+			String ngaySinh = table.getValueAt(row, 4).toString();
+			String gioiTinh = table.getValueAt(row, 5).toString();
+			String soDT = table.getValueAt(row, 6).toString();
+			String chucVu = table.getValueAt(row, 7).toString();
 
-            txtMaNV.setText(maNV);
-            txtTenNV.setText(tenNV);
-            txt_soDT.setText(soDT);
-            txtTenDN.setText(tenDN);
-            txtMatKhau.setText(matKhau);
-            
-            int index=-1;
-            for(int i=0; i< cmbChucVu.getItemCount();i++) {
-            	if(cmbChucVu.getItemAt(i).equals(chucVu)) {
-            		index=i;
-            		break;
-            	}
-            }
-            
-            if(index!=-1) {
-            	cmbChucVu.setSelectedIndex(index);
-            }
-            
-            try {
-            	Date date =new SimpleDateFormat("yyyy-MM-dd").parse(ngaySinh);
-            	dateChooser.setDate(date);
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (gioiTinh.equalsIgnoreCase("Nam")) {
-                rdoBtn_Nam.setSelected(true);
-                rdoBtn_Nu.setSelected(false);
-            } else {
-            	rdoBtn_Nam.setSelected(false);
-            	rdoBtn_Nu.setSelected(true);
-            }
+			txtMaNV.setText(maNV);
+			txtTenNV.setText(tenNV);
+			txt_soDT.setText(soDT);
+			txtTenDN.setText(tenDN);
+			txtMatKhau.setText(matKhau);
 
-        }
-    }
- 
+			int index = -1;
+			for (int i = 0; i < cmbChucVu.getItemCount(); i++) {
+				if (cmbChucVu.getItemAt(i).equals(chucVu)) {
+					index = i;
+					break;
+				}
+			}
 
-	private void loadDataTblNhanVien() {	    
-	    tableModel.setRowCount(0);
-	    
-	    ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
-	    
-	    
-	    for (NhanVien nv : dsnv) {
-	        Object[] rowData = new Object[9];
+			if (index != -1) {
+				cmbChucVu.setSelectedIndex(index);
+			}
 
-	        rowData[0] = nv.getMaNV();
-	        rowData[1]=taiKhoanBUS.getTenDangNhap(nv.getIdTaiKhoan());
-	        rowData[2]=taiKhoanBUS.getMatKhau(nv.getIdTaiKhoan());
-	        rowData[3] = nv.getTen();
-	        rowData[4] = nv.getNgaySinh();
-	        rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
-	        rowData[6] = nv.getSoDT();		            
-	        rowData[7] = nv.getChucVu();
-	        int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
-	        rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
-	        
-	        tableModel.addRow(rowData);
-	    }
+			try {
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(ngaySinh);
+				dateChooser.setDate(date);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (gioiTinh.equalsIgnoreCase("Nam")) {
+				rdoBtn_Nam.setSelected(true);
+				rdoBtn_Nu.setSelected(false);
+			} else {
+				rdoBtn_Nam.setSelected(false);
+				rdoBtn_Nu.setSelected(true);
+			}
+
+		}
 	}
-	
+
+	private void loadDataTblNhanVien() {
+		tableModel.setRowCount(0);
+		ArrayList<NhanVien> dsnv = nhanVienBUS.getDanhSachNhanVien();
+
+		for (NhanVien nv : dsnv) {
+			Object[] rowData = new Object[9];
+
+			rowData[0] = nv.getMaNV();
+			rowData[1] = taiKhoanBUS.getTenDangNhap(nv.getIdTaiKhoan());
+			rowData[2] = taiKhoanBUS.getMatKhau(nv.getIdTaiKhoan());
+			rowData[3] = nv.getTen();
+			rowData[4] = nv.getNgaySinh();
+			rowData[5] = nv.getGioiTinh() == 1 ? "Nam" : "Nữ";
+			rowData[6] = nv.getSoDT();
+			rowData[7] = taiKhoanBUS.getTenQuyen(nv.getIdTaiKhoan());
+			int trangThai = taiKhoanBUS.getTrangThai(nv.getIdTaiKhoan());
+			rowData[8] = (trangThai == 0) ? "Khoá" : ((trangThai == 1) ? "Hiệu lực" : "Chưa có");
+
+			if (nv.getIdTaiKhoan() == taiKhoan_GUI.idTaiKhoan) {
+				continue;
+			}
+
+			tableModel.addRow(rowData);
+		}
+	}
+
 	private void xuLyKhoaNhanVien() {
-		String ma=txtMaNV.getText();
-		 if (ma.trim().equals("")) {
-	            JOptionPane.showMessageDialog(null, "Chưa chọn nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-	            return;
-	        }
+		String ma = txtMaNV.getText();
+		if (ma.trim().equals("")) {
+			JOptionPane.showMessageDialog(null, "Chưa chọn nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
-		   int row = table.getSelectedRow();
-	            String trangThai = table.getValueAt(row, 8).toString();
-	            int trangThaiMoi = -1; 
-	            
-	            if (trangThai=="Hiệu lực") {
-	                trangThaiMoi = 0; // Khoá
-	            } else {
-	                trangThaiMoi = 1; // Hiệu lực
-	            }
-	            taiKhoanBUS.setTrangThai(nhanVienBUS.getIdTaiKhoan(ma), trangThaiMoi);
-	            btnReset.doClick(); 
+		int row = table.getSelectedRow();
+		String trangThai = table.getValueAt(row, 8).toString();
+		int trangThaiMoi = -1;
+
+		if (trangThai == "Hiệu lực") {
+			trangThaiMoi = 0; // Khoá
+		} else {
+			trangThaiMoi = 1; // Hiệu lực
+		}
+		taiKhoanBUS.setTrangThai(nhanVienBUS.getIdTaiKhoan(ma), trangThaiMoi);
+		btnReset.doClick();
 	}
-
-
 
 	private void xuLyXuatExcel() {
 		JFileChooser fileChooser = new JFileChooser();
@@ -865,7 +867,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 					if (taiKhoanBUS.themTaiKhoan(rowData[1].toString(), rowData[2].toString(), idQuyen)) {
 						if (nhanVienBUS.themNhanVien(rowData[3].toString(), rowData[4].toString(),
 								rowData[5].toString().equals("Nam") ? 0 : 1, rowData[6].toString(),
-								rowData[7].toString(),
 								taiKhoanBUS.idTaiKhoanMax(), 0))
 							tableModel.addRow(rowData);
 					}

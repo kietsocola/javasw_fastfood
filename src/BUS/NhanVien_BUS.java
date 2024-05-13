@@ -44,16 +44,18 @@ public class NhanVien_BUS {
     public boolean kiemTraTrungSDT(String sdt) {
         return nvdao.kiemTraTrungSDT(sdt);
     }
+    
+    public boolean kiemTraTrungSDT2(String sdt, int id) {
+        return nvdao.kiemTraTrungSDT2(sdt, id);
+    }
 
-    public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu, int idTaiKhoan,
-            int isThongBao) {
+    public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT, int idTaiKhoan,int isThongBao) {
 
         NhanVien nv = new NhanVien();
         nv.setTen(ten);
         nv.setNgaySinh(ngaySinh);
         nv.setGioiTinh(gioiTinh);
         nv.setSoDT(soDT);
-        nv.setChucVu(chucVu);
         nv.setIdTaiKhoan(idTaiKhoan);
         boolean flag = nvdao.themNV(nv);
         if (isThongBao == 1) {
@@ -70,16 +72,11 @@ public class NhanVien_BUS {
     public boolean kiemTraNhanVien(String ten, int gioiTinh, String soDT) {
         ten = ten.trim();
         soDT = soDT.trim();
-        if (ten.equals("")) {
+        if (ten.trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        String regex2 = "^[a-zA-Z]+$";
-
-        if (!ten.matches(regex2)) {
-            JOptionPane.showMessageDialog(null, "Tên nhân viên không đúng!(chữ thường hoặc chữ hoa)", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+        
         if (gioiTinh != 0 && gioiTinh != 1) {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -104,18 +101,15 @@ public class NhanVien_BUS {
         return true;
     }
 
-    public boolean kiemTraNhanVien2(String ten, int gioiTinh, String soDT) {
+    public boolean kiemTraNhanVien2(String id, String ten, int gioiTinh, String soDT) {
+    	int ma=Integer.parseInt(id);
         ten = ten.trim();
         soDT = soDT.trim();
         if (ten.equals("")) {
             JOptionPane.showMessageDialog(null, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        String regex2 = "^[a-zA-Z]+$";
-        if (!ten.matches(regex2)) {
-            JOptionPane.showMessageDialog(null, "Tên nhân viên không đúng!(chữ thường hoặc chữ hoa)", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+        
         if (gioiTinh != 0 && gioiTinh != 1) {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -131,11 +125,16 @@ public class NhanVien_BUS {
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        
+        if (kiemTraTrungSDT2(soDT, ma)) {
+            JOptionPane.showMessageDialog(null, "Số điện thoại đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
 
         return true;
     }
 
-    public boolean suaNhanVien(String ma, String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu) {
+    public boolean suaNhanVien(String ma, String ten, String ngaySinh, int gioiTinh, String soDT) {
         try {
 
             int maNV = Integer.parseInt(ma);
@@ -145,7 +144,7 @@ public class NhanVien_BUS {
             nv.setNgaySinh(ngaySinh);
             nv.setGioiTinh(gioiTinh);
             nv.setSoDT(soDT);
-            nv.setChucVu(chucVu);
+
             boolean flag = nvdao.updateNV(nv);
             if (!flag) {
                 JOptionPane.showMessageDialog(null, "Sửa thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -164,8 +163,7 @@ public class NhanVien_BUS {
         ArrayList<NhanVien> dsnv = new ArrayList<>();
         for (NhanVien nv : listNV) {
 
-            if (nv.getTen().toLowerCase().contains(tuKhoa) || nv.getSoDT().toLowerCase().contains(tuKhoa)
-                    || nv.getChucVu().toLowerCase().contains(tuKhoa)) {
+            if (nv.getTen().toLowerCase().contains(tuKhoa) || nv.getSoDT().toLowerCase().contains(tuKhoa)) {
                 dsnv.add(nv);
             }
         }
@@ -200,13 +198,13 @@ public class NhanVien_BUS {
         return nvdao.getIdTaiKhoan(Integer.parseInt(id));
     }
 
-    public boolean nhapExcel(String ten, String ngaySinh, int gioiTinh, String soDT, String chucVu) {
+    public boolean nhapExcel(String ten, String ngaySinh, int gioiTinh, String soDT) {
         NhanVien nv = new NhanVien();
         nv.setTen(ten);
         nv.setNgaySinh(ngaySinh);
         nv.setGioiTinh(gioiTinh);
         nv.setSoDT(soDT);
-        nv.setChucVu(chucVu);
+
         boolean flag = nvdao.nhapExcel(nv);
 
         return flag;

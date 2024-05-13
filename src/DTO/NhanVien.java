@@ -6,7 +6,7 @@ public class NhanVien {
 	    private String ngaySinh;
 	    private int gioiTinh;
 	    private String soDT;
-	    private String chucVu;
+	    
 	    private int idTaiKhoan;
 
 	    public NhanVien() {
@@ -60,13 +60,6 @@ public class NhanVien {
 	        this.soDT = soDT;
 	    }
 	    
-	    public String getChucVu() {
-	        return chucVu;
-	    }
-
-	    public void setChucVu(String chucVu) {
-	        this.chucVu = chucVu;
-	    }
 
 
 		public int getIdTaiKhoan() {
