@@ -44,6 +44,10 @@ public class NhanVien_BUS {
     public boolean kiemTraTrungSDT(String sdt) {
         return nvdao.kiemTraTrungSDT(sdt);
     }
+    
+    public boolean kiemTraTrungSDT2(String sdt, int id) {
+        return nvdao.kiemTraTrungSDT2(sdt, id);
+    }
 
     public boolean themNhanVien(String ten, String ngaySinh, int gioiTinh, String soDT, int idTaiKhoan,int isThongBao) {
 
@@ -97,7 +101,8 @@ public class NhanVien_BUS {
         return true;
     }
 
-    public boolean kiemTraNhanVien2(String ten, int gioiTinh, String soDT) {
+    public boolean kiemTraNhanVien2(String id, String ten, int gioiTinh, String soDT) {
+    	int ma=Integer.parseInt(id);
         ten = ten.trim();
         soDT = soDT.trim();
         if (ten.equals("")) {
@@ -118,6 +123,11 @@ public class NhanVien_BUS {
         if (!soDT.matches(regex)) {
             JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi",
                     JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        if (kiemTraTrungSDT2(soDT, ma)) {
+            JOptionPane.showMessageDialog(null, "Số điện thoại đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 

@@ -538,39 +538,31 @@ public class QuanLyNhanVienGUI extends JPanel {
 		         so = 2;
 		         break;
 		 }
-	   boolean fad=false;
-	   int id=1;
-	    for (NhanVien nv : dsnv) {
-	    	for(taiKhoan_DTO tk: dstk) {
-	    		if (tk.getMa() == nv.getIdTaiKhoan()) {
-	    			fad=true;
-	    			id=tk.getMa();
-	    		}
-	    	}
-	    }
-	    if(fad) {
+	  
 	    	 if (txtMaNV.getText().isEmpty()) {
 				 JOptionPane.showMessageDialog(null, "Vui lòng nhập chọn nhân viên cần sửa!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 				 return;
 			 }
-	    	
-	    	if(!taiKhoanBUS.kiemTraTaiKhoan2(txtTenDN.getText(), txtMatKhau.getText())){
+	    	 
+	    
+
+	    	if(!taiKhoanBUS.kiemTraTaiKhoan2(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()),txtTenDN.getText(), txtMatKhau.getText())){
 	    		return;
 	    	}
 	    	
-	    	if(!nhanVienBUS.kiemTraNhanVien2(txtMaNV.getText(),gioiTinh, txt_soDT.getText())){
+	    	if(!nhanVienBUS.kiemTraNhanVien2(txtMaNV.getText(), txtTenNV.getText(),gioiTinh, txt_soDT.getText())){
 	    		return;
 	    	}
 	    	
 		    	nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
-    			taiKhoanBUS.suaTaiKhoan(id,txtTenDN.getText(), txtMatKhau.getText(), so);
+		    	
+		    	taiKhoanBUS.suaTaiKhoan(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()),txtTenDN.getText(), txtMatKhau.getText(), so);
+		    	
+    			
     			taiKhoanBUS.docDanhSach();
     			nhanVienBUS.docDanhSach();
     			btnReset.doClick();
-	    	
-	    }
-	    
-
+	
 	}
 
 	private void xuLyThemNhanVien() {

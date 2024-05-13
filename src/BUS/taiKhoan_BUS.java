@@ -83,6 +83,11 @@ public class taiKhoan_BUS {
         return taikhoandao.kiemTraTrungTenDangNhap(tenDangNhap);
     }
 	
+	public boolean kiemTraTrungTenDangNhap2(String tenDangNhap, int id) {
+		
+        return taikhoandao.kiemTraTrungTenDangNhap2(tenDangNhap, id);
+    }
+	
 	
 	public boolean kiemTraTaiKhoan(String tenDangNhap,String matKhau) {
 		if (tenDangNhap.trim().equals("")) {
@@ -100,11 +105,6 @@ public class taiKhoan_BUS {
             return false;
         }
         
-        String regex2 = ".*\\d.*";
-        if (!matKhau.trim().matches(regex2)) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 1 kí tự chữ và số", "Lỗi", JOptionPane.ERROR_MESSAGE); 
-            return false;
-        }
 
         String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {
@@ -114,22 +114,22 @@ public class taiKhoan_BUS {
         return true;
 	}
 	
-	public boolean kiemTraTaiKhoan2(String tenDangNhap,String matKhau) {
+	public boolean kiemTraTaiKhoan2(int id, String tenDangNhap,String matKhau) {
 		if (tenDangNhap.trim().equals("")) {
         	JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
+		
+		 if (kiemTraTrungTenDangNhap2(tenDangNhap, id)) {
+	        	JOptionPane.showMessageDialog(null, "Tên đăng nhập đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+	            return false;
+	        }
         
         if (matKhau.trim().equals("")) {
         	JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
         
-        String regex2 = ".*\\d.*";
-        if (!matKhau.trim().matches(regex2)) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 1 kí tự số", "Lỗi", JOptionPane.ERROR_MESSAGE); 
-            return false;
-        }
 
         String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {

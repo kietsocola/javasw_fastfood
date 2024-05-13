@@ -160,14 +160,30 @@ public class NhanVien_DAO {
 
 	public boolean kiemTraTrungSDT(String sdt) {
 		try {
-			String sql="SELECT * FROM nhanvien where SoDienThoai='"+sdt+"' AND isDelete = 0";
-			Statement st = conDB.conn.createStatement();
-			ResultSet rs=st.executeQuery(sql);
-			return rs.next();
+			String sql="SELECT * FROM nhanvien where SoDienThoai=? AND isDelete = 0";
+			 PreparedStatement pre = conDB.conn.prepareStatement(sql);
+	            pre.setString(1, sdt); 
+	            ResultSet rs = pre.executeQuery();
+	            return rs.next();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
+	
+	public boolean kiemTraTrungSDT2(String sdt, int id) {
+		try {
+			String sql="SELECT * FROM nhanvien where SoDienThoai=? AND id!=? AND isDelete = 0";
+			 PreparedStatement pre = conDB.conn.prepareStatement(sql);
+	            pre.setString(1, sdt); 
+	            pre.setInt(2, id);
+	            ResultSet rs = pre.executeQuery();
+	            return rs.next();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 
 }
