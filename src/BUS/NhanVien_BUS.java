@@ -74,8 +74,10 @@ public class NhanVien_BUS {
             JOptionPane.showMessageDialog(null, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        if (ten.equals("")) {
-            JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        String regex2 = "^[a-zA-Z]+$";
+
+        if (!ten.matches(regex2)) {
+            JOptionPane.showMessageDialog(null, "Tên nhân viên không đúng!(chữ thường hoặc chữ hoa)", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (gioiTinh != 0 && gioiTinh != 1) {
@@ -95,7 +97,7 @@ public class NhanVien_BUS {
         }
 
         if (kiemTraTrungSDT(soDT)) {
-            JOptionPane.showMessageDialog(null, "Số điện thoại bị trùng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Số điện thoại đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -109,8 +111,9 @@ public class NhanVien_BUS {
             JOptionPane.showMessageDialog(null, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        if (ten.equals("")) {
-            JOptionPane.showMessageDialog(null, "Tên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        String regex2 = "^[a-zA-Z]+$";
+        if (!ten.matches(regex2)) {
+            JOptionPane.showMessageDialog(null, "Tên nhân viên không đúng!(chữ thường hoặc chữ hoa)", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (gioiTinh != 0 && gioiTinh != 1) {

@@ -364,7 +364,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 				"Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ", "Trạng Thái" });
 		table = new MyTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(453, 120)); 
+		scrollPane.setPreferredSize(new Dimension(453, 200)); 
 		scrollPane.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
 		panel_table.setLayout(new BorderLayout(0, 0));
 		panel_table.add(scrollPane, BorderLayout.NORTH);

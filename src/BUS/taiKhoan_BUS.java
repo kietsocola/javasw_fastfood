@@ -92,7 +92,7 @@ public class taiKhoan_BUS {
         }
         
         if (kiemTraTrungTenDangNhap(tenDangNhap)) {
-        	JOptionPane.showMessageDialog(null, "Tên đăng nhập bị trùng!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+        	JOptionPane.showMessageDialog(null, "Tên đăng nhập đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
         }
 
