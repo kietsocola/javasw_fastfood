@@ -359,7 +359,26 @@ public class ThongKeDAO {
 		int totalCustomers = 0;
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT COUNT(*) AS total FROM " + table;
+				String sql = "SELECT COUNT(*) AS total FROM " + table + " where isdelete = 0";
+				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
+				ResultSet resultSet = preparedStatement.executeQuery();
+				if (resultSet.next()) {
+					totalCustomers = resultSet.getInt("total");
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return totalCustomers;
+	}
+	
+	public int getAVG(String table) {
+		int totalCustomers = 0;
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT avg(tongtien) AS total FROM " + table ;
 				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
 				ResultSet resultSet = preparedStatement.executeQuery();
 				if (resultSet.next()) {

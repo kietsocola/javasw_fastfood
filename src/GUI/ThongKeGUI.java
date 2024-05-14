@@ -78,6 +78,11 @@ public class ThongKeGUI extends JPanel {
 	ThongKeBUS thongKeBUS = new ThongKeBUS();
 	private ArrayList<SanPham> listSanPham;
 	private HashMap<Integer, Integer> idQuantityMap;
+	private JLabel lblNewLabel_1_1_1_2;
+	private JLabel lblNewLabel_1_1_1_2_1;
+	private JLabel lblNewLabel_1_1_1_2_1_2;
+	private JLabel lblNewLabel_1_1_1_2_1_1;
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -377,6 +382,7 @@ public class ThongKeGUI extends JPanel {
 		btnPanel2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.show(panel_40, "Panel 2-2");
+				load();
 			}
 		});
 
@@ -458,12 +464,12 @@ public class ThongKeGUI extends JPanel {
 		panel_27.add(lblNewLabel_4_1_2);
 
 		int tongKH = thongKeBUS.getTotal("KhachHang");
-		JLabel lblNewLabel_1_1_1_2 = new JLabel(String.valueOf(tongKH));
+		lblNewLabel_1_1_1_2 = new JLabel(String.valueOf(tongKH));
 
 		lblNewLabel_1_1_1_2.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_1_1_1_2.setPreferredSize(new Dimension(104, 10));
 		lblNewLabel_1_1_1_2.setForeground(new Color(0, 0, 0));
-		lblNewLabel_1_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		lblNewLabel_1_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_1_1_1_2.setBackground(new Color(228, 228, 255));
 		panel_27.add(lblNewLabel_1_1_1_2);
 
@@ -563,11 +569,11 @@ public class ThongKeGUI extends JPanel {
 		panel_27_1.add(lblNewLabel_4_1_2_1);
 
 		int tongSP = thongKeBUS.getTotal("SanPham");
-		JLabel lblNewLabel_1_1_1_2_1 = new JLabel(String.valueOf(tongSP));
+		 lblNewLabel_1_1_1_2_1 = new JLabel(String.valueOf(tongSP));
 		lblNewLabel_1_1_1_2_1.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_1_1_1_2_1.setPreferredSize(new Dimension(104, 30));
 		lblNewLabel_1_1_1_2_1.setForeground(Color.BLACK);
-		lblNewLabel_1_1_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		lblNewLabel_1_1_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_1_1_1_2_1.setBackground(new Color(255, 240, 228));
 		panel_27_1.add(lblNewLabel_1_1_1_2_1);
 
@@ -636,17 +642,17 @@ public class ThongKeGUI extends JPanel {
 		panel_26_1_1.add(panel_27_1_1, BorderLayout.CENTER);
 		panel_27_1_1.setLayout(new GridLayout(2, 0, 0, 0));
 
-		JLabel lblNewLabel_4_1_2_1_1 = new JLabel("Đơn hàng");
+		JLabel lblNewLabel_4_1_2_1_1 = new JLabel("TBGT Đơn");
 		lblNewLabel_4_1_2_1_1.setForeground(Color.BLACK);
 		lblNewLabel_4_1_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panel_27_1_1.add(lblNewLabel_4_1_2_1_1);
 
-		int tongHD = thongKeBUS.getTotal("hoadon");
-		JLabel lblNewLabel_1_1_1_2_1_1 = new JLabel(String.valueOf(tongHD));
+		int tongHD = thongKeBUS.getAVG("hoadon");
+		 lblNewLabel_1_1_1_2_1_1 = new JLabel(String.valueOf(tongHD) + " đ") ;
 		lblNewLabel_1_1_1_2_1_1.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_1_1_1_2_1_1.setPreferredSize(new Dimension(104, 30));
 		lblNewLabel_1_1_1_2_1_1.setForeground(Color.BLACK);
-		lblNewLabel_1_1_1_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		lblNewLabel_1_1_1_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_1_1_1_2_1_1.setBackground(new Color(255, 240, 228));
 		panel_27_1_1.add(lblNewLabel_1_1_1_2_1_1);
 
@@ -742,12 +748,12 @@ public class ThongKeGUI extends JPanel {
 		panel_27_1_2.add(lblNewLabel_4_1_2_1_2);
 
 		int tongKM = thongKeBUS.getTotal("Khuyenmai");
-		JLabel lblNewLabel_1_1_1_2_1_2 = new JLabel(String.valueOf(tongKM));
+		 lblNewLabel_1_1_1_2_1_2 = new JLabel(String.valueOf(tongKM));
 
 		lblNewLabel_1_1_1_2_1_2.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_1_1_1_2_1_2.setPreferredSize(new Dimension(104, 30));
 		lblNewLabel_1_1_1_2_1_2.setForeground(Color.BLACK);
-		lblNewLabel_1_1_1_2_1_2.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		lblNewLabel_1_1_1_2_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_1_1_1_2_1_2.setBackground(new Color(255, 240, 228));
 		panel_27_1_2.add(lblNewLabel_1_1_1_2_1_2);
 
@@ -1238,6 +1244,20 @@ public class ThongKeGUI extends JPanel {
 		// Thêm biểu đồ vào panel
 		panel_green.add(new XChartPanel<>(chart));
 
+	}
+	
+	public void load () {
+		int tongKH = thongKeBUS.getTotal("KhachHang");
+		lblNewLabel_1_1_1_2.setText(tongKH+"");
+		
+		int tongSP = thongKeBUS.getTotal("SanPham");
+		lblNewLabel_1_1_1_2_1.setText(tongSP+"");
+		
+		int tongKM = thongKeBUS.getTotal("Khuyenmai");
+		lblNewLabel_1_1_1_2_1_2.setText(tongKM+"");
+		
+		int tongHD = thongKeBUS.getAVG("hoadon");
+		lblNewLabel_1_1_1_2_1_1.setText(tongHD+" đ");
 	}
 
 }
