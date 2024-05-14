@@ -59,6 +59,7 @@ import Custom.MyPanel;
 import Custom.MyPanelSecond;
 import Custom.MyTable;
 import Custom.MyTextField;
+import Custom.PDFExport;
 import DTO.NhanVien;
 import DTO.phanquyen_DTO;
 import DTO.taiKhoan_DTO;
@@ -794,6 +795,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 				workbook.write(fileOut);
 				fileOut.close();
 				workbook.close();
+                PDFExport.displayFile(fileToSave.getPath());
 
 				JOptionPane.showMessageDialog(null, "Xuất Excel thành công!");
 			} catch (IOException ex) {

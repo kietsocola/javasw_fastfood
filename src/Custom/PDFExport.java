@@ -1,5 +1,6 @@
 package Custom;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -208,6 +209,7 @@ public class PDFExport {
                 if (userSelection == JFileChooser.APPROVE_OPTION) {
                     File fileToSave = fileChooser.getSelectedFile();
                     document.save(fileToSave);
+                    PDFExport.displayFile(fileToSave.getPath());
                     
                     System.out.println("PDF đã được lưu thành công.");
                 }
@@ -217,4 +219,14 @@ public class PDFExport {
         }
         return "Xuất pdf thành công";
     }
+	
+	public static void displayFile(String pathFile) {
+		File file = new File(pathFile);
+		try {
+			Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
