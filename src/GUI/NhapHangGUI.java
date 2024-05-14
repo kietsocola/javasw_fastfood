@@ -1131,10 +1131,23 @@ public class NhapHangGUI extends JPanel {
  	    }
      	return 1;
 	 }
+	 public int isNumber(String text,String name) {
+		 String regex = "\\d+";
+	 	    Pattern pattern = Pattern.compile(regex);
+	 	    Matcher matcher = pattern.matcher(text);
+	 	    if (!matcher.matches()) {
+	 	    	JOptionPane.showMessageDialog(null, name+ " phải là số", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	 	    	return 0;
+	 	    }
+	 	    return 1;
+	 }
 	private void xulyThemNL() {
 		if (isString (txtTenNL.getText(),"Tên")==0) {
 			return;
 		}
+		if (isNumber(txtDonGiaNL.getText(),"Đơn giá")==0) {
+    		return;
+    	}
 		String ten = txtTenNL.getText();
 		int dongia = Integer.parseInt(txtDonGiaNL.getText());
 		boolean flag = nlBUS.themNguyenLieu(ten,0, dongia);
