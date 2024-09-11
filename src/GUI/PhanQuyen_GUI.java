@@ -82,6 +82,7 @@ public class PhanQuyen_GUI extends JPanel {
 		this.add(PanelPhanQuyen);
 		
 		MainPhanQuyen = new MyPanel();
+		MainPhanQuyen.setBackground(new Color(255, 255, 255));
 		PanelPhanQuyen.add(MainPhanQuyen);
 		MainPhanQuyen.setLayout(new BoxLayout(MainPhanQuyen, BoxLayout.Y_AXIS));
 		
@@ -161,11 +162,13 @@ public class PhanQuyen_GUI extends JPanel {
 		
 		
 		btnChucNang = new MyPanel();
+		btnChucNang.setBackground(new Color(255, 255, 255));
 		btnChucNang.setBorder(new EmptyBorder(30, 0, 50, 0));
 		MainPhanQuyen.add(btnChucNang);
 		btnChucNang.setLayout(new GridLayout(0, 7, 15, 0));
 		
 		panel_22 = new MyPanel();
+		panel_22.setBackground(new Color(255, 255, 255));
 		btnChucNang.add(panel_22);
 		
 		comboBox = new JComboBox() ;

@@ -95,6 +95,12 @@ public class taiKhoan_BUS {
             return false;
         }
 		
+		String regex = "^[a-zA-Z0-9\\\\+]*$";
+		if(!tenDangNhap.trim().matches(regex)) {
+			JOptionPane.showMessageDialog(null, "Tên đăng nhập chỉ chứa chữ cái và sô !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            return false;
+		}
+		
 		 if (kiemTraTrungTenDangNhap(tenDangNhap)) {
 	        	JOptionPane.showMessageDialog(null, "Tên đăng nhập đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
 	            return false;
@@ -106,7 +112,7 @@ public class taiKhoan_BUS {
         }
         
 
-        String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
+        regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {
             JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
