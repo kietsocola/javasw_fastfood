@@ -60,7 +60,7 @@ public class CongThucDAO {
 		return arrCongThuc;
 	}
 	public boolean addCongThuc(CongThuc congThuc) {
-	    boolean result = false;
+		boolean result = false;
 	    if (conDB.openConnectDB()) {
 	        try {
 	            String sql = "INSERT INTO CongThuc(idNguyenLieu, idSanPham, SoLuongDung) VALUES (?, ?, ?)";
@@ -77,6 +77,7 @@ public class CongThucDAO {
 	        }
 	    }
 	    return result;
+	    
 	}
 	public boolean checkExistingCongThuc(CongThuc congThuc) {
 	    boolean result = false;
