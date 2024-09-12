@@ -510,25 +510,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 
-		int selectedItem = cmbChucVu.getSelectedIndex();
-		int so;
-		switch (selectedItem) {
-			case 0:
-				so = 2;
-				break;
-			case 1:
-				so = 3;
-				break;
-			case 2:
-				so = 4;
-				break;
-			case 3:
-				so = 5;
-				break;
-			default:
-				so = 2;
-				break;
-		}
+		String nameChucVu = cmbChucVu.getSelectedItem().toString();
+		System.out.print(nameChucVu + " dang duoc chon");
+
 
 		if (txtMaNV.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập chọn nhân viên cần sửa!", "Lỗi",
@@ -559,7 +543,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 		nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
 
 		taiKhoanBUS.suaTaiKhoan(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(), txtMatKhau.getText(),
-				so);
+				nameChucVu);
 
 		taiKhoanBUS.docDanhSach();
 		nhanVienBUS.docDanhSach();
@@ -576,25 +560,8 @@ public class QuanLyNhanVienGUI extends JPanel {
 		}
 		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 
-		int selectedItem = cmbChucVu.getSelectedIndex();
-		int so;
-		switch (selectedItem) {
-			case 0:
-				so = 2;
-				break;
-			case 1:
-				so = 3;
-				break;
-			case 2:
-				so = 4;
-				break;
-			case 3:
-				so = 5;
-				break;
-			default:
-				so = 2;
-				break;
-		}
+		String nameQuyen = cmbChucVu.getSelectedItem().toString();
+
 		
 
 		if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty()
@@ -612,7 +579,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 		
 	
 
-		if (taiKhoanBUS.themTaiKhoan(txtTenDN.getText(), txtMatKhau.getText(), so)) {
+		if (taiKhoanBUS.themTaiKhoan1(txtTenDN.getText(), txtMatKhau.getText(), nameQuyen)) {
 			taiKhoanBUS.docDanhSach();
 			int idTaiKhoan = taiKhoanBUS.idTaiKhoanMax();
 

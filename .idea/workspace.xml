@@ -1,7 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="085fc15c-81a3-4074-aab5-cb1a4e2cf564" name="Changes" comment="" />
+    <list default="true" id="085fc15c-81a3-4074-aab5-cb1a4e2cf564" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/BUS/CongThucBUS.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/BUS/CongThucBUS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/BUS/KhachHang_BUS.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/BUS/KhachHang_BUS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/BUS/LoaiBUS.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/BUS/LoaiBUS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/BUS/NhaCungCap_BUS.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/BUS/NhaCungCap_BUS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/BUS/NhanVien_BUS.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/BUS/NhanVien_BUS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/BUS/SanPhamBUS.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/BUS/SanPhamBUS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/BUS/taiKhoan_BUS.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/BUS/taiKhoan_BUS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Custom/CustomJDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Custom/CustomJDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/DAO/connectDatabase.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/DAO/connectDatabase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/CongThucGUI$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/CongThucGUI$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/CongThucGUI$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/CongThucGUI$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/CongThucGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/CongThucGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/DlgQuanLyLoai.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/DlgQuanLyLoai.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/KhuyenMaiGUI$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/KhuyenMaiGUI$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/KhuyenMaiGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/KhuyenMaiGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/MainQuanlyGUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/MainQuanlyGUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/MainQuanlyGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/MainQuanlyGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/NhapHangGUI$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/NhapHangGUI$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/NhapHangGUI$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/NhapHangGUI$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/NhapHangGUI$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/NhapHangGUI$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/NhapHangGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/NhapHangGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/PhanQuyen_GUI$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/PhanQuyen_GUI$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/PhanQuyen_GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/PhanQuyen_GUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/QLyBanHangGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/QuanLyKhachHangGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/QuanLyKhachHangGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/QuanLyNhaCungCapGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/QuanLyNhaCungCapGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/QuanLyNhanVienGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/QuanLyNhanVienGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/SanPhamGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/SanPhamGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/ThongKeGUI$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/ThongKeGUI$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/ThongKeGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/ThongKeGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/taiKhoan_GUI$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/taiKhoan_GUI$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/GUI/taiKhoan_GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/GUI/taiKhoan_GUI.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,9 +53,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2lvXucEMmHkuvYubIEol2edlz5h" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -26,7 +64,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "run",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/java/javaswing/javasw_fastfood"
