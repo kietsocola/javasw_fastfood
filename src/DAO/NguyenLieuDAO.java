@@ -25,6 +25,7 @@ public class NguyenLieuDAO {
 					nl.setMaNguyenLieu(rs.getInt("id"));
 					nl.setTenNL(rs.getString("Ten"));
 					nl.setsoLuongNL(rs.getInt("SoLuong"));
+					nl.setMaDonVi(rs.getInt("maDonVi"));
 					
 					DSNguyenLieu.add(nl);
 					
@@ -68,11 +69,13 @@ public class NguyenLieuDAO {
 		 boolean result = false;
 		    if (conDB.openConnectDB()) {
 		        try {
-		            String sql = "INSERT INTO nguyenlieu(Ten, SoLuong, DonGiaNL) VALUES (?, ?, ?)";
+		            String sql = "INSERT INTO nguyenlieu(Ten, SoLuong, DonGiaNL, maDonVi) VALUES (?, ?, ?, ?)";
 		            PreparedStatement prest = conDB.conn.prepareStatement(sql);
 		            prest.setString(1, nl.getTenNL());
 		            prest.setInt(2, nl.getsoLuongNL());
 		            prest.setInt(3, nl.getDonGiaNL());
+		            prest.setInt(4, nl.getMaDonVi());
+		            
 		            if(prest.executeUpdate() >=1)
 						result = true;
 		        } catch (SQLException e) {
