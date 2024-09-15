@@ -1,13 +1,14 @@
 package DAO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.sql.*;
-import java.util.List;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 import DTO.ChiTietHoaDon;
 import DTO.HoaDon;
-import DTO.KhachHang;
 import DTO.SanPham;
 
 public class ThongKeDAO {
@@ -121,10 +122,42 @@ public class ThongKeDAO {
 			try {
 				String sql = "SELECT DISTINCT sp.* FROM SanPham sp "
 						+ "JOIN ChiTietHoaDon cthd ON sp.id = cthd.idSanPham "
-						+ "JOIN HoaDon hd ON cthd.idHoaDon = hd.id " + "WHERE hd.NgayLap BETWEEN ? AND ? and   sp.isdelete = 0 ";
+						+ "JOIN HoaDon hd ON cthd.idHoaDon = hd.id "
+						+ "WHERE hd.NgayLap BETWEEN ? AND ? and   sp.isdelete = 0 ";
 				PreparedStatement stmt = conDB.conn.prepareStatement(sql);
 				stmt.setDate(1, startDate);
 				stmt.setDate(2, endDate);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					SanPham sp = new SanPham();
+					sp.setId(rs.getInt("id"));
+					sp.setIdLoaiSP(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setIdCongThuc(rs.getInt("idCongThuc"));
+					listSanPham.add(sp);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return listSanPham;
+	}
+
+	public ArrayList<SanPham> getSanPhamByOneDate(Date startDate) {
+		ArrayList<SanPham> listSanPham = new ArrayList<>();
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT DISTINCT sp.* FROM SanPham sp "
+						+ "JOIN ChiTietHoaDon cthd ON sp.id = cthd.idSanPham "
+						+ "JOIN HoaDon hd ON cthd.idHoaDon = hd.id "
+						+ "WHERE DATE(hd.NgayLap) = ? and   sp.isdelete = 0 ";
+				PreparedStatement stmt = conDB.conn.prepareStatement(sql);
+				stmt.setDate(1, startDate);
 				ResultSet rs = stmt.executeQuery();
 				while (rs.next()) {
 					SanPham sp = new SanPham();
@@ -180,7 +213,39 @@ public class ThongKeDAO {
 		return listSanPham;
 	}
 
-	
+	public ArrayList<SanPham> getSanPhamByOneDateAndCategory(String loaiSP, Date startDate) {
+		ArrayList<SanPham> listSanPham = null;
+		if (conDB.openConnectDB()) {
+			try {
+				String sql = "SELECT DISTINCT sp.* FROM SanPham sp "
+						+ "JOIN ChiTietHoaDon cthd ON sp.id = cthd.idSanPham "
+						+ "JOIN HoaDon hd ON cthd.idHoaDon = hd.id " + "JOIN LoaiSanPham lsp ON sp.idLoaiSP = lsp.id "
+						+ "WHERE DATE(hd.NgayLap) = ?  AND lsp.TenLoaiSP = ? and sp.isdelete = 0 ";
+				PreparedStatement stmt = conDB.conn.prepareStatement(sql);
+				stmt.setDate(1, startDate);
+				stmt.setString(2, loaiSP);
+				ResultSet rs = stmt.executeQuery();
+				listSanPham = new ArrayList<>();
+				while (rs.next()) {
+					SanPham sp = new SanPham();
+					sp.setId(rs.getInt("id"));
+					sp.setIdLoaiSP(rs.getInt("idLoaiSP"));
+					sp.setTenSP(rs.getString("TenSP"));
+					sp.setDonGia(rs.getInt("DonGia"));
+					sp.setSoLuong(rs.getInt("SoLuong"));
+					sp.setHinhAnh(rs.getString("HinhAnh"));
+					sp.setIdCongThuc(rs.getInt("idCongThuc"));
+					listSanPham.add(sp);
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex);
+			} finally {
+				conDB.closeConnectDB();
+			}
+		}
+		return listSanPham;
+	}
+
 	public HoaDon getHoaDonById(int idHoaDon) {
 		HoaDon hoaDon = null;
 		if (conDB.openConnectDB()) {
@@ -234,7 +299,7 @@ public class ThongKeDAO {
 		}
 		return listHoaDon;
 	}
-	
+
 	public ArrayList<HoaDon> getHoaDon() {
 		ArrayList<HoaDon> hoaDonList = new ArrayList<>();
 
@@ -296,7 +361,7 @@ public class ThongKeDAO {
 		}
 		return chiTietHoaDonList;
 	}
-	
+
 	public ArrayList<ChiTietHoaDon> getChiTietHoaDonByHoaDonId(int hoaDonId) {
 		ArrayList<ChiTietHoaDon> chiTietHoaDonList = new ArrayList<>();
 		if (conDB.openConnectDB()) {
@@ -373,12 +438,12 @@ public class ThongKeDAO {
 		}
 		return totalCustomers;
 	}
-	
+
 	public int getAVG(String table) {
 		int totalCustomers = 0;
 		if (conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT avg(tongtien) AS total FROM " + table ;
+				String sql = "SELECT avg(tongtien) AS total FROM " + table;
 				PreparedStatement preparedStatement = conDB.conn.prepareStatement(sql);
 				ResultSet resultSet = preparedStatement.executeQuery();
 				if (resultSet.next()) {

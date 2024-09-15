@@ -1,20 +1,12 @@
 package BUS;
 
 import java.sql.Date;
-
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import DAO.ThongKeDAO;
 import DTO.ChiTietHoaDon;
 import DTO.HoaDon;
 import DTO.SanPham;
-
-import java.util.ArrayList;
-
-import DAO.ThongKeDAO;
-import DTO.HoaDon;
 
 public class ThongKeBUS {
 
@@ -68,14 +60,22 @@ public class ThongKeBUS {
 		return thongKeDAO.getSanPhamByDate(startDate, endDate);
 	}
 
+	public ArrayList<SanPham> getSanPhamByOneDate(Date startDate) {
+		return thongKeDAO.getSanPhamByOneDate(startDate);
+	}
+
 	public ArrayList<SanPham> getSanPhamByDateAndCategory(String loaiSP, Date startDate, Date endDate) {
 		return thongKeDAO.getSanPhamByDateAndCategory(loaiSP, startDate, endDate);
+	}
+
+	public ArrayList<SanPham> getSanPhamByOneDateAndCategory(String loaiSP, Date startDate) {
+		return thongKeDAO.getSanPhamByOneDateAndCategory(loaiSP, startDate);
 	}
 
 	public int getTotal(String table) {
 		return thongKeDAO.getTotal(table);
 	}
-	
+
 	public int getAVG(String table) {
 		return thongKeDAO.getAVG(table);
 	}

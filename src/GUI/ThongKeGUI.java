@@ -268,7 +268,22 @@ public class ThongKeGUI extends JPanel {
 
 				// Chuyển đổi sang kiểu java.sql.Date
 				java.sql.Date startDate = new java.sql.Date(modifiedStartDate.getTime());
-				java.sql.Date endDate = new java.sql.Date(utilEndDate.getTime());
+				java.sql.Date endDate2 = new java.sql.Date(utilEndDate.getTime());
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(endDate2);
+
+				// Cộng thêm 23 giờ
+				calendar.add(Calendar.HOUR_OF_DAY, 23);
+
+				// Lấy đối tượng java.sql.Date sau khi cộng giờ
+				java.sql.Date endDate = new java.sql.Date(calendar.getTimeInMillis());
+
+				String startDateString = startDate.toString();
+				String endDateString = endDate.toString();
+
+				// So sánh hai ngày
+				int comparison = startDate.compareTo(endDate);
+				System.out.println("Dates are equal: " + comparison);
 
 				if (selectedCategory.equals("Tất cả")) {
 
@@ -312,7 +327,15 @@ public class ThongKeGUI extends JPanel {
 
 					// Chuyển đổi sang kiểu java.sql.Date
 					java.sql.Date startDate = new java.sql.Date(modifiedStartDate.getTime());
-					java.sql.Date endDate = new java.sql.Date(utilEndDate.getTime());
+					java.sql.Date endDate2 = new java.sql.Date(utilEndDate.getTime());
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(endDate2);
+
+					// Cộng thêm 24 giờ
+					calendar.add(Calendar.HOUR_OF_DAY, 24);
+
+					// Lấy đối tượng java.sql.Date sau khi cộng giờ
+					java.sql.Date endDate = new java.sql.Date(calendar.getTimeInMillis());
 
 					// Gọi phương thức của BUS để lấy danh sách sản phẩm dựa trên ngày và loại sản
 					// phẩm được chọn
