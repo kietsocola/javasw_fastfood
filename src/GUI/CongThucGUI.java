@@ -29,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
 
 import BUS.CheBienBUS;
 import BUS.CongThucBUS;
+import BUS.DonViBUS;
 import BUS.NguyenLieuBUS;
 import BUS.SanPhamBUS;
 import Custom.MyButton;
@@ -57,6 +58,7 @@ public class CongThucGUI extends JPanel{
 	private NguyenLieuBUS nlBUS = new NguyenLieuBUS();
 	private CongThucBUS ctBUS = new CongThucBUS();
 	private CheBienBUS chebienBUS = new CheBienBUS();
+	private DonViBUS donViBUS = new DonViBUS();
 	private Map<Integer, String> optionMap;
 	private ArrayList<NguyenLieu> arrNguyenLieu;
 	private JComboBox comboBox;
@@ -226,6 +228,7 @@ public class CongThucGUI extends JPanel{
 		modelTableNguyenLieuCB.addColumn("Tên nguyên liệu");
 		modelTableNguyenLieuCB.addColumn("Số lượng cần");
 		modelTableNguyenLieuCB.addColumn("Số lượng còn lại");
+		modelTableNguyenLieuCB.addColumn("Đơn vị");
 		tableNguyenLieuCheBien = new MyTable(modelTableNguyenLieuCB);
 		scrollPaneNguyenLieu.setViewportView(tableNguyenLieuCheBien);
 		loadDataTableSanPhamCB();
@@ -414,6 +417,7 @@ public class CongThucGUI extends JPanel{
 			vec.add(nl.getTenNL());
 			vec.add(ct.getSoLuongDung() + "");
 			vec.add(nl.getsoLuongNL() + "");
+			vec.add(donViBUS.getTenDonViByMaDonViBUS(nl.getMaDonVi()) + "");
 			modelTableNguyenLieuCB.addRow(vec);
 		}
 	}
