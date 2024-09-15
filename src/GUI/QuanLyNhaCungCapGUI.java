@@ -339,7 +339,9 @@ public class QuanLyNhaCungCapGUI extends JPanel {
 		 if(nccbus.themNCC(txtTenNCC.getText(), txt_soDT.getText(),txtDiaChi.getText())) {
 			 nccbus.docDS();
 		     btnReset.doClick();
+		     JOptionPane.showMessageDialog(null, "Đã thêm nhà cung cấp mới", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		 }
+		 else JOptionPane.showMessageDialog(null, "Nhà cung cấp đã có sẵn", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		private void xuLySuaNCC() {

@@ -5,6 +5,8 @@ import DAO.NguyenLieuDAO;
 import DTO.NguyenLieu;
 public class NguyenLieuBUS {
 	NguyenLieuDAO nlDAO = new NguyenLieuDAO();
+	ArrayList<NguyenLieu> dsnl = nlDAO.getDanhSachNguyenLieu();
+	
 	
 	public NguyenLieu getNguyenLieubyId(int id) {
 		try {
@@ -46,13 +48,19 @@ public class NguyenLieuBUS {
 			return false;
 		}
 	}
-	public boolean themNguyenLieu(String tenNL,int soluong,int donGiaNL) {
+	public boolean themNguyenLieu(String tenNL,int soluong,int donGiaNL, int maDonVi) {
 	    // Tạo một đối tượng NguyenLieu từ các thông tin đầu vào
 	    NguyenLieu nl = new NguyenLieu();
 	    nl.setTenNL(tenNL);
 	    //nl.setSoLuongNL(soLuongNL);
 	    nl.setDonGiaNL(donGiaNL);
-
+	    nl.setMaDonVi(maDonVi);
+	   
+	    for(NguyenLieu item : dsnl) {
+	    	if(item.getTenNL().equals(nl.getTenNL()))
+	    		return false;
+	    }
+	    
 	    try {
 	        // Gọi phương thức themNguyenLieu từ lớp DAO để thêm nguyên liệu vào cơ sở dữ liệu
 	        return nlDAO.themNguyenLieu(nl);

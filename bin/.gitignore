@@ -1,5 +1,6 @@
 /GUI/
+/Main/
 /BUS/
-/Custom/
-/DTO/
 /DAO/
+/DTO/
+/Custom/

@@ -60,6 +60,12 @@ public class NhaCungCap_BUS {
         ncc.setTenNCC(tenNCC);
         ncc.setSoDT(soDT);
         ncc.setDiaChi(diaChi);
+        
+        listncc = nccdao.getDanhSachNhaCungCap();
+        for(NhaCungCap item : listncc) {
+        	if(item.getTenNCC().equals(ncc.getTenNCC()))
+        		return false;
+        }
         boolean flag=nccdao.addNCC(ncc);
         if(flag) {
         	JOptionPane.showMessageDialog(null, "Thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

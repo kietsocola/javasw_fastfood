@@ -1,19 +1,19 @@
 package GUI;
 
-import java.awt.*;
-import javax.swing.border.MatteBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import org.knowm.xchart.*;
-import org.knowm.xchart.style.*;
-import org.knowm.xchart.style.Styler.LegendPosition;
-import org.knowm.xchart.style.lines.*;
-
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.text.DecimalFormat;
-
-import com.toedter.calendar.JDateChooser;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -23,40 +23,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import BUS.ThongKeBUS;
-import Custom.MyButton;
-import Custom.MyTable;
-import Custom.MyPanelSecond;
-import DTO.ChiTietHoaDon;
-import DTO.HoaDon;
-import DTO.SanPham;
-import java.sql.*;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import java.awt.event.*;
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 
-import org.knowm.xchart.*;
+import org.knowm.xchart.CategoryChart;
+import org.knowm.xchart.CategoryChartBuilder;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.style.*;
-import org.knowm.xchart.style.lines.*;
+import org.knowm.xchart.XYSeries;
 
 import com.toedter.calendar.JDateChooser;
 
 import BUS.ThongKeBUS;
 import Custom.MyButton;
+import Custom.MyTable;
 import DTO.ChiTietHoaDon;
 import DTO.HoaDon;
 import DTO.SanPham;
@@ -82,7 +74,6 @@ public class ThongKeGUI extends JPanel {
 	private JLabel lblNewLabel_1_1_1_2_1;
 	private JLabel lblNewLabel_1_1_1_2_1_2;
 	private JLabel lblNewLabel_1_1_1_2_1_1;
-	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -569,7 +560,7 @@ public class ThongKeGUI extends JPanel {
 		panel_27_1.add(lblNewLabel_4_1_2_1);
 
 		int tongSP = thongKeBUS.getTotal("SanPham");
-		 lblNewLabel_1_1_1_2_1 = new JLabel(String.valueOf(tongSP));
+		lblNewLabel_1_1_1_2_1 = new JLabel(String.valueOf(tongSP));
 		lblNewLabel_1_1_1_2_1.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_1_1_1_2_1.setPreferredSize(new Dimension(104, 30));
 		lblNewLabel_1_1_1_2_1.setForeground(Color.BLACK);
@@ -648,7 +639,7 @@ public class ThongKeGUI extends JPanel {
 		panel_27_1_1.add(lblNewLabel_4_1_2_1_1);
 
 		int tongHD = thongKeBUS.getAVG("hoadon");
-		 lblNewLabel_1_1_1_2_1_1 = new JLabel(String.valueOf(tongHD) + " đ") ;
+		lblNewLabel_1_1_1_2_1_1 = new JLabel(String.valueOf(tongHD) + " đ");
 		lblNewLabel_1_1_1_2_1_1.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_1_1_1_2_1_1.setPreferredSize(new Dimension(104, 30));
 		lblNewLabel_1_1_1_2_1_1.setForeground(Color.BLACK);
@@ -748,7 +739,7 @@ public class ThongKeGUI extends JPanel {
 		panel_27_1_2.add(lblNewLabel_4_1_2_1_2);
 
 		int tongKM = thongKeBUS.getTotal("Khuyenmai");
-		 lblNewLabel_1_1_1_2_1_2 = new JLabel(String.valueOf(tongKM));
+		lblNewLabel_1_1_1_2_1_2 = new JLabel(String.valueOf(tongKM));
 
 		lblNewLabel_1_1_1_2_1_2.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_1_1_1_2_1_2.setPreferredSize(new Dimension(104, 30));
@@ -1000,7 +991,7 @@ public class ThongKeGUI extends JPanel {
 	public ArrayList<Object[]> displaySanPhamOnTable5(ArrayList<SanPham> listSanPham, Date startDate, Date endDate) {
 		ArrayList<Object[]> rowDataList = new ArrayList<>();
 		HashMap<Integer, Integer> idQuantityMap = new HashMap<>(); // Tạo một HashMap mới để tính tổng số lượng cho từng
-																	// ID
+		// ID
 		for (SanPham sp : listSanPham) {
 			ArrayList<ChiTietHoaDon> listChiTietHoaDon = thongKeBUS.getChiTietHoaDonBySanPham(sp.getId());
 			for (ChiTietHoaDon cthd : listChiTietHoaDon) {
@@ -1245,19 +1236,19 @@ public class ThongKeGUI extends JPanel {
 		panel_green.add(new XChartPanel<>(chart));
 
 	}
-	
-	public void load () {
+
+	public void load() {
 		int tongKH = thongKeBUS.getTotal("KhachHang");
-		lblNewLabel_1_1_1_2.setText(tongKH+"");
-		
+		lblNewLabel_1_1_1_2.setText(tongKH + "");
+
 		int tongSP = thongKeBUS.getTotal("SanPham");
-		lblNewLabel_1_1_1_2_1.setText(tongSP+"");
-		
+		lblNewLabel_1_1_1_2_1.setText(tongSP + "");
+
 		int tongKM = thongKeBUS.getTotal("Khuyenmai");
-		lblNewLabel_1_1_1_2_1_2.setText(tongKM+"");
-		
+		lblNewLabel_1_1_1_2_1_2.setText(tongKM + "");
+
 		int tongHD = thongKeBUS.getAVG("hoadon");
-		lblNewLabel_1_1_1_2_1_1.setText(tongHD+" đ");
+		lblNewLabel_1_1_1_2_1_1.setText(tongHD + " đ");
 	}
 
 }
