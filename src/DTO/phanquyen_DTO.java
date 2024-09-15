@@ -4,11 +4,11 @@ public class phanquyen_DTO {
 		private int stt;
 		private int idPhanQuyen ;
 		private String tenPhanQUyen ;
-		private Boolean nhaphang;
-		private Boolean sanpham;
-		private Boolean nhanvien;
-		private Boolean khachhang;
-		private Boolean thongke;
+		private Boolean nhaphang = false;
+		private Boolean sanpham = false;
+		private Boolean nhanvien = false;
+		private Boolean khachhang = false;
+		private Boolean thongke = false;
 		
 		public int getIdPhanQuyen() {
 			return this.idPhanQuyen;		

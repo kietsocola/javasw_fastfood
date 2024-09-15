@@ -35,6 +35,37 @@ public class phanquyen_DAO {
 		return ds;
 	}
 	
+	public ArrayList<phanquyen_DTO> getData1()  {
+		con.connect();
+		ArrayList<phanquyen_DTO> ds = new ArrayList<>();
+		
+		String sql = "select * from phanquyen where isDelete = 0";
+		Statement stmt;
+		try {
+			stmt = con.getCon().createStatement();
+			ResultSet result = stmt.executeQuery(sql);
+			int stt = 1;
+			while(result.next()) {
+				phanquyen_DTO item = new phanquyen_DTO();
+				item.setStt(stt++);
+				item.setIdPhanQuyen(result.getInt(1));
+				item.setTenPhanQuyen(result.getString(2));
+				item.setNhaphang(result.getBoolean(3));
+				item.setSanpham(result.getBoolean(4));
+				item.setNhanvien(result.getBoolean(5));
+				item.setKhachhang(result.getBoolean(6));
+				item.setThongke(result.getBoolean(7));
+				ds.add(item);
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ds;
+	}
+	
 	public ArrayList<Boolean> getLoaiPhanQuyen(int idPhanQuyen) throws SQLException{
 		ArrayList<Boolean> list = new ArrayList<>();
 		con.connect();

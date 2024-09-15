@@ -10,13 +10,16 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 import DAO.ConnectDB;
+import DAO.phanquyen_DAO;
 import DAO.taiKhoan_DAO;
+import DTO.phanquyen_DTO;
 import DTO.taiKhoan_DTO;
 
 public class taiKhoan_BUS {
 	private taiKhoan_DAO taikhoandao = new taiKhoan_DAO();
-	
+	private phanquyen_DAO phanquyendao = new phanquyen_DAO();
 	 private ArrayList<taiKhoan_DTO> listTK = null;
+	 private ArrayList<phanquyen_DTO> dsPhanQUyen = phanquyendao.getData1();
 	 
 	 public void docDanhSach() {
 	        this.listTK = taikhoandao.getDSTaiKhoan();
@@ -95,6 +98,12 @@ public class taiKhoan_BUS {
             return false;
         }
 		
+		String regex = "^[a-zA-Z0-9\\\\+]*$";
+		if(!tenDangNhap.trim().matches(regex)) {
+			JOptionPane.showMessageDialog(null, "Tên đăng nhập chỉ chứa chữ cái và sô !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            return false;
+		}
+		
 		 if (kiemTraTrungTenDangNhap(tenDangNhap)) {
 	        	JOptionPane.showMessageDialog(null, "Tên đăng nhập đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
 	            return false;
@@ -106,7 +115,7 @@ public class taiKhoan_BUS {
         }
         
 
-        String regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
+        regex = "^[a-zA-Z0-9!@#$%^&*-_]{8,}$";
         if (!matKhau.trim().matches(regex)) {
             JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất 8 kí tự!", "Lỗi", JOptionPane.ERROR_MESSAGE); 
             return false;
@@ -141,12 +150,17 @@ public class taiKhoan_BUS {
         return true;
 	}
 	
-	public boolean suaTaiKhoan(int id,String tenDangNhap,String matKhau, int quyen) {
+	public boolean suaTaiKhoan(int id,String tenDangNhap,String matKhau, String nameQuyen) {
         taiKhoan_DTO tk= new taiKhoan_DTO();
         
         tk.setMa(id);
         tk.setTenTaiKhoan(tenDangNhap);
         tk.setMatKhau(matKhau);
+        int quyen = -1;
+        for(phanquyen_DTO item : dsPhanQUyen) {
+        	if(item.getTenPhanQuyen().equals(nameQuyen))
+        		quyen = item.getIdPhanQuyen();
+        }
         tk.setQuyen(quyen);
         boolean flag = taikhoandao.suaTaiKhoan(tk);
 
@@ -168,6 +182,31 @@ public class taiKhoan_BUS {
         tk.setTenTaiKhoan(tenDangNhap);
         tk.setMatKhau(matKhau);
         tk.setTrangThai(1);
+        tk.setQuyen(quyen);
+        boolean flag = taikhoandao.themTaiKhoan(tk);
+
+        return flag;
+    }
+	
+	public boolean themTaiKhoan1( String tenDangNhap,String matKhau, String nameQuyen) {
+
+		
+        taiKhoan_DTO tk= new taiKhoan_DTO();
+        
+        Date ngayHienTai = new Date();
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String ngayTao = dateFormat.format(ngayHienTai);
+
+        tk.setNgayTao(ngayTao);
+        tk.setTenTaiKhoan(tenDangNhap);
+        tk.setMatKhau(matKhau);
+        tk.setTrangThai(1);
+        int quyen = -1;
+        for(phanquyen_DTO item : dsPhanQUyen) {
+        	if(item.getTenPhanQuyen().equals(nameQuyen))
+        		quyen = item.getIdPhanQuyen();
+        }
         tk.setQuyen(quyen);
         boolean flag = taikhoandao.themTaiKhoan(tk);
 

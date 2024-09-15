@@ -75,5 +75,9 @@ public class ThongKeBUS {
 	public int getTotal(String table) {
 		return thongKeDAO.getTotal(table);
 	}
+	
+	public int getAVG(String table) {
+		return thongKeDAO.getAVG(table);
+	}
 
 }

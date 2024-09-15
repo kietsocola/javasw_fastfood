@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import DAO.NhanVien_DAO;
 import DTO.NhanVien;
+import GUI.QuanLyNhanVienGUI;
 
 public class NhanVien_BUS {
 
@@ -77,6 +78,11 @@ public class NhanVien_BUS {
             return false;
         }
         
+		if(!QuanLyNhanVienGUI.isValidName(ten.toString())) {
+			JOptionPane.showMessageDialog(null, "Tên nhân viên chỉ chứa chữ cái", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+        
         if (gioiTinh != 0 && gioiTinh != 1) {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -88,7 +94,7 @@ public class NhanVien_BUS {
 
         String regex = "^0\\d{9,10}$";
         if (!soDT.matches(regex)) {
-            JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!", "Lỗi",
+            JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng!.VD : 0989911937", "Lỗi",
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }

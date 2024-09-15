@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -308,12 +310,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 		btnReset.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		btnKhoa = new MyButton("Khoá");
-		ImageIcon icon9 = new ImageIcon("images/denied.png");
-		Image img9 = icon9.getImage();
-		Image resizedImg9 = img9.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon9 = new ImageIcon(resizedImg9);
-		btnKhoa.setIcon(resizedIcon9);
-		btnKhoa.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		// nut nhap excel
 		btnNhap = new MyButton("Nhập Excel");
@@ -351,7 +347,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 		pnButton.add(btnReset);
 		pnButton.add(btnNhap);
 		pnButton.add(btnXuat);
-		pnButton.add(btnKhoa);
 
 		panel_input.add(pnButton, BorderLayout.SOUTH);
 
@@ -372,7 +367,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 		tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(new String[] { "Mã Nhân Viên", "Tên Đăng Nhập", "Mật khẩu", "Tên Nhân Viên",
-				"Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ", "Trạng Thái" });
+				"Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ"});
 		table = new MyTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setPreferredSize(new Dimension(453, 310));
@@ -515,25 +510,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 
-		int selectedItem = cmbChucVu.getSelectedIndex();
-		int so;
-		switch (selectedItem) {
-			case 0:
-				so = 2;
-				break;
-			case 1:
-				so = 3;
-				break;
-			case 2:
-				so = 4;
-				break;
-			case 3:
-				so = 5;
-				break;
-			default:
-				so = 2;
-				break;
-		}
+		String nameChucVu = cmbChucVu.getSelectedItem().toString();
+		System.out.print(nameChucVu + " dang duoc chon");
+
 
 		if (txtMaNV.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập chọn nhân viên cần sửa!", "Lỗi",
@@ -549,11 +528,22 @@ public class QuanLyNhanVienGUI extends JPanel {
 		if (!nhanVienBUS.kiemTraNhanVien2(txtMaNV.getText(), txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
 			return;
 		}
+		
+		if(!QuanLyNhanVienGUI.isValidName(txtTenNV.getText().toString())) {
+			JOptionPane.showMessageDialog(null, "Tên nhân viên chỉ chứa chữ cái", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		String regex = "^[a-zA-Z0-9\\\\+]*$";
+		if(!txtTenDN.getText().toString().trim().matches(regex)) {
+			JOptionPane.showMessageDialog(null, "Tên đăng nhập chỉ chứa chữ cái và sô !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
+            return;
+		}
 
 		nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
 
 		taiKhoanBUS.suaTaiKhoan(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(), txtMatKhau.getText(),
-				so);
+				nameChucVu);
 
 		taiKhoanBUS.docDanhSach();
 		nhanVienBUS.docDanhSach();
@@ -570,25 +560,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 		}
 		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 
-		int selectedItem = cmbChucVu.getSelectedIndex();
-		int so;
-		switch (selectedItem) {
-			case 0:
-				so = 2;
-				break;
-			case 1:
-				so = 3;
-				break;
-			case 2:
-				so = 4;
-				break;
-			case 3:
-				so = 5;
-				break;
-			default:
-				so = 2;
-				break;
-		}
+		String nameQuyen = cmbChucVu.getSelectedItem().toString();
+
+		
 
 		if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty()
 				&& txt_soDT.getText().isEmpty()) {
@@ -602,8 +576,10 @@ public class QuanLyNhanVienGUI extends JPanel {
 		if (!nhanVienBUS.kiemTraNhanVien(txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
 			return;
 		}
+		
+	
 
-		if (taiKhoanBUS.themTaiKhoan(txtTenDN.getText(), txtMatKhau.getText(), so)) {
+		if (taiKhoanBUS.themTaiKhoan1(txtTenDN.getText(), txtMatKhau.getText(), nameQuyen)) {
 			taiKhoanBUS.docDanhSach();
 			int idTaiKhoan = taiKhoanBUS.idTaiKhoanMax();
 
@@ -883,4 +859,24 @@ public class QuanLyNhanVienGUI extends JPanel {
 		}
 
 	}
+
+	public static boolean isValidUsername(String username) {
+		String REGEX = "^(?![@#\\$%^&*()_+={}\\[\\]|\\\\:;\"'<>,.?/~`])[A-Za-z0-9][A-Za-z0-9@#\\$%^&*()_+={}\\[\\]|\\\\:;\"'<>,.?/~`]{5,}$";
+        // Tạo một Pattern từ regex
+        Pattern pattern = Pattern.compile(REGEX);
+        // Tạo Matcher từ tên đăng nhập
+        Matcher matcher = pattern.matcher(username);
+        // Kiểm tra khớp với regex
+        return matcher.matches();
+    }
+	
+	public static boolean isValidName(String name) {
+		String REGEX = "^[A-Za-z ]+$";
+        Pattern pattern = Pattern.compile(REGEX);
+        // Tạo Matcher từ tên đăng nhập
+        Matcher matcher = pattern.matcher(name);
+        // Kiểm tra khớp với regex
+        return matcher.matches();
+	}
+
 }
