@@ -42,6 +42,7 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import BUS.ChiTietPhieuNhapBUS;
+import BUS.DonViBUS;
 import BUS.NguyenLieuBUS;
 import BUS.NhaCungCap_BUS;
 import BUS.NhanVien_BUS;
@@ -58,6 +59,7 @@ import DTO.ChiTietPhieuNhap;
 import DTO.NguyenLieu;
 import DTO.NhaCungCap;
 import DTO.PhieuNhap;
+import DTO.DonVi;
 
 public class NhapHangGUI extends JPanel {
 
@@ -69,10 +71,12 @@ public class NhapHangGUI extends JPanel {
 	private MyTable tableNL, tableXN, tablePN, tableCTPN;
 	private JTextField txtTimTheoTen;
 	private JComboBox<String> cmbNCC;
+	private JComboBox<String> cmbDV;
 	private MyButton btnXoa, btnXuatPN, btnTimKiem,btnReset,btnThemNL;
 	private NguyenLieuBUS nlBUS = new NguyenLieuBUS();
 	private NhaCungCap_BUS nccBUS = new NhaCungCap_BUS();
 	private ChiTietPhieuNhapBUS ctpnBUS = new ChiTietPhieuNhapBUS();
+	private DonViBUS donViBUS = new DonViBUS();
 	private PhieuNhapBUS pnBUS = new PhieuNhapBUS();
 	private MyButton btnChonNhap;
 	private MyButton btnTimKiemHD;
@@ -168,6 +172,8 @@ public class NhapHangGUI extends JPanel {
 		modelTableNL.addColumn("Mã nguyên liệu");
 		modelTableNL.addColumn("Tên nguyên liệu");
 		modelTableNL.addColumn("Tồn kho");
+		modelTableNL.addColumn("Đơn vị");
+		
 		// modelTableNL.addColumn("Số lượng");
 		tableNL = new MyTable(modelTableNL);
 		JScrollPane scrollPaneNL = new JScrollPane(tableNL);
@@ -322,6 +328,34 @@ public class NhapHangGUI extends JPanel {
 		txtSoLuongNL.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_SoLuong.add(txtSoLuongNL);
 		txtSoLuongNL.setColumns(10);
+		
+		
+//		// Phần mới thêm: layout select đơn vị phù hợp
+		MyPanelSecond panel_DV = new MyPanelSecond();
+		panel_DV.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		pnInput.add(panel_DV);
+		panel_DV.setLayout(new BoxLayout(panel_DV, BoxLayout.X_AXIS));
+
+		MyLabelSecond lblDV = new MyLabelSecond("Đơn vị: ");
+		panel_DV.add(lblDV);
+
+		cmbDV = new JComboBox<String>();
+		cmbDV.setMaximumSize(new Dimension(400, 30));
+		cmbDV.setPreferredSize(new Dimension(200, 30));
+		panel_DV.add(cmbDV);
+		loadDataCmbDV();
+		
+//		private void loadDataCmbDV() {
+//			cmbDV.removeAllItems();
+//			DonViBUS donViBUS = new DonViBUS();
+//
+//			ArrayList<DonVi> dsDV = donViBUS.getDSDonVi();
+//			cmbDV.addItem("0 - Chọn đơn vị");
+//			for (DonVi dv : dsDV) {
+//				cmbDV.addItem(dv.getMaDonVi() + " - " + dv.getTenDonVi());
+//			}
+//		}
+		//
 
 		MyPanelSecond panel_DonGiaNL = new MyPanelSecond();
 		panel_DonGiaNL.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
@@ -344,7 +378,7 @@ public class NhapHangGUI extends JPanel {
 		lblTTPN.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTTPN.setText("Thông tin phiếu nhập");
 		pnInput.add(lblTTPN);
-
+//
 		MyPanelSecond panel_NCC = new MyPanelSecond();
 		panel_NCC.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 		pnInput.add(panel_NCC);
@@ -358,6 +392,7 @@ public class NhapHangGUI extends JPanel {
 		cmbNCC.setPreferredSize(new Dimension(200, 30));
 		panel_NCC.add(cmbNCC);
 		loadDataCmbNCC();
+//
 		MyPanelSecond pnBTN = new MyPanelSecond();
 		pnBTN.setMaximumSize(new Dimension(400, 100));
 		pnInput.add(pnBTN);
@@ -754,10 +789,15 @@ public class NhapHangGUI extends JPanel {
 			vec.add(nl.getMaNguyenLieu() + "");
 			vec.add(nl.getTenNL() + "");
 			vec.add(nl.getsoLuongNL() + "");
+			vec.add(donViBUS.getTenDonViByMaDonViBUS(nl.getMaDonVi()) + "");
+			
 			modelTableNL.addRow(vec);
 		}
 	}
 
+	
+	
+//	Đang xử lí phần lấy thông tin đơn vị khi click vào
 	private void clickTableNL() {
 		ListSelectionModel selectionModel = tableNL.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
@@ -769,14 +809,52 @@ public class NhapHangGUI extends JPanel {
 				if (selectedRow != -1) {
 					String manl = tableNL.getValueAt(selectedRow, 0) + "";
 					String tennl = tableNL.getValueAt(selectedRow, 1) + "";
+					String tenDV = tableNL.getValueAt(selectedRow, 3) + "";
 
 					txtMaNL.setText(manl);
 					txtTenNL.setText(tennl);
+//					System.out.println("Ma don vi la: " + tenDV);
+					setSelectedDonVi(tenDV);
 
 				}
 			}
 		});
 	}
+//
+	
+	// Lần lượt là hàm set mã đơn vị và lấy đơn vị đang được chọn
+	private void setSelectedDonVi(String tenDonVi_ThamSo) {
+	    for (int i = 0; i < cmbDV.getItemCount(); i++) {
+	        String item = (String) cmbDV.getItemAt(i); 
+	        String[] parts = item.split(" - "); 
+	        
+	        if (parts.length > 1) {
+	            String tenDonVi = parts[1]; 
+	            
+	            if (tenDonVi.equals(tenDonVi_ThamSo)) { 
+	                cmbDV.setSelectedIndex(i); 
+	                break;
+	            }
+	        }
+	    }
+	}
+	
+	private int getSelectedDonViId() {
+	    String selectedItem = (String) cmbDV.getSelectedItem(); // Lấy item đang được chọn
+	    if (selectedItem != null) {
+	        String[] parts = selectedItem.split(" - "); // Tách item thành mã đơn vị và tên đơn vị
+	        
+	        if (parts.length > 1) {
+	            try {
+	                return Integer.parseInt(parts[0]); // Lấy và trả về mã đơn vị
+	            } catch (NumberFormatException e) {
+	                System.out.println("Error parsing maDonVi: " + e.getMessage());
+	            }
+	        }
+	    }
+	    return -1; // Trả về -1 nếu không tìm thấy hoặc có lỗi
+	}
+	
 
 	private void clickTableXN() {
 		btnXoa.setEnabled(false);
@@ -801,6 +879,17 @@ public class NhapHangGUI extends JPanel {
 		cmbNCC.addItem("0 - Chọn NCC");
 		for (NhaCungCap ncc : dsncc) {
 			cmbNCC.addItem(ncc.getMaNCC() + " - " + ncc.getTenNCC());
+		}
+	}
+	
+	private void loadDataCmbDV() {
+		cmbDV.removeAllItems();
+		DonViBUS donViBUS = new DonViBUS();
+
+		ArrayList<DonVi> dsDV = donViBUS.getDSDonVi();
+		cmbDV.addItem("0 - Chọn đơn vị");
+		for (DonVi dv : dsDV) {
+			cmbDV.addItem(dv.getMaDonVi() + " - " + dv.getTenDonVi());
 		}
 	}
 
@@ -1141,6 +1230,9 @@ public class NhapHangGUI extends JPanel {
 	 	    }
 	 	    return 1;
 	 }
+	 
+	 // Hàm thêm nguyên liệu vào bảng danh sách nguyên liệu
+	
 	private void xulyThemNL() {
 		if (isString (txtTenNL.getText(),"Tên")==0) {
 			return;
@@ -1149,8 +1241,14 @@ public class NhapHangGUI extends JPanel {
     		return;
     	}
 		String ten = txtTenNL.getText();
+		
 		int dongia = Integer.parseInt(txtDonGiaNL.getText());
-		boolean flag = nlBUS.themNguyenLieu(ten,0, dongia);
+		int maDonVi = getSelectedDonViId();
+		boolean flag = nlBUS.themNguyenLieu(ten,0, dongia, maDonVi);
+		if(flag == false) {
+			JOptionPane.showMessageDialog(null,"Nguyên liệu đã có sẵn", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else JOptionPane.showMessageDialog(null," Thêm Thành Công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		nlBUS.getDSachNguyenLieu();
 		addDataToTblNL();
 	}
