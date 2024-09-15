@@ -202,7 +202,7 @@ public class CongThucGUI extends JPanel{
 		modelTableSPCheBien.addColumn("Mã SP");
 		modelTableSPCheBien.addColumn("Tên SP");
 		modelTableSPCheBien.addColumn("Đơn giá");
-		modelTableSPCheBien.addColumn("Còn lại");
+		//modelTableSPCheBien.addColumn("Còn lại");
 		tableSanPhamCheBien = new MyTable(modelTableSPCheBien);
 		scrollPaneSanPham.setViewportView(tableSanPhamCheBien);
 		scrollPaneSanPham.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
@@ -400,7 +400,7 @@ public class CongThucGUI extends JPanel{
 			vec.add(sp.getId() + "");
 			vec.add(sp.getTenSP());
 			vec.add(sp.getDonGia() + "");
-			vec.add(sp.getSoLuong() + "");
+			//vec.add(sp.getSoLuong() + "");
 			modelTableSPCheBien.addRow(vec);
 		}
 	}
