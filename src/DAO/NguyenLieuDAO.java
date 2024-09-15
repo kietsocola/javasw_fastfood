@@ -51,11 +51,10 @@ public class NguyenLieuDAO {
 				ResultSet rs = prest.executeQuery();
 				while (rs.next()) {
 					 nl = new NguyenLieu();
-					
+					nl.setMaNguyenLieu(rs.getInt("id"));
 					nl.setTenNL(rs.getString("Ten"));
 					nl.setsoLuongNL(rs.getInt("SoLuong"));
-					
-					
+					nl.setMaDonVi(rs.getInt("maDonVi"));
 				}
 			} catch (SQLException e) {
 				// TODO: handle exception

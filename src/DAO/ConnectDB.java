@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConnectDB {
 	protected Connection conn = null;
 
-	static final String url = "jdbc:mysql://localhost:3306/javafastfood2";
+	static final String url = "jdbc:mysql://localhost:3306/javafastfood";
 	static final String nameUser = "root";
 	static final String pass = "";
 
