@@ -65,8 +65,6 @@ import Custom.PDFExport;
 import DTO.NhanVien;
 import DTO.phanquyen_DTO;
 import DTO.taiKhoan_DTO;
-import GUI.taiKhoan_GUI;
-import org.apache.logging.log4j.Logger;
 
 public class QuanLyNhanVienGUI extends JPanel {
 
@@ -367,7 +365,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 		tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(new String[] { "Mã Nhân Viên", "Tên Đăng Nhập", "Mật khẩu", "Tên Nhân Viên",
-				"Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ"});
+				"Ngày Sinh", "Giới Tính", "Số ĐT", "Chức Vụ" });
 		table = new MyTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setPreferredSize(new Dimension(453, 310));
@@ -513,7 +511,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 		String nameChucVu = cmbChucVu.getSelectedItem().toString();
 		System.out.print(nameChucVu + " dang duoc chon");
 
-
 		if (txtMaNV.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập chọn nhân viên cần sửa!", "Lỗi",
 					JOptionPane.ERROR_MESSAGE);
@@ -528,17 +525,13 @@ public class QuanLyNhanVienGUI extends JPanel {
 		if (!nhanVienBUS.kiemTraNhanVien2(txtMaNV.getText(), txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
 			return;
 		}
-		
-		if(!QuanLyNhanVienGUI.isValidName(txtTenNV.getText().toString())) {
-			JOptionPane.showMessageDialog(null, "Tên nhân viên chỉ chứa chữ cái", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		
-		String regex = "^[a-zA-Z0-9\\\\+]*$";
-		if(!txtTenDN.getText().toString().trim().matches(regex)) {
-			JOptionPane.showMessageDialog(null, "Tên đăng nhập chỉ chứa chữ cái và sô !", "Lỗi", JOptionPane.ERROR_MESSAGE); 
-            return;
-		}
+
+//		String regex = "^[a-zA-Z0-9\\\\+]*$";
+//		if (!txtTenDN.getText().toString().trim().matches(regex)) {
+//			JOptionPane.showMessageDialog(null, "Tên đăng nhập chỉ chứa chữ cái và sô !", "Lỗi",
+//					JOptionPane.ERROR_MESSAGE);
+//			return;
+//		}
 
 		nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
 
@@ -562,8 +555,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 		String nameQuyen = cmbChucVu.getSelectedItem().toString();
 
-		
-
 		if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty()
 				&& txt_soDT.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -576,8 +567,6 @@ public class QuanLyNhanVienGUI extends JPanel {
 		if (!nhanVienBUS.kiemTraNhanVien(txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
 			return;
 		}
-		
-	
 
 		if (taiKhoanBUS.themTaiKhoan1(txtTenDN.getText(), txtMatKhau.getText(), nameQuyen)) {
 			taiKhoanBUS.docDanhSach();
@@ -776,7 +765,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 				workbook.write(fileOut);
 				fileOut.close();
 				workbook.close();
-                PDFExport.displayFile(fileToSave.getPath());
+				PDFExport.displayFile(fileToSave.getPath());
 
 				JOptionPane.showMessageDialog(null, "Xuất Excel thành công!");
 			} catch (IOException ex) {
@@ -808,23 +797,23 @@ public class QuanLyNhanVienGUI extends JPanel {
 					for (int j = 0; j < row.getLastCellNum(); j++) {
 						Cell cell = row.getCell(j);
 						switch (cell.getCellType()) {
-							case STRING:
-								rowData[j] = cell.getStringCellValue();
-								break;
-							case NUMERIC:
-								if (DateUtil.isCellDateFormatted(cell)) {
-									Date date = cell.getDateCellValue();
-									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-									rowData[j] = sdf.format(date);
-								} else
-									rowData[j] = cell.getNumericCellValue();
-								break;
-							case BOOLEAN:
-								rowData[j] = cell.getBooleanCellValue();
-								break;
-							default:
-								rowData[j] = "";
-								break;
+						case STRING:
+							rowData[j] = cell.getStringCellValue();
+							break;
+						case NUMERIC:
+							if (DateUtil.isCellDateFormatted(cell)) {
+								Date date = cell.getDateCellValue();
+								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+								rowData[j] = sdf.format(date);
+							} else
+								rowData[j] = cell.getNumericCellValue();
+							break;
+						case BOOLEAN:
+							rowData[j] = cell.getBooleanCellValue();
+							break;
+						default:
+							rowData[j] = "";
+							break;
 						}
 					}
 					rowData[0] = Integer.parseInt(tableModel.getValueAt(tableModel.getRowCount() - 1, 0).toString())
@@ -867,21 +856,21 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 	public static boolean isValidUsername(String username) {
 		String REGEX = "^(?![@#\\$%^&*()_+={}\\[\\]|\\\\:;\"'<>,.?/~`])[A-Za-z0-9][A-Za-z0-9@#\\$%^&*()_+={}\\[\\]|\\\\:;\"'<>,.?/~`]{5,}$";
-        // Tạo một Pattern từ regex
-        Pattern pattern = Pattern.compile(REGEX);
-        // Tạo Matcher từ tên đăng nhập
-        Matcher matcher = pattern.matcher(username);
-        // Kiểm tra khớp với regex
-        return matcher.matches();
-    }
-	
+		// Tạo một Pattern từ regex
+		Pattern pattern = Pattern.compile(REGEX);
+		// Tạo Matcher từ tên đăng nhập
+		Matcher matcher = pattern.matcher(username);
+		// Kiểm tra khớp với regex
+		return matcher.matches();
+	}
+
 	public static boolean isValidName(String name) {
-		String REGEX = "^[A-Za-z ]+$";
-        Pattern pattern = Pattern.compile(REGEX);
-        // Tạo Matcher từ tên đăng nhập
-        Matcher matcher = pattern.matcher(name);
-        // Kiểm tra khớp với regex
-        return matcher.matches();
+		String REGEX = "^[\\p{L} \\-']+$";
+		Pattern pattern = Pattern.compile(REGEX);
+		// Tạo Matcher từ tên đăng nhập
+		Matcher matcher = pattern.matcher(name);
+		// Kiểm tra khớp với regex
+		return matcher.matches();
 	}
 
 }

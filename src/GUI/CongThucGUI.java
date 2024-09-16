@@ -2,7 +2,6 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -29,24 +28,22 @@ import javax.swing.table.DefaultTableModel;
 
 import BUS.CheBienBUS;
 import BUS.CongThucBUS;
+import BUS.DonViBUS;
 import BUS.NguyenLieuBUS;
 import BUS.SanPhamBUS;
 import Custom.MyButton;
 import Custom.MyColor;
-import Custom.MyLabel;
 import Custom.MyLabelSecond;
 import Custom.MyPanel;
 import Custom.MyPanelSecond;
 import Custom.MyTable;
 import Custom.MyTextField;
-import DTO.ChiTietHoaDon;
 import DTO.CongThuc;
-import DTO.LoaiSanPham;
 import DTO.NguyenLieu;
 import DTO.SanPham;
 
-public class CongThucGUI extends JPanel{
-	
+public class CongThucGUI extends JPanel {
+
 	private MyTextField txtSoLuongCB;
 	private MyButton btnCheBien;
 	private DefaultTableModel modelTableSPCheBien;
@@ -57,6 +54,7 @@ public class CongThucGUI extends JPanel{
 	private NguyenLieuBUS nlBUS = new NguyenLieuBUS();
 	private CongThucBUS ctBUS = new CongThucBUS();
 	private CheBienBUS chebienBUS = new CheBienBUS();
+	private DonViBUS donViBUS = new DonViBUS();
 	private Map<Integer, String> optionMap;
 	private ArrayList<NguyenLieu> arrNguyenLieu;
 	private JComboBox comboBox;
@@ -64,23 +62,23 @@ public class CongThucGUI extends JPanel{
 	private MyButton btnUpdate;
 	private MyButton btnReset;
 	private MyButton btnXoa;
+
 	public CongThucGUI() {
 		addControlsCongThuc();
 		addEventsCongThuc();
 	}
+
 	public void addControlsCongThuc() {
 		this.setLayout(new BorderLayout());
-//		MyPanelSecond panel_main = new MyPanelSecond();
-//		this.add(panel_main, BorderLayout.CENTER);
-		
-		
+		// MyPanelSecond panel_main = new MyPanelSecond();
+		// this.add(panel_main, BorderLayout.CENTER);
 
 		MyPanel panelMenuCheBien = new MyPanel();
 		panelMenuCheBien.setLayout(new BorderLayout(0, 0));
-		
+
 		MyPanel pnSpace = new MyPanel();
 		panelMenuCheBien.add(pnSpace, BorderLayout.NORTH);
-		
+
 		this.add(panelMenuCheBien, BorderLayout.CENTER);
 
 		MyPanel Contain_panelBtnCheBien = new MyPanel();
@@ -92,89 +90,89 @@ public class CongThucGUI extends JPanel{
 		panelMenuCheBien.add(Contain_panelBtnCheBien, BorderLayout.EAST);
 		panelMenuCheBien.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		panelBtnCheBien.setLayout(new BorderLayout());
-		
+
 		MyPanelSecond containSelectNL = new MyPanelSecond();
 		containSelectNL.setLayout(new BoxLayout(containSelectNL, BoxLayout.Y_AXIS));
-        txtmaSP = new MyTextField();
-        txtmaSP.setEnabled(false);
+		txtmaSP = new MyTextField();
+		txtmaSP.setEnabled(false);
 		MyPanelSecond pnMaSP = new MyPanelSecond();
-        MyLabelSecond lblMaSP = new MyLabelSecond("Mã SP");
-        pnMaSP.add(lblMaSP);
-        pnMaSP.add(txtmaSP);
-        containSelectNL.add(pnMaSP);
-        
+		MyLabelSecond lblMaSP = new MyLabelSecond("Mã SP");
+		pnMaSP.add(lblMaSP);
+		pnMaSP.add(txtmaSP);
+		containSelectNL.add(pnMaSP);
+
 		panelBtnCheBien.add(containSelectNL, BorderLayout.NORTH);
 		optionMap = new HashMap<>();
 		arrNguyenLieu = new ArrayList<>();
 		arrNguyenLieu = getListNguyenLieu();
-		if(arrNguyenLieu != null) {
-			for(NguyenLieu x : arrNguyenLieu) {
+		if (arrNguyenLieu != null) {
+			for (NguyenLieu x : arrNguyenLieu) {
 				optionMap.put(x.getMaNguyenLieu(), x.getTenNL());
 			}
 		}
 
-        // Tạo một mảng các ID để sử dụng trong JComboBox
-        Integer[] ids = optionMap.keySet().toArray(new Integer[0]);
+		// Tạo một mảng các ID để sử dụng trong JComboBox
+		Integer[] ids = optionMap.keySet().toArray(new Integer[0]);
 
-        // Tạo một JComboBox và thiết lập dữ liệu từ Map
-        comboBox = new JComboBox<>(optionMap.values().toArray(new String[0]));
-        comboBox.setPreferredSize(new Dimension(182, 30));
-        MyPanelSecond pnNL = new MyPanelSecond();
-        MyLabelSecond lblNL = new MyLabelSecond("Nguyên liệu");
-        pnNL.add(lblNL);
-        pnNL.add(comboBox);
-        containSelectNL.add(pnNL);
+		// Tạo một JComboBox và thiết lập dữ liệu từ Map
+		comboBox = new JComboBox<>(optionMap.values().toArray(new String[0]));
+		comboBox.setPreferredSize(new Dimension(182, 30));
+		MyPanelSecond pnNL = new MyPanelSecond();
+		MyLabelSecond lblNL = new MyLabelSecond("Nguyên liệu");
+		pnNL.add(lblNL);
+		pnNL.add(comboBox);
+		containSelectNL.add(pnNL);
 
-        txtSoLuongCB = new MyTextField();
-        MyPanelSecond pnSL = new MyPanelSecond();
-        MyLabelSecond lblSL = new MyLabelSecond("Số lượng");
-        pnSL.add(lblSL);
-        pnSL.add(txtSoLuongCB);
-        containSelectNL.add(pnSL);
-        
-        MyPanelSecond containBTN = new MyPanelSecond();
-        btnCheBien = new MyButton("Thêm");
-        ImageIcon iconThem = new ImageIcon("images/plus.png");
+		txtSoLuongCB = new MyTextField();
+		MyPanelSecond pnSL = new MyPanelSecond();
+		MyLabelSecond lblSL = new MyLabelSecond("Số lượng");
+		pnSL.add(lblSL);
+		pnSL.add(txtSoLuongCB);
+		containSelectNL.add(pnSL);
+
+		MyPanelSecond containBTN = new MyPanelSecond();
+		btnCheBien = new MyButton("Thêm");
+		ImageIcon iconThem = new ImageIcon("images/plus.png");
 		Image img0 = iconThem.getImage();
 		Image newImg0 = img0.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconThem.setImage(newImg0);
 		btnCheBien.setIcon(iconThem);
-		
-        containBTN.add(btnCheBien);
-        btnUpdate = new MyButton("Cập nhật");
-        ImageIcon iconUp = new ImageIcon("images/edit2.png");
+
+		containBTN.add(btnCheBien);
+		btnUpdate = new MyButton("Cập nhật");
+		ImageIcon iconUp = new ImageIcon("images/edit2.png");
 		Image img1 = iconUp.getImage();
 		Image newImg1 = img1.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconUp.setImage(newImg1);
 		btnUpdate.setIcon(iconUp);
-        containBTN.add(btnUpdate);
-        
-        MyPanelSecond containBTN2 = new MyPanelSecond();
-        btnReset = new MyButton("Làm mới");
-        ImageIcon iconRe = new ImageIcon("images/LamMoi.png");
+		containBTN.add(btnUpdate);
+
+		MyPanelSecond containBTN2 = new MyPanelSecond();
+		btnReset = new MyButton("Làm mới");
+		ImageIcon iconRe = new ImageIcon("images/LamMoi.png");
 		Image img2 = iconRe.getImage();
 		Image newImg2 = img2.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconRe.setImage(newImg2);
 		btnReset.setIcon(iconRe);
-		
-        btnXoa = new MyButton("Xóa");
-        ImageIcon iconDe = new ImageIcon("images/remove.png");
+
+		btnXoa = new MyButton("Xóa");
+		ImageIcon iconDe = new ImageIcon("images/remove.png");
 		Image img3 = iconDe.getImage();
 		Image newImg3 = img3.getScaledInstance(26, 26, java.awt.Image.SCALE_SMOOTH);
 		iconDe.setImage(newImg3);
 		btnXoa.setIcon(iconDe);
-//        btnXoa.setEnabled(false);
-        containBTN2.add(btnXoa);
-        containBTN2.add(btnReset);
-        
-        containSelectNL.add(containBTN);
-        containSelectNL.add(containBTN2);
-        
-//		txtSoLuongCB = new MyTextField();
-//		panelBtnCheBien.add(txtSoLuongCB);
-//		txtSoLuongCB.setColumns(10);
-//		btnCheBien = new MyButton("Chế biến");
-//		panelBtnCheBien.add(btnCheBien);
+		// btnXoa.setEnabled(false);
+		containBTN2.add(btnXoa);
+		containBTN2.add(btnReset);
+
+		containSelectNL.add(containBTN);
+		containSelectNL.add(containBTN2);
+
+		// txtSoLuongCB = new MyTextField();
+		// panelBtnCheBien.add(txtSoLuongCB);
+		// txtSoLuongCB.setColumns(10);
+		// btnCheBien = new MyButton("Chế biến");
+		// panelBtnCheBien.add(btnCheBien);
 
 		MyPanel panelTableCheBien = new MyPanel();
 		panelTableCheBien.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
@@ -232,45 +230,45 @@ public class CongThucGUI extends JPanel{
 		loadDataTableSanPhamCB();
 		clickTableNguyenLieuCheBien();
 	}
-	
+
 	private void addEventsCongThuc() {
 		btnXoa.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				xoaNguyenLieu();
 			}
 		});
 		btnReset.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				btnCheBien.setEnabled(true);
-//				btnXoa.setEnabled(false);
+				// btnXoa.setEnabled(false);
 				comboBox.setEnabled(true);
 				txtSoLuongCB.setText("");
 				txtmaSP.setText("");
@@ -280,31 +278,31 @@ public class CongThucGUI extends JPanel{
 			}
 		});
 		btnUpdate.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -313,31 +311,31 @@ public class CongThucGUI extends JPanel{
 			}
 		});
 		btnCheBien.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				addCongThuc();
@@ -345,17 +343,18 @@ public class CongThucGUI extends JPanel{
 			}
 		});
 	}
-	
-	
+
 	private void loadDataTableSanPhamCB() {
 		ArrayList<SanPham> listSP = spBUS.getDSSanPham();
 		addDataToTableSanPhamCB(listSP);
 	}
+
 	private void loadDataTableNguyenLieuCB() {
 		int maSP = Integer.parseInt(txtmaSP.getText());
 		ArrayList<CongThuc> listSP = ctBUS.getCongThucbyIdSanPham(maSP);
 		addDataTableNguyenLieu(listSP);
 	}
+
 	private void clickTableSanPhamCheBien() {
 		comboBox.setFocusable(false);
 		ListSelectionModel selectionModel = tableSanPhamCheBien.getSelectionModel();
@@ -366,7 +365,7 @@ public class CongThucGUI extends JPanel{
 				int selectedRow = tableSanPhamCheBien.getSelectedRow();
 				if (selectedRow != -1) { // If a row is selected
 					int maSP = Integer.parseInt(tableSanPhamCheBien.getValueAt(selectedRow, 0) + "");
-					txtmaSP.setText(maSP+"");
+					txtmaSP.setText(maSP + "");
 					ArrayList<CongThuc> listCT = ctBUS.getCongThucbyIdSanPham(maSP);
 					addDataTableNguyenLieu(listCT);
 				}
@@ -374,8 +373,9 @@ public class CongThucGUI extends JPanel{
 		});
 
 	}
+
 	private void clickTableNguyenLieuCheBien() {
-//		btnXoa.setEnabled(true);
+		// btnXoa.setEnabled(true);
 		btnCheBien.setEnabled(false);
 		comboBox.setEnabled(false);
 		ListSelectionModel selectionModel = tableNguyenLieuCheBien.getSelectionModel();
@@ -388,13 +388,14 @@ public class CongThucGUI extends JPanel{
 					int maSP = Integer.parseInt(tableNguyenLieuCheBien.getValueAt(selectedRow, 0) + "");
 					int sl = Integer.parseInt(tableNguyenLieuCheBien.getValueAt(selectedRow, 3) + "");
 					comboBox.setSelectedItem(optionMap.get(maNL));
-					txtSoLuongCB.setText(sl+"");
-					txtmaSP.setText(maSP+"");
+					txtSoLuongCB.setText(sl + "");
+					txtmaSP.setText(maSP + "");
 				}
 			}
 		});
 
 	}
+
 	private void addDataToTableSanPhamCB(ArrayList<SanPham> listSP) {
 		modelTableSPCheBien.setRowCount(0);
 		for (SanPham sp : listSP) {
@@ -406,6 +407,7 @@ public class CongThucGUI extends JPanel{
 			modelTableSPCheBien.addRow(vec);
 		}
 	}
+
 	private void addDataTableNguyenLieu(ArrayList<CongThuc> listCT) {
 		modelTableNguyenLieuCB.setRowCount(0);
 		for (CongThuc ct : listCT) {
@@ -420,79 +422,90 @@ public class CongThucGUI extends JPanel{
 			modelTableNguyenLieuCB.addRow(vec);
 		}
 	}
+
 	private ArrayList<NguyenLieu> getListNguyenLieu() {
 		ArrayList<NguyenLieu> arr = new ArrayList<>();
 		arr = nlBUS.getDSachNguyenLieu();
-		if(arr != null) return arr;
+		if (arr != null)
+			return arr;
 		return null;
 	}
-	
+
 	private void addCongThuc() {
-		if(!checkSoLuong()) return;
+		if (!checkSoLuong())
+			return;
 		boolean rs = false;
 		int maSP = Integer.parseInt(txtmaSP.getText());
-		int maNL=0;
+		int maNL = 0;
 		String selectedOption = (String) comboBox.getSelectedItem();
-        for (Map.Entry<Integer, String> entry : optionMap.entrySet()) {
-            if (entry.getValue().equals(selectedOption)) {
-                maNL = entry.getKey();
-                break;
-            }
-        }
-        String num = txtSoLuongCB.getText();
-        if(!num.trim().equals("")) {
-        	int sl = Integer.parseInt(num);
-        	rs = ctBUS.addUpdate(maNL, sl, maSP);
-        }
-        if(rs) {
-        	JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        } else JOptionPane.showMessageDialog(null, "Thêm thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        loadDataTableNguyenLieuCB();
-		
+		for (Map.Entry<Integer, String> entry : optionMap.entrySet()) {
+			if (entry.getValue().equals(selectedOption)) {
+				maNL = entry.getKey();
+				break;
+			}
+		}
+		String num = txtSoLuongCB.getText();
+		if (!num.trim().equals("")) {
+			int sl = Integer.parseInt(num);
+			rs = ctBUS.addUpdate(maNL, sl, maSP);
+		}
+		if (rs) {
+			JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(null, "Thêm thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		loadDataTableNguyenLieuCB();
+
 	}
-	private void updateNguyenLieu(){
-		if(!checkSoLuong()) return;
+
+	private void updateNguyenLieu() {
+		if (!checkSoLuong())
+			return;
 		boolean rs = false;
 		int maSP = Integer.parseInt(txtmaSP.getText());
-		int maNL=0;
+		int maNL = 0;
 		String selectedOption = (String) comboBox.getSelectedItem();
-        for (Map.Entry<Integer, String> entry : optionMap.entrySet()) {
-            if (entry.getValue().equals(selectedOption)) {
-                maNL = entry.getKey();
-                break;
-            }
-        }
-        String num = txtSoLuongCB.getText();
-        if(!num.trim().equals("")) {
-        	int sl = Integer.parseInt(num);
-        	rs = ctBUS.addUpdate(maNL, sl, maSP);
-        }
-        if(rs) {
-        	JOptionPane.showMessageDialog(null, "Update thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        } else JOptionPane.showMessageDialog(null, "Update thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        loadDataTableNguyenLieuCB();
+		for (Map.Entry<Integer, String> entry : optionMap.entrySet()) {
+			if (entry.getValue().equals(selectedOption)) {
+				maNL = entry.getKey();
+				break;
+			}
+		}
+		String num = txtSoLuongCB.getText();
+		if (!num.trim().equals("")) {
+			int sl = Integer.parseInt(num);
+			rs = ctBUS.addUpdate(maNL, sl, maSP);
+		}
+		if (rs) {
+			JOptionPane.showMessageDialog(null, "Update thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(null, "Update thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		loadDataTableNguyenLieuCB();
 	}
-	private void xoaNguyenLieu(){
-		if(txtmaSP.getText().equals("")) {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm và nguyên liệu cần xóa", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+	private void xoaNguyenLieu() {
+		if (txtmaSP.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm và nguyên liệu cần xóa", "Thông báo",
+					JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		int maSP = Integer.parseInt(txtmaSP.getText());
-		int maNL=0;
+		int maNL = 0;
 		String selectedOption = (String) comboBox.getSelectedItem();
-        for (Map.Entry<Integer, String> entry : optionMap.entrySet()) {
-            if (entry.getValue().equals(selectedOption)) {
-                maNL = entry.getKey();
-                break;
-            }
-        }
-        boolean rs = false;
-        rs = ctBUS.deleteCongThuc(maNL, maSP);
-        if(rs) {
-        	JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        } else JOptionPane.showMessageDialog(null, "Xóa thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        loadDataTableNguyenLieuCB();
+		for (Map.Entry<Integer, String> entry : optionMap.entrySet()) {
+			if (entry.getValue().equals(selectedOption)) {
+				maNL = entry.getKey();
+				break;
+			}
+		}
+		boolean rs = false;
+		rs = ctBUS.deleteCongThuc(maNL, maSP);
+		if (rs) {
+			JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		} else
+			JOptionPane.showMessageDialog(null, "Xóa thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		loadDataTableNguyenLieuCB();
 	}
+
 	private boolean checkSoLuong() {
 		String soLuong = txtSoLuongCB.getText();
 		if (!soLuong.matches("\\d+")) {
@@ -501,5 +514,5 @@ public class CongThucGUI extends JPanel{
 		}
 		return true;
 	}
-	
+
 }
