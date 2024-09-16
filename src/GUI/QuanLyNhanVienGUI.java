@@ -623,6 +623,8 @@ public class QuanLyNhanVienGUI extends JPanel {
 		try {
 			dspq = pqbus.getData();
 			for (phanquyen_DTO pq : dspq) {
+				if(pq.getIdPhanQuyen() == 1)
+					continue;
 				cmbChucVu.addItem(pq.getTenPhanQuyen());
 			}
 		} catch (SQLException e) {
@@ -700,6 +702,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 			if (nv.getIdTaiKhoan() == taiKhoan_GUI.idTaiKhoan) {
 				continue;
 			}
+			
+            if(taiKhoan_GUI.idTaiKhoan != 1 && (nv.getIdTaiKhoan() == 1 || nv.getIdTaiKhoan() == 2))
+            	continue;
 
 			tableModel.addRow(rowData);
 		}

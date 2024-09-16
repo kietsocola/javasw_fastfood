@@ -270,7 +270,6 @@ public class MainQuanlyGUI extends JFrame {
 						switch(optionSelect) {
 						case JOptionPane.YES_OPTION:
 							dispose();
-
 							taiKhoan_GUI taiKhoan = new taiKhoan_GUI();
 							taiKhoan.run(taiKhoan);
 							break;						

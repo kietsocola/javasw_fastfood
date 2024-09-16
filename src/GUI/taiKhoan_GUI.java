@@ -196,10 +196,10 @@ public class taiKhoan_GUI {
 						idTaiKhoan = tk_BUS.idTaiKhoan(account);
 						String TenNhanVien = nv_BUS.getTenNhanVien(idTaiKhoan);
 						JOptionPane.showMessageDialog(null, "Xin Chào " + TenNhanVien,"Thong bao",JOptionPane.INFORMATION_MESSAGE);
-
+						frame.setVisible(false);
 						MainQuanlyGUI main = new MainQuanlyGUI(PhanQuyen);
 						main.showWindow();
-						frame.setVisible(false);
+						
 					}
 					else if(tk_BUS.checkDangNhap(account) == 2)
 						JOptionPane.showMessageDialog(null, "Tên tài khoản hoặc mật khẩu bị sai","Thong bao",1);

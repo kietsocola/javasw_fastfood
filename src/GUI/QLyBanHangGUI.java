@@ -71,6 +71,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import javax.swing.JButton;
 
 public class QLyBanHangGUI extends JPanel {
 
@@ -80,7 +81,7 @@ public class QLyBanHangGUI extends JPanel {
 	private MyTextField txtSoLuong;
 	private DefaultTableModel modelTableHD, modelTableSP, modelTableGH, modelTableCTHD;
 	private MyTable tableSP, tableGH, tableHD, tableCTHD;
-	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD, btnTimKiem, btnTimKiemHD;
+	private MyButton btnThemGioHang, btnXoaSP, btnXuatHD, btnTimKiem, btnTimKiemHD ,btnReset ;
 	HoaDonBUS hdBUS = new HoaDonBUS();
 	SanPhamBUS spBUS = new SanPhamBUS();
 	CheBienBUS chebienBUS = new CheBienBUS();
@@ -445,8 +446,19 @@ public class QLyBanHangGUI extends JPanel {
 		icon.setImage(newImg);
 		btnThemGioHang.setIcon(icon);
 		MyPanelSecond containGioHang = new MyPanelSecond();
-		containGioHang.setLayout(new GridLayout(1, 1));
+		containGioHang.setBorder(new EmptyBorder(0, 0, 0, 0));
+		containGioHang.setLayout(new GridLayout(1, 2,6,0));
 		containGioHang.add(btnThemGioHang);
+	
+		
+		btnReset = new MyButton("Làm mới");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					lamMoiSanPham();
+			}
+		});
+		
+		containGioHang.add(btnReset);
 		pnBTN.add(containGioHang);
 
 		MyPanelSecond panel_XoaSP_XuatHD = new MyPanelSecond();
@@ -638,6 +650,12 @@ public class QLyBanHangGUI extends JPanel {
 			}
 		});
 
+	}
+
+	protected void lamMoiSanPham() {
+		// TODO Auto-generated method stub
+		loadDataTableSanPham();
+		System.out.println("Lam moi san pham");
 	}
 
 	private void addEventsBanHang() {
@@ -908,7 +926,11 @@ public class QLyBanHangGUI extends JPanel {
 
 	private void addDataToTableSanPham(ArrayList<SanPham> listSP) {
 		modelTableSP.setRowCount(0);
+		modelTableSP.setNumRows(0);
 		for (SanPham sp : listSP) {
+			CongThucBUS ctBUS = new CongThucBUS();
+			if(!ctBUS.updateTrangThaiSPbyNL(sp.getId()))
+				continue; 
 			Vector<String> vec = new Vector<>();
 			vec.add(sp.getId() + "");
 			vec.add(sp.getTenSP());
@@ -1003,21 +1025,57 @@ public class QLyBanHangGUI extends JPanel {
 		String ten = txtTenSP.getText();
 		String donGia = txtDonGia.getText();
 		
-		System.out.println("check");
-		boolean rs = ctBUS.checkSoLuongNguyenLieuKhiCheBien(Integer.parseInt(ma), Integer.parseInt(soLuong));
+		// check số lượng sản phẩm đã có
+		boolean SPtrungGH = false; // flag sản phẩm đã có trong giỏ hàng chưa
+		int rowTrungSP=-1;
+	    int soLuongINT = Integer.parseInt(soLuong);
+		for (int r = 0; r < modelTableGH.getRowCount(); r++) {
+			// Lấy giá trị từ cột 0, có thể là String hoặc Integer
+		    Object maSPtrongGHObj = modelTableGH.getValueAt(r, 0);
+		    Object soLuongtrongGHObj = modelTableGH.getValueAt(r, 3);
+		    // Chuyển đổi giá trị maSPtrongGH nếu nó là String
+		    int maSPtrongGH;
+		    if (maSPtrongGHObj instanceof String) {
+		        maSPtrongGH = Integer.parseInt((String) maSPtrongGHObj);
+		    } else if (maSPtrongGHObj instanceof Integer) {
+		        maSPtrongGH = (Integer) maSPtrongGHObj;
+		    } else {
+		        // Nếu không phải String hay Integer, bỏ qua
+		        continue;
+		    }
+		    // Chuyển đổi giá trị soLuongtrongGH nếu cần
+		    int soLuongtrongGH;
+		    if (soLuongtrongGHObj instanceof String) {
+		        soLuongtrongGH = Integer.parseInt((String) soLuongtrongGHObj);
+		    } else if (soLuongtrongGHObj instanceof Integer) {
+		        soLuongtrongGH = (Integer) soLuongtrongGHObj;
+		    } else {
+		        // Nếu không phải String hay Integer, bỏ qua
+		        continue;
+		    }
+		    if(Integer.parseInt(ma) == maSPtrongGH) {
+		    	soLuongINT += soLuongtrongGH;
+		    	SPtrungGH = true;
+		    	rowTrungSP = r;
+		    	break;
+		    }
+		}
+		
+		boolean rs = ctBUS.checkSoLuongNguyenLieuKhiCheBien(Integer.parseInt(ma), soLuongINT);
 		if(!rs) {
 			JOptionPane.showMessageDialog(null, "Không đủ nguyên liệu để chế biến", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		
-
 		txtMaSP.setText("");
 		txtTenSP.setText("");
 		txtDonGia.setText("");
 		txtSoLuong.setText("");
-
 		String thanhTien = String.valueOf(Integer.parseInt(donGia) * Integer.parseInt(soLuong));
-
+		if(SPtrungGH && rowTrungSP != -1) {
+			modelTableGH.setValueAt(soLuongINT, rowTrungSP, 3);
+			return;
+		}
 		Vector<String> vec = new Vector<>();
 		vec.add(ma);
 		vec.add(ten);
@@ -1026,6 +1084,7 @@ public class QLyBanHangGUI extends JPanel {
 		vec.add(thanhTien);
 		modelTableGH.addRow(vec);
 	}
+
 
 	private int luuHoaDon() {
 		boolean rs = false;

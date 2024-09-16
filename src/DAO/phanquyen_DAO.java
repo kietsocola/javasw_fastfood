@@ -29,6 +29,8 @@ public class phanquyen_DAO {
 			item.setNhanvien(result.getBoolean(5));
 			item.setKhachhang(result.getBoolean(6));
 			item.setThongke(result.getBoolean(7));
+			if(item.getIdPhanQuyen() == 1)
+				continue ;
 			ds.add(item);
 		}
 		con.close();

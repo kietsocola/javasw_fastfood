@@ -286,6 +286,23 @@ public class SanPhamDAO {
 	    }
 	    return result;
 	}
+	public boolean updateGiaSanPham(int maSP, int giaMoi) {
+	    boolean result = false;
+	    if (conDB.openConnectDB()) {
+	    	try {
+		        String sql = "UPDATE sanpham SET DonGia="+giaMoi+" WHERE id=" + maSP;
+		        Statement st = conDB.conn.createStatement();
+		        // Thực hiện truy vấn và kiểm tra số hàng đã bị ảnh hưởng
+		        if (st.executeUpdate(sql) >= 1)
+		            result = true;
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+				conDB.closeConnectDB();
+			}
+	    }
+	    return result;
+	}
 	public boolean suaSanPham(SanPham sp) {
 	    boolean result = false;
 	    if(conDB.openConnectDB()) {

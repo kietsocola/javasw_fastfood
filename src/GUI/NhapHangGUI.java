@@ -72,7 +72,7 @@ public class NhapHangGUI extends JPanel {
 	private JTextField txtTimTheoTen;
 	private JComboBox<String> cmbNCC;
 	private JComboBox<String> cmbDV;
-	private MyButton btnXoa, btnXuatPN, btnTimKiem,btnReset,btnThemNL;
+	private MyButton btnXoa, btnXuatPN, btnTimKiem,btnReset,btnThemNL,btnNgungDungNL;
 	private NguyenLieuBUS nlBUS = new NguyenLieuBUS();
 	private NhaCungCap_BUS nccBUS = new NhaCungCap_BUS();
 	private ChiTietPhieuNhapBUS ctpnBUS = new ChiTietPhieuNhapBUS();
@@ -173,6 +173,7 @@ public class NhapHangGUI extends JPanel {
 		modelTableNL.addColumn("Tên nguyên liệu");
 		modelTableNL.addColumn("Tồn kho");
 		modelTableNL.addColumn("Đơn vị");
+		modelTableNL.addColumn("Trạng thái");
 		
 		// modelTableNL.addColumn("Số lượng");
 		tableNL = new MyTable(modelTableNL);
@@ -467,6 +468,20 @@ public class NhapHangGUI extends JPanel {
 		
 		
 		pnBTN.add(btnReset);
+		
+		
+		btnNgungDungNL = new MyButton("Ngưng dùng");
+		btnNgungDungNL.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ngungDungNL();
+			}
+		});
+		btnNgungDungNL.setMaximumSize(new Dimension(80, 40));
+		btnNgungDungNL.setPreferredSize(new Dimension(80, 40));
+		
+		
+		pnBTN.add(btnNgungDungNL);
 		
 		/*
 		 * ==========================TAB PHIẾU
@@ -790,6 +805,7 @@ public class NhapHangGUI extends JPanel {
 			vec.add(nl.getTenNL() + "");
 			vec.add(nl.getsoLuongNL() + "");
 			vec.add(donViBUS.getTenDonViByMaDonViBUS(nl.getMaDonVi()) + "");
+			vec.add(nl.getTrangThai() == 1 ?  "Đang dùng" : "Ngưng dùng");
 			
 			modelTableNL.addRow(vec);
 		}
@@ -815,6 +831,16 @@ public class NhapHangGUI extends JPanel {
 					txtTenNL.setText(tennl);
 //					System.out.println("Ma don vi la: " + tenDV);
 					setSelectedDonVi(tenDV);
+					
+					if(tableNL.getValueAt(selectedRow, 4).equals("Đang dùng"))
+					{
+						btnNgungDungNL.setText("Ngưng dùng");
+					}
+					else 
+						if(tableNL.getValueAt(selectedRow, 4).equals("Ngưng dùng"))
+						{
+							btnNgungDungNL.setText("Dùng");
+						}
 
 				}
 			}
@@ -1250,6 +1276,28 @@ public class NhapHangGUI extends JPanel {
 		}
 		else JOptionPane.showMessageDialog(null," Thêm Thành Công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		nlBUS.getDSachNguyenLieu();
+		addDataToTblNL();
+	}
+	private void ngungDungNL() {
+		int trangthai = 0 ;
+		String chuoiTrangThai = "";
+		if(btnNgungDungNL.getText().equals("Ngưng dùng"))
+		{
+			trangthai =0 ;
+			btnNgungDungNL.setText("Dùng");
+			chuoiTrangThai = "ngưng dùng";
+		}
+		else if(btnNgungDungNL.getText().equals("Dùng"))
+		{
+			trangthai = 1  ;
+			btnNgungDungNL.setText("Ngưng dùng");
+			chuoiTrangThai = "dùng";
+		}
+		boolean flag =nlBUS.updateTrangThai(Integer.parseInt(txtMaNL.getText()), trangthai);
+		if(flag)
+		{	
+			JOptionPane.showMessageDialog(null, "Bạn đã  " + chuoiTrangThai+ "  nguyên liệu "+txtTenNL.getText(), "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		}
 		addDataToTblNL();
 	}
 }

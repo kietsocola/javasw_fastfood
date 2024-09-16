@@ -26,9 +26,8 @@ public class NguyenLieuDAO {
 					nl.setTenNL(rs.getString("Ten"));
 					nl.setsoLuongNL(rs.getInt("SoLuong"));
 					nl.setMaDonVi(rs.getInt("maDonVi"));
-					
+					nl.setTrangThai(rs.getInt("TrangThai"));
 					DSNguyenLieu.add(nl);
-					
 					
 				}
 				
@@ -45,7 +44,7 @@ public class NguyenLieuDAO {
 		NguyenLieu nl = null;
 		if(conDB.openConnectDB()) {
 			try {
-				String sql = "SELECT *FROM nguyenlieu WHERE id=?";
+				String sql = "SELECT * FROM nguyenlieu WHERE id=?";
 				PreparedStatement prest = conDB.conn.prepareStatement(sql);
 				prest.setInt(1, maNL);
 				ResultSet rs = prest.executeQuery();
@@ -54,7 +53,8 @@ public class NguyenLieuDAO {
 					
 					nl.setTenNL(rs.getString("Ten"));
 					nl.setsoLuongNL(rs.getInt("SoLuong"));
-					
+					nl.setDonGiaNL(rs.getInt("DonGiaNL"));
+					nl.setTrangThai(rs.getInt("TrangThai"));
 					
 				}
 			} catch (SQLException e) {
@@ -141,4 +141,25 @@ public class NguyenLieuDAO {
 	    }
 	    return result;
 	}
+	
+	public boolean updateTrangThai(int id , int TrangThai) {
+		boolean result = false;
+	    if (conDB.openConnectDB()) {
+	        try {
+	        	
+	            String sql = "update nguyenlieu set TrangThai = ? WHERE id=?";
+	            PreparedStatement prest = conDB.conn.prepareStatement(sql);
+	            prest.setInt(1, TrangThai);
+	            prest.setInt(2, id);
+	            result =prest.executeUpdate() >0;
+	           
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            conDB.closeConnectDB();
+	        }
+	    }
+	    return result;
+	}
+	
 }

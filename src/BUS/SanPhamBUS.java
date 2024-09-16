@@ -67,7 +67,8 @@ public class SanPhamBUS {
 		return DSSanPham;
 	}
 	public void docListSanPham() {
-	    DSSanPham = spDAO.getDanhSachSanPham();
+		DSSanPham = spDAO.getDanhSachSanPham();
+
 	}
 	public String getAnh(String ma) {
         int maSP = Integer.parseInt(ma);
@@ -98,6 +99,12 @@ public class SanPhamBUS {
             //sp.setIdCongThuc(idCongThuc);
             sp.setHinhAnh(anh);
             sp.setDonGia(donGia);
+            
+            DSSanPham = spDAO.getDanhSachSanPham();
+            for (SanPham item : DSSanPham) {
+            	if(item.getTenSP().toLowerCase().equals(sp.getTenSP().toLowerCase()))
+            		return false ;
+            }
 
             if (spDAO.themSanPham(sp)) {
             	JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

@@ -135,6 +135,7 @@ public class SanPhamGUI extends JPanel {
 		MyPanelSecond pnDonGia = new MyPanelSecond();
 		txtDonGia = new MyTextField();
 		txtDonGia.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtDonGia.disable();
 		lblDonGia = new MyLabelSecond("Đơn giá");
 		pnDonGia.add(lblDonGia);
 		pnDonGia.add(txtDonGia);
@@ -478,9 +479,16 @@ public class SanPhamGUI extends JPanel {
 	        int donGia = Integer.parseInt(txtDonGia.getText());
 	        // Kiểm tra và xử lý dữ liệu trước khi thêm
 	        boolean flag = spBUS.themSanPham(ten, loai, anh, donGia);
-	        spBUS.docListSanPham();
-	        loadDataToTblSanPham();
-	        luuFileAnh();
+	        if(flag) {
+	        	JOptionPane.showMessageDialog(null, "Đã thêm sản phẩm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	        	spBUS.docListSanPham();
+		        loadDataToTblSanPham();
+		        luuFileAnh();
+	        }
+	        else {
+	        	JOptionPane.showMessageDialog(null, "Sản phẩm đã có sẵn", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	        }
+	        
 	    }
 	    private void xuLySuaSanPham() {
 	    	if (isString(txtTenSP.getText(),"Tên")==0) {

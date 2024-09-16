@@ -63,7 +63,7 @@ public class NhaCungCap_BUS {
         
         listncc = nccdao.getDanhSachNhaCungCap();
         for(NhaCungCap item : listncc) {
-        	if(item.getTenNCC().equals(ncc.getTenNCC()))
+        	if(item.getTenNCC().toLowerCase().equals(ncc.getTenNCC().toLowerCase()))
         		return false;
         }
         boolean flag=nccdao.addNCC(ncc);

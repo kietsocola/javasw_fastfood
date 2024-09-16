@@ -57,7 +57,7 @@ public class NguyenLieuBUS {
 	    nl.setMaDonVi(maDonVi);
 	   
 	    for(NguyenLieu item : dsnl) {
-	    	if(item.getTenNL().equals(nl.getTenNL()))
+	    	if(item.getTenNL().toLowerCase().equals(nl.getTenNL().toLowerCase()))
 	    		return false;
 	    }
 	    
@@ -68,5 +68,11 @@ public class NguyenLieuBUS {
 	        e.printStackTrace();
 	        return false;
 	    }
+	}
+	
+	public boolean updateTrangThai(int id , int TrangThai) {
+		
+		
+		return nlDAO.updateTrangThai(id, TrangThai) ;
 	}
 }

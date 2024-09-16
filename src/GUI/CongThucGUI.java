@@ -202,7 +202,7 @@ public class CongThucGUI extends JPanel{
 		modelTableSPCheBien.addColumn("Mã SP");
 		modelTableSPCheBien.addColumn("Tên SP");
 		modelTableSPCheBien.addColumn("Đơn giá");
-		modelTableSPCheBien.addColumn("Còn lại");
+		modelTableSPCheBien.addColumn("Trạng Thái");
 		tableSanPhamCheBien = new MyTable(modelTableSPCheBien);
 		scrollPaneSanPham.setViewportView(tableSanPhamCheBien);
 		scrollPaneSanPham.getViewport().setBackground(MyColor.SECOND_BAKCGROUND_COLOR);
@@ -226,6 +226,7 @@ public class CongThucGUI extends JPanel{
 		modelTableNguyenLieuCB.addColumn("Tên nguyên liệu");
 		modelTableNguyenLieuCB.addColumn("Số lượng cần");
 		modelTableNguyenLieuCB.addColumn("Số lượng còn lại");
+		modelTableNguyenLieuCB.addColumn("Trạng thái");
 		tableNguyenLieuCheBien = new MyTable(modelTableNguyenLieuCB);
 		scrollPaneNguyenLieu.setViewportView(tableNguyenLieuCheBien);
 		loadDataTableSanPhamCB();
@@ -275,6 +276,7 @@ public class CongThucGUI extends JPanel{
 				txtmaSP.setText("");
 				tableSanPhamCheBien.clearSelection();
 				modelTableNguyenLieuCB.setRowCount(0);
+				loadDataTableSanPhamCB();
 			}
 		});
 		btnUpdate.addMouseListener(new MouseListener() {
@@ -400,7 +402,7 @@ public class CongThucGUI extends JPanel{
 			vec.add(sp.getId() + "");
 			vec.add(sp.getTenSP());
 			vec.add(sp.getDonGia() + "");
-			vec.add(sp.getSoLuong() + "");
+			vec.add(ctBUS.updateTrangThaiSPbyNL(sp.getId()) ? "Đang bán" : "Ngưng bán");
 			modelTableSPCheBien.addRow(vec);
 		}
 	}
@@ -414,6 +416,7 @@ public class CongThucGUI extends JPanel{
 			vec.add(nl.getTenNL());
 			vec.add(ct.getSoLuongDung() + "");
 			vec.add(nl.getsoLuongNL() + "");
+			vec.add(nl.getTrangThai() == 1 ? "Đang dùng" : "Ngưng dùng");
 			modelTableNguyenLieuCB.addRow(vec);
 		}
 	}

@@ -79,4 +79,10 @@ public class CongThucBUS {
 			return null;
 		}
 	}
+	
+	public boolean updateTrangThaiSPbyNL(int idSP) {
+		
+		
+		return ctDAO.updateTrangThaiSPbyNL(idSP);
+	}
 }

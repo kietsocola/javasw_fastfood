@@ -6,18 +6,23 @@ public class NguyenLieu {
 	private int soLuongNL;
 	private int DonGiaNL;
 	private int maDonVi;
+	private int TrangThai;
 
 	public NguyenLieu() {
 		
 	}
-	public NguyenLieu(int maNguyenLieu, String tenNL, int soLuongNL,int DonGiaNL, int maDonVi) {
+	public NguyenLieu(int maNguyenLieu, String tenNL, int soLuongNL,int DonGiaNL, int maDonVi , int TrangThai) {
 		super();
 		this.maNguyenLieu = maNguyenLieu;
 		this.tenNL = tenNL;
 		this.soLuongNL = soLuongNL;
 		this.DonGiaNL = DonGiaNL;
 		this.maDonVi = maDonVi;
+		this.TrangThai = TrangThai;
 	}
+	
+	
+	
 	public int getMaNguyenLieu() {
 		return maNguyenLieu;
 	}
@@ -53,6 +58,12 @@ public class NguyenLieu {
 	}
 	public void setMaDonVi(int maDonVi) {
 		this.maDonVi = maDonVi;
+	}
+	public int getTrangThai() {
+		return TrangThai;
+	}
+	public void setTrangThai(int trangThai) {
+		TrangThai = trangThai;
 	}
 	
 }

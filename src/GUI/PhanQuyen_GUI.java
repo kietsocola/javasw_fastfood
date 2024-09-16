@@ -308,6 +308,13 @@ public class PhanQuyen_GUI extends JPanel {
 		
 		btnSua.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				if(comboBox.getSelectedIndex() == 0)
+				{
+					JOptionPane.showMessageDialog(null, " không thể sửa quyền lí ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+					return ;
+				}
+				
 				btnHuy.setEnabled(true);
 				btnLuu.setEnabled(true);
 				btnThem.setEnabled(false);
