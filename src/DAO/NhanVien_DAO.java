@@ -83,6 +83,28 @@ public class NhanVien_DAO {
 		return result;
 	}
 
+	public boolean themNVBanHang(NhanVien nv) {
+		boolean result = false;
+		try {
+			String sql = "INSERT INTO nhanvienbanhang(Ten, NgaySinh, GioiTinh, SoDienThoai,idTaiKhoan ) "
+					+ "VALUES(?, ?, ?,?,?)";
+			PreparedStatement pre = conDB.conn.prepareStatement(sql);
+			pre.setString(1, nv.getTen());
+			pre.setString(2, nv.getNgaySinh());
+			pre.setInt(3, nv.getGioiTinh());
+			pre.setString(4, nv.getSoDT());
+			pre.setInt(5, nv.getIdTaiKhoan());
+			result = pre.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
+			return false;
+		}
+		return result;
+	}
+
 	public boolean updateNV(NhanVien nv) {
 		boolean result = false;
 		try {

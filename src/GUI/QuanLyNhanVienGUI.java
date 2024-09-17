@@ -572,7 +572,8 @@ public class QuanLyNhanVienGUI extends JPanel {
 			taiKhoanBUS.docDanhSach();
 			int idTaiKhoan = taiKhoanBUS.idTaiKhoanMax();
 
-			if (nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), idTaiKhoan, 1)) {
+			if (nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), idTaiKhoan, 1,
+					nameQuyen)) {
 				nhanVienBUS.docDanhSach();
 
 				btnReset.doClick();
@@ -612,7 +613,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 		try {
 			dspq = pqbus.getData();
 			for (phanquyen_DTO pq : dspq) {
-				if(pq.getIdPhanQuyen() == 1)
+				if (pq.getIdPhanQuyen() == 1)
 					continue;
 				cmbChucVu.addItem(pq.getTenPhanQuyen());
 			}
@@ -691,9 +692,9 @@ public class QuanLyNhanVienGUI extends JPanel {
 			if (nv.getIdTaiKhoan() == taiKhoan_GUI.idTaiKhoan) {
 				continue;
 			}
-			
-            if(taiKhoan_GUI.idTaiKhoan != 1 && (nv.getIdTaiKhoan() == 1 || nv.getIdTaiKhoan() == 2))
-            	continue;
+
+			if (taiKhoan_GUI.idTaiKhoan != 1 && (nv.getIdTaiKhoan() == 1 || nv.getIdTaiKhoan() == 2))
+				continue;
 
 			tableModel.addRow(rowData);
 		}
@@ -836,10 +837,11 @@ public class QuanLyNhanVienGUI extends JPanel {
 						}
 					}
 
+					String a = "a";
 					if (taiKhoanBUS.themTaiKhoan(rowData[1].toString(), rowData[2].toString(), idQuyen)) {
 						if (nhanVienBUS.themNhanVien(rowData[3].toString(), rowData[4].toString(),
 								rowData[5].toString().equals("Nam") ? 0 : 1, rowData[6].toString(),
-								taiKhoanBUS.idTaiKhoanMax(), 0))
+								taiKhoanBUS.idTaiKhoanMax(), 0, a))
 							tableModel.addRow(rowData);
 					}
 
