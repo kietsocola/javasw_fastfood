@@ -1,7 +1,11 @@
 package DAO;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.sql.*;
 
 import DTO.HoaDon;
 
@@ -18,7 +22,7 @@ public class HoaDonDAO {
 				while (rs.next()) {
 					HoaDon hd = new HoaDon();
 					hd.setidHD(rs.getInt("id"));
-					hd.setidNV(rs.getInt("idNhanVien"));
+					hd.setidNV(rs.getInt("idNhanVienBanHang"));
 					hd.setidKH(rs.getInt("idKhachHang"));
 					hd.setNgayLap(rs.getTimestamp("NgayLap"));
 					hd.setTongTien(rs.getInt("TongTien"));
@@ -35,38 +39,39 @@ public class HoaDonDAO {
 		}
 		return arrHoaDon;
 	}
+
 	public ArrayList<HoaDon> getListHoaDon(Date dateMin, Date dateMax) {
 		if (conDB.openConnectDB()) {
-        try {
-            String sql = "SELECT * FROM hoadon WHERE NgayLap BETWEEN CAST(? AS DATE) AND CAST(? AS DATE)";
-            PreparedStatement pre = conDB.conn.prepareStatement(sql);
-            pre.setDate(1, dateMin);
-            pre.setDate(2, dateMax);
-            ResultSet rs = pre.executeQuery();
+			try {
+				String sql = "SELECT * FROM hoadon WHERE NgayLap BETWEEN CAST(? AS DATE) AND CAST(? AS DATE)";
+				PreparedStatement pre = conDB.conn.prepareStatement(sql);
+				pre.setDate(1, dateMin);
+				pre.setDate(2, dateMax);
+				ResultSet rs = pre.executeQuery();
 
-            ArrayList<HoaDon> dshd = new ArrayList<>();
+				ArrayList<HoaDon> dshd = new ArrayList<>();
 
-            while (rs.next()) {
-                HoaDon hd = new HoaDon();
-                hd.setidHD(rs.getInt("id"));
-				hd.setidNV(rs.getInt("idNhanVien"));
-				hd.setidKH(rs.getInt("idKhachHang"));
-				hd.setNgayLap(rs.getTimestamp("NgayLap"));
-				hd.setTongTien(rs.getInt("TongTien"));
-				hd.setTrangThai(rs.getInt("TrangThai"));
-				hd.setGhiChu(rs.getString("ghiChu"));
-                dshd.add(hd);
-            }
-            return dshd;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-        	 conDB.closeConnectDB();
-        }
+				while (rs.next()) {
+					HoaDon hd = new HoaDon();
+					hd.setidHD(rs.getInt("id"));
+					hd.setidNV(rs.getInt("idNhanVienBanHang"));
+					hd.setidKH(rs.getInt("idKhachHang"));
+					hd.setNgayLap(rs.getTimestamp("NgayLap"));
+					hd.setTongTien(rs.getInt("TongTien"));
+					hd.setTrangThai(rs.getInt("TrangThai"));
+					hd.setGhiChu(rs.getString("ghiChu"));
+					dshd.add(hd);
+				}
+				return dshd;
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				conDB.closeConnectDB();
+			}
 		}
-        return null;
-		
-    }
+		return null;
+
+	}
 
 	public boolean addHoaDon(HoaDon hd) {
 		boolean result = false;
@@ -76,7 +81,7 @@ public class HoaDonDAO {
 //						+ " WHERE idKhachHang=" + hd.getidKH();
 //				Statement stmt = conDB.conn.createStatement();
 //				stmt.executeQuery(sqlUpdateTongTien);
-				String sql = "INSERT INTO HoaDon(NgayLap, TongTien, TrangThai, idNhanVien, idKhachHang, ghiChu) VALUES(?, ?, ?, ?, ?, ?)";
+				String sql = "INSERT INTO HoaDon(NgayLap, TongTien, TrangThai, idNhanVienBanHang, idKhachHang, ghiChu) VALUES(?, ?, ?, ?, ?, ?)";
 				PreparedStatement prep = conDB.conn.prepareStatement(sql);
 				prep.setTimestamp(1, new java.sql.Timestamp(new java.util.Date().getTime()));
 				prep.setInt(2, hd.getTongTien());
@@ -94,24 +99,26 @@ public class HoaDonDAO {
 		}
 		return result;
 	}
+
 	public boolean deleteHoaDon(int idHD) {
 		ChiTietHoaDonDAO cthdDao = new ChiTietHoaDonDAO();
 		return cthdDao.deleteChiTietHoaDon_ByIdHoaDon(idHD);
 	}
+
 	public int getMaHoaDonMoiNhat() {
 		if (conDB.openConnectDB()) {
-	        try {
-	            String sql = "SELECT MAX(id) FROM hoadon";
-	            Statement st = conDB.conn.createStatement();
-	            ResultSet rs = st.executeQuery(sql);
-	            if (rs.next())
-	                return rs.getInt(1);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        } finally {
-	        	conDB.closeConnectDB();
-	        }
+			try {
+				String sql = "SELECT MAX(id) FROM hoadon";
+				Statement st = conDB.conn.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				if (rs.next())
+					return rs.getInt(1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				conDB.closeConnectDB();
+			}
 		}
-        return -1;
-    }
+		return -1;
+	}
 }

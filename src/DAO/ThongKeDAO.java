@@ -260,7 +260,7 @@ public class ThongKeDAO {
 					hoaDon.setNgayLap(rs.getDate("NgayLap"));
 					hoaDon.setTongTien(rs.getInt("TongTien"));
 					hoaDon.setTrangThai(rs.getInt("TrangThai"));
-					hoaDon.setidNV(rs.getInt("idNhanVien"));
+					hoaDon.setidNV(rs.getInt("idNhanVienBanHang"));
 					hoaDon.setidKH(rs.getInt("idKhachHang"));
 					hoaDon.setGhiChu(rs.getString("ghiChu"));
 				}
@@ -286,7 +286,7 @@ public class ThongKeDAO {
 					hoaDon.setNgayLap(rs.getDate("NgayLap"));
 					hoaDon.setTongTien(rs.getInt("TongTien"));
 					hoaDon.setTrangThai(rs.getInt("TrangThai"));
-					hoaDon.setidNV(rs.getInt("idNhanVien"));
+					hoaDon.setidNV(rs.getInt("idNhanVienBanHang"));
 					hoaDon.setidKH(rs.getInt("idKhachHang"));
 					hoaDon.setGhiChu(rs.getString("ghiChu"));
 					listHoaDon.add(hoaDon);
@@ -320,7 +320,7 @@ public class ThongKeDAO {
 					hoaDon.setNgayLap(resultSet.getDate("NgayLap"));
 					hoaDon.setTongTien(resultSet.getInt("TongTien"));
 					hoaDon.setTrangThai(resultSet.getInt("TrangThai"));
-					hoaDon.setidNV(resultSet.getInt("idNhanVien"));
+					hoaDon.setidNV(resultSet.getInt("idNhanVienBanHang"));
 					hoaDon.setidKH(resultSet.getInt("idKhachHang"));
 					hoaDon.setGhiChu(resultSet.getString("ghiChu"));
 

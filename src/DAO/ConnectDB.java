@@ -11,7 +11,6 @@ public class ConnectDB {
 	static final String nameUser = "root";
 	static final String pass = "";
 
-
 	public boolean openConnectDB() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
