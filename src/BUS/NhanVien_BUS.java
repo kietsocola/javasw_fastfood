@@ -62,7 +62,7 @@ public class NhanVien_BUS {
 		nv.setSoDT(soDT);
 		nv.setIdTaiKhoan(idTaiKhoan);
 		boolean flag = false;
-		if (nameQuyen.equals("Quản lí bán hàng")) {
+		if (nameQuyen.equals("Bán hàng")) {
 			flag = nvdao.themNVBanHang(nv);
 		} else {
 			flag = nvdao.themNV(nv);
@@ -225,5 +225,25 @@ public class NhanVien_BUS {
 
 		return flag;
 	}
+	public NhanVien getNhanVienWithIdAccountBUS(int idTaiKhoan) {
+		return nvdao.getNhanVienWithIdAccount(idTaiKhoan);
+	}
+	public boolean deleteNhanVienByIdAccountBUS(int idTaiKhoan) {
+		return nvdao.deleteNhanVienByIdAccount(idTaiKhoan);
+	}
+	public boolean themNVBanHangCoIdBUS(NhanVien nv) {
+		return nvdao.themNVBanHangCoId(nv);
+	}
+	
+	public NhanVien getNhanVienBanHangWithIdAccountBUS(int idTaiKhoan) {
+		return nvdao.getNhanVienBanHangWithIdAccount(idTaiKhoan);
+	}
+	public boolean deleteNhanVienBanHangByIdAccountBUS(int idTaiKhoan) {
+		return nvdao.deleteNhanVienBanHangByIdAccount(idTaiKhoan);
+	}
+	public boolean themNVCoIdBUS(NhanVien nv) {
+		return nvdao.themNVCoId(nv);
+	}
+	
 
 }

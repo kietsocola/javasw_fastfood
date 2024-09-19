@@ -509,20 +509,24 @@ public class QuanLyNhanVienGUI extends JPanel {
 		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 
 		String nameChucVu = cmbChucVu.getSelectedItem().toString();
-		System.out.print(nameChucVu + " dang duoc chon");
+		System.out.print(nameChucVu + " dang duoc chon.");
 
 		if (txtMaNV.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập chọn nhân viên cần sửa!", "Lỗi",
 					JOptionPane.ERROR_MESSAGE);
+			System.out.println("DK 1: ham xuLySuaNhanVien");
 			return;
 		}
 
 		if (!taiKhoanBUS.kiemTraTaiKhoan2(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(),
 				txtMatKhau.getText())) {
+			System.out.println("DK 2: ham xuLySuaNhanVien");
+			
 			return;
 		}
 
 		if (!nhanVienBUS.kiemTraNhanVien2(txtMaNV.getText(), txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
+			System.out.println("DK 3: ham xuLySuaNhanVien");
 			return;
 		}
 
@@ -532,16 +536,48 @@ public class QuanLyNhanVienGUI extends JPanel {
 //					JOptionPane.ERROR_MESSAGE);
 //			return;
 //		}
+		
 
 		nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
+		
+		
 
 		taiKhoanBUS.suaTaiKhoan(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(), txtMatKhau.getText(),
 				nameChucVu);
 
+		
+		int idMaNV = Integer.parseInt(txtMaNV.getText());
+		swapDataNhanVienWithNhanVienBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
+		swapDataNhanVienBanHangWithNhanVien(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
 		taiKhoanBUS.docDanhSach();
 		nhanVienBUS.docDanhSach();
 		btnReset.doClick();
-
+	}
+	
+	private void swapDataNhanVienWithNhanVienBanHang(int idAccount) {
+		// idQuyen = 5 => Nhập hàng
+		// idQuyen = 3 => Bán hàng
+		// lay nhung thong tin nhan vien trong tai khoan co idQuyền là bán hàng
+		// lưu, xoá, chuyển qua bảng nhân viên bán hàng
+		System.out.println("id account voi quyen 3 la: " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
+		if(taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount) != -1) {
+			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienWithIdAccountBUS(idAccount);
+			nhanVienBUS.deleteNhanVienByIdAccountBUS(idAccount);
+			nhanVienBUS.themNVBanHangCoIdBUS(nhanVienTemp);
+			System.out.println("Xong cac buoc swapDataNhanVienWithNhanVienBanHang");
+		}
+		
+		
+	}
+	private void swapDataNhanVienBanHangWithNhanVien(int idAccount) {
+		System.out.println("id account voi quyen 3 la: " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(5, idAccount));
+		if(taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(5, idAccount) != -1) {
+			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienBanHangWithIdAccountBUS(idAccount);
+			nhanVienBUS.deleteNhanVienBanHangByIdAccountBUS(idAccount);
+			nhanVienBUS.themNVCoIdBUS(nhanVienTemp);
+			System.out.println("Xong cac buoc swapDataNhanVienBanHangWithNhanVien");
+		}
+		
 	}
 
 	private void xuLyThemNhanVien() {

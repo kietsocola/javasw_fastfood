@@ -161,7 +161,7 @@ public class taiKhoan_BUS {
         	if(item.getTenPhanQuyen().equals(nameQuyen))
         		quyen = item.getIdPhanQuyen();
         }
-        tk.setQuyen(quyen);
+        tk.setQuyen(quyen); // idQuyen
         boolean flag = taikhoandao.suaTaiKhoan(tk);
 
         return flag;
@@ -216,5 +216,11 @@ public class taiKhoan_BUS {
     public boolean xoaTaiKhoan(int ma) {
         boolean flag = taikhoandao.deleteTaiKhoan(ma);
             return flag;  
+    }
+    public int getIdAccountWithQuyenAndIdBUS(int quyen, int idAccount) {
+    	return taikhoandao.getIdAccountWithQuyenAndId(quyen, idAccount);
+    }
+    public int getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(int idNhanVien) {
+    	return taikhoandao.getIdAccountByIdNhanVienOrIdNhanVienBanHang(idNhanVien);
     }
 }

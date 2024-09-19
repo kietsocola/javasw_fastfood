@@ -242,19 +242,25 @@ public int idTaiKhoanMax() {
     }
 	
 	public boolean kiemTraTrungTenDangNhap2(String tenDangNhap, int id) {
-        try {
-            con.connect();
-            String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = ? AND id != ? AND isDelete = 0";
-            PreparedStatement pre = con.getCon().prepareStatement(sql);
-            pre.setString(1, tenDangNhap);
-            pre.setInt(2, id);
-            ResultSet rs = pre.executeQuery();
-            return rs.next();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+	    String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = ? AND id != ? AND isDelete = 0";
+	    
+	    try {
+	    	con.connect();
+	         PreparedStatement pre = con.getCon().prepareStatement(sql);
+
+	        pre.setString(1, tenDangNhap);
+	        pre.setInt(2, id);
+	        
+	        try (ResultSet rs = pre.executeQuery()) {
+	            return rs.next();
+	        }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Nên thay bằng log hoặc xử lý lỗi phù hợp
+	    }
+	    
+	    return false;
+	}
 	
 	public String getTenQuyen(int id) {
 		try {
@@ -270,5 +276,62 @@ public int idTaiKhoanMax() {
 			
 		}
 		return "";
+	}
+	
+	public int getIdAccountWithQuyenAndId(int quyen, int idAccount) {
+		// quyen = 3 => bán hàng
+		// quyen = 5 => nhập hàng
+	    try {
+	        con.connect();
+	        String sql = "SELECT id FROM taikhoan WHERE Quyen = ? AND isDelete = 0 AND id = ?";
+	        PreparedStatement pre = con.getCon().prepareStatement(sql);
+	        pre.setInt(1, quyen);
+	        pre.setInt(2, idAccount);
+	        ResultSet rs = pre.executeQuery();
+	        
+	        if (rs.next()) {
+	            return rs.getInt("id");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Bạn có thể thay thế bằng log hoặc xử lý lỗi
+	    }
+	    return -1; // Trả về -1 nếu không tìm thấy kết quả nào
+	}
+	
+	public int getIdAccountByIdNhanVienOrIdNhanVienBanHang(int idNhanVien) {
+	    int idTaiKhoan = -1; // Giá trị trả về nếu không tìm thấy
+
+	    try {
+	        // Truy vấn kết hợp giữa bảng nhanvien và taikhoan
+	        String sqlNhanVien = "SELECT tk.id FROM nhanvien nv " +
+	                             "JOIN taikhoan tk ON nv.idTaiKhoan = tk.id " +
+	                             "WHERE nv.id = ? AND tk.isDelete = 0";
+	        PreparedStatement preNhanVien = con.getCon().prepareStatement(sqlNhanVien);
+	        preNhanVien.setInt(1, idNhanVien);
+	        ResultSet rsNhanVien = preNhanVien.executeQuery();
+
+	        if (rsNhanVien.next()) {
+	            idTaiKhoan = rsNhanVien.getInt("id");
+	            return idTaiKhoan; // Trả về ngay khi tìm thấy trong bảng nhanvien
+	        }
+
+	        // Truy vấn kết hợp giữa bảng nhanvienbanhang và taikhoan nếu không tìm thấy trong nhanvien
+	        String sqlNhanVienBanHang = "SELECT tk.id FROM nhanvienbanhang nvb " +
+	                                    "JOIN taikhoan tk ON nvb.idTaiKhoan = tk.id " +
+	                                    "WHERE nvb.id = ? AND tk.isDelete = 0";
+	        PreparedStatement preNhanVienBanHang = con.getCon().prepareStatement(sqlNhanVienBanHang);
+	        preNhanVienBanHang.setInt(1, idNhanVien);
+	        ResultSet rsNhanVienBanHang = preNhanVienBanHang.executeQuery();
+
+	        if (rsNhanVienBanHang.next()) {
+	            idTaiKhoan = rsNhanVienBanHang.getInt("id");
+	            return idTaiKhoan; // Trả về nếu tìm thấy trong nhanvienbanhang
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Xử lý lỗi SQL, có thể thay bằng log nếu cần
+	    }
+
+	    return idTaiKhoan; // Trả về -1 nếu không tìm thấy trong cả hai bảng
 	}
 }

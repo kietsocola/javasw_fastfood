@@ -197,7 +197,7 @@ public class MainQuanlyGUI extends JFrame {
 
 		if (QuyenHan.get(2) == true) {
 			listMenuLeft.add(lblNhanvien);
-//			listMenuLeft.add(lblPhanQuyen);
+			listMenuLeft.add(lblPhanQuyen);
 		}
 
 		if (QuyenHan.get(3) == true) {
