@@ -13,29 +13,55 @@ import java.util.ArrayList;
 public class taiKhoan_DAO  {
 	connectDatabase con = new connectDatabase();
 	
+//	public ArrayList<taiKhoan_DTO> getDSTaiKhoan() {
+//		 
+//	    ArrayList<taiKhoan_DTO> dstk = new ArrayList<>();
+//	    con.connect();
+//	        try (PreparedStatement pre = con.getCon().prepareStatement("SELECT * FROM taiKhoan WHERE isDelete=0")) {
+//	            ResultSet rs = pre.executeQuery();
+//	            while (rs.next()) {
+//	            	taiKhoan_DTO tk = new taiKhoan_DTO();
+//	            	tk.setMa(rs.getInt(1));
+//	            	tk.setNgayTao(rs.getString(2));
+//	            	tk.setTenTaiKhoan(rs.getString(3));;
+//	            	tk.setMatKhau(rs.getString(4));
+//	            	tk.setTrangThai(rs.getInt(5));
+//	            	tk.setQuyen(rs.getInt(6));
+//	            	
+//	                dstk.add(tk);
+//	            }
+//	        } catch (SQLException e) {
+//	            e.printStackTrace();
+//	        } 
+//	    
+//	    return dstk;
+//}
 	public ArrayList<taiKhoan_DTO> getDSTaiKhoan() {
-		 
 	    ArrayList<taiKhoan_DTO> dstk = new ArrayList<>();
 	    con.connect();
-	        try (PreparedStatement pre = con.getCon().prepareStatement("SELECT * FROM taiKhoan WHERE isDelete=0")) {
-	            ResultSet rs = pre.executeQuery();
-	            while (rs.next()) {
-	            	taiKhoan_DTO tk = new taiKhoan_DTO();
-	            	tk.setMa(rs.getInt(1));
-	            	tk.setNgayTao(rs.getString(2));
-	            	tk.setTenTaiKhoan(rs.getString(3));;
-	            	tk.setMatKhau(rs.getString(4));
-	            	tk.setTrangThai(rs.getInt(5));
-	            	tk.setQuyen(rs.getInt(6));
-	            	
-	                dstk.add(tk);
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        } 
-	    
+
+	    String sql = "SELECT id, NgayTao, TenDangNhap, MatKhau, TrangThai, Quyen FROM taiKhoan WHERE isDelete = 0 UNION ALL SELECT id, NgayTao, TenDangNhap, MatKhau, TrangThai, Quyen FROM taiKhoanbanhang WHERE isDelete = 0";
+
+	    try (PreparedStatement pre = con.getCon().prepareStatement(sql);
+	         ResultSet rs = pre.executeQuery()) {
+
+	        while (rs.next()) {
+	            taiKhoan_DTO tk = new taiKhoan_DTO();
+	            tk.setMa(rs.getInt("id"));
+	            tk.setNgayTao(rs.getString("NgayTao"));
+	            tk.setTenTaiKhoan(rs.getString("TenDangNhap"));
+	            tk.setMatKhau(rs.getString("MatKhau"));
+	            tk.setTrangThai(rs.getInt("TrangThai"));
+	            tk.setQuyen(rs.getInt("Quyen"));
+
+	            dstk.add(tk);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
 	    return dstk;
-}
+	}
 	
 public int idTaiKhoanMax() {
 		
@@ -139,12 +165,15 @@ public int idTaiKhoanMax() {
         return result;
 	}
 	
-	public String getTenDangNhap(int id) {	
+	public String getTenDangNhap(int id) {    
 	    try {
 	        con.connect();
-	        String sql = "SELECT TenDangNhap FROM taikhoan WHERE id=? AND isDelete=0";
+	        String sql = "SELECT TenDangNhap FROM taikhoan WHERE id=? AND isDelete=0 "
+	                   + "UNION ALL "
+	                   + "SELECT TenDangNhap FROM taikhoanbanhang WHERE id=? AND isDelete=0";
 	        PreparedStatement ps = con.getCon().prepareStatement(sql);
 	        ps.setInt(1, id);
+	        ps.setInt(2, id);
 	        ResultSet rs = ps.executeQuery();
 	        if (rs.next()) {
 	            return rs.getString("TenDangNhap");
@@ -154,16 +183,18 @@ public int idTaiKhoanMax() {
 	    } 
 	    return "";
 	}
-
 	
 	
 
-	public String getMatKhau(int id) {	
+	public String getMatKhau(int id) {    
 	    try {
 	        con.connect();
-	        String sql = "SELECT MatKhau FROM taikhoan WHERE id=? AND isDelete=0";
+	        String sql = "SELECT MatKhau FROM taikhoan WHERE id=? AND isDelete=0 "
+	                   + "UNION ALL "
+	                   + "SELECT MatKhau FROM taikhoanbanhang WHERE id=? AND isDelete=0";
 	        PreparedStatement ps = con.getCon().prepareStatement(sql);
 	        ps.setInt(1, id);
+	        ps.setInt(2, id);
 	        ResultSet rs = ps.executeQuery();
 	        if (rs.next()) {
 	            return rs.getString("MatKhau");
@@ -176,24 +207,44 @@ public int idTaiKhoanMax() {
 	
 	
 	public boolean suaTaiKhoan(taiKhoan_DTO tk) {
-		boolean result = false;
-        try {
-        	con.connect();
-            String sql = "UPDATE taikhoan SET TenDangNhap=?, MatKhau=?, TrangThai=?, Quyen=? WHERE id=? ";
-            PreparedStatement pre = con.getCon().prepareStatement(sql);
-            
-            pre.setString(1, tk.getTenTaiKhoan());
-            pre.setString(2, tk.getMatKhau());
-            pre.setInt(3, tk.getTrangThai());
-            pre.setInt(4, tk.getQuyen());
-            pre.setInt(5, tk.getMa());
-            result= pre.executeUpdate() > 0;
-        } catch (Exception e) {
-        	e.printStackTrace();
-        	return false;
-        }
-        return result;
-    }
+	    boolean result = false;
+	    boolean taikhoanUpdated = false;
+	    boolean taikhoanbanhangUpdated = false;
+
+	    try {
+	        con.connect();
+	        
+	        // Cập nhật bảng taikhoan
+	        String sqlTaiKhoan = "UPDATE taikhoan SET TenDangNhap = ?, MatKhau = ?, TrangThai = ?, Quyen = ? WHERE id = ?";
+	        try (PreparedStatement preTaiKhoan = con.getCon().prepareStatement(sqlTaiKhoan)) {
+	            preTaiKhoan.setString(1, tk.getTenTaiKhoan());
+	            preTaiKhoan.setString(2, tk.getMatKhau());
+	            preTaiKhoan.setInt(3, tk.getTrangThai());
+	            preTaiKhoan.setInt(4, tk.getQuyen());
+	            preTaiKhoan.setInt(5, tk.getMa());
+	            taikhoanUpdated = preTaiKhoan.executeUpdate() > 0;
+	        }
+
+	        // Cập nhật bảng taikhoanbanhang
+	        String sqlTaiKhoanBanHang = "UPDATE taikhoanbanhang SET TenDangNhap = ?, MatKhau = ?, TrangThai = ?, Quyen = ? WHERE id = ?";
+	        try (PreparedStatement preTaiKhoanBanHang = con.getCon().prepareStatement(sqlTaiKhoanBanHang)) {
+	            preTaiKhoanBanHang.setString(1, tk.getTenTaiKhoan());
+	            preTaiKhoanBanHang.setString(2, tk.getMatKhau());
+	            preTaiKhoanBanHang.setInt(3, tk.getTrangThai());
+	            preTaiKhoanBanHang.setInt(4, tk.getQuyen());
+	            preTaiKhoanBanHang.setInt(5, tk.getMa());
+	            taikhoanbanhangUpdated = preTaiKhoanBanHang.executeUpdate() > 0;
+	        }
+
+	        // Trả về true nếu ít nhất một trong hai bảng được cập nhật
+	        result = taikhoanUpdated || taikhoanbanhangUpdated;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Nên thay bằng log hoặc xử lý lỗi phù hợp
+	    }
+
+	    return result;
+	}
 	
 	 public boolean deleteTaiKhoan(int ma) {
 	        boolean result = false;
@@ -227,55 +278,135 @@ public int idTaiKhoanMax() {
         }
         return result;
     }
-	
-	public boolean kiemTraTrungTenDangNhap(String tenDangNhap) {
+	public boolean themTaiKhoanCoID(taiKhoan_DTO tk) {
+		boolean result = false;
         try {
         	con.connect();
-            String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = '" + tenDangNhap + "' AND isDelete = 0";
-            Statement st = con.getCon().createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            return rs.next();
+            String sql = "INSERT INTO taikhoan(NgayTao, TenDangNhap, MatKhau,TrangThai, Quyen, id) "
+                    + "VALUES (?, ?, ?, ?,?, ?)";
+            PreparedStatement pre = con.getCon().prepareStatement(sql);
+            pre.setString(1, tk.getNgayTao());
+            pre.setString(2, tk.getTenTaiKhoan());
+            pre.setString(3, tk.getMatKhau());
+            pre.setInt(4, tk.getTrangThai());
+            pre.setInt(5, tk.getQuyen());
+            pre.setInt(6, tk.getMa());
+            result= pre.executeUpdate() > 0;
         } catch (Exception e) {
-            e.printStackTrace();
+        	e.printStackTrace();
+        	return false;
         }
-        return false;
+        return result;
     }
 	
-	public boolean kiemTraTrungTenDangNhap2(String tenDangNhap, int id) {
-	    String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = ? AND id != ? AND isDelete = 0";
+	public boolean themTaiKhoanBanHang(taiKhoan_DTO tk) {
+		boolean result = false;
+        try {
+        	con.connect();
+            String sql = "INSERT INTO taikhoanbanhang( NgayTao, TenDangNhap, MatKhau,TrangThai, Quyen) "
+                    + "VALUES (?, ?, ?, ?,?)";
+            PreparedStatement pre = con.getCon().prepareStatement(sql);
+            pre.setString(1, tk.getNgayTao());
+            pre.setString(2, tk.getTenTaiKhoan());
+            pre.setString(3, tk.getMatKhau());
+            pre.setInt(4, tk.getTrangThai());
+            pre.setInt(5, tk.getQuyen());
+            result= pre.executeUpdate() > 0;
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return false;
+        }
+        return result;
+    }
+	public boolean themTaiKhoanBanHangCoID(taiKhoan_DTO tk) {
+		boolean result = false;
+        try {
+        	con.connect();
+            String sql = "INSERT INTO taikhoanbanhang(NgayTao, TenDangNhap, MatKhau,TrangThai, Quyen, id) "
+                    + "VALUES (?, ?, ?, ?,?, ?)";
+            PreparedStatement pre = con.getCon().prepareStatement(sql);
+            pre.setString(1, tk.getNgayTao());
+            pre.setString(2, tk.getTenTaiKhoan());
+            pre.setString(3, tk.getMatKhau());
+            pre.setInt(4, tk.getTrangThai());
+            pre.setInt(5, tk.getQuyen());
+            pre.setInt(6, tk.getMa());
+            result= pre.executeUpdate() > 0;
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return false;
+        }
+        return result;
+    }
+	
+	public boolean kiemTraTrungTenDangNhap(String tenDangNhap) {
+	    String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = ? AND isDelete = 0 "
+	               + "UNION ALL "
+	               + "SELECT * FROM taikhoanbanhang WHERE TenDangNhap = ? AND isDelete = 0";
 	    
 	    try {
-	    	con.connect();
-	         PreparedStatement pre = con.getCon().prepareStatement(sql);
-
-	        pre.setString(1, tenDangNhap);
-	        pre.setInt(2, id);
-	        
-	        try (ResultSet rs = pre.executeQuery()) {
-	            return rs.next();
+	        con.connect();
+	        try (PreparedStatement pre = con.getCon().prepareStatement(sql)) {
+	            pre.setString(1, tenDangNhap);
+	            pre.setString(2, tenDangNhap);
+	            try (ResultSet rs = pre.executeQuery()) {
+	                return rs.next();
+	            }
 	        }
-	        
 	    } catch (SQLException e) {
 	        e.printStackTrace(); // Nên thay bằng log hoặc xử lý lỗi phù hợp
 	    }
+	    return false;
+	}
+	
+	public boolean kiemTraTrungTenDangNhap2(String tenDangNhap, int id) {
+	    String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = ? AND id != ? AND isDelete = 0 "
+	               + "UNION ALL "
+	               + "SELECT * FROM taikhoanbanhang WHERE TenDangNhap = ? AND id != ? AND isDelete = 0";
 	    
+	    try {
+	        con.connect();
+	        try (PreparedStatement pre = con.getCon().prepareStatement(sql)) {
+	            pre.setString(1, tenDangNhap);
+	            pre.setInt(2, id);
+	            pre.setString(3, tenDangNhap);
+	            pre.setInt(4, id);
+	            try (ResultSet rs = pre.executeQuery()) {
+	                return rs.next();
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Nên thay bằng log hoặc xử lý lỗi phù hợp
+	    }
 	    return false;
 	}
 	
 	public String getTenQuyen(int id) {
-		try {
-			con.connect();
-			String sql="SELECT TenQuyen FROM phanquyen pq JOIN taikhoan tk ON tk.Quyen=pq.id WHERE tk.id=? AND tk.isDelete=0";
-			PreparedStatement pre =con.getCon().prepareStatement(sql);
-			pre.setInt(1, id);
-			ResultSet rs = pre.executeQuery();
-			if(rs.next()) {
-				return rs.getString("TenQuyen");
-			}
-		}catch(Exception e) {
-			
-		}
-		return "";
+	    String tenQuyen = "";
+	    try {
+	        con.connect();
+	        String sql = "SELECT TenQuyen FROM phanquyen pq "
+	                   + "JOIN taikhoan tk ON tk.Quyen = pq.id "
+	                   + "WHERE tk.id = ? AND tk.isDelete = 0 "
+	                   + "UNION ALL "
+	                   + "SELECT TenQuyen FROM phanquyen pq "
+	                   + "JOIN taikhoanbanhang tkb ON tkb.Quyen = pq.id "
+	                   + "WHERE tkb.id = ? AND tkb.isDelete = 0";
+	        
+	        try (PreparedStatement pre = con.getCon().prepareStatement(sql)) {
+	            pre.setInt(1, id);
+	            pre.setInt(2, id);
+	            try (ResultSet rs = pre.executeQuery()) {
+	                if (rs.next()) {
+	                    tenQuyen = rs.getString("TenQuyen");
+	                }
+	            }
+	        }
+	    } catch (SQLException e) {
+	        // Thay thế e.printStackTrace() bằng việc ghi log hoặc xử lý lỗi rõ ràng hơn
+	        System.err.println("Error retrieving TenQuyen: " + e.getMessage());
+	    }
+	    return tenQuyen;
 	}
 	
 	public int getIdAccountWithQuyenAndId(int quyen, int idAccount) {
@@ -284,6 +415,25 @@ public int idTaiKhoanMax() {
 	    try {
 	        con.connect();
 	        String sql = "SELECT id FROM taikhoan WHERE Quyen = ? AND isDelete = 0 AND id = ?";
+	        PreparedStatement pre = con.getCon().prepareStatement(sql);
+	        pre.setInt(1, quyen);
+	        pre.setInt(2, idAccount);
+	        ResultSet rs = pre.executeQuery();
+	        
+	        if (rs.next()) {
+	            return rs.getInt("id");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Bạn có thể thay thế bằng log hoặc xử lý lỗi
+	    }
+	    return -1; // Trả về -1 nếu không tìm thấy kết quả nào
+	}
+	public int getIdAccountWithQuyenAndId_InTaiKhoanBanHang(int quyen, int idAccount) {
+		// quyen = 3 => bán hàng
+		// quyen = 5 => nhập hàng
+	    try {
+	        con.connect();
+	        String sql = "SELECT id FROM taikhoanbanhang WHERE Quyen = ? AND isDelete = 0 AND id = ?";
 	        PreparedStatement pre = con.getCon().prepareStatement(sql);
 	        pre.setInt(1, quyen);
 	        pre.setInt(2, idAccount);
@@ -333,5 +483,122 @@ public int idTaiKhoanMax() {
 	    }
 
 	    return idTaiKhoan; // Trả về -1 nếu không tìm thấy trong cả hai bảng
+	}
+	
+	public int getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHang(int idNhanVien) {
+	    int idTaiKhoan = -1; // Giá trị trả về nếu không tìm thấy
+
+	    try {
+	        // Truy vấn kết hợp giữa bảng nhanvien và taikhoan
+	        String sqlNhanVien = "SELECT tk.id FROM nhanvien nv " +
+	                             "JOIN taikhoanbanhang tk ON nv.idTaiKhoan = tk.id " +
+	                             "WHERE nv.id = ? AND tk.isDelete = 0";
+	        PreparedStatement preNhanVien = con.getCon().prepareStatement(sqlNhanVien);
+	        preNhanVien.setInt(1, idNhanVien);
+	        ResultSet rsNhanVien = preNhanVien.executeQuery();
+
+	        if (rsNhanVien.next()) {
+	            idTaiKhoan = rsNhanVien.getInt("id");
+	            return idTaiKhoan; // Trả về ngay khi tìm thấy trong bảng nhanvien
+	        }
+
+	        // Truy vấn kết hợp giữa bảng nhanvienbanhang và taikhoan nếu không tìm thấy trong nhanvien
+	        String sqlNhanVienBanHang = "SELECT tk.id FROM nhanvienbanhang nvb " +
+	                                    "JOIN taikhoanbanhang tk ON nvb.idTaiKhoan = tk.id " +
+	                                    "WHERE nvb.id = ? AND tk.isDelete = 0";
+	        PreparedStatement preNhanVienBanHang = con.getCon().prepareStatement(sqlNhanVienBanHang);
+	        preNhanVienBanHang.setInt(1, idNhanVien);
+	        ResultSet rsNhanVienBanHang = preNhanVienBanHang.executeQuery();
+
+	        if (rsNhanVienBanHang.next()) {
+	            idTaiKhoan = rsNhanVienBanHang.getInt("id");
+	            return idTaiKhoan; // Trả về nếu tìm thấy trong nhanvienbanhang
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Xử lý lỗi SQL, có thể thay bằng log nếu cần
+	    }
+
+	    return idTaiKhoan; // Trả về -1 nếu không tìm thấy trong cả hai bảng
+	}
+	
+	public taiKhoan_DTO getTaiKhoanBanHangById(int id) {
+	    taiKhoan_DTO tk = new taiKhoan_DTO();
+	    String sql = "SELECT * FROM taikhoanbanhang WHERE id = ?";
+	    
+	    try (PreparedStatement stmt = con.getCon().prepareStatement(sql)) {	      
+	        stmt.setInt(1, id);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                tk.setMa(rs.getInt("id"));
+	                tk.setTenTaiKhoan(rs.getString("TenDangNhap"));
+	                tk.setMatKhau(rs.getString("MatKhau"));
+	                tk.setTrangThai(rs.getInt("TrangThai"));
+	                tk.setTenQuyen(rs.getString("Quyen"));
+	                tk.setNgayTao(rs.getString("NgayTao"));
+	                tk.setQuyen(rs.getInt("Quyen"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	    }
+	    
+	    return tk;
+	}
+	
+	public taiKhoan_DTO getTaiKhoanById(int id) {
+	    taiKhoan_DTO tk = new taiKhoan_DTO();
+	    String sql = "SELECT * FROM taikhoan WHERE id = ?";
+	    
+	    try (PreparedStatement stmt = con.getCon().prepareStatement(sql)) {	      
+	        stmt.setInt(1, id);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                tk.setMa(rs.getInt("id"));
+	                tk.setTenTaiKhoan(rs.getString("TenDangNhap"));
+	                tk.setMatKhau(rs.getString("MatKhau"));
+	                tk.setTrangThai(rs.getInt("TrangThai"));
+	                tk.setTenQuyen(rs.getString("Quyen"));
+	                tk.setNgayTao(rs.getString("NgayTao"));
+	                tk.setQuyen(rs.getInt("Quyen"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	    }
+	    
+	    return tk;
+	}
+	public boolean deleteTaiKhoanBanHangById(int id) {
+	    String sql = "DELETE FROM taikhoanbanhang WHERE id = ?";
+	    boolean result = false;
+
+	    try (PreparedStatement pre = con.getCon().prepareStatement(sql)) {
+	        pre.setInt(1, id);
+	        
+	        // Thực hiện câu truy vấn, nếu số dòng bị ảnh hưởng > 0 thì xóa thành công
+	        result = pre.executeUpdate() > 0;
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Nên thay bằng ghi log trong thực tế
+	    }
+	    
+	    return result;
+	}
+	public boolean deleteTaiKhoanById(int id) {
+	    String sql = "DELETE FROM taikhoan WHERE id = ?";
+	    boolean result = false;
+
+	    try (PreparedStatement pre = con.getCon().prepareStatement(sql)) {
+	        pre.setInt(1, id);
+	        
+	        // Thực hiện câu truy vấn, nếu số dòng bị ảnh hưởng > 0 thì xóa thành công
+	        result = pre.executeUpdate() > 0;
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Nên thay bằng ghi log trong thực tế
+	    }
+	    
+	    return result;
 	}
 }

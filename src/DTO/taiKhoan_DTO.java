@@ -10,6 +10,8 @@ public class taiKhoan_DTO {
 		private String tenQuyen;
 		private String ngayTao;
 		private int quyen;
+		
+		public taiKhoan_DTO() {}
 		public int getMa() {
 			return ma;
 		}

@@ -332,7 +332,7 @@ public class NhanVien_DAO {
 	public NhanVien getNhanVienBanHangWithIdAccount(int idTaiKhoan) {
 	    NhanVien nvbh = null;
 	    String sql = "SELECT nvbh.* FROM nhanvienbanhang nvbh " +
-	                 "JOIN taikhoan tk ON nvbh.idTaiKhoan = tk.id " +
+	                 "JOIN taikhoanbanhang tk ON nvbh.idTaiKhoan = tk.id " +
 	                 "WHERE tk.id = ? AND tk.isDelete = 0 AND nvbh.isDelete = 0";
 
 	    try (PreparedStatement pre = conDB.conn.prepareStatement(sql)) {

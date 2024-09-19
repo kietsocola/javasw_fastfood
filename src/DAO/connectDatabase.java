@@ -9,7 +9,7 @@ public class connectDatabase {
 	private String url = "jdbc:mysql://localhost:3306/";
 	private String nameDatabase = "javafastfood";
 	private String user = "root";
-	private String password = "";
+	private String password = "new_password";
 	private Statement s;
 
 	public Connection getCon() {

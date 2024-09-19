@@ -548,36 +548,61 @@ public class QuanLyNhanVienGUI extends JPanel {
 		
 		int idMaNV = Integer.parseInt(txtMaNV.getText());
 		swapDataNhanVienWithNhanVienBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
-		swapDataNhanVienBanHangWithNhanVien(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
+		swapDataNhanVienBanHangWithNhanVien(taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
+		swapDataTaiKhoanWithTaiKhoanBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
+		swapDataTaiKhoanBanHangWithTaiKhoan(taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
 		taiKhoanBUS.docDanhSach();
 		nhanVienBUS.docDanhSach();
 		btnReset.doClick();
 	}
 	
-	private void swapDataNhanVienWithNhanVienBanHang(int idAccount) {
+	private void swapDataNhanVienWithNhanVienBanHang(int idAccount) { // chuẩn
 		// idQuyen = 5 => Nhập hàng
 		// idQuyen = 3 => Bán hàng
 		// lay nhung thong tin nhan vien trong tai khoan co idQuyền là bán hàng
-		// lưu, xoá, chuyển qua bảng nhân viên bán hàng
-		System.out.println("id account voi quyen 3 la: " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
+		// lưu, xoá, chuyển qua bảng nhân viên bán hàng (3 buoc)
+		System.out.println("id account voi quyen 3 la (swap NV): " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
 		if(taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount) != -1) {
 			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienWithIdAccountBUS(idAccount);
 			nhanVienBUS.deleteNhanVienByIdAccountBUS(idAccount);
 			nhanVienBUS.themNVBanHangCoIdBUS(nhanVienTemp);
 			System.out.println("Xong cac buoc swapDataNhanVienWithNhanVienBanHang");
 		}
-		
-		
 	}
+	
 	private void swapDataNhanVienBanHangWithNhanVien(int idAccount) {
-		System.out.println("id account voi quyen 3 la: " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(5, idAccount));
-		if(taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(5, idAccount) != -1) {
+		System.out.println("id account voi quyen 5 la (swap NV): " + taiKhoanBUS.getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(5, idAccount));
+		if(taiKhoanBUS.getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(5, idAccount) != -1) {
 			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienBanHangWithIdAccountBUS(idAccount);
 			nhanVienBUS.deleteNhanVienBanHangByIdAccountBUS(idAccount);
 			nhanVienBUS.themNVCoIdBUS(nhanVienTemp);
 			System.out.println("Xong cac buoc swapDataNhanVienBanHangWithNhanVien");
 		}
-		
+	}
+	
+	
+	private void swapDataTaiKhoanWithTaiKhoanBanHang(int idAccount) {
+		// idQuyen = 5 => Nhập hàng
+		// idQuyen = 3 => Bán hàng
+		// B1: tim tai khoan voi quyen = 3
+		// B2: lưu, xoá, chuyển qua bảng tai khoang bán hàng
+		System.out.println("id account voi quyen 3 la (swap TK): " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
+		if(taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount) != -1) {
+			taiKhoan_DTO tkBanHang = taiKhoanBUS.getTaiKhoanByIdBUS(idAccount);
+			taiKhoanBUS.deleteTaiKhoanByIdBUS(idAccount);
+			taiKhoanBUS.themTaiKhoanBanHangCoIDBUS(tkBanHang);
+			System.out.println("Xong cac buoc swapDataNhanVienWithNhanVienBanHang");
+		}
+	}
+	
+	private void swapDataTaiKhoanBanHangWithTaiKhoan(int idAccount) {
+		System.out.println("id account voi quyen 5 la (swap TK): " + taiKhoanBUS.getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(5, idAccount));
+		if(taiKhoanBUS.getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(5, idAccount) != -1) {
+			taiKhoan_DTO tk = taiKhoanBUS.getTaiKhoanBanHangByIdBUS(idAccount);
+			taiKhoanBUS.deleteTaiKhoanBanHangByIdBUS(idAccount);
+			taiKhoanBUS.themTaiKhoanCoIDBUS(tk);
+			System.out.println("Xong cac buoc swapDataNhanVienBanHangWithNhanVien");
+		}
 	}
 
 	private void xuLyThemNhanVien() {

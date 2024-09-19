@@ -15,7 +15,9 @@ public class phanquyen_DAO {
 		con.connect();
 		ArrayList<phanquyen_DTO> ds = new ArrayList<>();
 		
-		String sql = "select * from phanquyen where isDelete = 0";
+		String sql = "select * from phanquyen where isDelete = 0"
+				+ 	" UNION ALL"
+				+ " SELECT * FROM phanquyenbanhang where isDelete = 0";
 		Statement stmt =   con.getCon().createStatement();
 		ResultSet result = stmt.executeQuery(sql);
 		int stt = 1;
@@ -41,7 +43,9 @@ public class phanquyen_DAO {
 		con.connect();
 		ArrayList<phanquyen_DTO> ds = new ArrayList<>();
 		
-		String sql = "select * from phanquyen where isDelete = 0";
+		String sql = "select * from phanquyen where isDelete = 0"
+				+ 	" UNION ALL"
+				+ " SELECT * FROM phanquyenbanhang where isDelete = 0";
 		Statement stmt;
 		try {
 			stmt = con.getCon().createStatement();

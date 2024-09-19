@@ -208,8 +208,11 @@ public class taiKhoan_BUS {
         		quyen = item.getIdPhanQuyen();
         }
         tk.setQuyen(quyen);
-        boolean flag = taikhoandao.themTaiKhoan(tk);
-
+        boolean flag;
+        if(nameQuyen.equals("Bán hàng")) {
+        	flag = taikhoandao.themTaiKhoanBanHang(tk);
+        }
+        	flag = taikhoandao.themTaiKhoan(tk);
         return flag;
     }
 	
@@ -220,7 +223,33 @@ public class taiKhoan_BUS {
     public int getIdAccountWithQuyenAndIdBUS(int quyen, int idAccount) {
     	return taikhoandao.getIdAccountWithQuyenAndId(quyen, idAccount);
     }
+    public int getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(int quyen, int idAccount) {
+    	return taikhoandao.getIdAccountWithQuyenAndId_InTaiKhoanBanHang(quyen, idAccount);
+    }
     public int getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(int idNhanVien) {
     	return taikhoandao.getIdAccountByIdNhanVienOrIdNhanVienBanHang(idNhanVien);
     }
+    public int getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(int idNhanVien) {
+    	return taikhoandao.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHang(idNhanVien);
+    }
+    
+    public taiKhoan_DTO getTaiKhoanBanHangByIdBUS(int id) {
+    	return taikhoandao.getTaiKhoanBanHangById(id);
+    }
+    public taiKhoan_DTO getTaiKhoanByIdBUS(int id) {
+    	return taikhoandao.getTaiKhoanById(id);
+    }
+    public boolean deleteTaiKhoanByIdBUS(int id) {
+		return taikhoandao.deleteTaiKhoanById(id);
+	}
+    public boolean deleteTaiKhoanBanHangByIdBUS(int id) {
+		return taikhoandao.deleteTaiKhoanBanHangById(id);
+	}
+    public boolean themTaiKhoanCoIDBUS(taiKhoan_DTO tk) {
+    	return taikhoandao.themTaiKhoanCoID(tk);
+    }
+    public boolean themTaiKhoanBanHangCoIDBUS(taiKhoan_DTO tk) {
+    	return taikhoandao.themTaiKhoanBanHangCoID(tk);
+    }
+    
 }
