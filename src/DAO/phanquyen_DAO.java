@@ -194,4 +194,46 @@ public class phanquyen_DAO {
 		con.close();
 		return false;
 	}
+	
+	public int getIdByTenQuyen(String tenQuyen) {
+	    con.connect();
+	    int id = -1; // Khởi tạo giá trị mặc định cho id
+	    try {
+	        String sql = "SELECT id FROM phanquyen WHERE tenQuyen = ? AND isDelete = 0";
+	        PreparedStatement pstmt = con.getCon().prepareStatement(sql);
+	        pstmt.setString(1, tenQuyen); // Gán giá trị cho tham số truyền vào
+	        ResultSet rs = pstmt.executeQuery(); // Thực hiện câu truy vấn
+	        
+	        if (rs.next()) {
+	            id = rs.getInt("id"); // Lấy id từ kết quả truy vấn
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        con.close(); // Đảm bảo đóng kết nối
+	    }
+	    return id;
+	}
+	
+	public String getTenQuyenById(int id) {
+	    String tenQuyen = null; // Khởi tạo giá trị mặc định cho tenQuyen
+	    con.connect(); // Kết nối tới cơ sở dữ liệu
+	    try {
+	        String sql = "SELECT tenQuyen FROM phanquyen WHERE id = ? AND isDelete = 0";
+	        PreparedStatement pstmt = con.getCon().prepareStatement(sql);
+	        pstmt.setInt(1, id); // Gán giá trị id cho tham số truyền vào
+	        ResultSet rs = pstmt.executeQuery(); // Thực hiện câu truy vấn
+	        
+	        if (rs.next()) {
+	            tenQuyen = rs.getString("tenQuyen"); // Lấy tên quyền từ kết quả truy vấn
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Xử lý lỗi SQL
+	    } finally {
+	        con.close(); // Đảm bảo đóng kết nối sau khi thực hiện xong
+	    }
+	    return tenQuyen; // Trả về tên quyền
+	}
+	
+	
 }

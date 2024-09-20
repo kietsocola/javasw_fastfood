@@ -56,5 +56,12 @@ public class phanquyen_BUS {
 	public	ArrayList<Boolean> loaiPhanQuyen(int idPhanQuyen) throws SQLException{
 		return temp.getLoaiPhanQuyen(idPhanQuyen);
 	}
+	public int getIdByTenQuyenBUS(String tenQuyen) {
+		return temp.getIdByTenQuyen(tenQuyen);
+	}
+	public String getTenQuyenByIdBUS(int id) {
+		return temp.getTenQuyenById(id);
+	}
+	
 	
 }

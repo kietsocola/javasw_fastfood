@@ -245,8 +245,8 @@ public class taiKhoan_BUS {
     public boolean deleteTaiKhoanBanHangByIdBUS(int id) {
 		return taikhoandao.deleteTaiKhoanBanHangById(id);
 	}
-    public boolean themTaiKhoanCoIDBUS(taiKhoan_DTO tk) {
-    	return taikhoandao.themTaiKhoanCoID(tk);
+    public boolean themTaiKhoanCoIDBUS(taiKhoan_DTO tk, int quyen) {
+    	return taikhoandao.themTaiKhoanCoID(tk, quyen);
     }
     public boolean themTaiKhoanBanHangCoIDBUS(taiKhoan_DTO tk) {
     	return taikhoandao.themTaiKhoanBanHangCoID(tk);

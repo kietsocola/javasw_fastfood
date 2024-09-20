@@ -540,23 +540,57 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 		nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
 		
+		int idMaNV = Integer.parseInt(txtMaNV.getText());
+		int idAccountByIdMaNV = taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV);
+		if(idAccountByIdMaNV == -1) {
+			idAccountByIdMaNV = taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV);
+		}
+		System.out.println("kokokok: " + idAccountByIdMaNV);
+		int idQuyenTruocKhiSua = getIdQuyenByIdAccount(dstk, idAccountByIdMaNV);
+		System.out.println("idQuyenTruocKhiSua: " + idQuyenTruocKhiSua);
+		String tenQuyenTruocKhiSua = pqbus.getTenQuyenByIdBUS(idQuyenTruocKhiSua);
 		
-
 		taiKhoanBUS.suaTaiKhoan(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(), txtMatKhau.getText(),
 				nameChucVu);
+		// van de loi se xay ra khi ta sửa k liên quan đến phần phân quyền của tài khoản có quyền nhập hàng ban đàu
+		// ta cần check có sự khác nhau giữa quyền trước đó của tài khoản đó và quyền cần sửa
+		// có sự khác nhau thì ta tiến hành swap
 
 		
-		int idMaNV = Integer.parseInt(txtMaNV.getText());
-		swapDataNhanVienWithNhanVienBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
-		swapDataNhanVienBanHangWithNhanVien(taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
-		swapDataTaiKhoanWithTaiKhoanBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
-		swapDataTaiKhoanBanHangWithTaiKhoan(taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV));
+		
+		swapDataNhanVienWithNhanVienBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV)); // nhan vien: nhạp hang -> ban hang
+		if(!tenQuyenTruocKhiSua.equals(nameChucVu)) {
+			swapDataNhanVienBanHangWithNhanVien(taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV), nameChucVu); //nhan vien: ban hang -> nhap hang
+		}
+
+		swapDataTaiKhoanWithTaiKhoanBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV)); // account: nhap hang -> ban hang
+		if(!tenQuyenTruocKhiSua.equals(nameChucVu)) {
+			swapDataTaiKhoanBanHangWithTaiKhoan(taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV), nameChucVu); //account: ban hang -> nhap hang
+		}
+
 		taiKhoanBUS.docDanhSach();
 		nhanVienBUS.docDanhSach();
 		btnReset.doClick();
 	}
+	private int getIdQuyenByIdAccount(ArrayList<taiKhoan_DTO> dstk, int idAccount) {
+		int idQuyen = -1;
+			for(taiKhoan_DTO tk : dstk) {
+				if(tk.getMa() == idAccount) {
+					idQuyen = tk.getQuyen();
+				}
+			}
+		return idQuyen;
+	}
 	
-	private void swapDataNhanVienWithNhanVienBanHang(int idAccount) { // chuẩn
+	// Cac buoc fix loi moi nhat: 
+	// cach logic thuc thi ban dau: 
+	//	B1: khi chuyen tu ban hang -> nhap hang (3 => 5)
+	// 	B2: ...
+	// ++> Huong xu li moi
+	// 	B1: khi chuyen tu ban hang -> nhap hang => luu, xoa, chuyen data sang bang tai khoan, nhan vien thong qua idTaiKhoan
+	//  B1--: khong can phai doi quyenTrongTKBanHang
+	
+	private void swapDataNhanVienWithNhanVienBanHang(int idAccount) {
 		// idQuyen = 5 => Nhập hàng
 		// idQuyen = 3 => Bán hàng
 		// lay nhung thong tin nhan vien trong tai khoan co idQuyền là bán hàng
@@ -569,11 +603,13 @@ public class QuanLyNhanVienGUI extends JPanel {
 			System.out.println("Xong cac buoc swapDataNhanVienWithNhanVienBanHang");
 		}
 	}
-	
-	private void swapDataNhanVienBanHangWithNhanVien(int idAccount) {
-		System.out.println("id account voi quyen 5 la (swap NV): " + taiKhoanBUS.getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(5, idAccount));
-		if(taiKhoanBUS.getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(5, idAccount) != -1) {
-			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienBanHangWithIdAccountBUS(idAccount);
+	// ? lam cach nao de biet duoc khi nao can swap data?
+	private void swapDataNhanVienBanHangWithNhanVien(int idAccount, String tenQuyen) { // ban hang sang nhap bi loi
+		System.out.println("chay vo ham swapDataNhanVienBanHangWithNhanVien");
+		String tenQuyenCuaIdAccount = "";
+		if(!tenQuyen.equals("Bán hàng")) {
+			System.out.println("Chạy vô hàm swapDataNhanVienBanHangWithNhanVien trong dk nếu");
+			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienBanHangWithIdAccountBUS(idAccount); // khong lay duoc cai nay.
 			nhanVienBUS.deleteNhanVienBanHangByIdAccountBUS(idAccount);
 			nhanVienBUS.themNVCoIdBUS(nhanVienTemp);
 			System.out.println("Xong cac buoc swapDataNhanVienBanHangWithNhanVien");
@@ -586,6 +622,8 @@ public class QuanLyNhanVienGUI extends JPanel {
 		// idQuyen = 3 => Bán hàng
 		// B1: tim tai khoan voi quyen = 3
 		// B2: lưu, xoá, chuyển qua bảng tai khoang bán hàng
+		System.out.println("Chay toi ham swapDataTaiKhoanWithTaiKhoanBanHang");
+		System.out.println("idAccount truyen tham so vo la: " + idAccount);
 		System.out.println("id account voi quyen 3 la (swap TK): " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
 		if(taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount) != -1) {
 			taiKhoan_DTO tkBanHang = taiKhoanBUS.getTaiKhoanByIdBUS(idAccount);
@@ -595,13 +633,13 @@ public class QuanLyNhanVienGUI extends JPanel {
 		}
 	}
 	
-	private void swapDataTaiKhoanBanHangWithTaiKhoan(int idAccount) {
-		System.out.println("id account voi quyen 5 la (swap TK): " + taiKhoanBUS.getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(5, idAccount));
-		if(taiKhoanBUS.getIdAccountWithQuyenAndId_InTaiKhoanBanHangBUS(5, idAccount) != -1) {
+	private void swapDataTaiKhoanBanHangWithTaiKhoan(int idAccount, String tenQuyen) { //  // ban hang sang nhap
+		if(!tenQuyen.equals("Bán hàng")) {
+			int quyen = pqbus.getIdByTenQuyenBUS(tenQuyen);
 			taiKhoan_DTO tk = taiKhoanBUS.getTaiKhoanBanHangByIdBUS(idAccount);
 			taiKhoanBUS.deleteTaiKhoanBanHangByIdBUS(idAccount);
-			taiKhoanBUS.themTaiKhoanCoIDBUS(tk);
-			System.out.println("Xong cac buoc swapDataNhanVienBanHangWithNhanVien");
+			taiKhoanBUS.themTaiKhoanCoIDBUS(tk, quyen);
+			System.out.println("Xong cac buoc swapDataTKBanHangWithTK");
 		}
 	}
 
