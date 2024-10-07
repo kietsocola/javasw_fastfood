@@ -503,12 +503,31 @@ public class QuanLyNhanVienGUI extends JPanel {
 		ArrayList<taiKhoan_DTO> dstk = taiKhoanBUS.getDanhSachTaiKhoan();
 
 		String ngaySinh = "";
-		// Lấy ngày sinh từ dateChooser
-		if (dateChooser.getDate() != null) {
-			// Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			ngaySinh = dateFormat.format(dateChooser.getDate());
-		}
+	    LocalDate birthDate = null; // To hold the converted birth date.
+	    
+	    if (dateChooser.getDate() != null) {
+	        // Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        ngaySinh = dateFormat.format(dateChooser.getDate());
+	        
+	        // Convert Date to LocalDate for age calculation
+	        birthDate = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	        
+	        // Get the current date
+	        LocalDate currentDate = LocalDate.now();
+	        
+	        // Calculate the exact age by comparing birthDate and currentDate
+	        Period age = Period.between(birthDate, currentDate);
+	        
+	        // Check if the person is less than 18 or older than 55
+	        if (age.getYears() < 18 || (age.getYears() == 18 && (age.getMonths() > 0 || age.getDays() > 0))) {
+	            JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi để làm việc!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        } else if (age.getYears() > 55) {
+	            JOptionPane.showMessageDialog(null, "Quá tuổi để làm việc!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	    }
 
 		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 
