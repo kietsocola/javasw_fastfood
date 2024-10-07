@@ -49,6 +49,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.toedter.calendar.JDateChooser;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 
 import BUS.NhanVien_BUS;
 import BUS.phanquyen_BUS;
@@ -643,43 +647,65 @@ public class QuanLyNhanVienGUI extends JPanel {
 		}
 	}
 
+
+
 	private void xuLyThemNhanVien() {
 		String ngaySinh = "";
-		if (dateChooser.getDate() != null) {
-			// Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			ngaySinh = dateFormat.format(dateChooser.getDate());
-		}
-		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
+	    LocalDate birthDate = null; // To hold the converted birth date.
+	    
+	    if (dateChooser.getDate() != null) {
+	        // Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        ngaySinh = dateFormat.format(dateChooser.getDate());
+	        
+	        // Convert Date to LocalDate for age calculation
+	        birthDate = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	        
+	        // Get the current date
+	        LocalDate currentDate = LocalDate.now();
+	        
+	        // Calculate the exact age by comparing birthDate and currentDate
+	        Period age = Period.between(birthDate, currentDate);
+	        
+	        // Check if the person is less than 18 or older than 55
+	        if (age.getYears() < 18 || (age.getYears() == 18 && (age.getMonths() > 0 || age.getDays() > 0))) {
+	            JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi để làm việc!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        } else if (age.getYears() > 55) {
+	            JOptionPane.showMessageDialog(null, "Quá tuổi để làm việc!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	    }
 
-		String nameQuyen = cmbChucVu.getSelectedItem().toString();
 
-		if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty()
-				&& txt_soDT.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+	    int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
 
-		if (!taiKhoanBUS.kiemTraTaiKhoan(txtTenDN.getText(), txtMatKhau.getText())) {
-			return;
-		}
-		if (!nhanVienBUS.kiemTraNhanVien(txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
-			return;
-		}
+	    String nameQuyen = cmbChucVu.getSelectedItem().toString();
 
-		if (taiKhoanBUS.themTaiKhoan1(txtTenDN.getText(), txtMatKhau.getText(), nameQuyen)) {
-			taiKhoanBUS.docDanhSach();
-			int idTaiKhoan = taiKhoanBUS.idTaiKhoanMax();
+	    if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty()
+	            && txt_soDT.getText().isEmpty()) {
+	        JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
 
-			if (nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), idTaiKhoan, 1,
-					nameQuyen)) {
-				nhanVienBUS.docDanhSach();
+	    if (!taiKhoanBUS.kiemTraTaiKhoan(txtTenDN.getText(), txtMatKhau.getText())) {
+	        return;
+	    }
+	    if (!nhanVienBUS.kiemTraNhanVien(txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
+	        return;
+	    }
 
-				btnReset.doClick();
-			}
-		}
+	    if (taiKhoanBUS.themTaiKhoan1(txtTenDN.getText(), txtMatKhau.getText(), nameQuyen)) {
+	        taiKhoanBUS.docDanhSach();
+	        int idTaiKhoan = taiKhoanBUS.idTaiKhoanMax();
 
+	        if (nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), idTaiKhoan, 1, nameQuyen)) {
+	            nhanVienBUS.docDanhSach();
+	            btnReset.doClick();
+	        }
+	    }
 	}
+
 
 	private void xuLyTimKiemNhanVien() {
 		tableModel.setRowCount(0);
