@@ -189,18 +189,49 @@ public class NhanVien_DAO {
 	}
 
 	public boolean deleteNV(int maNV) {
-		String sql = "UPDATE nhanvien SET isDelete=1 WHERE id=?";
-		try (PreparedStatement pre = conDB.conn.prepareStatement(sql)) {
-			pre.setInt(1, maNV);
+	    String sqlnv = "UPDATE nhanvien SET isDelete=1 WHERE id=?";
+	    String sqlnvbh = "UPDATE nhanvienbanhang SET isDelete=1 WHERE id=?";
+	    boolean result = false;
+	    
+	    try {
+	        conDB.conn.setAutoCommit(false); // Start transaction
 
-			int rowsAffected = pre.executeUpdate();
-			return rowsAffected > 0;
-		} catch (SQLException e) {
+	        // Delete from nhanvien table
+	        try (PreparedStatement prenv = conDB.conn.prepareStatement(sqlnv)) {
+	            prenv.setInt(1, maNV);
+	            int rowsAffectedNV = prenv.executeUpdate();
+	            
+	            // Delete from nhanvienbanhang table
+	            try (PreparedStatement prenvbh = conDB.conn.prepareStatement(sqlnvbh)) {
+	                prenvbh.setInt(1, maNV);
+	                int rowsAffectedNVBH = prenvbh.executeUpdate();
 
-			e.printStackTrace();
-			return false;
-		}
+	                // Commit if any delete was successful
+	                if (rowsAffectedNV > 0 || rowsAffectedNVBH > 0) {
+	                    conDB.conn.commit();
+	                    result = true;
+	                }
+	            }
+	        }
+	    } catch (SQLException e) {
+	        try {
+	            conDB.conn.rollback(); // Rollback on error
+	        } catch (SQLException rollbackEx) {
+	            rollbackEx.printStackTrace();
+	        }
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            conDB.conn.setAutoCommit(true); // Restore auto-commit
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return result;
 	}
+
+	
+	
 
 //	public int getIdTaiKhoan(int id) {
 //		try {
