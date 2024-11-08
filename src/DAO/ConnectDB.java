@@ -9,7 +9,7 @@ public class ConnectDB {
 
 	static final String url = "jdbc:mysql://localhost:3306/javafastfood";
 	static final String nameUser = "root";
-	static final String pass = "new_password";
+	static final String pass = "";
 
 	public boolean openConnectDB() {
 		try {

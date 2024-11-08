@@ -3,7 +3,6 @@ package DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import DTO.NguyenLieu;
@@ -27,6 +26,7 @@ public class NguyenLieuDAO {
 					nl.setsoLuongNL(rs.getInt("SoLuong"));
 					nl.setMaDonVi(rs.getInt("maDonVi"));
 					nl.setTrangThai(rs.getInt("TrangThai"));
+					nl.setDonGiaNL(rs.getInt("dongianl"));
 					DSNguyenLieu.add(nl);
 
 				}
@@ -56,7 +56,7 @@ public class NguyenLieuDAO {
 					nl.setsoLuongNL(rs.getInt("SoLuong"));
 					nl.setMaDonVi(rs.getInt("maDonVi"));
 					nl.setTrangThai(rs.getInt("TrangThai"));
-
+					nl.setDonGiaNL(rs.getInt("dongianl"));
 				}
 			} catch (SQLException e) {
 				// TODO: handle exception

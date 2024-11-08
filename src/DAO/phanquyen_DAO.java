@@ -1,27 +1,26 @@
 package DAO;
 
-import java.sql.Connection;
-import DTO.phanquyen_DTO;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import DTO.phanquyen_DTO;
+
 public class phanquyen_DAO {
 	connectDatabase con = new connectDatabase();
+
 	public ArrayList<phanquyen_DTO> getData() throws SQLException {
 		con.connect();
 		ArrayList<phanquyen_DTO> ds = new ArrayList<>();
-		
-		String sql = "select * from phanquyen where isDelete = 0"
-				+ 	" UNION ALL"
+
+		String sql = "select * from phanquyen where isDelete = 0" + " UNION ALL"
 				+ " SELECT * FROM phanquyenbanhang where isDelete = 0";
-		Statement stmt =   con.getCon().createStatement();
+		Statement stmt = con.getCon().createStatement();
 		ResultSet result = stmt.executeQuery(sql);
 		int stt = 1;
-		while(result.next()) {
+		while (result.next()) {
 			phanquyen_DTO item = new phanquyen_DTO();
 			item.setStt(stt++);
 			item.setIdPhanQuyen(result.getInt(1));
@@ -31,27 +30,26 @@ public class phanquyen_DAO {
 			item.setNhanvien(result.getBoolean(5));
 			item.setKhachhang(result.getBoolean(6));
 			item.setThongke(result.getBoolean(7));
-			if(item.getIdPhanQuyen() == 1)
-				continue ;
+			if (item.getIdPhanQuyen() == 1)
+				continue;
 			ds.add(item);
 		}
 		con.close();
 		return ds;
 	}
-	
-	public ArrayList<phanquyen_DTO> getData1()  {
-		con.connect();
+
+	public ArrayList<phanquyen_DTO> getData1() {
 		ArrayList<phanquyen_DTO> ds = new ArrayList<>();
-		
-		String sql = "select * from phanquyen where isDelete = 0"
-				+ 	" UNION ALL"
+
+		String sql = "select * from phanquyen where isDelete = 0" + " UNION ALL"
 				+ " SELECT * FROM phanquyenbanhang where isDelete = 0";
 		Statement stmt;
 		try {
+			con.connect();
 			stmt = con.getCon().createStatement();
 			ResultSet result = stmt.executeQuery(sql);
 			int stt = 1;
-			while(result.next()) {
+			while (result.next()) {
 				phanquyen_DTO item = new phanquyen_DTO();
 				item.setStt(stt++);
 				item.setIdPhanQuyen(result.getInt(1));
@@ -68,19 +66,19 @@ public class phanquyen_DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return ds;
 	}
-	
-	public ArrayList<Boolean> getLoaiPhanQuyen(int idPhanQuyen) throws SQLException{
+
+	public ArrayList<Boolean> getLoaiPhanQuyen(int idPhanQuyen) throws SQLException {
 		ArrayList<Boolean> list = new ArrayList<>();
 		con.connect();
 		String sql = "select * from phanquyen where id =  ? and isDelete = 0";
 		PreparedStatement ps = con.getCon().prepareStatement(sql);
-		ps.setInt(1,idPhanQuyen);
+		ps.setInt(1, idPhanQuyen);
 		ResultSet rs = ps.executeQuery();
-		
-		if(rs.next()) {
+
+		if (rs.next()) {
 			list.add(rs.getBoolean(3));
 			list.add(rs.getBoolean(4));
 			list.add(rs.getBoolean(5));
@@ -90,150 +88,147 @@ public class phanquyen_DAO {
 		con.close();
 		return list;
 	}
-	
+
 	public int idPhanQuyenMax() {
-		
+
 		con.connect();
 		String sql = "select MAX(id) as id from phanquyen";
 		try {
-			Statement stmt = con.getCon().createStatement()	;
+			Statement stmt = con.getCon().createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			return rs.getInt("id");
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return-1;
+		return -1;
 	}
-	
-	
-	
+
 	public boolean hasNamePhanQuyen(phanquyen_DTO item) {
-		
+
 		con.connect();
 		String sql = "select * from phanquyen where TenQuyen = ? and isDelete = 0";
 		try {
 			PreparedStatement ps = con.getCon().prepareStatement(sql);
-			ps.setString(1,item.getTenPhanQuyen());
+			ps.setString(1, item.getTenPhanQuyen());
 			ResultSet rs = ps.executeQuery();
 			boolean check = false;
-			while(rs.next())
-			{
-				if(rs.getInt(1) != item.getIdPhanQuyen())
+			while (rs.next()) {
+				if (rs.getInt(1) != item.getIdPhanQuyen())
 					check = true;
 			}
-			if(check) return true;
+			if (check)
+				return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 		}
 		con.close();
 		return false;
-	
+
 	}
-	
+
 	public boolean insertPhanQuyen(phanquyen_DTO phanquyen) {
 		con.connect();
-		String sql ;
+		String sql;
 		try {
-				sql = "INSERT INTO phanquyen (`id`, `TenQuyen`, `NhapHang`, `SanPham`, `NhanVien`, `KhachHang`, `ThongKe`) VALUES(?,?,?,?,?,?,?)";
-				PreparedStatement pstmt = con.getCon().prepareStatement(sql);
-				pstmt.setInt(1,phanquyen.getIdPhanQuyen());
-				pstmt.setString(2, phanquyen.getTenPhanQuyen());
-				pstmt.setBoolean(3, phanquyen.getNhaphang());
-				pstmt.setBoolean(4, phanquyen.getSanpham());
-				pstmt.setBoolean(5, phanquyen.getNhanvien());
-				pstmt.setBoolean(6, phanquyen.getKhachhang());
-				pstmt.setBoolean(7, phanquyen.getThongke());
-				int index = pstmt.executeUpdate();
-				return true;
+			sql = "INSERT INTO phanquyen (`id`, `TenQuyen`, `NhapHang`, `SanPham`, `NhanVien`, `KhachHang`, `ThongKe`) VALUES(?,?,?,?,?,?,?)";
+			PreparedStatement pstmt = con.getCon().prepareStatement(sql);
+			pstmt.setInt(1, phanquyen.getIdPhanQuyen());
+			pstmt.setString(2, phanquyen.getTenPhanQuyen());
+			pstmt.setBoolean(3, phanquyen.getNhaphang());
+			pstmt.setBoolean(4, phanquyen.getSanpham());
+			pstmt.setBoolean(5, phanquyen.getNhanvien());
+			pstmt.setBoolean(6, phanquyen.getKhachhang());
+			pstmt.setBoolean(7, phanquyen.getThongke());
+			int index = pstmt.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		con.close();
 		return false;
-		
+
 	}
-	
+
 	public boolean updatePhanQuyen(phanquyen_DTO item) {
 		con.connect();
 		try {
-				int index;
-				String sql = "update phanquyen set TenQuyen=? , NhapHang=? , SanPham=? , NhanVien=? , KhachHang=? , ThongKe=? where id=?";
-				PreparedStatement pstmt = con.getCon().prepareStatement(sql);
-				pstmt.setInt(7,item.getIdPhanQuyen());
-				pstmt.setString(1, item.getTenPhanQuyen());
-				pstmt.setBoolean(2, item.getNhaphang());
-				pstmt.setBoolean(3, item.getSanpham());
-				pstmt.setBoolean(4, item.getNhanvien());
-				pstmt.setBoolean(5, item.getKhachhang());
-				pstmt.setBoolean(6, item.getThongke());
-				index = pstmt.executeUpdate();
-				return true;
+			int index;
+			String sql = "update phanquyen set TenQuyen=? , NhapHang=? , SanPham=? , NhanVien=? , KhachHang=? , ThongKe=? where id=?";
+			PreparedStatement pstmt = con.getCon().prepareStatement(sql);
+			pstmt.setInt(7, item.getIdPhanQuyen());
+			pstmt.setString(1, item.getTenPhanQuyen());
+			pstmt.setBoolean(2, item.getNhaphang());
+			pstmt.setBoolean(3, item.getSanpham());
+			pstmt.setBoolean(4, item.getNhanvien());
+			pstmt.setBoolean(5, item.getKhachhang());
+			pstmt.setBoolean(6, item.getThongke());
+			index = pstmt.executeUpdate();
+			return true;
 		} catch (SQLException e) {
-			
+
 		}
 		con.close();
 		return false;
 	}
-	
+
 	public boolean deletePhanQuyen(phanquyen_DTO item) {
 		con.connect();
 		try {
 			int index;
 			String sql = "update phanquyen set isDelete = 1 where id = ?";
 			PreparedStatement pstmt = con.getCon().prepareStatement(sql);
-			pstmt.setInt(1,item.getIdPhanQuyen());
+			pstmt.setInt(1, item.getIdPhanQuyen());
 			index = pstmt.executeUpdate();
 			return true;
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		con.close();
 		return false;
 	}
-	
+
 	public int getIdByTenQuyen(String tenQuyen) {
-	    con.connect();
-	    int id = -1; // Khởi tạo giá trị mặc định cho id
-	    try {
-	        String sql = "SELECT id FROM phanquyen WHERE tenQuyen = ? AND isDelete = 0";
-	        PreparedStatement pstmt = con.getCon().prepareStatement(sql);
-	        pstmt.setString(1, tenQuyen); // Gán giá trị cho tham số truyền vào
-	        ResultSet rs = pstmt.executeQuery(); // Thực hiện câu truy vấn
-	        
-	        if (rs.next()) {
-	            id = rs.getInt("id"); // Lấy id từ kết quả truy vấn
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        con.close(); // Đảm bảo đóng kết nối
-	    }
-	    return id;
+		con.connect();
+		int id = -1; // Khởi tạo giá trị mặc định cho id
+		try {
+			String sql = "SELECT id FROM phanquyen WHERE tenQuyen = ? AND isDelete = 0";
+			PreparedStatement pstmt = con.getCon().prepareStatement(sql);
+			pstmt.setString(1, tenQuyen); // Gán giá trị cho tham số truyền vào
+			ResultSet rs = pstmt.executeQuery(); // Thực hiện câu truy vấn
+
+			if (rs.next()) {
+				id = rs.getInt("id"); // Lấy id từ kết quả truy vấn
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			con.close(); // Đảm bảo đóng kết nối
+		}
+		return id;
 	}
-	
+
 	public String getTenQuyenById(int id) {
-	    String tenQuyen = null; // Khởi tạo giá trị mặc định cho tenQuyen
-	    con.connect(); // Kết nối tới cơ sở dữ liệu
-	    try {
-	        String sql = "SELECT tenQuyen FROM phanquyen WHERE id = ? AND isDelete = 0";
-	        PreparedStatement pstmt = con.getCon().prepareStatement(sql);
-	        pstmt.setInt(1, id); // Gán giá trị id cho tham số truyền vào
-	        ResultSet rs = pstmt.executeQuery(); // Thực hiện câu truy vấn
-	        
-	        if (rs.next()) {
-	            tenQuyen = rs.getString("tenQuyen"); // Lấy tên quyền từ kết quả truy vấn
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace(); // Xử lý lỗi SQL
-	    } finally {
-	        con.close(); // Đảm bảo đóng kết nối sau khi thực hiện xong
-	    }
-	    return tenQuyen; // Trả về tên quyền
+		String tenQuyen = null; // Khởi tạo giá trị mặc định cho tenQuyen
+		con.connect(); // Kết nối tới cơ sở dữ liệu
+		try {
+			String sql = "SELECT tenQuyen FROM phanquyen WHERE id = ? AND isDelete = 0";
+			PreparedStatement pstmt = con.getCon().prepareStatement(sql);
+			pstmt.setInt(1, id); // Gán giá trị id cho tham số truyền vào
+			ResultSet rs = pstmt.executeQuery(); // Thực hiện câu truy vấn
+
+			if (rs.next()) {
+				tenQuyen = rs.getString("tenQuyen"); // Lấy tên quyền từ kết quả truy vấn
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(); // Xử lý lỗi SQL
+		} finally {
+			con.close(); // Đảm bảo đóng kết nối sau khi thực hiện xong
+		}
+		return tenQuyen; // Trả về tên quyền
 	}
-	
-	
+
 }
