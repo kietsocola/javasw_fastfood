@@ -17,6 +17,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -49,6 +52,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.toedter.calendar.JDateChooser;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 
 import BUS.NhanVien_BUS;
 import BUS.phanquyen_BUS;
@@ -500,10 +507,30 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 		String ngaySinh = "";
 		// Lấy ngày sinh từ dateChooser
+		LocalDate birthDate = null; // To hold the converted birth date.
+
 		if (dateChooser.getDate() != null) {
 			// Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			ngaySinh = dateFormat.format(dateChooser.getDate());
+
+			// Convert Date to LocalDate for age calculation
+			birthDate = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+			// Get the current date
+			LocalDate currentDate = LocalDate.now();
+
+			// Calculate the exact age by comparing birthDate and currentDate
+			Period age = Period.between(birthDate, currentDate);
+
+			// Check if the person is less than 18 or older than 55
+			if (age.getYears() < 18 || (age.getYears() == 18 && (age.getMonths() > 0 || age.getDays() > 0))) {
+				JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi để làm việc!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+				return;
+			} else if (age.getYears() > 55) {
+				JOptionPane.showMessageDialog(null, "Quá tuổi để làm việc!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 
 		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
@@ -521,7 +548,7 @@ public class QuanLyNhanVienGUI extends JPanel {
 		if (!taiKhoanBUS.kiemTraTaiKhoan2(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(),
 				txtMatKhau.getText())) {
 			System.out.println("DK 2: ham xuLySuaNhanVien");
-			
+
 			return;
 		}
 
@@ -530,93 +557,116 @@ public class QuanLyNhanVienGUI extends JPanel {
 			return;
 		}
 
-//		String regex = "^[a-zA-Z0-9\\\\+]*$";
-//		if (!txtTenDN.getText().toString().trim().matches(regex)) {
-//			JOptionPane.showMessageDialog(null, "Tên đăng nhập chỉ chứa chữ cái và sô !", "Lỗi",
-//					JOptionPane.ERROR_MESSAGE);
-//			return;
-//		}
-		
+		// String regex = "^[a-zA-Z0-9\\\\+]*$";
+		// if (!txtTenDN.getText().toString().trim().matches(regex)) {
+		// JOptionPane.showMessageDialog(null, "Tên đăng nhập chỉ chứa chữ cái và sô !",
+		// "Lỗi",
+		// JOptionPane.ERROR_MESSAGE);
+		// return;
+		// }
 
 		nhanVienBUS.suaNhanVien(txtMaNV.getText(), txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText());
-		
+
 		int idMaNV = Integer.parseInt(txtMaNV.getText());
 		int idAccountByIdMaNV = taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV);
-		if(idAccountByIdMaNV == -1) {
+		if (idAccountByIdMaNV == -1) {
 			idAccountByIdMaNV = taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV);
 		}
 		System.out.println("kokokok: " + idAccountByIdMaNV);
 		int idQuyenTruocKhiSua = getIdQuyenByIdAccount(dstk, idAccountByIdMaNV);
 		System.out.println("idQuyenTruocKhiSua: " + idQuyenTruocKhiSua);
 		String tenQuyenTruocKhiSua = pqbus.getTenQuyenByIdBUS(idQuyenTruocKhiSua);
-		
+
 		taiKhoanBUS.suaTaiKhoan(nhanVienBUS.getIdTaiKhoan(txtMaNV.getText()), txtTenDN.getText(), txtMatKhau.getText(),
 				nameChucVu);
-		// van de loi se xay ra khi ta sửa k liên quan đến phần phân quyền của tài khoản có quyền nhập hàng ban đàu
-		// ta cần check có sự khác nhau giữa quyền trước đó của tài khoản đó và quyền cần sửa
+		// van de loi se xay ra khi ta sửa k liên quan đến phần phân quyền của tài khoản
+		// có quyền nhập hàng ban đàu
+		// ta cần check có sự khác nhau giữa quyền trước đó của tài khoản đó và quyền
+		// cần sửa
 		// có sự khác nhau thì ta tiến hành swap
 
-		
-		
-		swapDataNhanVienWithNhanVienBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV)); // nhan vien: nhạp hang -> ban hang
-		if(!tenQuyenTruocKhiSua.equals(nameChucVu)) {
-			swapDataNhanVienBanHangWithNhanVien(taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV), nameChucVu); //nhan vien: ban hang -> nhap hang
+		swapDataNhanVienWithNhanVienBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV)); // nhan
+																													// vien:
+																													// nhạp
+																													// hang
+																													// ->
+																													// ban
+																													// hang
+		if (!tenQuyenTruocKhiSua.equals(nameChucVu)) {
+			swapDataNhanVienBanHangWithNhanVien(
+					taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV), nameChucVu); // nhan
+																											// vien: ban
+																											// hang ->
+																											// nhap hang
 		}
 
-		swapDataTaiKhoanWithTaiKhoanBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV)); // account: nhap hang -> ban hang
-		if(!tenQuyenTruocKhiSua.equals(nameChucVu)) {
-			swapDataTaiKhoanBanHangWithTaiKhoan(taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV), nameChucVu); //account: ban hang -> nhap hang
+		swapDataTaiKhoanWithTaiKhoanBanHang(taiKhoanBUS.getIdAccountByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV)); // account:
+																													// nhap
+																													// hang
+																													// ->
+																													// ban
+																													// hang
+		if (!tenQuyenTruocKhiSua.equals(nameChucVu)) {
+			swapDataTaiKhoanBanHangWithTaiKhoan(
+					taiKhoanBUS.getIdAccountBanHangByIdNhanVienOrIdNhanVienBanHangBUS(idMaNV), nameChucVu); // account:
+																											// ban hang
+																											// -> nhap
+																											// hang
 		}
 
 		taiKhoanBUS.docDanhSach();
 		nhanVienBUS.docDanhSach();
 		btnReset.doClick();
 	}
+
 	private int getIdQuyenByIdAccount(ArrayList<taiKhoan_DTO> dstk, int idAccount) {
 		int idQuyen = -1;
-			for(taiKhoan_DTO tk : dstk) {
-				if(tk.getMa() == idAccount) {
-					idQuyen = tk.getQuyen();
-				}
+		for (taiKhoan_DTO tk : dstk) {
+			if (tk.getMa() == idAccount) {
+				idQuyen = tk.getQuyen();
 			}
+		}
 		return idQuyen;
 	}
-	
-	// Cac buoc fix loi moi nhat: 
-	// cach logic thuc thi ban dau: 
-	//	B1: khi chuyen tu ban hang -> nhap hang (3 => 5)
-	// 	B2: ...
+
+	// Cac buoc fix loi moi nhat:
+	// cach logic thuc thi ban dau:
+	// B1: khi chuyen tu ban hang -> nhap hang (3 => 5)
+	// B2: ...
 	// ++> Huong xu li moi
-	// 	B1: khi chuyen tu ban hang -> nhap hang => luu, xoa, chuyen data sang bang tai khoan, nhan vien thong qua idTaiKhoan
-	//  B1--: khong can phai doi quyenTrongTKBanHang
-	
+	// B1: khi chuyen tu ban hang -> nhap hang => luu, xoa, chuyen data sang bang
+	// tai khoan, nhan vien thong qua idTaiKhoan
+	// B1--: khong can phai doi quyenTrongTKBanHang
+
 	private void swapDataNhanVienWithNhanVienBanHang(int idAccount) {
 		// idQuyen = 5 => Nhập hàng
 		// idQuyen = 3 => Bán hàng
 		// lay nhung thong tin nhan vien trong tai khoan co idQuyền là bán hàng
 		// lưu, xoá, chuyển qua bảng nhân viên bán hàng (3 buoc)
-		System.out.println("id account voi quyen 3 la (swap NV): " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
-		if(taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount) != -1) {
+		System.out.println(
+				"id account voi quyen 3 la (swap NV): " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
+		if (taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount) != -1) {
 			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienWithIdAccountBUS(idAccount);
 			nhanVienBUS.deleteNhanVienByIdAccountBUS(idAccount);
 			nhanVienBUS.themNVBanHangCoIdBUS(nhanVienTemp);
 			System.out.println("Xong cac buoc swapDataNhanVienWithNhanVienBanHang");
 		}
 	}
+
 	// ? lam cach nao de biet duoc khi nao can swap data?
 	private void swapDataNhanVienBanHangWithNhanVien(int idAccount, String tenQuyen) { // ban hang sang nhap bi loi
 		System.out.println("chay vo ham swapDataNhanVienBanHangWithNhanVien");
 		String tenQuyenCuaIdAccount = "";
-		if(!tenQuyen.equals("Bán hàng")) {
+		if (!tenQuyen.equals("Bán hàng")) {
 			System.out.println("Chạy vô hàm swapDataNhanVienBanHangWithNhanVien trong dk nếu");
-			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienBanHangWithIdAccountBUS(idAccount); // khong lay duoc cai nay.
+			NhanVien nhanVienTemp = nhanVienBUS.getNhanVienBanHangWithIdAccountBUS(idAccount); // khong lay duoc cai
+																								// nay.
 			nhanVienBUS.deleteNhanVienBanHangByIdAccountBUS(idAccount);
 			nhanVienBUS.themNVCoIdBUS(nhanVienTemp);
 			System.out.println("Xong cac buoc swapDataNhanVienBanHangWithNhanVien");
 		}
 	}
-	
-	
+
 	private void swapDataTaiKhoanWithTaiKhoanBanHang(int idAccount) {
 		// idQuyen = 5 => Nhập hàng
 		// idQuyen = 3 => Bán hàng
@@ -624,17 +674,18 @@ public class QuanLyNhanVienGUI extends JPanel {
 		// B2: lưu, xoá, chuyển qua bảng tai khoang bán hàng
 		System.out.println("Chay toi ham swapDataTaiKhoanWithTaiKhoanBanHang");
 		System.out.println("idAccount truyen tham so vo la: " + idAccount);
-		System.out.println("id account voi quyen 3 la (swap TK): " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
-		if(taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount) != -1) {
+		System.out.println(
+				"id account voi quyen 3 la (swap TK): " + taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount));
+		if (taiKhoanBUS.getIdAccountWithQuyenAndIdBUS(3, idAccount) != -1) {
 			taiKhoan_DTO tkBanHang = taiKhoanBUS.getTaiKhoanByIdBUS(idAccount);
 			taiKhoanBUS.deleteTaiKhoanByIdBUS(idAccount);
 			taiKhoanBUS.themTaiKhoanBanHangCoIDBUS(tkBanHang);
 			System.out.println("Xong cac buoc swapDataNhanVienWithNhanVienBanHang");
 		}
 	}
-	
-	private void swapDataTaiKhoanBanHangWithTaiKhoan(int idAccount, String tenQuyen) { //  // ban hang sang nhap
-		if(!tenQuyen.equals("Bán hàng")) {
+
+	private void swapDataTaiKhoanBanHangWithTaiKhoan(int idAccount, String tenQuyen) { // // ban hang sang nhap
+		if (!tenQuyen.equals("Bán hàng")) {
 			int quyen = pqbus.getIdByTenQuyenBUS(tenQuyen);
 			taiKhoan_DTO tk = taiKhoanBUS.getTaiKhoanBanHangByIdBUS(idAccount);
 			taiKhoanBUS.deleteTaiKhoanBanHangByIdBUS(idAccount);
@@ -645,36 +696,50 @@ public class QuanLyNhanVienGUI extends JPanel {
 
 	private void xuLyThemNhanVien() {
 		String ngaySinh = "";
+		LocalDate birthDate = null; // To hold the converted birth date.
+
 		if (dateChooser.getDate() != null) {
 			// Chuyển định dạng ngày tháng năm thành yyyy-MM-dd
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			ngaySinh = dateFormat.format(dateChooser.getDate());
+
+			// Convert Date to LocalDate for age calculation
+			birthDate = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+			// Get the current date
+			LocalDate currentDate = LocalDate.now();
+
+			// Calculate the exact age by comparing birthDate and currentDate
+			Period age = Period.between(birthDate, currentDate);
+
+			// Check if the person is less than 18 or older than 55
+			if (age.getYears() < 18 || (age.getYears() == 18 && (age.getMonths() > 0 || age.getDays() > 0))) {
+				JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi để làm việc!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+				return;
+			} else if (age.getYears() > 55) {
+				JOptionPane.showMessageDialog(null, "Quá tuổi để làm việc!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 		int gioiTinh = rdoBtn_Nam.isSelected() ? 1 : 0;
-
 		String nameQuyen = cmbChucVu.getSelectedItem().toString();
-
 		if (txtTenDN.getText().isEmpty() && txtMatKhau.getText().isEmpty() && txtTenNV.getText().isEmpty()
 				&& txt_soDT.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-
 		if (!taiKhoanBUS.kiemTraTaiKhoan(txtTenDN.getText(), txtMatKhau.getText())) {
 			return;
 		}
 		if (!nhanVienBUS.kiemTraNhanVien(txtTenNV.getText(), gioiTinh, txt_soDT.getText())) {
 			return;
 		}
-
 		if (taiKhoanBUS.themTaiKhoan1(txtTenDN.getText(), txtMatKhau.getText(), nameQuyen)) {
 			taiKhoanBUS.docDanhSach();
 			int idTaiKhoan = taiKhoanBUS.idTaiKhoanMax();
-
 			if (nhanVienBUS.themNhanVien(txtTenNV.getText(), ngaySinh, gioiTinh, txt_soDT.getText(), idTaiKhoan, 1,
 					nameQuyen)) {
 				nhanVienBUS.docDanhSach();
-
 				btnReset.doClick();
 			}
 		}
@@ -897,23 +962,23 @@ public class QuanLyNhanVienGUI extends JPanel {
 					for (int j = 0; j < row.getLastCellNum(); j++) {
 						Cell cell = row.getCell(j);
 						switch (cell.getCellType()) {
-						case STRING:
-							rowData[j] = cell.getStringCellValue();
-							break;
-						case NUMERIC:
-							if (DateUtil.isCellDateFormatted(cell)) {
-								Date date = cell.getDateCellValue();
-								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-								rowData[j] = sdf.format(date);
-							} else
-								rowData[j] = cell.getNumericCellValue();
-							break;
-						case BOOLEAN:
-							rowData[j] = cell.getBooleanCellValue();
-							break;
-						default:
-							rowData[j] = "";
-							break;
+							case STRING:
+								rowData[j] = cell.getStringCellValue();
+								break;
+							case NUMERIC:
+								if (DateUtil.isCellDateFormatted(cell)) {
+									Date date = cell.getDateCellValue();
+									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+									rowData[j] = sdf.format(date);
+								} else
+									rowData[j] = cell.getNumericCellValue();
+								break;
+							case BOOLEAN:
+								rowData[j] = cell.getBooleanCellValue();
+								break;
+							default:
+								rowData[j] = "";
+								break;
 						}
 					}
 					rowData[0] = Integer.parseInt(tableModel.getValueAt(tableModel.getRowCount() - 1, 0).toString())

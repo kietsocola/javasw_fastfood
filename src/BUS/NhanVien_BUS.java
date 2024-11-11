@@ -202,9 +202,10 @@ public class NhanVien_BUS {
 		int maNV = Integer.parseInt(ma);
 		boolean flag = nvdao.deleteNV(maNV);
 		if (flag) {
-			JOptionPane.showMessageDialog(null, "Xoá thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-		} else {
 			JOptionPane.showMessageDialog(null, "Xoá thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			
+		} else {
+			JOptionPane.showMessageDialog(null, "Xoá thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		}
 		return flag;
 
